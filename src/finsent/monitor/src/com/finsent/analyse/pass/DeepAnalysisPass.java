@@ -1,0 +1,104 @@
+package com.finsent.analyse.pass;
+
+import java.io.IOException;
+import java.util.Set;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import com.finsent.analyse.claude.ClaudeJson;
+import com.finsent.analyse.claude.IClaudeClient;
+import com.finsent.core.Json;
+import com.finsent.util.GlobalSystem;
+
+/**
+ * Pass 2 &mdash; the Sonnet deep analysis (ports Python {@code parse_analysis_response}). Sends the
+ * pre-assembled prompt (built by the pipeline from the resonant articles + mechanical signals) and
+ * parses the single JSON object Claude returns: it splits out the per-article {@code articles}
+ * array, defaults an out-of-range {@code impact_tier} to {@code noise}, and strips any
+ * Claude-supplied {@code macro_regime} (that field is computed mechanically). A response that can't
+ * be parsed or has no {@code direction} yields a null prediction (the legacy delimited-block parser
+ * is out of scope for this port).
+ */
+public final class DeepAnalysisPass
+{
+    private static final String NAME = "DeepAnalysisPass";
+    private static final int MAX_TOKENS = 1500;
+    private static final Set<String> VALID_IMPACT_TIERS = Set.of("high", "low", "noise");
+    private static final Set<String> VALID_CONFIDENCE = Set.of("high", "medium", "low");
+
+    private final IClaudeClient client_;
+    private final String model_;
+
+    public DeepAnalysisPass(IClaudeClient client, String model)
+    {
+        client_ = client;
+        model_ = model;
+    }
+
+    /** Run deep analysis on the assembled {@code prompt} and parse the result. */
+    public DeepResult analyse(String prompt)
+    {
+        String text = callQuietly(prompt);
+        ObjectNode prediction = text == null ? null : ClaudeJson.extractObject(text);
+        DeepResult result;
+        if (prediction == null || !prediction.has("direction"))
+        {
+            result = new DeepResult(null, Json.newArray());
+        }
+        else
+        {
+            ArrayNode articles = popArticles(prediction);
+            clampImpactTier(prediction);
+            defaultConfidence(prediction);
+            prediction.remove("macro_regime");
+            result = new DeepResult(prediction, articles);
+        }
+        return result;
+    }
+
+    private String callQuietly(String prompt)
+    {
+        String text = null;
+        try
+        {
+            text = client_.complete(model_, prompt, MAX_TOKENS);
+        }
+        catch (IOException callFailed)
+        {
+            GlobalSystem.warning().writes(NAME, "Deep-analysis API call failed", callFailed);
+        }
+        catch (InterruptedException interrupted)
+        {
+            Thread.currentThread().interrupt();
+            GlobalSystem.warning().writes(NAME, "Deep-analysis call interrupted");
+        }
+        return text;
+    }
+
+    private static ArrayNode popArticles(ObjectNode prediction)
+    {
+        JsonNode articles = prediction.remove("articles");
+        return articles instanceof ArrayNode ? (ArrayNode) articles : Json.newArray();
+    }
+
+    private static void clampImpactTier(ObjectNode prediction)
+    {
+        if (!VALID_IMPACT_TIERS.contains(prediction.path("impact_tier").asText()))
+        {
+            GlobalSystem.warning().writes(NAME, "Invalid impact_tier '"
+                    + prediction.path("impact_tier").asText() + "' -- defaulting to noise.");
+            prediction.put("impact_tier", "noise");
+        }
+    }
+
+    /** Default a missing/invalid confidence to "low" -- unknown conviction is treated as weak. */
+    private static void defaultConfidence(ObjectNode prediction)
+    {
+        if (!VALID_CONFIDENCE.contains(prediction.path("confidence").asText()))
+        {
+            prediction.put("confidence", "low");
+        }
+    }
+}

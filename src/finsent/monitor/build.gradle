@@ -1,0 +1,39 @@
+/*
+ * monitor module - the business pipeline (com.finsent.core/collect/analyse): the collector daemon,
+ * the fetchers/sources, the registries and the analyser. Depends on :infra for the framework.
+ */
+
+dependencies {
+    implementation project(':infra')
+
+    // Jackson - all pipeline data is held as ObjectNode/ArrayNode.
+    implementation rootProject.files(
+        'lib/jackson-core-2.14.1.jar',
+        'lib/jackson-databind-2.14.1.jar',
+        'lib/jackson-annotations-2.14.1.jar'
+    )
+
+    // Test-only frameworks for the *_utest unit tests under test/ (and any inline in src/).
+    testImplementation rootProject.files(
+        'lib/junit-4.13.2.jar',
+        'lib/hamcrest-2.2.jar'
+    )
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+            exclude '**/*_utest.java', '**/*_test.java'
+        }
+        resources { srcDirs = [] }
+    }
+    test {
+        java {
+            // Inline tests (if any) under src/, plus the dedicated test/ root.
+            srcDirs = ['src', 'test']
+            include '**/*_utest.java', '**/*_test.java'
+        }
+        resources { srcDirs = [] }
+    }
+}

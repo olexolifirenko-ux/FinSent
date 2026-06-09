@@ -1,0 +1,58 @@
+/*
+ * infra module - InfoReach-derived framework (com.finsent.util/xml/log/directory/properties +
+ * app bootstrap). No business logic; the base every other module depends on.
+ */
+
+dependencies {
+    // javax.annotation (jsr305: Nonnull/Nullable/CheckForNull/NotThreadSafe) appears in public API
+    // signatures (XMLData, ICmdRegistry, ...), so expose it as 'api' for dependent modules.
+    api rootProject.files('lib/jsr305-3.0.2.jar')
+
+    // Jakarta Mail (IMailSender / MailSender). jakarta.mail-api types (MessagingException,
+    // InternetAddress) appear in IMailSender's public signatures, so expose it as 'api' for
+    // dependent modules (the analyser's EmailNotifier builds InternetAddresses). The Angus
+    // implementations + the activation API provide the runtime SMTP transport / JAF impl only.
+    api rootProject.files('lib/jakarta.mail-api-2.1.3.jar')
+    implementation rootProject.files(
+        'lib/jakarta.activation-api-2.1.3.jar',
+        'lib/angus-mail-2.0.3.jar',
+        'lib/angus-activation-2.0.2.jar'
+    )
+
+    // Test-only frameworks for the inline *_utest/*_test unit tests (xml/dtd, etc.).
+    testImplementation rootProject.files(
+        'lib/junit-4.13.2.jar',
+        'lib/hamcrest-2.2.jar',
+        'lib/mockito-core-4.11.0.jar',
+        'lib/mockito-inline-4.11.0.jar',   // enables Mockito.mockStatic on Mockito 4.x
+        'lib/byte-buddy-1.14.9.jar',
+        'lib/byte-buddy-agent-1.14.9.jar',
+        'lib/objenesis-3.3.jar',
+        'lib/easymock-5.1.0.jar'
+    )
+}
+
+// Inline tests live next to the production classes under src/; keep them (and their test-only
+// helpers) out of the main compile, and compile them in the test source set.
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+            exclude '**/*_utest.java', '**/*_test.java'
+            exclude '**/com/finsent/util/test/**'
+            exclude '**/com/finsent/util/map/cache/**'
+            exclude '**/com/finsent/util/RunnableThrows.java'
+        }
+        resources { srcDirs = [] }
+    }
+    test {
+        java {
+            srcDirs = ['src']
+            include '**/*_utest.java', '**/*_test.java'
+            include '**/com/finsent/util/test/**'
+            include '**/com/finsent/util/map/cache/**'
+            include '**/com/finsent/util/RunnableThrows.java'
+        }
+        resources { srcDirs = [] }
+    }
+}

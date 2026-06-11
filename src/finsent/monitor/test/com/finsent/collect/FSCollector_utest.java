@@ -258,7 +258,7 @@ public class FSCollector_utest
 
     private FSCollector build(List<IArticleSource> sources, List<IArticleSource> urgentSources)
     {
-        FSCollector collector = new FSCollector(config_, dir_, sources, urgentSources, null, null, null, null);
+        FSCollector collector = new FSCollector(config_, dir_, sources, urgentSources, null, null, null, null, null);
         created_.add(collector);
         return collector;
     }

@@ -160,6 +160,44 @@ public class NotifyMessages_utest
                 + "No resonant news articles in this monitoring window.\n", NotifyMessages.macroEmailBody(alert));
     }
 
+    @Test
+    public void econTelegramSubjectAndBody()
+    {
+        ObjectNode alert = econAlert("bearish", "high", "risk_off",
+                "CPI MoM 0.6% vs 0.3% est (+0.3%, high -> bearish)", "Hot inflation print, risk-off for BTC.");
+
+        assertEquals(""
+                + "DATA ALERT (CPI MoM)\n"
+                + "BEARISH | high impact | macro: risk_off\n"
+                + "CPI MoM 0.6% vs 0.3% est (+0.3%, high -> bearish)\n"
+                + "Hot inflation print, risk-off for BTC.", NotifyMessages.econTelegram(alert));
+        assertEquals("BTC Data Alert: BEARISH", NotifyMessages.econEmailSubject(alert));
+        assertEquals(""
+                + "SCHEDULED DATA RELEASE BTC ALERT\n"
+                + "Event: CPI MoM 0.6% vs 0.3% est (+0.3%, high -> bearish)\n"
+                + "Direction: BEARISH\n"
+                + "Impact: high\n"
+                + "Macro regime: risk_off\n"
+                + "Mechanical prior: bearish / high\n"
+                + "Reasoning: Hot inflation print, risk-off for BTC.\n"
+                + "\n"
+                + "No resonant news -- this is a scheduled data-release surprise.\n", NotifyMessages.econEmailBody(alert));
+    }
+
+    private static ObjectNode econAlert(String direction, String tier, String regime, String label, String reasoning)
+    {
+        ObjectNode alert = Json.newObject();
+        alert.put("event", "CPI MoM");
+        alert.put("label", label);
+        alert.put("direction", direction);
+        alert.put("impact_tier", tier);
+        alert.put("macro_regime", regime);
+        alert.put("mechanical_direction", "bearish");
+        alert.put("mechanical_tier", "high");
+        alert.put("reasoning", reasoning);
+        return alert;
+    }
+
     private static ObjectNode pred(String direction, String tier, String regime, String reasoning)
     {
         ObjectNode pred = Json.newObject();

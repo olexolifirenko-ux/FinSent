@@ -1,10 +1,12 @@
 package com.finsent.collect;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -30,9 +32,11 @@ import com.finsent.core.io.DataStream;
 import com.finsent.core.io.LoadedDay;
 import com.finsent.core.io.PersistenceService;
 import com.finsent.core.registry.ArticleRegistry;
+import com.finsent.core.registry.EconEventRegistry;
 import com.finsent.core.registry.IRegistry;
 import com.finsent.core.registry.IntervalSnapshotRegistry;
 import com.finsent.core.registry.OhlcRegistry;
+import com.finsent.directory.DirectorySystem;
 import com.finsent.util.GlobalSystem;
 
 /**
@@ -63,6 +67,7 @@ public final class FSCollector
     private final IntervalSnapshotRegistry price_;
     private final IntervalSnapshotRegistry funding_;
     private final OhlcRegistry ohlc_;
+    private final EconEventRegistry econ_;
     private final List<IRegistry> registries_;
     private final List<IArticleSource> sources_;
     private final List<IArticleSource> urgentSources_;
@@ -70,6 +75,7 @@ public final class FSCollector
     private final OptionsFetcher optionsFetcher_;
     private final OhlcFetcher ohlcFetcher_;
     private final FundingFetcher fundingFetcher_;
+    private final EconActuals econActuals_;
     // Serializes per-window context provisioning so the regular and urgent lanes, which can poll the
     // same window concurrently, do not both pass the "absent" guard and fetch over HTTP in parallel:
     // the first lane fetches and stores (registries update in memory eagerly), the second then finds
@@ -84,13 +90,14 @@ public final class FSCollector
                 new MacroFetcher(config.yahooChartBaseUrl()),
                 new OptionsFetcher(config.deribitBaseUrl()),
                 new OhlcFetcher(config.binanceBaseUrl()),
-                new FundingFetcher(config.binanceFuturesBaseUrl()));
+                new FundingFetcher(config.binanceFuturesBaseUrl()),
+                new EconActuals(config.blsBaseUrl(), config.blsApiKey()));
     }
 
     /** Injecting constructor: collaborators supplied directly (used by tests). */
     FSCollector(Config config, Path dataDir, List<IArticleSource> sources, List<IArticleSource> urgentSources,
             MacroFetcher macroFetcher, OptionsFetcher optionsFetcher, OhlcFetcher ohlcFetcher,
-            FundingFetcher fundingFetcher)
+            FundingFetcher fundingFetcher, EconActuals econActuals)
     {
         config_ = config;
         persistence_ = new PersistenceService(dataDir);
@@ -101,19 +108,27 @@ public final class FSCollector
         price_ = new IntervalSnapshotRegistry(DataStream.PRICE_CONTEXT);
         funding_ = new IntervalSnapshotRegistry(DataStream.FUNDING);
         ohlc_ = new OhlcRegistry();
-        registries_ = List.of(articles_, macro_, options_, ohlc_, price_, funding_);
+        econ_ = new EconEventRegistry();
+        registries_ = List.of(articles_, macro_, options_, ohlc_, price_, funding_, econ_);
         sources_ = sources;
         urgentSources_ = urgentSources;
         macroFetcher_ = macroFetcher;
         optionsFetcher_ = optionsFetcher;
         ohlcFetcher_ = ohlcFetcher;
         fundingFetcher_ = fundingFetcher;
+        econActuals_ = econActuals;
     }
 
     /** Subscribe a listener to be notified (asynchronously) with each cycle's {@link CollectionResult}. */
     public void addListener(IEventListener<CollectionResult> listener)
     {
         eventBus_.subscribe(CollectionResult.class, listener);
+    }
+
+    /** Subscribe a listener for {@link EconResolved} events (a freshly-resolved scheduled release, #21). */
+    public void addEconListener(IEventListener<EconResolved> listener)
+    {
+        eventBus_.subscribe(EconResolved.class, listener);
     }
 
     /** Rebuild every registry's runtime state from the most recent {@code lookbackDays}. */
@@ -373,6 +388,7 @@ public final class FSCollector
             boolean ohlcStored = !urgent && storeOhlcStrip(batch, now, window);
             boolean priceStored = storePriceContext(batch, now, day, key);
             boolean fundingStored = storeFunding(batch, day, key);
+            storeEconEvents(batch, now); // resolve due scheduled releases (own log line); not per-window context
             logContextWhenCaptured(day, key,
                     macroStored || optionsStored || ohlcStored || priceStored || fundingStored);
         }
@@ -429,6 +445,71 @@ public final class FSCollector
             }
         }
         return result;
+    }
+
+    /**
+     * Resolve any configured scheduled releases (#21) due for resolution: poll the BLS series and, once
+     * the <b>fresh</b> print has landed (its period clears the prior-month value still on the wire),
+     * store the raw {@code {consensus, actual, ...}} once keyed by event name on the release day and
+     * publish an {@link EconResolved} so the analyser runs the econ analysis. The surprise/direction is
+     * computed at analysis time by {@code EconEventSignals} (mirroring funding), so the collector stays
+     * free of the analysis layer. Re-read each cycle (a refreshed consensus needs no restart); the
+     * urgent lane drives the poll cadence. No-op when econ is not wired (tests).
+     */
+    private void storeEconEvents(CollectionBatch batch, Instant now)
+    {
+        if (econActuals_ != null)
+        {
+            File configFile = DirectorySystem.resolveToFile(config_.econEventsFile());
+            for (EconEvent event : EconEventsConfig.load(configFile))
+            {
+                resolveEconEvent(batch, event, now);
+            }
+        }
+    }
+
+    private void resolveEconEvent(CollectionBatch batch, EconEvent event, Instant now)
+    {
+        String day = Times.dayOf(Times.formatUtcIso(event.release()));
+        if (withinResolutionWindow(event, now) && !econ_.resolved(day, event.name()))
+        {
+            EconActuals.Reading reading = econActuals_.fetch(event.series(), event.kind());
+            if (reading != null && reading.period() >= EconActuals.reportedPeriod(event.release()))
+            {
+                String key = Times.intervalKey(Times.formatUtcIso(event.release()), config_.windowMinutes());
+                batch.add(econ_.store(day, event.name(), resolvedEvent(event, reading.actual())));
+                GlobalSystem.info().writes(NAME, "Scheduled event resolved: " + event.name()
+                        + " actual=" + Num.round(reading.actual(), 4) + " vs consensus=" + event.consensus());
+                eventBus_.publish(new EconResolved(day, key, event.name()));
+            }
+        }
+    }
+
+    /**
+     * Attempt resolution only between the release and the poll cap ({@code econPollCap}) after it: before
+     * the release there is nothing to fetch; long after it, a never-arriving print should stop consuming
+     * BLS quota every poll. A real-time alert clock, not a backfiller -- a release missed past the cap stays
+     * unresolved.
+     */
+    private boolean withinResolutionWindow(EconEvent event, Instant now)
+    {
+        return !now.isBefore(event.release())
+                && now.isBefore(event.release().plus(config_.econPollCapMinutes(), ChronoUnit.MINUTES));
+    }
+
+    /** The raw resolved event (signal inputs only; the surprise/direction is derived at analysis time). */
+    private static ObjectNode resolvedEvent(EconEvent event, double actual)
+    {
+        ObjectNode resolved = Json.newObject();
+        resolved.put("event", event.name());
+        resolved.put("release", Times.formatUtcIso(event.release()));
+        resolved.put("consensus", event.consensus());
+        resolved.put("actual", Num.round(actual, 4));
+        resolved.put("unit", event.unit());
+        resolved.put("hot_direction", event.hotDirection());
+        resolved.put("inline_band", event.inlineBand());
+        resolved.put("high_band", event.highBand());
+        return resolved;
     }
 
     /** Macro snapshot for the interval, unless it is a weekend (stale Yahoo data) or already stored. */
@@ -665,6 +746,11 @@ public final class FSCollector
     public OhlcRegistry ohlc()
     {
         return ohlc_;
+    }
+
+    public EconEventRegistry econ()
+    {
+        return econ_;
     }
 
     /**

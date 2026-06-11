@@ -116,6 +116,37 @@ public final class NotifyMessages
                 + "No resonant news articles in this monitoring window.\n";
     }
 
+    /** Telegram message for a scheduled-data-release alert (no resonant news). */
+    public static String econTelegram(ObjectNode econAlert)
+    {
+        return "DATA ALERT (" + econAlert.path("event").asText("scheduled release") + ")\n"
+                + upper(econAlert.path("direction").asText("neutral")) + " | "
+                + econAlert.path("impact_tier").asText("noise") + " impact | macro: "
+                + econAlert.path("macro_regime").asText("?") + "\n"
+                + econAlert.path("label").asText("") + "\n"
+                + econAlert.path("reasoning").asText("");
+    }
+
+    /** Email subject for a scheduled-data-release alert: {@code BTC Data Alert: <DIRECTION>}. */
+    public static String econEmailSubject(ObjectNode econAlert)
+    {
+        return "BTC Data Alert: " + upper(econAlert.path("direction").asText("neutral"));
+    }
+
+    /** Email body for a scheduled-data-release alert. */
+    public static String econEmailBody(ObjectNode econAlert)
+    {
+        return "SCHEDULED DATA RELEASE BTC ALERT\n"
+                + "Event: " + econAlert.path("label").asText("") + "\n"
+                + "Direction: " + upper(econAlert.path("direction").asText("neutral")) + "\n"
+                + "Impact: " + econAlert.path("impact_tier").asText("noise") + "\n"
+                + "Macro regime: " + econAlert.path("macro_regime").asText("?") + "\n"
+                + "Mechanical prior: " + econAlert.path("mechanical_direction").asText("neutral")
+                + " / " + econAlert.path("mechanical_tier").asText("noise") + "\n"
+                + "Reasoning: " + econAlert.path("reasoning").asText("") + "\n\n"
+                + "No resonant news -- this is a scheduled data-release surprise.\n";
+    }
+
     private static void appendKeyEvents(List<String> lines, JsonNode keyEvents)
     {
         if (keyEvents.size() > 0)

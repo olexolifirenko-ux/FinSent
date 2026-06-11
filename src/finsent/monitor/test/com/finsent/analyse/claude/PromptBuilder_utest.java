@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.junit.Test;
 
+import com.finsent.analyse.signal.EconEventSignals;
 import com.finsent.analyse.signal.FundingSignals;
 import com.finsent.analyse.signal.MacroSignals;
 import com.finsent.analyse.signal.MacroTrend;
@@ -53,6 +54,47 @@ public class PromptBuilder_utest
 
         assertEquals("[101] AP | 2026-06-04 08:00 | Headline\n     Body", block);
         assertEquals(Integer.valueOf(55), idMap.get(101));
+    }
+
+    @Test
+    public void coveredBlockListsRecentResonantOrIsEmpty()
+    {
+        assertEquals("", PromptBuilder.coveredBlock(List.of()));
+        List<ObjectNode> covered = List.of(
+                article(1, "AlJazeera", "2026-06-09T21:17:00Z", "Trump accuses Iran of downing US Apache", ""),
+                article(2, "Bloomberg", "2026-06-09T22:03:00Z", "Oil rebounded after US strikes", ""));
+        assertEquals(""
+                + "-- ALREADY COVERED (recent; reference only, do NOT score) --\n"
+                + "- 2026-06-09 21:17 | Trump accuses Iran of downing US Apache\n"
+                + "- 2026-06-09 22:03 | Oil rebounded after US strikes",
+                PromptBuilder.coveredBlock(covered));
+    }
+
+    @Test
+    public void econEventRendersLabelAndMechanicalPrior()
+    {
+        ObjectNode signal = EconEventSignals.signal("CPI MoM", "%", 0.3, 0.6, "bearish", 0.1, 0.2);
+        assertEquals(""
+                + "CPI MoM 0.6% vs 0.3% est (+0.3%, high -> bearish)\n"
+                + "mechanical_prior: bearish / high", PromptBuilder.econEvent(signal));
+    }
+
+    @Test
+    public void macroAlertRendersTriggersAndMechanicalPrior()
+    {
+        ObjectNode trigger = Json.newObject();
+        trigger.put("name", "VIX");
+        trigger.put("delta_pct", 12.0);
+        ArrayNode triggers = Json.newArray();
+        triggers.add(trigger);
+        ObjectNode mechanical = Json.newObject();
+        mechanical.set("triggers", triggers);
+        mechanical.put("direction", "bearish");
+        mechanical.put("impact_tier", "high");
+
+        assertEquals(""
+                + "macro tape breach: VIX +12.0%\n"
+                + "mechanical_prior: bearish / high", PromptBuilder.macroAlert(mechanical));
     }
 
     @Test

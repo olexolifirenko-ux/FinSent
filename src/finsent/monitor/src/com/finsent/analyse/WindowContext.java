@@ -11,7 +11,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import com.finsent.analyse.claude.PromptBuilder;
+import com.finsent.analyse.signal.EconEventSignals;
 import com.finsent.analyse.signal.FundingSignals;
+import com.finsent.analyse.signal.MacroSignals;
 import com.finsent.analyse.signal.MacroTrend;
 import com.finsent.analyse.signal.OptionsSignals;
 import com.finsent.collect.FSCollector;
@@ -70,6 +73,55 @@ public final class WindowContext
         if (collector.config().fundingEnabled())
         {
             signal = FundingSignals.signal(collector.funding().get(day, key));
+        }
+        return signal;
+    }
+
+    /**
+     * The window's market context bundled for analysis: the mechanical signals an analysis record keeps
+     * ({@code regime} / {@code options} / {@code funding} / {@code priceContext}) plus the formatted
+     * {@code {market_signals}} {@code block} the Claude prompts interpolate. The macro trend is folded
+     * into {@code block} (no caller needs it separately). {@code options} / {@code funding} /
+     * {@code priceContext} may be empty/null when the signal is disabled or absent.
+     */
+    public record MarketContext(ObjectNode regime, ObjectNode options, ObjectNode funding,
+                                ObjectNode priceContext, String block)
+    {
+    }
+
+    /**
+     * Assemble the window's {@link MarketContext} in one read of the collector: the mechanical regime,
+     * options, funding, macro-trend and price-context signals, plus the formatted {@code {market_signals}}
+     * block. The single place all three Claude paths (news deep analysis, econ, macro alert) build the
+     * context they judge against -- so they stay consistent and read the collector once.
+     */
+    public static MarketContext marketContext(FSCollector collector, String day, String key, int windowMinutes)
+    {
+        ObjectNode regime = MacroSignals.regime(collector.macro().get(day, key));
+        ObjectNode options = optionsSignal(collector, day, key, windowMinutes);
+        ObjectNode funding = fundingSignal(collector, day, key);
+        ObjectNode trend = macroTrend(collector, day, key, windowMinutes);
+        ObjectNode price = collector.price().get(day, key);
+        String block = PromptBuilder.marketSignals(regime, options, funding, trend, price);
+        return new MarketContext(regime, options, funding, price, block);
+    }
+
+    /**
+     * Mechanical scheduled-event signal (#21) for a resolved release, derived at analysis time from the
+     * collector's raw {@code econ_actuals} record (consensus + fetched actual), or {@code null} when the
+     * event is not resolved for {@code day}. Mirrors the other signals: the collector stores raw inputs,
+     * the surprise/direction is computed here by {@link EconEventSignals}.
+     */
+    public static ObjectNode econSignal(FSCollector collector, String day, String eventName)
+    {
+        ObjectNode resolved = collector.econ().get(day, eventName);
+        ObjectNode signal = null;
+        if (resolved.has("actual") && resolved.has("consensus"))
+        {
+            signal = EconEventSignals.signal(resolved.path("event").asText(eventName),
+                    resolved.path("unit").asText("%"), resolved.path("consensus").asDouble(),
+                    resolved.path("actual").asDouble(), resolved.path("hot_direction").asText("bearish"),
+                    resolved.path("inline_band").asDouble(0.0), resolved.path("high_band").asDouble(Double.MAX_VALUE));
         }
         return signal;
     }

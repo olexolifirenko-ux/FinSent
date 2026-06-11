@@ -21,6 +21,8 @@ public enum DataStream
     PRICE_CONTEXT("price_context_", ".json", Format.JSON),
     /** Perpetual funding-rate snapshots, one JSON object per day keyed by {@code HH:MM}. */
     FUNDING("funding_", ".json", Format.JSON),
+    /** Resolved scheduled-economic actuals, one JSON object per day keyed by event name. */
+    ECON("econ_actuals_", ".json", Format.JSON),
     /** Analyser output, one JSON object per day keyed by {@code HH:MM} (analyser-owned). */
     ANALYSIS("analysis_", ".json", Format.JSON);
 

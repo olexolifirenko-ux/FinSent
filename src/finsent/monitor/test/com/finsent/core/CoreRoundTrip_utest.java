@@ -276,7 +276,7 @@ public class CoreRoundTrip_utest
                 + "<RssFeeds><Feed name=\"CoinDesk\" url=\"http://cd\"/></RssFeeds>"
                 + "</FSCollector>"
                 + "<FSAnalyser screenerThreshold=\"6\" telegramChatId=\"645133217\">"
-                + "<MacroAlertThresholds vixInPct=\"10.0\" cooldownInMin=\"30\"/>"
+                + "<MacroAlertThresholds vixInPct=\"10.0\"/>"
                 + "</FSAnalyser>"
                 + "</FSSatellite>";
         Config config = new Config(XMLData.valueOf(xml));
@@ -294,7 +294,6 @@ public class CoreRoundTrip_utest
         assertEquals(6, config.screenerThreshold());
         assertEquals("645133217", config.telegramChatId());
         assertEquals(10.0, config.macroAlertThresholds().vixInPct(), 0.0001);
-        assertEquals(30, config.macroAlertThresholds().cooldownInMin());
     }
 
     private static ObjectNode article(String title, String url, String publishedAt)

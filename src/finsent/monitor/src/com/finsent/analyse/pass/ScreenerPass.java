@@ -57,29 +57,29 @@ public final class ScreenerPass
      * rather than running the deep pass on fabricated scores (the caller's cycle handler logs and
      * skips it).
      */
-    public ScreenerResult screen(List<ObjectNode> articles, String screenerTemplate)
+    public ScreenerResult screen(List<ObjectNode> articles, String coveredBlock, String screenerTemplate)
     {
-        ArrayNode scores = scoreAllBatches(articles, screenerTemplate);
+        ArrayNode scores = scoreAllBatches(articles, coveredBlock, screenerTemplate);
         Map<Integer, JsonNode> scoreMap = buildScoreMap(scores, articles.size());
         applyScores(articles, scoreMap);
         return new ScreenerResult(selectResonant(articles), screenerOut(articles));
     }
 
-    private ArrayNode scoreAllBatches(List<ObjectNode> articles, String template)
+    private ArrayNode scoreAllBatches(List<ObjectNode> articles, String coveredBlock, String template)
     {
         ArrayNode all = Json.newArray();
         for (int start = 0; start < articles.size(); start += BATCH_SIZE)
         {
             List<ObjectNode> batch = articles.subList(start, Math.min(start + BATCH_SIZE, articles.size()));
-            all.addAll(scoreBatch(batch, start, template));
+            all.addAll(scoreBatch(batch, start, coveredBlock, template));
         }
         return all;
     }
 
-    private ArrayNode scoreBatch(List<ObjectNode> batch, int indexOffset, String template)
+    private ArrayNode scoreBatch(List<ObjectNode> batch, int indexOffset, String coveredBlock, String template)
     {
         String articleBlock = PromptBuilder.screenerArticles(batch, new HashMap<>(), indexOffset);
-        String prompt = PromptTemplates.fillScreener(template, articleBlock);
+        String prompt = PromptTemplates.fillScreener(template, coveredBlock, articleBlock);
         int maxTokens = Math.max(TOKENS_FLOOR, batch.size() * TOKENS_PER_ARTICLE + TOKENS_OVERHEAD);
 
         ArrayNode parsed = null;

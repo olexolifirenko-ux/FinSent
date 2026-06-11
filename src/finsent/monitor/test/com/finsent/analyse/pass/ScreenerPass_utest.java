@@ -38,7 +38,7 @@ public class ScreenerPass_utest
                         + "{\"i\":3,\"score\":-7,\"reason\":\"c\"}]");
         List<ObjectNode> articles = articles(10, 20, 30);
 
-        ScreenerResult result = new ScreenerPass(client, MODEL, THRESHOLD).screen(articles, TEMPLATE);
+        ScreenerResult result = new ScreenerPass(client, MODEL, THRESHOLD).screen(articles, "", TEMPLATE);
 
         assertEquals(List.of(10, 30), ids(result.resonant())); // |8| and |-7| pass; |2| does not
         assertEquals(2, articles.get(1).path("screener_score").asInt());
@@ -55,7 +55,7 @@ public class ScreenerPass_utest
         StubClaudeClient client = new StubClaudeClient().enqueue(scoresJson(1, 100, 7), scoresJson(101, 120, 7));
         List<ObjectNode> articles = articleRange(1, 120);
 
-        ScreenerResult result = new ScreenerPass(client, MODEL, THRESHOLD).screen(articles, TEMPLATE);
+        ScreenerResult result = new ScreenerPass(client, MODEL, THRESHOLD).screen(articles, "", TEMPLATE);
 
         assertEquals(2, client.callCount());
         assertEquals(120, result.resonant().size()); // all score 7 >= 6
@@ -71,7 +71,7 @@ public class ScreenerPass_utest
                 "[{\"i\":\"1\",\"score\":\"8\",\"reason\":\"x\"},{\"i\":\"2\",\"score\":\"3\"}]");
         List<ObjectNode> articles = articles(5, 6);
 
-        ScreenerResult result = new ScreenerPass(client, MODEL, THRESHOLD).screen(articles, TEMPLATE);
+        ScreenerResult result = new ScreenerPass(client, MODEL, THRESHOLD).screen(articles, "", TEMPLATE);
 
         assertEquals(List.of(5), ids(result.resonant()));
         assertEquals(8, articles.get(0).path("screener_score").asInt());
@@ -85,7 +85,7 @@ public class ScreenerPass_utest
         StubClaudeClient client = new StubClaudeClient().enqueue("[{\"i\":0,\"score\":8,\"reason\":\"z\"}]");
         List<ObjectNode> articles = articles(9);
 
-        ScreenerResult result = new ScreenerPass(client, MODEL, THRESHOLD).screen(articles, TEMPLATE);
+        ScreenerResult result = new ScreenerPass(client, MODEL, THRESHOLD).screen(articles, "", TEMPLATE);
 
         assertEquals(List.of(9), ids(result.resonant()));
         assertEquals(8, articles.get(0).path("screener_score").asInt());
@@ -99,7 +99,7 @@ public class ScreenerPass_utest
         ScreenerPass pass = new ScreenerPass(client, MODEL, THRESHOLD);
 
         IllegalStateException failure = assertThrows(IllegalStateException.class,
-                () -> pass.screen(articles, TEMPLATE));
+                () -> pass.screen(articles, "", TEMPLATE));
 
         assertTrue("message names the attempt count", failure.getMessage().contains("2 attempts"));
         assertEquals("two attempts before aborting", 2, client.callCount());

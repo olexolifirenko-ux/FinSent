@@ -65,15 +65,35 @@ public final class Notifier
     /** Fire macro-only-alert notifications if it passes the macro gate (non-neutral, tier &ge; min). */
     public void notifyMacroAlert(ObjectNode macroAlert, String intervalKey)
     {
-        int minTierVal = ImpactTier.order(minImpactTier_, 2);
-        String direction = macroAlert.path("direction").asText("neutral");
-        int tierVal = ImpactTier.order(macroAlert.path("impact_tier").asText("noise"), 0);
-        if (!direction.equals("neutral") && tierVal >= minTierVal)
+        if (passesAlertGate(macroAlert))
         {
             sendTelegram(NotifyMessages.macroTelegram(macroAlert), intervalKey);
             sendEmail(NotifyMessages.macroEmailSubject(macroAlert),
                     NotifyMessages.macroEmailBody(macroAlert), intervalKey);
         }
+    }
+
+    /**
+     * Fire scheduled-data-release alert notifications (#21) if it passes the same news-free gate as the
+     * macro path (non-neutral, tier &ge; min); the release carries no resonant article, so there is no
+     * age check.
+     */
+    public void notifyEconAlert(ObjectNode econAlert, String intervalKey)
+    {
+        if (passesAlertGate(econAlert))
+        {
+            sendTelegram(NotifyMessages.econTelegram(econAlert), intervalKey);
+            sendEmail(NotifyMessages.econEmailSubject(econAlert),
+                    NotifyMessages.econEmailBody(econAlert), intervalKey);
+        }
+    }
+
+    /** The news-free alert gate shared by the macro and econ paths: non-neutral and tier &ge; the minimum. */
+    private boolean passesAlertGate(ObjectNode alert)
+    {
+        int minTierVal = ImpactTier.order(minImpactTier_, 2);
+        int tierVal = ImpactTier.order(alert.path("impact_tier").asText("noise"), 0);
+        return !alert.path("direction").asText("neutral").equals("neutral") && tierVal >= minTierVal;
     }
 
     /** Stop the dispatch worker (shutdown hook). */

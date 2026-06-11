@@ -181,6 +181,84 @@ public class FSAnalyser_utest
                 store_.get(DAY, KEY).path("macro_alert").isMissingNode());
     }
 
+    @Test
+    public void macroAlertEscalatesToClaudeJudgment() throws IOException
+    {
+        seedMacroBreach(); // mechanical detector fires bearish/high (extreme VIX move)
+        StubClaudeClient client = new StubClaudeClient().enqueue(
+                "{\"direction\":\"neutral\",\"impact_tier\":\"noise\",\"confidence\":\"low\","
+                        + "\"key_events\":[],\"reasoning\":\"Isolated VIX spike, no risk-off follow-through.\"}");
+        analyser(client).analyse(new CollectionResult(DAY, KEY, 0, List.of(), false), NOW);
+
+        ObjectNode macroAlert = (ObjectNode) store_.get(DAY, KEY).path("macro_alert");
+        assertEquals("neutral", macroAlert.path("direction").asText()); // Claude vetoed the mechanical call
+        assertEquals("noise", macroAlert.path("impact_tier").asText());
+        assertTrue(macroAlert.path("claude_available").asBoolean());
+        assertEquals("bearish", macroAlert.path("mechanical_direction").asText()); // mechanical prior preserved
+        assertEquals("the macro alert runs a single deep call", 1, client.callCount());
+    }
+
+    @Test
+    public void macroAlertFallsBackToMechanicalWhenClaudeUnavailable() throws IOException
+    {
+        seedMacroBreach();
+        StubClaudeClient client = new StubClaudeClient(); // empty queue -> deep returns null -> mechanical fallback
+        analyser(client).analyse(new CollectionResult(DAY, KEY, 0, List.of(), false), NOW);
+
+        ObjectNode macroAlert = (ObjectNode) store_.get(DAY, KEY).path("macro_alert");
+        assertEquals("bearish", macroAlert.path("direction").asText()); // mechanical assessment stands
+        assertEquals("high", macroAlert.path("impact_tier").asText());
+        assertFalse("no Claude judgment recorded on fallback", macroAlert.path("claude_available").asBoolean());
+    }
+
+    @Test
+    public void econSurpriseRunsDeepAndRecordsEconAlert() throws IOException
+    {
+        seedEcon("CPI MoM", 0.3, 0.6); // surprise +0.3 > high_band -> high bearish prior
+        StubClaudeClient client = new StubClaudeClient().enqueue(
+                "{\"direction\":\"bearish\",\"impact_tier\":\"high\",\"confidence\":\"medium\","
+                        + "\"key_events\":[\"CPI hot\"],\"reasoning\":\"hot print, risk-off\"}");
+        analyser(client).analyseEcon(DAY, KEY, "CPI MoM", NOW, true);
+
+        ObjectNode econAlert = (ObjectNode) store_.get(DAY, KEY).path("econ_alert");
+        assertEquals("bearish", econAlert.path("direction").asText());
+        assertEquals("high", econAlert.path("impact_tier").asText());
+        assertEquals("medium", econAlert.path("confidence").asText());
+        assertTrue(econAlert.path("claude_available").asBoolean());
+        assertEquals("bearish", econAlert.path("mechanical_direction").asText());
+        assertEquals("high", econAlert.path("mechanical_tier").asText());
+        assertEquals("econ runs only the deep pass (no screener)", 1, client.callCount());
+    }
+
+    @Test
+    public void econInlinePrintRecordsMechanicalOnlyWithoutDeep() throws IOException
+    {
+        seedEcon("CPI MoM", 0.3, 0.35); // surprise +0.05 <= inline_band -> in line
+        StubClaudeClient client = new StubClaudeClient(); // empty queue -> the deep pass must NOT be called
+        analyser(client).analyseEcon(DAY, KEY, "CPI MoM", NOW, true);
+
+        ObjectNode econAlert = (ObjectNode) store_.get(DAY, KEY).path("econ_alert");
+        assertEquals("neutral", econAlert.path("direction").asText());
+        assertEquals("noise", econAlert.path("impact_tier").asText());
+        assertFalse(econAlert.path("claude_available").asBoolean());
+        assertEquals("in-line print never calls the deep pass", 0, client.callCount());
+    }
+
+    /** Seed a resolved scheduled-release record (the collector's raw econ_actuals shape) in memory. */
+    private void seedEcon(String name, double consensus, double actual)
+    {
+        ObjectNode resolved = Json.newObject();
+        resolved.put("event", name);
+        resolved.put("release", "2026-06-04T08:00:00Z");
+        resolved.put("consensus", consensus);
+        resolved.put("actual", actual);
+        resolved.put("unit", "%");
+        resolved.put("hot_direction", "bearish");
+        resolved.put("inline_band", 0.1);
+        resolved.put("high_band", 0.2);
+        collector_.econ().store(DAY, name, resolved);
+    }
+
     /** Seed an extreme VIX move (current window vs the previous) that would fire a macro alert. */
     private void seedMacroBreach()
     {
@@ -258,6 +336,8 @@ public class FSAnalyser_utest
         Files.writeString(prompts.resolve("screener.txt"), "{articles}", StandardCharsets.UTF_8);
         Files.writeString(prompts.resolve("deep_analysis.txt"), "{article_count}|{market_signals}|{articles}",
                 StandardCharsets.UTF_8);
+        Files.writeString(prompts.resolve("econ_analysis.txt"), "{catalyst}|{market_signals}", StandardCharsets.UTF_8);
+        Files.writeString(prompts.resolve("macro_analysis.txt"), "{catalyst}|{market_signals}", StandardCharsets.UTF_8);
         return prompts.toFile();
     }
 

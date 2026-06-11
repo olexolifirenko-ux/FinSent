@@ -58,6 +58,63 @@ public final class PromptBuilder
     }
 
     /**
+     * The "ALREADY COVERED" reference block for the screener (cross-window dedup): recently-resonant
+     * articles (publish time + title) the screener scores follow-ups/recaps of an already-covered story
+     * against. Empty string when nothing is recent, so the section is omitted entirely.
+     */
+    public static String coveredBlock(List<ObjectNode> covered)
+    {
+        String block = "";
+        if (covered != null && !covered.isEmpty())
+        {
+            List<String> lines = new ArrayList<>();
+            lines.add("-- ALREADY COVERED (recent; reference only, do NOT score) --");
+            for (ObjectNode note : covered)
+            {
+                lines.add("- " + pub(note) + " | " + text(note, "title"));
+            }
+            block = String.join("\n", lines);
+        }
+        return block;
+    }
+
+    /**
+     * The {@code {event}} block for the article-less econ prompt (#21): the mechanical surprise label
+     * plus the mechanical direction/tier as a labelled prior the deep pass weighs against the market
+     * context. {@code signal} is the {@code EconEventSignals} object for a resolved scheduled release.
+     */
+    public static String econEvent(ObjectNode signal)
+    {
+        return text(signal, "label") + "\n"
+                + "mechanical_prior: " + signal.path("direction").asText("neutral")
+                + " / " + signal.path("impact_tier").asText("noise");
+    }
+
+    /**
+     * The {@code {catalyst}} block for the article-less macro-alert prompt (#21): the breaching indicators
+     * (name + delta%) plus the mechanical direction/tier as a labelled prior the deep pass weighs against
+     * the market context. {@code mechanical} is the {@code MacroAlert.assess} object for a tape breach.
+     */
+    public static String macroAlert(ObjectNode mechanical)
+    {
+        return "macro tape breach: " + macroTriggers(mechanical.path("triggers")) + "\n"
+                + "mechanical_prior: " + mechanical.path("direction").asText("neutral")
+                + " / " + mechanical.path("impact_tier").asText("noise");
+    }
+
+    /** The breaching indicators as {@code "VIX +12.0%, DXY +0.6%"} for the macro catalyst block. */
+    private static String macroTriggers(JsonNode triggers)
+    {
+        List<String> parts = new ArrayList<>();
+        for (JsonNode trigger : triggers)
+        {
+            parts.add(trigger.path("name").asText() + " "
+                    + String.format(Locale.ROOT, "%+.1f%%", trigger.path("delta_pct").asDouble()));
+        }
+        return String.join(", ", parts);
+    }
+
+    /**
      * Deep-analysis (Pass 2) article block: {@code [i] source | pub}, an indented title and
      * description, and a {@code pre_trend} label when {@code ohlcByArticleId} carries bars for the
      * article. A blank line separates entries (and trails the block), matching Python. {@code idMap}

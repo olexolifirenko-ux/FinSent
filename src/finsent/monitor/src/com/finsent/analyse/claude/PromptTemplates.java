@@ -27,10 +27,10 @@ public final class PromptTemplates
         return Files.readString(new File(promptsDir, name + EXTENSION).toPath(), StandardCharsets.UTF_8);
     }
 
-    /** Fill the screener template's {@code {articles}} placeholder. */
-    public static String fillScreener(String template, String articlesBlock)
+    /** Fill the screener template's {@code {covered}} (dedup reference) + {@code {articles}} placeholders. */
+    public static String fillScreener(String template, String coveredBlock, String articlesBlock)
     {
-        return template.replace("{articles}", articlesBlock);
+        return template.replace("{covered}", coveredBlock).replace("{articles}", articlesBlock);
     }
 
     /** Fill the deep-analysis template's {@code {article_count}}, {@code {market_signals}}, {@code {articles}}. */
@@ -39,5 +39,14 @@ public final class PromptTemplates
         return template.replace("{article_count}", Integer.toString(articleCount))
                 .replace("{market_signals}", marketSignals)
                 .replace("{articles}", articlesBlock);
+    }
+
+    /**
+     * Fill an article-less non-news template (econ release / macro tape breach, #21): the {@code {catalyst}}
+     * block (the mechanical surprise/breach + its prior) and the {@code {market_signals}} context block.
+     */
+    public static String fillContext(String template, String catalystBlock, String marketSignals)
+    {
+        return template.replace("{catalyst}", catalystBlock).replace("{market_signals}", marketSignals);
     }
 }

@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
@@ -31,10 +33,10 @@ import com.finsent.analyse.pass.DeepAnalysisPass;
 import com.finsent.analyse.pass.DeepResult;
 import com.finsent.analyse.pass.ScreenerPass;
 import com.finsent.analyse.pass.ScreenerResult;
-import com.finsent.analyse.signal.MacroSignals;
 import com.finsent.analyse.signal.PreTrend;
 import com.finsent.analyse.signal.Scenario;
 import com.finsent.collect.CollectionResult;
+import com.finsent.collect.EconResolved;
 import com.finsent.collect.FSCollector;
 import com.finsent.core.Config;
 import com.finsent.core.Json;
@@ -92,6 +94,14 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     private final ConcurrentHashMap<String, String> lastNotifiedByWindow_ = new ConcurrentHashMap<>();
     private final AtomicBoolean paused_;
     private final Thread worker_;
+    // Econ analyses run off the event-bus thread on their own daemon executor (the Claude call is slow),
+    // separate from the news worker so a rare scheduled-release analysis never queues behind window work.
+    private final ExecutorService econDispatch_ = Executors.newSingleThreadExecutor(runnable ->
+    {
+        Thread thread = new Thread(runnable, "FS-Econ");
+        thread.setDaemon(true);
+        return thread;
+    });
     private volatile boolean running_ = true;
 
     /** Production wiring: build the store, Claude client/passes, notifier and macro-alert check from config. */
@@ -110,7 +120,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         screener_ = new ScreenerPass(claudeClient, config.claudeScreenerModel(), config.screenerThreshold());
         deep_ = new DeepAnalysisPass(claudeClient, config.claudeDeepAnalModel());
         notifier_ = notifier;
-        macroAlertChecker_ = new MacroAlertChecker(collector, store, notifier, config);
+        macroAlertChecker_ = new MacroAlertChecker(collector, store, notifier, config, deep_, promptsDir);
         config_ = config;
         promptsDir_ = promptsDir;
         paused_ = new AtomicBoolean(startPaused);
@@ -185,6 +195,38 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         }
     }
 
+    /**
+     * Handle a freshly-resolved scheduled release (#21): unless paused, run the econ analysis off the
+     * event-bus thread (the Claude call is slow) on the dedicated econ executor, mirroring how
+     * {@link #onEvent} hands news windows to the worker. Registered by {@code FSApp} via
+     * {@code collector.addEconListener}.
+     */
+    public void onEconResolved(EconResolved resolved)
+    {
+        if (paused_.get())
+        {
+            GlobalSystem.debug().writes(NAME, "Paused -- skipping econ " + resolved.eventName());
+        }
+        else
+        {
+            econDispatch_.submit(() -> processEcon(resolved));
+        }
+    }
+
+    private void processEcon(EconResolved resolved)
+    {
+        try
+        {
+            analyseEcon(resolved.day(), resolved.intervalKey(), resolved.eventName(), Instant.now(), true);
+        }
+        catch (Exception econFailed)
+        {
+            // Abort just this event; the econ executor stays alive for the next release.
+            GlobalSystem.error().writes(NAME, "Econ analysis failed for " + resolved.eventName()
+                    + " -- aborted, analyser continues", econFailed);
+        }
+    }
+
     /** Resume analysis (the {@code anal start} command). */
     public void resume()
     {
@@ -225,6 +267,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         running_ = false;
         worker_.interrupt();
         joinWorker(); // let an in-flight window finish writing before the store closes
+        econDispatch_.shutdown();
         notifier_.shutdown();
         store_.shutdown();
     }
@@ -349,6 +392,79 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     private void runWindow(CollectionResult result, Instant now, boolean skipAgeCheck, boolean notify) throws IOException
     {
         analyseWindow(result.day(), result.intervalKey(), now, skipAgeCheck, notify, dedupByTitle(result.windowArticles()));
+    }
+
+    /**
+     * Analyse a resolved scheduled data release (#21, Stage 3) at {@code (day, key)}: derive the
+     * mechanical surprise signal; when it clears the in-line band, run the article-less deep pass with
+     * the window's market context and record the call under the interval's {@code econ_alert}, notifying
+     * via the news-free path when it clears the gate. An in-line print (or a failed Claude call) records
+     * the mechanical read only and does not alert. {@code now} stamps the record. The synchronous,
+     * deterministic seam the (future) scheduler and tests drive, mirroring {@link #analyse}.
+     */
+    void analyseEcon(String day, String key, String eventName, Instant now, boolean notify) throws IOException
+    {
+        ObjectNode signal = WindowContext.econSignal(collector_, day, eventName);
+        if (signal != null)
+        {
+            WindowContext.MarketContext market = WindowContext.marketContext(collector_, day, key, config_.windowMinutes());
+            boolean inline = "neutral".equals(signal.path("direction").asText("neutral"));
+            ObjectNode deepPrediction = inline ? null : runEconDeep(signal, market.block());
+            ObjectNode econAlert = buildEconAlert(Times.formatUtcIso(now), signal, deepPrediction, market.regime().path("regime").asText());
+            store_.recordEconAlert(day, key, econAlert);
+            logEcon(day, key, econAlert);
+            if (notify && deepPrediction != null)
+            {
+                notifier_.notifyEconAlert(econAlert, key);
+            }
+        }
+    }
+
+    /** Run the article-less deep pass for an econ surprise against the window's market block; null if it fails. */
+    private ObjectNode runEconDeep(ObjectNode signal, String marketBlock) throws IOException
+    {
+        String prompt = PromptTemplates.fillContext(loadTemplate("econ_analysis"), PromptBuilder.econEvent(signal), marketBlock);
+        return deep_.analyse(prompt).prediction();
+    }
+
+    /**
+     * The stored econ-alert record: the mechanical surprise inputs (event/consensus/actual/surprise/
+     * label) and prior (mechanical_direction/tier), then the final call (direction/impact_tier/
+     * confidence/key_events/reasoning) from Claude -- falling back to the mechanical read when the deep
+     * call was skipped (in-line) or failed. {@code macro_regime} is computed mechanically, as elsewhere.
+     */
+    private static ObjectNode buildEconAlert(String analyzedAt, ObjectNode signal, ObjectNode deepPrediction, String macroRegime)
+    {
+        boolean claudeAvailable = deepPrediction != null;
+        ObjectNode alert = Json.newObject();
+        alert.put("analyzed_at", analyzedAt);
+        alert.put("event", signal.path("event").asText(""));
+        alert.put("label", signal.path("label").asText(""));
+        alert.set("consensus", signal.get("consensus"));
+        alert.set("actual", signal.get("actual"));
+        alert.set("surprise", signal.get("surprise"));
+        alert.put("mechanical_direction", signal.path("direction").asText("neutral"));
+        alert.put("mechanical_tier", signal.path("impact_tier").asText("noise"));
+        alert.put("claude_available", claudeAvailable);
+        alert.put("direction", claudeAvailable ? deepPrediction.path("direction").asText("neutral")
+                : signal.path("direction").asText("neutral"));
+        alert.put("impact_tier", claudeAvailable ? deepPrediction.path("impact_tier").asText("noise")
+                : signal.path("impact_tier").asText("noise"));
+        alert.put("confidence", claudeAvailable ? deepPrediction.path("confidence").asText("low") : "low");
+        alert.put("macro_regime", macroRegime);
+        alert.set("key_events", claudeAvailable ? keyEvents(deepPrediction) : Json.newArray());
+        alert.put("reasoning", claudeAvailable ? deepPrediction.path("reasoning").asText("")
+                : "Mechanical surprise read (no deep analysis).");
+        return alert;
+    }
+
+    private void logEcon(String day, String key, ObjectNode econAlert)
+    {
+        GlobalSystem.info().writes(NAME, "Econ " + day + " " + key + " -- " + econAlert.path("label").asText("?")
+                + " | call=" + econAlert.path("direction").asText("?") + "/" + econAlert.path("impact_tier").asText("?")
+                + " conf=" + econAlert.path("confidence").asText("?")
+                + " regime=" + econAlert.path("macro_regime").asText("?")
+                + (econAlert.path("claude_available").asBoolean() ? "" : " (mechanical-only)"));
     }
 
     private String summary(String day, String key, int windowSize)
@@ -485,8 +601,11 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         if (!unique.isEmpty())
         {
             // screen() throws IllegalStateException if it cannot score the window; runWindow's catch
-            // aborts the cycle, so the deep pass never runs on fabricated scores.
-            ScreenerResult screened = screener_.screen(unique, loadTemplate("screener"));
+            // aborts the cycle, so the deep pass never runs on fabricated scores. The screener is fed the
+            // recent windows' resonant stories (from the stored records) so it dedups follow-ups/recaps of
+            // an already-covered event across windows -- on every path, live or re-analysis/backfill.
+            String coveredBlock = PromptBuilder.coveredBlock(recentlyCovered(day, key));
+            ScreenerResult screened = screener_.screen(unique, coveredBlock, loadTemplate("screener"));
             List<ObjectNode> resonant = capResonant(screened.resonant());
             String analyzedAt = Times.formatUtcIso(now);
             if (resonant.isEmpty())
@@ -502,27 +621,49 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         }
     }
 
+    /**
+     * Recently-covered resonant articles for the screener's cross-window dedup: the resonant set (title +
+     * publish time) recorded in the windows within {@code screenerDedupLookback} before {@code (day, key)},
+     * read from the stored analysis records. Record-sourced (not a volatile in-memory ring), so it survives
+     * a restart and applies to live, on-demand re-analysis and backfill alike &mdash; keyed by the window's
+     * own time, not wall-clock. The current window is excluded (its own duplicates are caught in-batch).
+     */
+    private List<ObjectNode> recentlyCovered(String day, String key)
+    {
+        int windowMinutes = config_.windowMinutes();
+        int lookbackWindows = Math.max(0, config_.screenerDedupLookbackMinutes() / windowMinutes);
+        List<ObjectNode> covered = new ArrayList<>();
+        for (int back = 1; back <= lookbackWindows; back++)
+        {
+            Intervals.Shift prev = Intervals.back(key, back, windowMinutes);
+            String prevDay = prev.dayOffset() == 0 ? day : Intervals.minusDays(day, prev.dayOffset());
+            for (JsonNode article : store_.get(prevDay, prev.key()).path("prediction_record").path("articles"))
+            {
+                ObjectNode note = Json.newObject();
+                note.put("publishedAt", article.path("published_at").asText(""));
+                note.put("title", article.path("title").asText(""));
+                covered.add(note);
+            }
+        }
+        return covered;
+    }
+
     private void runDeepAnalysis(String day, String key, Instant now, boolean skipAgeCheck, boolean notify,
                                  String analyzedAt, List<ObjectNode> unique, List<ObjectNode> resonant,
                                  ArrayNode screenerOut) throws IOException
     {
-        int windowMinutes = config_.windowMinutes();
-        ObjectNode regime = MacroSignals.regime(collector_.macro().get(day, key));
-        ObjectNode optionsSignal = WindowContext.optionsSignal(collector_, day, key, windowMinutes);
-        ObjectNode fundingSignal = WindowContext.fundingSignal(collector_, day, key);
-        ObjectNode macroTrend = WindowContext.macroTrend(collector_, day, key, windowMinutes);
+        WindowContext.MarketContext market = WindowContext.marketContext(collector_, day, key, config_.windowMinutes());
         Map<Integer, ArrayNode> ohlc = WindowContext.articleOhlc(collector_, resonant, config_.ohlcImpactWindowMinutes());
 
         Map<Integer, Integer> deepIdMap = new HashMap<>();
         String articlesBlock = PromptBuilder.deepArticles(resonant, ohlc, deepIdMap);
-        ObjectNode priceContext = collector_.price().get(day, key);
-        String marketSignals = PromptBuilder.marketSignals(regime, optionsSignal, fundingSignal, macroTrend, priceContext);
-        String prompt = PromptTemplates.fillDeep(loadTemplate("deep_analysis"), resonant.size(), marketSignals, articlesBlock);
+        String prompt = PromptTemplates.fillDeep(loadTemplate("deep_analysis"), resonant.size(), market.block(), articlesBlock);
 
         DeepResult deep = deep_.analyse(prompt);
         ArrayNode articlePredictions = buildArticlePredictions(resonant, ohlc, deep.articles(), deepIdMap);
         ObjectNode prediction = buildPredictionRecord(WindowContext.btcPrice(ohlc), unique.size(), resonant.size(),
-                deep.prediction(), regime.path("regime").asText(), optionsSignal, fundingSignal, priceContext, articlePredictions);
+                deep.prediction(), market.regime().path("regime").asText(), market.options(), market.funding(),
+                market.priceContext(), articlePredictions);
 
         store_.record(day, key, interval(analyzedAt, config_.claudeDeepAnalModel(), unique, screenerOut, prediction, resonant));
         logAnalysis(day, key, prediction);

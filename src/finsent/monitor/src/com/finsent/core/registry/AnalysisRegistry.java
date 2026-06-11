@@ -36,6 +36,22 @@ public final class AnalysisRegistry extends AbstractDayFileRegistry
      */
     public List<WriteUnit> putMacroAlert(String day, String intervalKey, ObjectNode macroAlert)
     {
+        return attach(day, intervalKey, "macro_alert", macroAlert);
+    }
+
+    /**
+     * Merge a scheduled-data-release alert (#21) into the interval under the {@code econ_alert}
+     * sub-key, creating a skeleton interval when the window has no analysis entry yet (the release
+     * carries no resonant news, so its window may have nothing else).
+     */
+    public List<WriteUnit> putEconAlert(String day, String intervalKey, ObjectNode econAlert)
+    {
+        return attach(day, intervalKey, "econ_alert", econAlert);
+    }
+
+    /** Merge {@code payload} under {@code subKey} of the interval, creating a skeleton when absent. */
+    private List<WriteUnit> attach(String day, String intervalKey, String subKey, ObjectNode payload)
+    {
         return updateDay(day, dayData ->
         {
             JsonNode existing = dayData.get(intervalKey);
@@ -46,10 +62,10 @@ public final class AnalysisRegistry extends AbstractDayFileRegistry
             }
             else
             {
-                interval = skeleton(macroAlert.path("analyzed_at").asText());
+                interval = skeleton(payload.path("analyzed_at").asText());
                 dayData.set(intervalKey, interval);
             }
-            interval.set("macro_alert", macroAlert);
+            interval.set(subKey, payload);
             return true;
         });
     }

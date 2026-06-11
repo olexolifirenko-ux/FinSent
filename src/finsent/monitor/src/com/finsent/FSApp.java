@@ -62,6 +62,7 @@ public class FSApp extends AbstractAppInitializer
 
         analyser_ = new FSAnalyser(collector_, config, Boolean.getBoolean("pauseAnalyser"));
         collector_.addListener(analyser_);
+        collector_.addEconListener(analyser_::onEconResolved);
         GlobalSystem.getCmdInterpreter().registerCmdHandler(AnalGroupCmdHandler.COMMAND,
                 new AnalGroupCmdHandler(analyser_), AnalGroupCmdHandler.DESCRIPTION, AnalGroupCmdHandler.COMMAND_ALIASES);
 

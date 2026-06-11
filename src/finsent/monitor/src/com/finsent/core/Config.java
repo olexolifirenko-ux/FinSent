@@ -115,6 +115,30 @@ public final class Config
         return attr(collectorNode_, "binanceFuturesBaseUrl", "https://fapi.binance.com/fapi/v1");
     }
 
+    /** BLS public API v2 base (#21); the series id is appended as a path segment. */
+    public String blsBaseUrl()
+    {
+        return attr(collectorNode_, "blsBaseUrl", "https://api.bls.gov/publicAPI/v2/timeseries/data");
+    }
+
+    /** Registration key for the BLS public API v2 (#21); "" falls back to the throttled keyless tier. */
+    public String blsApiKey()
+    {
+        return Secrets.resolve(attr(collectorNode_, "blsApiKey", ""));
+    }
+
+    /** Manual-consensus scheduled-events config (#21), resolved against the run dir; "" disables it. */
+    public String econEventsFile()
+    {
+        return attr(collectorNode_, "econEventsFile", "cfg/econ_events.json");
+    }
+
+    /** How long after a scheduled release to keep polling BLS for the fresh print before giving up (#21). */
+    public int econPollCapMinutes()
+    {
+        return Times.intervalMinutes(attr(collectorNode_, "econPollCap", "10m"));
+    }
+
     public int recoveryLookbackInDays()
     {
         return intAttr(collectorNode_, "recoveryLookbackInDays", 3);
@@ -189,6 +213,12 @@ public final class Config
     public int screenerThreshold()
     {
         return intAttr(analyserNode_, "screenerThreshold", 6);
+    }
+
+    /** Lookback for the screener's cross-window dedup memory of recently-resonant stories (default 6h). */
+    public int screenerDedupLookbackMinutes()
+    {
+        return Times.intervalMinutes(attr(analyserNode_, "screenerDedupLookback", "6h"));
     }
 
     /**
@@ -272,7 +302,7 @@ public final class Config
         MacroThresholds thresholds;
         if (node == null)
         {
-            thresholds = new MacroThresholds(10.0, 0.5, 1.0, 3.0, 1.0, 30);
+            thresholds = new MacroThresholds(10.0, 0.5, 1.0, 3.0, 1.0);
         }
         else
         {
@@ -281,8 +311,7 @@ public final class Config
                     node.getAttributeDoubleValue("dxyInPct", 0.5),
                     node.getAttributeDoubleValue("sp500InPct", 1.0),
                     node.getAttributeDoubleValue("us10yInPct", 3.0),
-                    node.getAttributeDoubleValue("goldInPct", 1.0),
-                    node.getAttributeIntValue("cooldownInMin", 30));
+                    node.getAttributeDoubleValue("goldInPct", 1.0));
         }
         return thresholds;
     }
@@ -344,9 +373,9 @@ public final class Config
     {
     }
 
-    /** Macro indicator breach thresholds (percent) plus the alert cooldown. */
+    /** Macro indicator breach thresholds (percent). */
     public record MacroThresholds(double vixInPct, double dxyInPct, double sp500InPct,
-                                  double us10yInPct, double goldInPct, int cooldownInMin)
+                                  double us10yInPct, double goldInPct)
     {
     }
 }

@@ -22,7 +22,7 @@ import com.finsent.core.Json;
  */
 public class MacroAlert_utest
 {
-    private static final MacroThresholds THRESHOLDS = new MacroThresholds(10.0, 0.5, 1.0, 3.0, 1.0, 30);
+    private static final MacroThresholds THRESHOLDS = new MacroThresholds(10.0, 0.5, 1.0, 3.0, 1.0);
     private static final String AT = "2026-06-04T08:00:00Z";
 
     @Test

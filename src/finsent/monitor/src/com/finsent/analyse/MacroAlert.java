@@ -19,9 +19,9 @@ import com.finsent.core.Num;
 /**
  * The standalone macro-alert path (ports Python {@code analyse._detect_macro_alert} and
  * {@code macro_only_assessment}): when a monitoring window carries no resonant news but the macro
- * tape moves enough, fire a mechanical (no-Claude) directional call. Both methods here are pure;
- * the runtime concerns &mdash; weekend skip, cooldown, snapshot loading, persistence and dispatch
- * &mdash; live in the Stage-7 wiring that drives them.
+ * tape moves enough, produce a mechanical directional assessment (the prior the analyser escalates
+ * to Claude). Both methods here are pure; the runtime concerns &mdash; weekend skip, snapshot
+ * loading, persistence and dispatch &mdash; live in the Stage-7 wiring that drives them.
  */
 public final class MacroAlert
 {

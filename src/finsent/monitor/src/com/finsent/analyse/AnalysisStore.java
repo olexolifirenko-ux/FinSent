@@ -62,6 +62,12 @@ public final class AnalysisStore
         persistence_.commit(registry_.putMacroAlert(day, intervalKey, macroAlert));
     }
 
+    /** Merge a scheduled-data-release alert (#21) into the window's interval and commit it atomically. */
+    public void recordEconAlert(String day, String intervalKey, ObjectNode econAlert)
+    {
+        persistence_.commit(registry_.putEconAlert(day, intervalKey, econAlert));
+    }
+
     /** The analysis record for an interval, or an empty object if absent. */
     public ObjectNode get(String day, String intervalKey)
     {

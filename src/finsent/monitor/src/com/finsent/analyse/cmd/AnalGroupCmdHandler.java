@@ -1,6 +1,7 @@
 package com.finsent.analyse.cmd;
 
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import com.finsent.util.UtilityFunctions;
  *   <li>{@code start} / {@code pause} / {@code status} &mdash; live analysis control;</li>
  *   <li>{@code window <YYYYMMDD_HHMM>} &mdash; re-analyse one stored window now (ports {@code --window});</li>
  *   <li>{@code windows -start .. -end ..} &mdash; scan/backfill a range of windows (dry-run by default);</li>
+ *   <li>{@code econ [YYYYMMDD] <event name> [-quiet]} &mdash; manually run the econ analysis for a resolved release;</li>
  *   <li>{@code show <YYYYMMDD_HHMM>} &mdash; print the stored analysis record (read-only).</li>
  * </ul>
  * Registered against the running interpreter once the analyser exists (see {@code FSApp}).
@@ -30,7 +32,7 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
     public static final String[] COMMAND_ALIASES = null;
     public static final String DESCRIPTION = "Analyser control,\nusage: " + COMMAND
             + " <start|pause|status|window <YYYYMMDD_HHMM>|windows -start .. -end ..|show <YYYYMMDD_HHMM>"
-            + "|feedback [--days N]>";
+            + "|econ [YYYYMMDD] <event name> [-quiet]|feedback [--days N]>";
 
     public AnalGroupCmdHandler(FSAnalyser analyser)
     {
@@ -40,6 +42,9 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
         registerCmdHandler("window", new WindowCmdHandler(analyser),
                 "Re-analyse a stored window now: window <YYYYMMDD_HHMM> (e.g. 20260517_2210).", null);
         registerCmdHandler("windows", new WindowsCmdHandler(analyser), WindowsCmdHandler.USAGE, null);
+        registerCmdHandler("econ", new EconCmdHandler(analyser),
+                "Manually run the econ analysis for a resolved scheduled release: econ [YYYYMMDD] <event name> "
+                        + "[-quiet] (e.g. econ CPI MoM; day defaults to today). -quiet records without notifying.", null);
         registerCmdHandler("show", new ShowCmdHandler(analyser),
                 "Show a stored analysis record (read-only): show <YYYYMMDD_HHMM>.", null);
         registerCmdHandler("feedback", new FeedbackCmdHandler(analyser),
@@ -290,6 +295,73 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
                 parsed = 0; // malformed --days value -> fall back to all history
             }
             return parsed;
+        }
+    }
+
+    /**
+     * {@code anal econ [YYYYMMDD] <event name> [-quiet]}: manually run the econ analysis for a resolved
+     * scheduled release. An optional leading {@code YYYYMMDD} pins the release day (defaults to today); the
+     * event name may contain spaces (the remaining tokens joined); {@code -quiet} records without notifying
+     * (notify is on by default, like {@code anal window}).
+     */
+    private static final class EconCmdHandler implements ICmdHandler
+    {
+        private static final String USAGE = "Usage: anal econ [YYYYMMDD] <event name> [-quiet] (e.g. econ CPI MoM)";
+        private final FSAnalyser analyser_;
+
+        private EconCmdHandler(FSAnalyser analyser)
+        {
+            analyser_ = analyser;
+        }
+
+        @Override
+        public int commandEntered(Writer writer, String command, String[] args)
+        {
+            int code = 0;
+            boolean quiet = false;
+            List<String> rest = new ArrayList<>();
+            for (String arg : args)
+            {
+                if (arg.equals("-quiet"))
+                {
+                    quiet = true;
+                }
+                else
+                {
+                    rest.add(arg);
+                }
+            }
+            String day = !rest.isEmpty() && rest.get(0).matches("\\d{8}") ? rest.remove(0) : null;
+            String eventName = String.join(" ", rest).trim();
+            if (eventName.isEmpty())
+            {
+                UtilityFunctions.writeln(writer, USAGE);
+                code = 1;
+            }
+            else
+            {
+                code = runEcon(writer, day, eventName, !quiet);
+            }
+            return code;
+        }
+
+        private int runEcon(Writer writer, String day, String eventName, boolean notify)
+        {
+            int code = 0;
+            UtilityFunctions.writeln(writer, "Running econ analysis for '" + eventName + "'"
+                    + (day == null ? " (today)" : " on " + day) + (notify ? "" : " (quiet)")
+                    + " (runs Claude synchronously)...");
+            try
+            {
+                UtilityFunctions.writeln(writer, "Done: " + analyser_.reanalyseEcon(day, eventName, notify));
+            }
+            catch (Exception econFailed)
+            {
+                // Abort just this command; the interpreter thread stays alive for the next command.
+                UtilityFunctions.writeln(writer, "Econ analysis failed (aborted): " + econFailed);
+                code = 1;
+            }
+            return code;
         }
     }
 

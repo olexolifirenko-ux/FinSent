@@ -62,6 +62,35 @@ public class FeedbackReport_utest
         assertTrue("noise 1/1", report.contains("noise: 1/1 = 100.0%"));
     }
 
+    @Test
+    public void sourceBreakdownAndClaudeVsMechanicalComparison()
+    {
+        List<ObjectNode> outcomes = new ArrayList<>();
+        outcomes.add(sourced("macro", "bearish", -1.0, true));            // claude call: correct
+        outcomes.add(sourced("macro_mechanical", "bearish", -1.0, true)); // its prior: also correct
+        outcomes.add(sourced("econ", "neutral", -0.5, false));            // claude suppressed to neutral
+        outcomes.add(sourced("econ_mechanical", "bullish", -0.5, false)); // its prior: wrong directional bet
+
+        String report = FeedbackReport.generate(outcomes);
+
+        assertTrue("header counts real lanes only", report.contains("2 scored window"));
+        assertTrue("by source section", report.contains("By source (directional calls, 1h):"));
+        assertTrue("comparison section", report.contains("Claude vs mechanical prior"));
+        assertTrue("macro pair", report.contains("macro: claude 1/1 = 100.0% vs mechanical 1/1 = 100.0%"));
+        assertTrue("econ pair (claude made no bet, mechanical bet wrong)",
+                report.contains("econ: claude 0/0 = n/a vs mechanical 0/1 = 0.0%"));
+    }
+
+    private static ObjectNode sourced(String source, String direction, double pct1h, boolean correct)
+    {
+        ObjectNode outcome = Json.newObject();
+        outcome.put("source", source);
+        outcome.put("direction", direction);
+        outcome.put("outcome_1h_pct", pct1h);
+        outcome.put("direction_correct", correct);
+        return outcome;
+    }
+
     private static ObjectNode articleOutcome(String scenario, boolean validated)
     {
         ObjectNode outcome = Json.newObject();

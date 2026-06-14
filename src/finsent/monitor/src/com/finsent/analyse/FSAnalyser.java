@@ -209,11 +209,11 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         }
         else
         {
-            econDispatch_.submit(() -> processEcon(resolved));
+            econDispatch_.submit(() -> processEconEvent(resolved));
         }
     }
 
-    private void processEcon(EconResolved resolved)
+    private void processEconEvent(EconResolved resolved)
     {
         try
         {
@@ -395,6 +395,43 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     }
 
     /**
+     * Manually (re-)run the econ analysis for a resolved scheduled release (the {@code anal econ} command):
+     * read the resolved {@code econ_actuals} for {@code (day, eventName)} -- {@code day} defaulting to today
+     * when blank -- derive the release window from the stored release time, and run the article-less
+     * analysis ({@code notify} subject to the gate, as the live path). Returns a one-line summary. Runs on
+     * the caller's thread, like {@link #reanalyse}. Operates on already-resolved events; the scheduler
+     * resolves them at release time.
+     */
+    public String reanalyseEcon(String day, String eventName, boolean notify) throws IOException
+    {
+        String resolveDay = (day == null || day.isEmpty()) ? Times.dayOf(Times.formatUtcIso(Instant.now())) : day;
+        collector_.recoverDay(resolveDay);
+        ObjectNode resolved = collector_.econ().get(resolveDay, eventName);
+        String summary;
+        if (resolved.has("actual") && resolved.has("release"))
+        {
+            String key = Times.intervalKey(resolved.path("release").asText(), config_.windowMinutes());
+            analyseEcon(resolveDay, key, eventName, Instant.now(), notify);
+            summary = econSummary(resolveDay, key);
+        }
+        else
+        {
+            summary = "No resolved econ event named '" + eventName + "' on " + resolveDay + ".";
+        }
+        return summary;
+    }
+
+    /** One-line summary of the econ-alert stored for a window (for the {@code anal econ} command output). */
+    private String econSummary(String day, String key)
+    {
+        JsonNode alert = store_.get(day, key).path("econ_alert");
+        return day + " " + key + " -- " + alert.path("label").asText("?")
+                + " -> " + alert.path("direction").asText("?") + "/" + alert.path("impact_tier").asText("?")
+                + " conf=" + alert.path("confidence").asText("?")
+                + (alert.path("claude_available").asBoolean() ? "" : " (mechanical-only)");
+    }
+
+    /**
      * Analyse a resolved scheduled data release (#21, Stage 3) at {@code (day, key)}: derive the
      * mechanical surprise signal; when it clears the in-line band, run the article-less deep pass with
      * the window's market context and record the call under the interval's {@code econ_alert}, notifying
@@ -410,7 +447,8 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
             WindowContext.MarketContext market = WindowContext.marketContext(collector_, day, key, config_.windowMinutes());
             boolean inline = "neutral".equals(signal.path("direction").asText("neutral"));
             ObjectNode deepPrediction = inline ? null : runEconDeep(signal, market.block());
-            ObjectNode econAlert = buildEconAlert(Times.formatUtcIso(now), signal, deepPrediction, market.regime().path("regime").asText());
+            ObjectNode econAlert = buildEconAlert(Times.formatUtcIso(now), signal, deepPrediction,
+                    market.regime().path("regime").asText(), market.anchor());
             store_.recordEconAlert(day, key, econAlert);
             logEcon(day, key, econAlert);
             if (notify && deepPrediction != null)
@@ -431,13 +469,16 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
      * The stored econ-alert record: the mechanical surprise inputs (event/consensus/actual/surprise/
      * label) and prior (mechanical_direction/tier), then the final call (direction/impact_tier/
      * confidence/key_events/reasoning) from Claude -- falling back to the mechanical read when the deep
-     * call was skipped (in-line) or failed. {@code macro_regime} is computed mechanically, as elsewhere.
+     * call was skipped (in-line) or failed. {@code macro_regime} is computed mechanically, as elsewhere;
+     * {@code btc_at_prediction} is the window's BTC price anchor for outcome scoring (#6), null when absent.
      */
-    private static ObjectNode buildEconAlert(String analyzedAt, ObjectNode signal, ObjectNode deepPrediction, String macroRegime)
+    private static ObjectNode buildEconAlert(String analyzedAt, ObjectNode signal, ObjectNode deepPrediction,
+                                             String macroRegime, Double anchor)
     {
         boolean claudeAvailable = deepPrediction != null;
         ObjectNode alert = Json.newObject();
         alert.put("analyzed_at", analyzedAt);
+        putAnchor(alert, anchor);
         alert.put("event", signal.path("event").asText(""));
         alert.put("label", signal.path("label").asText(""));
         alert.set("consensus", signal.get("consensus"));
@@ -456,6 +497,19 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         alert.put("reasoning", claudeAvailable ? deepPrediction.path("reasoning").asText("")
                 : "Mechanical surprise read (no deep analysis).");
         return alert;
+    }
+
+    /** Set the {@code btc_at_prediction} price anchor (#6) on a record, null-safe (explicit null when absent). */
+    static void putAnchor(ObjectNode record, Double anchor)
+    {
+        if (anchor == null)
+        {
+            record.putNull("btc_at_prediction");
+        }
+        else
+        {
+            record.put("btc_at_prediction", anchor.doubleValue());
+        }
     }
 
     private void logEcon(String day, String key, ObjectNode econAlert)
@@ -753,14 +807,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     {
         boolean claudeAvailable = deepPrediction != null;
         ObjectNode pred = Json.newObject();
-        if (btcPrice == null)
-        {
-            pred.putNull("btc_at_prediction");
-        }
-        else
-        {
-            pred.put("btc_at_prediction", btcPrice.doubleValue());
-        }
+        putAnchor(pred, btcPrice);
         pred.put("article_count", articleCount);
         pred.put("resonant_count", resonantCount);
         pred.put("claude_available", claudeAvailable);

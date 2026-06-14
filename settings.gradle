@@ -1,0 +1,8 @@
+rootProject.name = 'finsent'
+
+// Two modules, matching the IDEA modules and their source roots under src/finsent/.
+// infra   = InfoReach-derived framework (com.finsent.util/xml/log/directory/properties + app bootstrap)
+// monitor = the business pipeline (com.finsent.core/collect/analyse)
+include 'infra', 'monitor'
+project(':infra').projectDir   = file('src/finsent/infra')
+project(':monitor').projectDir = file('src/finsent/monitor')

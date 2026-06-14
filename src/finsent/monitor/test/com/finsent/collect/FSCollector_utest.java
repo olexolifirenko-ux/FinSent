@@ -81,7 +81,7 @@ public class FSCollector_utest
         assertEquals(2, result.windowArticles().size());
         assertEquals("srcA", result.windowArticles().get(0).path("_source").asText());
         assertEquals("srcB", result.windowArticles().get(1).path("_source").asText());
-        assertTrue("cycle committed the article file", Files.exists(dir_.resolve("articles_" + DAY + ".jsonl")));
+        assertTrue("cycle committed the article file", Files.exists(dir_.resolve(DAY).resolve("articles_" + DAY + ".jsonl")));
     }
 
     @Test

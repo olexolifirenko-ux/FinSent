@@ -89,9 +89,11 @@ public final class MacroAlertChecker
     private void fire(String day, String intervalKey, Instant now, MacroThresholds thresholds,
                       ObjectNode current, ObjectNode optionsSignal, ArrayNode triggers)
     {
+        WindowContext.MarketContext market = WindowContext.marketContext(collector_, day, intervalKey, config_.windowMinutes());
         ObjectNode macroTrend = WindowContext.macroTrend(collector_, day, intervalKey, config_.windowMinutes());
         ObjectNode mechanical = MacroAlert.assess(thresholds, current, triggers, optionsSignal, macroTrend, Times.formatUtcIso(now));
-        ObjectNode alert = assessWithClaude(day, intervalKey, mechanical);
+        ObjectNode alert = assessWithClaude(market.block(), mechanical);
+        putAnchor(alert, market.anchor());
         store_.recordMacroAlert(day, intervalKey, alert);
         GlobalSystem.info().writes(NAME, "Macro alert " + day + " " + intervalKey
                 + " -- direction=" + alert.path("direction").asText("?")
@@ -109,14 +111,13 @@ public final class MacroAlertChecker
      * downgrade to noise, or flip it. Falls back to the mechanical assessment when the prompt is missing
      * or the deep call fails -- so a Claude outage never silences a real macro alert.
      */
-    private ObjectNode assessWithClaude(String day, String intervalKey, ObjectNode mechanical)
+    private ObjectNode assessWithClaude(String marketBlock, ObjectNode mechanical)
     {
         ObjectNode alert = mechanical;
         try
         {
             String prompt = PromptTemplates.fillContext(PromptTemplates.load(promptsDir_, "macro_analysis"),
-                    PromptBuilder.macroAlert(mechanical),
-                    WindowContext.marketContext(collector_, day, intervalKey, config_.windowMinutes()).block());
+                    PromptBuilder.macroAlert(mechanical), marketBlock);
             ObjectNode claude = deep_.analyse(prompt).prediction();
             if (claude != null)
             {
@@ -150,5 +151,18 @@ public final class MacroAlertChecker
             alert.set("key_events", claude.get("key_events"));
         }
         return alert;
+    }
+
+    /** Set the {@code btc_at_prediction} price anchor (#6) on the alert, null-safe (explicit null when absent). */
+    private static void putAnchor(ObjectNode alert, Double anchor)
+    {
+        if (anchor == null)
+        {
+            alert.putNull("btc_at_prediction");
+        }
+        else
+        {
+            alert.put("btc_at_prediction", anchor.doubleValue());
+        }
     }
 }

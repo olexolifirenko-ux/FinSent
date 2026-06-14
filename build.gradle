@@ -1,0 +1,85 @@
+/*
+ * FinSent - Financial Sentiment Monitor (Java port). Multi-module offline build.
+ *
+ * Modules (source roots under src/finsent/, see settings.gradle):
+ *   infra    InfoReach-derived framework (com.finsent.util/xml/log/directory/properties + app bootstrap)
+ *   monitor  the business pipeline (com.finsent.core/collect/analyse); depends on :infra
+ *
+ * Every third-party jar is vendored in lib/ and referenced as a file dependency, so no remote
+ * repository is contacted at build time (offline, Temurin JDK 17 toolchain).
+ *
+ * Output layout (one place for Gradle AND the Gradle-delegated IDE build):
+ *   JavaClasses.sun/JavaClasses/<module>        compiled main classes   (BTG classes_dev)
+ *   JavaClasses.sun/JavaClasses/test/<module>   compiled test classes
+ *   JavaClasses.sun/finsent-<module>-<ver>.jar  per-module jar          (BTG jars)
+ *   release/common/lib                          assembled runtime classpath [gradlew deployRelease]
+ */
+
+subprojects {
+    // java-library (superset of java) so infra can expose jsr305 to dependents via 'api'.
+    apply plugin: 'java-library'
+
+    group = 'com.finsent'
+    version = '1.0'
+
+    repositories {
+        // intentionally empty - offline build, dependencies are vendored in lib/
+    }
+
+    // The toolchain is the single source of the Java version (compile/test/run all use it);
+    // discovered from the in-repo per-platform JREs in gradle.properties (auto-download off).
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+
+    // Unified compiled-class output: both Gradle and the (Gradle-delegated) IDE build land here,
+    // one subdir per module, under JavaClasses.sun/JavaClasses.
+    sourceSets.main.java.destinationDirectory = file("$rootDir/JavaClasses.sun/JavaClasses/${project.name}")
+    sourceSets.test.java.destinationDirectory = file("$rootDir/JavaClasses.sun/JavaClasses/test/${project.name}")
+
+    // One jar per module: finsent-<module>-<version>.jar, written next to the classes in JavaClasses.sun.
+    jar {
+        archiveBaseName = "finsent-${project.name}"
+        destinationDirectory = file("$rootDir/JavaClasses.sun")
+        manifest {
+            attributes(
+                'Implementation-Title'  : "FinSent ${project.name}",
+                'Implementation-Version': project.version,
+                'Implementation-Vendor' : 'FinSent'
+            )
+        }
+    }
+
+    // The inline *_utest/*_test unit tests are compiled (so they stay green) but not executed as
+    // part of `build` - they exercise a deployed runtime. Run them explicitly with `gradlew test`.
+    test {
+        useJUnit()
+        enabled = false
+    }
+    tasks.named('check') { dependsOn 'testClasses' }
+}
+
+// Assemble release/common/lib with every module jar + all runtime deps so the Perl launchers in
+// release/bin can run:  java -cp "release/common/lib/*" com.finsent.analyse.FSApp
+tasks.register('deployRelease', Copy) {
+    group = 'distribution'
+    description = 'Copies each module jar and its runtime deps into release/common/lib for the launchers.'
+    dependsOn subprojects.collect { it.tasks.named('jar') }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    into layout.projectDirectory.dir('release/common/lib')
+    // Lazy (closure) so cross-project artifacts/configurations resolve at execution time.
+    from { subprojects.collect { it.tasks.named('jar') } }
+    from { subprojects.collect { it.configurations.runtimeClasspath } }
+}
+
+// `clean` removes the shared Gradle output root (JavaClasses.sun) - which now also holds the IDE
+// output, so there is no separate JavaClasses/JavaClasses.debug tree to clean.
+tasks.register('clean', Delete) {
+    delete "$rootDir/JavaClasses.sun"
+}

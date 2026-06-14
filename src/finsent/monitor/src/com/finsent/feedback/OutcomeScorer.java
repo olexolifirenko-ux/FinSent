@@ -39,15 +39,19 @@ public final class OutcomeScorer
         Double priceAt(Instant target);
     }
 
-    /** One matured prediction to score: the window time, the price anchor, and the call's labels. */
+    /**
+     * One matured prediction to score: the window time, the price anchor, the call's labels, and the
+     * {@code source} lane ({@code news} / {@code econ} / {@code macro}, or {@code *_mechanical} for the
+     * mechanical prior of an econ/macro alert -- so the report can compare Claude vs the bare prior).
+     */
     public record Prediction(Instant windowTime, double btcBase, String direction, String impactTier,
-                             String confidence, String day, String key)
+                             String confidence, String day, String key, String source)
     {
     }
 
-    /** One resonant article to score: its publish time, the price at publication, and its scenario/pre-trend. */
+    /** One resonant article to score: its publish time, the price at publication, its scenario/pre-trend, and day. */
     public record ArticlePrediction(int articleId, Instant publishedAt, double priceAtPublish,
-                                    String scenario, String preTrend)
+                                    String scenario, String preTrend, String day)
     {
     }
 
@@ -80,6 +84,7 @@ public final class OutcomeScorer
             outcome.put("window", Times.formatUtcIso(prediction.windowTime()));
             outcome.put("day", prediction.day());
             outcome.put("key", prediction.key());
+            outcome.put("source", prediction.source());
             outcome.put("direction", prediction.direction());
             outcome.put("impact_tier", prediction.impactTier());
             outcome.put("confidence", prediction.confidence());
@@ -114,6 +119,7 @@ public final class OutcomeScorer
         {
             outcome = Json.newObject();
             outcome.put("article_id", article.articleId());
+            outcome.put("day", article.day());
             outcome.put("scenario", article.scenario());
             outcome.put("pre_trend", article.preTrend());
             outcome.put("price_at_publish", article.priceAtPublish());

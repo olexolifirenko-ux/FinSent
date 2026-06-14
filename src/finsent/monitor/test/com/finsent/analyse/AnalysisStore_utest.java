@@ -56,7 +56,7 @@ public class AnalysisStore_utest
         {
             store.record(DAY, KEY, record("bullish", "high", 7, 11));
             store.flush();
-            assertTrue(Files.exists(dir_.resolve("analysis_" + DAY + ".json")));
+            assertTrue(Files.exists(dir_.resolve(DAY).resolve("analysis_" + DAY + ".json")));
         }
         finally
         {

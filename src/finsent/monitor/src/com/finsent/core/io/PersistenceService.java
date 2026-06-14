@@ -264,7 +264,9 @@ public final class PersistenceService
             try (Stream<Path> entries = Files.list(dataDir_))
             {
                 files = entries
-                        .filter(p -> matchesDayFile(p, stream))
+                        .filter(Files::isDirectory)
+                        .map(dayDir -> dayDir.resolve(stream.prefix() + dayDir.getFileName() + stream.suffix()))
+                        .filter(Files::isRegularFile)
                         .sorted(Comparator.comparing((Path p) -> p.getFileName().toString()).reversed())
                         .limit(limit)
                         .collect(Collectors.toList());
@@ -277,21 +279,16 @@ public final class PersistenceService
         return files;
     }
 
-    private static boolean matchesDayFile(Path file, DataStream stream)
-    {
-        String name = file.getFileName().toString();
-        return name.startsWith(stream.prefix()) && name.endsWith(stream.suffix());
-    }
-
     private static String dayOf(Path file, DataStream stream)
     {
         String name = file.getFileName().toString();
         return name.substring(stream.prefix().length(), name.length() - stream.suffix().length());
     }
 
+    /** {@code <dataDir>/<day>/<prefix><day><suffix>} -- each day's files grouped under a {@code <day>} folder. */
     private Path pathFor(DataStream stream, String day)
     {
-        return dataDir_.resolve(stream.prefix() + day + stream.suffix());
+        return dataDir_.resolve(day).resolve(stream.prefix() + day + stream.suffix());
     }
 
     private static void moveReplacing(Path tmp, Path target) throws IOException

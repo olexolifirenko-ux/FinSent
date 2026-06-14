@@ -127,10 +127,10 @@ public final class Config
         return Secrets.resolve(attr(collectorNode_, "blsApiKey", ""));
     }
 
-    /** Manual-consensus scheduled-events config (#21), resolved against the run dir; "" disables it. */
-    public String econEventsFile()
+    /** Static econ-event definitions catalog (#21), resolved against the run dir; "" disables the module. */
+    public String econDefinitionsFile()
     {
-        return attr(collectorNode_, "econEventsFile", "cfg/econ_events.json");
+        return attr(collectorNode_, "econDefinitionsFile", "cfg/econ_definitions.json");
     }
 
     /** How long after a scheduled release to keep polling BLS for the fresh print before giving up (#21). */

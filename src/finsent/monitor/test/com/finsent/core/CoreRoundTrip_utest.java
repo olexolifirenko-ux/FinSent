@@ -76,7 +76,7 @@ public class CoreRoundTrip_utest
             persistence.commit(writes);
             persistence.flush();
 
-            List<String> lines = Files.readAllLines(dir_.resolve("articles_" + DAY + ".jsonl"));
+            List<String> lines = Files.readAllLines(dir_.resolve(DAY).resolve("articles_" + DAY + ".jsonl"));
             assertEquals(2, lines.size());
             assertTrue("id assigned", Json.parse(lines.get(0)).has("id"));
             assertTrue("hash assigned", Json.parse(lines.get(0)).has("hash"));
@@ -224,8 +224,8 @@ public class CoreRoundTrip_utest
             persistence.commit(batch);
             persistence.flush();
 
-            assertTrue(Files.exists(dir_.resolve("articles_" + DAY + ".jsonl")));
-            assertTrue(Files.exists(dir_.resolve("macro_context_" + DAY + ".json")));
+            assertTrue(Files.exists(dir_.resolve(DAY).resolve("articles_" + DAY + ".jsonl")));
+            assertTrue(Files.exists(dir_.resolve(DAY).resolve("macro_context_" + DAY + ".json")));
 
             // Both streams recover from the committed files.
             ArticleRegistry recoveredArticles = new ArticleRegistry();

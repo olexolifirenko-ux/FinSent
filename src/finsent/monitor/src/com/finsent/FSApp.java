@@ -1,11 +1,15 @@
 package com.finsent;
 
+import java.nio.file.Path;
+
 import com.finsent.analyse.FSAnalyser;
 import com.finsent.analyse.cmd.AnalGroupCmdHandler;
 import com.finsent.app.AbstractAppInitializer;
 import com.finsent.collect.CollectorRunner;
+import com.finsent.collect.EconScheduler;
 import com.finsent.collect.FSCollector;
 import com.finsent.collect.UrgentPoller;
+import com.finsent.collect.cmd.CollectGroupCmdHandler;
 import com.finsent.core.Config;
 import com.finsent.directory.DirectorySystem;
 import com.finsent.util.GlobalSystem;
@@ -32,6 +36,7 @@ public class FSApp extends AbstractAppInitializer
     private FSAnalyser analyser_;
     private CollectorRunner collectorRunner_;
     private UrgentPoller urgentPoller_;
+    private EconScheduler econScheduler_;
 
     public FSApp(String[] args) throws Exception
     {
@@ -56,8 +61,9 @@ public class FSApp extends AbstractAppInitializer
         super.initializeAppSystems();
 
         Config config = Config.fromGlobalSystem();
+        Path dataDir = DirectorySystem.resolveToFile(config.dataDir()).toPath();
 
-        collector_ = new FSCollector(config, DirectorySystem.resolveToFile(config.dataDir()).toPath());
+        collector_ = new FSCollector(config, dataDir);
         collector_.recover(config.recoveryLookbackInDays());
 
         analyser_ = new FSAnalyser(collector_, config, Boolean.getBoolean("pauseAnalyser"));
@@ -68,16 +74,23 @@ public class FSApp extends AbstractAppInitializer
 
         collectorRunner_ = new CollectorRunner(collector_);
         urgentPoller_ = new UrgentPoller(collector_);
+        econScheduler_ = new EconScheduler(collector_, dataDir);
+        GlobalSystem.getCmdInterpreter().registerCmdHandler(CollectGroupCmdHandler.COMMAND,
+                new CollectGroupCmdHandler(econScheduler_), CollectGroupCmdHandler.DESCRIPTION,
+                CollectGroupCmdHandler.COMMAND_ALIASES);
 
         // Registration order matters: uninitializers run last-registered-first, so the schedulers
-        // (registered last) stop first, then the analyser worker drains and shuts its notifier/store,
-        // and finally the collector flushes persistence and stops the bus.
+        // (registered last) stop first -- the econ scheduler before the others, so no econ resolution
+        // commits or publishes after the analyser/collector start shutting down -- then the analyser
+        // worker drains and shuts its notifier/store, and finally the collector flushes persistence.
         GlobalSystem.registerUninitializer(collector_::shutdown);
         GlobalSystem.registerUninitializer(analyser_);
         GlobalSystem.registerUninitializer(collectorRunner_);
         GlobalSystem.registerUninitializer(urgentPoller_);
+        GlobalSystem.registerUninitializer(econScheduler_);
 
         collectorRunner_.start();
         urgentPoller_.start();
+        econScheduler_.start();
     }
 }

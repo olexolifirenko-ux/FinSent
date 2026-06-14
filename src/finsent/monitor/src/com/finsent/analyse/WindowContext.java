@@ -87,6 +87,12 @@ public final class WindowContext
     public record MarketContext(ObjectNode regime, ObjectNode options, ObjectNode funding,
                                 ObjectNode priceContext, String block)
     {
+        /** BTC price anchor for outcome scoring (#6): the price-context {@code btc_price}, or null when absent. */
+        public Double anchor()
+        {
+            return priceContext != null && priceContext.path("btc_price").isNumber()
+                    ? priceContext.path("btc_price").asDouble() : null;
+        }
     }
 
     /**

@@ -1,12 +1,10 @@
 package com.finsent.collect;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -36,7 +34,6 @@ import com.finsent.core.registry.EconEventRegistry;
 import com.finsent.core.registry.IRegistry;
 import com.finsent.core.registry.IntervalSnapshotRegistry;
 import com.finsent.core.registry.OhlcRegistry;
-import com.finsent.directory.DirectorySystem;
 import com.finsent.util.GlobalSystem;
 
 /**
@@ -388,7 +385,6 @@ public final class FSCollector
             boolean ohlcStored = !urgent && storeOhlcStrip(batch, now, window);
             boolean priceStored = storePriceContext(batch, now, day, key);
             boolean fundingStored = storeFunding(batch, day, key);
-            storeEconEvents(batch, now); // resolve due scheduled releases (own log line); not per-window context
             logContextWhenCaptured(day, key,
                     macroStored || optionsStored || ohlcStored || priceStored || fundingStored);
         }
@@ -448,53 +444,39 @@ public final class FSCollector
     }
 
     /**
-     * Resolve any configured scheduled releases (#21) due for resolution: poll the BLS series and, once
-     * the <b>fresh</b> print has landed (its period clears the prior-month value still on the wire),
-     * store the raw {@code {consensus, actual, ...}} once keyed by event name on the release day and
-     * publish an {@link EconResolved} so the analyser runs the econ analysis. The surprise/direction is
-     * computed at analysis time by {@code EconEventSignals} (mirroring funding), so the collector stays
-     * free of the analysis layer. Re-read each cycle (a refreshed consensus needs no restart); the
-     * urgent lane drives the poll cadence. No-op when econ is not wired (tests).
+     * Resolve a scheduled release (#21) if its <b>fresh</b> BLS print has landed: fetch the actual, and
+     * once its period clears the prior-month value still on the wire, store the raw
+     * {@code {consensus, actual, ...}} once (keyed by event name on the release day) and, when
+     * {@code publish}, publish an {@link EconResolved} so the analyser runs the econ analysis. The
+     * {@link EconScheduler} passes {@code publish=true} at the release time (live &rarr; auto-analyse +
+     * notify); the manual {@code collect econ} command passes {@code false} (fetch-only, leaving analysis
+     * to {@code anal econ} so a back-dated catch-up does not fire a stale alert). Returns whether the event
+     * is resolved (so the scheduler stops polling). Idempotent via the stored-once guard; the
+     * surprise/direction is computed at analysis time by {@code EconEventSignals}, so the collector stays
+     * free of the analysis layer. No-op (returns false) when econ is not wired (tests).
      */
-    private void storeEconEvents(CollectionBatch batch, Instant now)
-    {
-        if (econActuals_ != null)
-        {
-            File configFile = DirectorySystem.resolveToFile(config_.econEventsFile());
-            for (EconEvent event : EconEventsConfig.load(configFile))
-            {
-                resolveEconEvent(batch, event, now);
-            }
-        }
-    }
-
-    private void resolveEconEvent(CollectionBatch batch, EconEvent event, Instant now)
+    public boolean tryResolveEcon(EconEvent event, boolean publish)
     {
         String day = Times.dayOf(Times.formatUtcIso(event.release()));
-        if (withinResolutionWindow(event, now) && !econ_.resolved(day, event.name()))
+        boolean resolved = econ_.resolved(day, event.name());
+        if (!resolved && econActuals_ != null)
         {
             EconActuals.Reading reading = econActuals_.fetch(event.series(), event.kind());
             if (reading != null && reading.period() >= EconActuals.reportedPeriod(event.release()))
             {
-                String key = Times.intervalKey(Times.formatUtcIso(event.release()), config_.windowMinutes());
-                batch.add(econ_.store(day, event.name(), resolvedEvent(event, reading.actual())));
+                persistence_.commit(econ_.store(day, event.name(), resolvedEvent(event, reading.actual())));
                 GlobalSystem.info().writes(NAME, "Scheduled event resolved: " + event.name()
-                        + " actual=" + Num.round(reading.actual(), 4) + " vs consensus=" + event.consensus());
-                eventBus_.publish(new EconResolved(day, key, event.name()));
+                        + " actual=" + Num.round(reading.actual(), 4) + " vs consensus=" + event.consensus()
+                        + (publish ? " (auto-analysing)" : " (fetch-only)"));
+                if (publish)
+                {
+                    eventBus_.publish(new EconResolved(day,
+                            Times.intervalKey(Times.formatUtcIso(event.release()), config_.windowMinutes()), event.name()));
+                }
+                resolved = true;
             }
         }
-    }
-
-    /**
-     * Attempt resolution only between the release and the poll cap ({@code econPollCap}) after it: before
-     * the release there is nothing to fetch; long after it, a never-arriving print should stop consuming
-     * BLS quota every poll. A real-time alert clock, not a backfiller -- a release missed past the cap stays
-     * unresolved.
-     */
-    private boolean withinResolutionWindow(EconEvent event, Instant now)
-    {
-        return !now.isBefore(event.release())
-                && now.isBefore(event.release().plus(config_.econPollCapMinutes(), ChronoUnit.MINUTES));
+        return resolved;
     }
 
     /** The raw resolved event (signal inputs only; the surprise/direction is derived at analysis time). */

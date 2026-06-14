@@ -185,6 +185,7 @@ public class FSAnalyser_utest
     public void macroAlertEscalatesToClaudeJudgment() throws IOException
     {
         seedMacroBreach(); // mechanical detector fires bearish/high (extreme VIX move)
+        seedPrice(60500.0);
         StubClaudeClient client = new StubClaudeClient().enqueue(
                 "{\"direction\":\"neutral\",\"impact_tier\":\"noise\",\"confidence\":\"low\","
                         + "\"key_events\":[],\"reasoning\":\"Isolated VIX spike, no risk-off follow-through.\"}");
@@ -195,6 +196,7 @@ public class FSAnalyser_utest
         assertEquals("noise", macroAlert.path("impact_tier").asText());
         assertTrue(macroAlert.path("claude_available").asBoolean());
         assertEquals("bearish", macroAlert.path("mechanical_direction").asText()); // mechanical prior preserved
+        assertEquals(60500.0, macroAlert.path("btc_at_prediction").asDouble(), 1e-9); // #6 scoring anchor
         assertEquals("the macro alert runs a single deep call", 1, client.callCount());
     }
 
@@ -215,6 +217,7 @@ public class FSAnalyser_utest
     public void econSurpriseRunsDeepAndRecordsEconAlert() throws IOException
     {
         seedEcon("CPI MoM", 0.3, 0.6); // surprise +0.3 > high_band -> high bearish prior
+        seedPrice(60500.0);
         StubClaudeClient client = new StubClaudeClient().enqueue(
                 "{\"direction\":\"bearish\",\"impact_tier\":\"high\",\"confidence\":\"medium\","
                         + "\"key_events\":[\"CPI hot\"],\"reasoning\":\"hot print, risk-off\"}");
@@ -227,6 +230,7 @@ public class FSAnalyser_utest
         assertTrue(econAlert.path("claude_available").asBoolean());
         assertEquals("bearish", econAlert.path("mechanical_direction").asText());
         assertEquals("high", econAlert.path("mechanical_tier").asText());
+        assertEquals(60500.0, econAlert.path("btc_at_prediction").asDouble(), 1e-9); // #6 scoring anchor
         assertEquals("econ runs only the deep pass (no screener)", 1, client.callCount());
     }
 
@@ -264,6 +268,14 @@ public class FSAnalyser_utest
     {
         collector_.macro().putIfAbsent(DAY, "07:50", vixSnapshot(0.0));
         collector_.macro().putIfAbsent(DAY, KEY, vixSnapshot(25.0)); // delta 25 >= 2x threshold -> extreme
+    }
+
+    /** Seed the window's price-context snapshot (the btc_at_prediction anchor source for #6 scoring). */
+    private void seedPrice(double btcPrice)
+    {
+        ObjectNode snap = Json.newObject();
+        snap.put("btc_price", btcPrice);
+        collector_.price().putIfAbsent(DAY, KEY, snap);
     }
 
     private static ObjectNode vixSnapshot(double changePct)

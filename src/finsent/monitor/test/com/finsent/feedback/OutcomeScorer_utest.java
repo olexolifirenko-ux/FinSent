@@ -103,7 +103,7 @@ public class OutcomeScorer_utest
     public void scoresArticleScenario()
     {
         PriceSource prices = stub(Map.of(WINDOW.plusSeconds(3600), 99.0)); // -1% at +1h
-        ArticlePrediction article = new ArticlePrediction(7, WINDOW, 100.0, "fresh_bearish", "flat");
+        ArticlePrediction article = new ArticlePrediction(7, WINDOW, 100.0, "fresh_bearish", "flat", "20260608");
 
         List<ObjectNode> out = OutcomeScorer.scoreArticles(List.of(article), now48h(), prices);
 
@@ -120,7 +120,7 @@ public class OutcomeScorer_utest
 
     private static Prediction pred(String dir, String tier, String conf, double base)
     {
-        return new Prediction(WINDOW, base, dir, tier, conf, "20260608", "13:20");
+        return new Prediction(WINDOW, base, dir, tier, conf, "20260608", "13:20", "news");
     }
 
     private static PriceSource stub(Map<Instant, Double> prices)

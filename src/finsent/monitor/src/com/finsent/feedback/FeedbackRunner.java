@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,11 +24,14 @@ import com.finsent.feedback.OutcomeScorer.PriceSource;
 import com.finsent.util.GlobalSystem;
 
 /**
- * Drives the BL#6 feedback loop: reads the stored {@code analysis_*.json} prediction records, scores
- * the matured ones against realized BTC moves (via the injected {@link PriceSource}), writes the
- * scored outcomes to {@code outcomes.jsonl}, and returns the {@link FeedbackReport} text. The
- * scoring/report logic is pure ({@link OutcomeScorer}/{@link FeedbackReport}); this class is just the
- * file I/O and assembly.
+ * Drives the BL#6 feedback loop: reads the stored {@code <day>/analysis_<day>.json} records, scores the
+ * matured ones against realized BTC moves (via the injected {@link PriceSource}), writes the scored
+ * outcomes to {@code <day>/outcomes_<day>.jsonl} (+ {@code article_outcomes_<day>.jsonl}), and returns
+ * the {@link FeedbackReport} text. It scores all three non-mechanical lanes -- the news
+ * {@code prediction_record}, the {@code econ_alert} and the {@code macro_alert} -- and, for the latter
+ * two, also their mechanical prior (a {@code *_mechanical} source) so the report can measure Claude's
+ * lift over the bare prior. Scoring/report logic is pure ({@link OutcomeScorer}/{@link FeedbackReport});
+ * this class is just the file I/O and assembly.
  */
 public final class FeedbackRunner
 {
@@ -48,8 +52,8 @@ public final class FeedbackRunner
         load(dataDir, windowPreds, articlePreds, cutoffDay(now, days));
         List<ObjectNode> windowOutcomes = OutcomeScorer.score(windowPreds, now, prices);
         List<ObjectNode> articleOutcomes = OutcomeScorer.scoreArticles(articlePreds, now, prices);
-        writeOutcomes(dataDir, "outcomes.jsonl", windowOutcomes);
-        writeOutcomes(dataDir, "article_outcomes.jsonl", articleOutcomes);
+        writeOutcomes(dataDir, "outcomes_", windowOutcomes);
+        writeOutcomes(dataDir, "article_outcomes_", articleOutcomes);
         GlobalSystem.info().writes(NAME, "Scored " + windowOutcomes.size() + "/" + windowPreds.size()
                 + " window(s), " + articleOutcomes.size() + "/" + articlePreds.size() + " article(s).");
         return FeedbackReport.generate(windowOutcomes, articleOutcomes);
@@ -64,28 +68,24 @@ public final class FeedbackRunner
     private static void load(File dataDir, List<Prediction> windowPreds, List<ArticlePrediction> articlePreds,
             String cutoffDay)
     {
-        File[] files = dataDir.listFiles((dir, name) -> name.startsWith("analysis_") && name.endsWith(".json"));
-        if (files != null)
+        File[] dayDirs = dataDir.listFiles(File::isDirectory);
+        if (dayDirs != null)
         {
-            Arrays.sort(files);
-            for (File file : files)
+            Arrays.sort(dayDirs);
+            for (File dayDir : dayDirs)
             {
-                if (cutoffDay == null || dayOf(file).compareTo(cutoffDay) >= 0)
+                String day = dayDir.getName();
+                File analysis = new File(dayDir, "analysis_" + day + ".json");
+                if (day.matches("\\d{8}") && analysis.isFile() && (cutoffDay == null || day.compareTo(cutoffDay) >= 0))
                 {
-                    loadFile(file, windowPreds, articlePreds);
+                    loadFile(analysis, day, windowPreds, articlePreds);
                 }
             }
         }
     }
 
-    private static String dayOf(File file)
+    private static void loadFile(File file, String day, List<Prediction> windowPreds, List<ArticlePrediction> articlePreds)
     {
-        return file.getName().replace("analysis_", "").replace(".json", "");
-    }
-
-    private static void loadFile(File file, List<Prediction> windowPreds, List<ArticlePrediction> articlePreds)
-    {
-        String day = dayOf(file);
         try
         {
             JsonNode dayData = Json.parse(Files.readString(file.toPath(), StandardCharsets.UTF_8));
@@ -93,9 +93,12 @@ public final class FeedbackRunner
             while (fields.hasNext())
             {
                 Map.Entry<String, JsonNode> entry = fields.next();
-                JsonNode record = entry.getValue().path("prediction_record");
-                addWindowPrediction(windowPreds, day, entry.getKey(), record);
-                addArticlePredictions(articlePreds, record);
+                String key = entry.getKey();
+                JsonNode interval = entry.getValue();
+                addWindowPrediction(windowPreds, day, key, interval.path("prediction_record"), "news");
+                addArticlePredictions(articlePreds, interval.path("prediction_record"), day);
+                addAlertPrediction(windowPreds, day, key, interval.path("macro_alert"), "macro");
+                addAlertPrediction(windowPreds, day, key, interval.path("econ_alert"), "econ");
             }
         }
         catch (IOException | RuntimeException badFile)
@@ -104,7 +107,8 @@ public final class FeedbackRunner
         }
     }
 
-    private static void addWindowPrediction(List<Prediction> predictions, String day, String key, JsonNode record)
+    private static void addWindowPrediction(List<Prediction> predictions, String day, String key,
+            JsonNode record, String source)
     {
         if (record.isObject() && record.path("btc_at_prediction").isNumber())
         {
@@ -113,12 +117,36 @@ public final class FeedbackRunner
             {
                 predictions.add(new Prediction(windowTime, record.path("btc_at_prediction").asDouble(),
                         record.path("direction").asText("neutral"), record.path("impact_tier").asText("noise"),
-                        record.path("confidence").asText("low"), day, key));
+                        record.path("confidence").asText("low"), day, key, source));
             }
         }
     }
 
-    private static void addArticlePredictions(List<ArticlePrediction> predictions, JsonNode record)
+    /**
+     * Add an econ/macro alert's <b>final</b> (Claude) call plus its <b>mechanical prior</b> (a
+     * {@code <source>_mechanical} lane) so the report can compare them. The mechanical fields fall back
+     * to the final ones when absent (a Claude-unavailable alert, where the two coincide).
+     */
+    private static void addAlertPrediction(List<Prediction> predictions, String day, String key,
+            JsonNode alert, String source)
+    {
+        if (alert.isObject() && alert.path("btc_at_prediction").isNumber())
+        {
+            Instant windowTime = windowInstant(day, key);
+            if (windowTime != null)
+            {
+                double base = alert.path("btc_at_prediction").asDouble();
+                predictions.add(new Prediction(windowTime, base, alert.path("direction").asText("neutral"),
+                        alert.path("impact_tier").asText("noise"), alert.path("confidence").asText("low"), day, key, source));
+                predictions.add(new Prediction(windowTime, base,
+                        alert.path("mechanical_direction").asText(alert.path("direction").asText("neutral")),
+                        alert.path("mechanical_tier").asText(alert.path("impact_tier").asText("noise")),
+                        "n/a", day, key, source + "_mechanical"));
+            }
+        }
+    }
+
+    private static void addArticlePredictions(List<ArticlePrediction> predictions, JsonNode record, String day)
     {
         if (record.isObject())
         {
@@ -129,7 +157,7 @@ public final class FeedbackRunner
                 {
                     predictions.add(new ArticlePrediction(article.path("id").asInt(), publishedAt,
                             article.path("price_at_publish").asDouble(), article.path("scenario").asText(""),
-                            article.path("pre_trend").asText("")));
+                            article.path("pre_trend").asText(""), day));
                 }
             }
         }
@@ -171,20 +199,36 @@ public final class FeedbackRunner
         return instant;
     }
 
-    private static void writeOutcomes(File dataDir, String fileName, List<ObjectNode> outcomes)
+    /** Group outcomes by their {@code day} and write one {@code <day>/<prefix><day>.jsonl} per day. */
+    private static void writeOutcomes(File dataDir, String prefix, List<ObjectNode> outcomes)
+    {
+        Map<String, List<ObjectNode>> byDay = new LinkedHashMap<>();
+        for (ObjectNode outcome : outcomes)
+        {
+            byDay.computeIfAbsent(outcome.path("day").asText("unknown"), d -> new ArrayList<>()).add(outcome);
+        }
+        for (Map.Entry<String, List<ObjectNode>> entry : byDay.entrySet())
+        {
+            writeDayOutcomes(dataDir, prefix, entry.getKey(), entry.getValue());
+        }
+    }
+
+    private static void writeDayOutcomes(File dataDir, String prefix, String day, List<ObjectNode> outcomes)
     {
         try
         {
+            File dayDir = new File(dataDir, day);
+            Files.createDirectories(dayDir.toPath());
             StringBuilder body = new StringBuilder();
             for (ObjectNode outcome : outcomes)
             {
                 body.append(Json.toCompactString(outcome)).append('\n');
             }
-            Files.writeString(new File(dataDir, fileName).toPath(), body.toString(), StandardCharsets.UTF_8);
+            Files.writeString(new File(dayDir, prefix + day + ".jsonl").toPath(), body.toString(), StandardCharsets.UTF_8);
         }
         catch (IOException writeFailed)
         {
-            GlobalSystem.warning().writes(NAME, "Failed to write " + fileName, writeFailed);
+            GlobalSystem.warning().writes(NAME, "Failed to write " + prefix + day, writeFailed);
         }
     }
 }

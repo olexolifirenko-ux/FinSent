@@ -31,23 +31,88 @@ public final class FeedbackReport
     /** Render the report: window-level accuracy/baselines plus the per-scenario article-validation section. */
     public static String generate(List<ObjectNode> windowOutcomes, List<ObjectNode> articleOutcomes)
     {
+        // Overall/baselines run on the real decision lanes (news/econ/macro); the *_mechanical priors are
+        // duplicates of the econ/macro alerts kept only for the Claude-vs-mechanical comparison below.
+        List<ObjectNode> real = nonMechanical(windowOutcomes);
         List<String> lines = new ArrayList<>();
-        lines.add("=== FEEDBACK REPORT (" + windowOutcomes.size() + " scored window(s), "
+        lines.add("=== FEEDBACK REPORT (" + real.size() + " scored window(s), "
                 + articleOutcomes.size() + " scored article(s)) ===");
-        if (windowOutcomes.isEmpty())
+        if (real.isEmpty())
         {
             lines.add("No matured, scored window predictions yet.");
         }
         else
         {
-            appendOverall(lines, windowOutcomes);
-            appendBaselines(lines, directional(windowOutcomes));
-            appendBreakdown(lines, windowOutcomes, "impact_tier", "By impact_tier (directional calls, 1h):");
-            appendBreakdown(lines, windowOutcomes, "confidence", "By confidence (directional calls, 1h) -- BL#5 validation:");
-            appendMoveMagnitude(lines, windowOutcomes);
+            appendOverall(lines, real);
+            appendBaselines(lines, directional(real));
+            appendBreakdown(lines, real, "impact_tier", "By impact_tier (directional calls, 1h):");
+            appendBreakdown(lines, real, "confidence", "By confidence (directional calls, 1h) -- BL#5 validation:");
+            appendBreakdown(lines, real, "source", "By source (directional calls, 1h):");
+            appendMoveMagnitude(lines, real);
+            appendMechanicalComparison(lines, windowOutcomes);
         }
         appendScenarioSection(lines, articleOutcomes);
         return String.join("\n", lines);
+    }
+
+    /** Outcomes from the real decision lanes (news/econ/macro), excluding the {@code *_mechanical} priors. */
+    private static List<ObjectNode> nonMechanical(List<ObjectNode> outcomes)
+    {
+        List<ObjectNode> real = new ArrayList<>();
+        for (ObjectNode outcome : outcomes)
+        {
+            if (!outcome.path("source").asText("").endsWith("_mechanical"))
+            {
+                real.add(outcome);
+            }
+        }
+        return real;
+    }
+
+    /**
+     * For each of econ/macro that has a mechanical prior, compare the Claude call's directional accuracy
+     * against the bare mechanical read's -- the empirical test of whether gating those alerts through
+     * Claude (#21) beats the threshold prior. Omitted entirely when no {@code *_mechanical} outcomes exist.
+     */
+    private static void appendMechanicalComparison(List<String> lines, List<ObjectNode> outcomes)
+    {
+        boolean anyMechanical = false;
+        for (ObjectNode outcome : outcomes)
+        {
+            anyMechanical = anyMechanical || outcome.path("source").asText("").endsWith("_mechanical");
+        }
+        if (anyMechanical)
+        {
+            lines.add("Claude vs mechanical prior (directional accuracy, 1h):");
+            for (String lane : List.of("econ", "macro"))
+            {
+                List<ObjectNode> claude = bySource(outcomes, lane);
+                List<ObjectNode> mechanical = bySource(outcomes, lane + "_mechanical");
+                if (!claude.isEmpty() || !mechanical.isEmpty())
+                {
+                    lines.add("  " + lane + ": claude " + dirAccuracy(claude) + " vs mechanical " + dirAccuracy(mechanical));
+                }
+            }
+        }
+    }
+
+    private static List<ObjectNode> bySource(List<ObjectNode> outcomes, String source)
+    {
+        List<ObjectNode> matching = new ArrayList<>();
+        for (ObjectNode outcome : outcomes)
+        {
+            if (outcome.path("source").asText("").equals(source))
+            {
+                matching.add(outcome);
+            }
+        }
+        return matching;
+    }
+
+    private static String dirAccuracy(List<ObjectNode> outcomes)
+    {
+        List<ObjectNode> directional = directional(outcomes);
+        return ratio(countCorrect(directional), directional.size());
     }
 
     private static void appendScenarioSection(List<String> lines, List<ObjectNode> articleOutcomes)

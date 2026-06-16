@@ -13,7 +13,7 @@ import com.finsent.core.Json;
 
 /**
  * Verifies {@link FeedbackReport}: the empty case, and that a synthetic outcome set yields the
- * directional accuracy, the naive baselines, and the impact_tier / confidence breakdowns.
+ * directional accuracy, the naive baselines, and the impact_tier / source breakdowns.
  */
 public class FeedbackReport_utest
 {
@@ -29,11 +29,11 @@ public class FeedbackReport_utest
     public void accuracyBaselinesAndBreakdowns()
     {
         List<ObjectNode> outcomes = new ArrayList<>();
-        outcomes.add(outcome("bullish", "high", "high", 1.0, true));
-        outcomes.add(outcome("bullish", "high", "low", 0.8, true));
-        outcomes.add(outcome("bullish", "low", "low", -0.5, false));
-        outcomes.add(outcome("bearish", "high", "high", -1.2, true));
-        outcomes.add(outcome("neutral", "noise", "low", 0.01, true));
+        outcomes.add(outcome("bullish", "high", 1.0, true));
+        outcomes.add(outcome("bullish", "high", 0.8, true));
+        outcomes.add(outcome("bullish", "low", -0.5, false));
+        outcomes.add(outcome("bearish", "high", -1.2, true));
+        outcomes.add(outcome("neutral", "noise", 0.01, true));
 
         String report = FeedbackReport.generate(outcomes);
 
@@ -42,7 +42,6 @@ public class FeedbackReport_utest
         assertTrue("non-neutral accuracy 3/4", report.contains("3/4 = 75.0%"));
         assertTrue("baselines line", report.contains("always-up"));
         assertTrue("impact_tier breakdown", report.contains("By impact_tier"));
-        assertTrue("confidence breakdown (BL#5)", report.contains("BL#5 validation"));
         assertTrue("mean move line", report.contains("Mean realized |1h move|"));
     }
 
@@ -99,12 +98,11 @@ public class FeedbackReport_utest
         return outcome;
     }
 
-    private static ObjectNode outcome(String dir, String tier, String conf, double pct1h, boolean correct)
+    private static ObjectNode outcome(String dir, String tier, double pct1h, boolean correct)
     {
         ObjectNode outcome = Json.newObject();
         outcome.put("direction", dir);
         outcome.put("impact_tier", tier);
-        outcome.put("confidence", conf);
         outcome.put("outcome_1h_pct", pct1h);
         outcome.put("direction_correct", correct);
         return outcome;

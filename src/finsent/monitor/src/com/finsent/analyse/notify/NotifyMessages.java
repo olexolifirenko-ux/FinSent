@@ -33,8 +33,7 @@ public final class NotifyMessages
         String reasoning = pred.path("reasoning").asText("");
         String price = priceText(pred, realtimePrice);
         // Event-first: lead with WHAT happened (the causative events + the analyst read), then the
-        // materiality and a secondary directional lean. Confidence is deliberately not shown (model
-        // self-rated and uncalibrated); it stays in the stored record and the operational log line.
+        // materiality and a secondary directional lean.
         String message = "CRYPTO EVENT (" + countPhrase(resonantCount) + ")\n"
                 + (events.isEmpty() ? "" : events + "\n")
                 + (reasoning.isEmpty() ? "" : reasoning + "\n")

@@ -13,8 +13,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * {@code feedback_report.py}). Pure: outcomes in, report text out. Always prints the naive baselines
  * (always-up / always-down / random) the model must be read against &mdash; on a near-coin-flip
  * target a raw accuracy number is meaningless without them. Breaks accuracy down by {@code impact_tier}
- * and by {@code confidence}; the latter is the empirical test of whether the BL#5 confidence field
- * actually carries signal (are high-confidence calls more accurate?).
+ * and by {@code source}.
  */
 public final class FeedbackReport
 {
@@ -46,7 +45,6 @@ public final class FeedbackReport
             appendOverall(lines, real);
             appendBaselines(lines, directional(real));
             appendBreakdown(lines, real, "impact_tier", "By impact_tier (directional calls, 1h):");
-            appendBreakdown(lines, real, "confidence", "By confidence (directional calls, 1h) -- BL#5 validation:");
             appendBreakdown(lines, real, "source", "By source (directional calls, 1h):");
             appendMoveMagnitude(lines, real);
             appendMechanicalComparison(lines, windowOutcomes);

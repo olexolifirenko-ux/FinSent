@@ -132,9 +132,9 @@ public final class MacroAlertChecker
     }
 
     /**
-     * Overlay Claude's call (direction / impact_tier / confidence / reasoning / key_events) onto the
-     * mechanical alert, keeping the mechanical fields (triggers, macro_regime, analyzed_at) and recording
-     * the mechanical read as the prior. {@code direction} / {@code impact_tier} drive the notify gate.
+     * Overlay Claude's call (direction / impact_tier / reasoning / key_events) onto the mechanical
+     * alert, keeping the mechanical fields (triggers, macro_regime, analyzed_at) and recording the
+     * mechanical read as the prior. {@code direction} / {@code impact_tier} drive the notify gate.
      */
     private static ObjectNode withClaudeJudgment(ObjectNode mechanical, ObjectNode claude)
     {
@@ -144,7 +144,6 @@ public final class MacroAlertChecker
         alert.put("claude_available", true);
         alert.put("direction", claude.path("direction").asText(mechanical.path("direction").asText("neutral")));
         alert.put("impact_tier", claude.path("impact_tier").asText(mechanical.path("impact_tier").asText("noise")));
-        alert.put("confidence", claude.path("confidence").asText("low"));
         alert.put("reasoning", claude.path("reasoning").asText(mechanical.path("reasoning").asText("")));
         if (claude.has("key_events"))
         {

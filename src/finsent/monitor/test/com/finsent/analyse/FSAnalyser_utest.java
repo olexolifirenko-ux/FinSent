@@ -62,7 +62,7 @@ public class FSAnalyser_utest
         collector_ = new FSCollector(config, dir_);
         store_ = new AnalysisStore(dir_);
         notifier_ = new Notifier(new TelegramNotifier("", "", "https://api.telegram.org"),
-                new EmailNotifier(null, "", ""), "high", "low", 60);
+                new EmailNotifier(null, "", ""), "high", 60);
     }
 
     @After
@@ -187,7 +187,7 @@ public class FSAnalyser_utest
         seedMacroBreach(); // mechanical detector fires bearish/high (extreme VIX move)
         seedPrice(60500.0);
         StubClaudeClient client = new StubClaudeClient().enqueue(
-                "{\"direction\":\"neutral\",\"impact_tier\":\"noise\",\"confidence\":\"low\","
+                "{\"direction\":\"neutral\",\"impact_tier\":\"noise\","
                         + "\"key_events\":[],\"reasoning\":\"Isolated VIX spike, no risk-off follow-through.\"}");
         analyser(client).analyse(new CollectionResult(DAY, KEY, 0, List.of(), false), NOW);
 
@@ -219,14 +219,13 @@ public class FSAnalyser_utest
         seedEcon("CPI MoM", 0.3, 0.6); // surprise +0.3 > high_band -> high bearish prior
         seedPrice(60500.0);
         StubClaudeClient client = new StubClaudeClient().enqueue(
-                "{\"direction\":\"bearish\",\"impact_tier\":\"high\",\"confidence\":\"medium\","
+                "{\"direction\":\"bearish\",\"impact_tier\":\"high\","
                         + "\"key_events\":[\"CPI hot\"],\"reasoning\":\"hot print, risk-off\"}");
         analyser(client).analyseEcon(DAY, KEY, "CPI MoM", NOW, true);
 
         ObjectNode econAlert = (ObjectNode) store_.get(DAY, KEY).path("econ_alert");
         assertEquals("bearish", econAlert.path("direction").asText());
         assertEquals("high", econAlert.path("impact_tier").asText());
-        assertEquals("medium", econAlert.path("confidence").asText());
         assertTrue(econAlert.path("claude_available").asBoolean());
         assertEquals("bearish", econAlert.path("mechanical_direction").asText());
         assertEquals("high", econAlert.path("mechanical_tier").asText());

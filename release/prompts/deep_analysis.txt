@@ -51,7 +51,6 @@ Fields:
     low   = a real but minor, slow-channel, or partly-expected fact
     noise = posture, opinion, an already-priced/expected outcome, a description of the
             known situation, a recap, or a duplicate
-  confidence: "high" | "medium" | "low" -- conviction in the call
   key_events: [1-2 strings] the actual causative fact(s). Empty [] for noise.
   reasoning: 1-2 sentences that STATE the three-step test result -- did it occur (fact
     vs posture)? is it new/unpriced or a description of the known? what is the crypto
@@ -63,17 +62,23 @@ Fields:
 
 Examples (each shows running the test):
 
-Fact + new + channel -> high:
-{"direction":"bearish","impact_tier":"high","confidence":"high","key_events":["SEC files suit against a top-3 exchange"],"reasoning":"Fact (enforcement action filed, not threatened), new (unexpected), direct crypto-structural channel -- a fresh reason to de-risk crypto.","articles":[{"i":1,"direction":"bearish","reasoning":"An actually-filed enforcement action against a major exchange, new and crypto-structural"}]}
+Fact + new + channel -> high (bearish):
+{"direction":"bearish","impact_tier":"high","key_events":["SEC files suit against a top-3 exchange"],"reasoning":"Fact (enforcement action filed, not threatened), new (unexpected), direct crypto-structural channel -- a fresh reason to de-risk crypto.","articles":[{"i":1,"direction":"bearish","reasoning":"An actually-filed enforcement action against a major exchange, new and crypto-structural"}]}
+
+Fact + new + channel -> high (bullish):
+{"direction":"bullish","impact_tier":"high","key_events":["US and Iran announce a completed peace deal; sanctions to be lifted"],"reasoning":"Fact (deal announced/completed, not threatened), new (a genuine de-escalation surprise), broad risk-on channel -- a fresh reason to add risk, BTC included.","articles":[{"i":1,"direction":"bullish","reasoning":"An announced, completed de-escalation -- new, with a broad risk-on channel"}]}
+
+Fact + new but weak channel -> low:
+{"direction":"bullish","impact_tier":"low","key_events":["G7 communique says officials will 'monitor' digital-asset rules"],"reasoning":"Fact and new, but a vague, slow-moving channel -- a mild sentiment positive, not something desks reposition on now.","articles":[{"i":1,"direction":"bullish","reasoning":"A real but vague, slow-channel official note -- minor"}]}
 
 Posture -> noise (fails Step 1):
-{"direction":"neutral","impact_tier":"noise","confidence":"medium","key_events":[],"reasoning":"Posture, not fact: a politician known for inflammatory leverage-seeking threatens strikes 'tonight' -- the action has not happened, so it is not a causative event.","articles":[{"i":1,"direction":"neutral","reasoning":"A future threat from a habitual bluffer, not an executed action"}]}
+{"direction":"neutral","impact_tier":"noise","key_events":[],"reasoning":"Posture, not fact: a politician known for inflammatory leverage-seeking threatens strikes 'tonight' -- the action has not happened, so it is not a causative event.","articles":[{"i":1,"direction":"neutral","reasoning":"A future threat from a habitual bluffer, not an executed action"}]}
 
 Described / expected -> noise (fails Step 2):
-{"direction":"neutral","impact_tier":"noise","confidence":"low","key_events":[],"reasoning":"A fact, but not new: a widely-expected central-bank hike framed as the response to an already-known energy/war backdrop -- it describes the existing conjuncture and is already priced, not a fresh trigger.","articles":[{"i":1,"direction":"neutral","reasoning":"Expected hike describing the known situation -- priced in, no new reason to act"}]}
+{"direction":"neutral","impact_tier":"noise","key_events":[],"reasoning":"A fact, but not new: a widely-expected central-bank hike framed as the response to an already-known energy/war backdrop -- it describes the existing conjuncture and is already priced, not a fresh trigger.","articles":[{"i":1,"direction":"neutral","reasoning":"Expected hike describing the known situation -- priced in, no new reason to act"}]}
 
 Recap / opinion -> noise:
-{"direction":"neutral","impact_tier":"noise","confidence":"low","key_events":[],"reasoning":"Commentary recapping an already-reported story -- no new executed fact and no fresh trigger.","articles":[{"i":1,"direction":"neutral","reasoning":"Editorial recap, no new action"}]}
+{"direction":"neutral","impact_tier":"noise","key_events":[],"reasoning":"Commentary recapping an already-reported story -- no new executed fact and no fresh trigger.","articles":[{"i":1,"direction":"neutral","reasoning":"Editorial recap, no new action"}]}
 
 RULES:
 - Flag only items that pass ALL three steps; mark everything else noise, however

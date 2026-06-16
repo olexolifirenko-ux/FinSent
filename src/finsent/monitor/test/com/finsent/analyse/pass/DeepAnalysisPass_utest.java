@@ -15,9 +15,8 @@ import com.finsent.analyse.claude.IClaudeClient;
 /**
  * Verifies {@link DeepAnalysisPass} against Python {@code parse_analysis_response}: splitting the
  * per-article {@code articles} array out of the prediction object, defaulting an invalid
- * {@code impact_tier} to {@code noise}, defaulting a missing/invalid {@code confidence} to
- * {@code low}, stripping a Claude-supplied {@code macro_regime}, and yielding a null prediction on a
- * missing {@code direction} or an API failure.
+ * {@code impact_tier} to {@code noise}, stripping a Claude-supplied {@code macro_regime}, and
+ * yielding a null prediction on a missing {@code direction} or an API failure.
  */
 public class DeepAnalysisPass_utest
 {
@@ -60,20 +59,6 @@ public class DeepAnalysisPass_utest
         DeepResult result = new DeepAnalysisPass(client, MODEL).analyse("PROMPT");
 
         assertEquals("noise", result.prediction().path("impact_tier").asText());
-    }
-
-    @Test
-    public void defaultsMissingOrInvalidConfidenceToLow()
-    {
-        StubClaudeClient client = new StubClaudeClient().enqueue(
-                "{\"direction\":\"bearish\",\"impact_tier\":\"high\",\"confidence\":\"extreme\"}",
-                "{\"direction\":\"bullish\",\"impact_tier\":\"high\",\"confidence\":\"high\"}",
-                "{\"direction\":\"neutral\",\"impact_tier\":\"noise\"}");
-        DeepAnalysisPass pass = new DeepAnalysisPass(client, MODEL);
-
-        assertEquals("invalid confidence -> low", "low", pass.analyse("P").prediction().path("confidence").asText());
-        assertEquals("valid confidence kept", "high", pass.analyse("P").prediction().path("confidence").asText());
-        assertEquals("missing confidence -> low", "low", pass.analyse("P").prediction().path("confidence").asText());
     }
 
     @Test

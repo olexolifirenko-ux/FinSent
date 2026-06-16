@@ -25,7 +25,7 @@ public class NotifyGate_utest
     @Test
     public void nullPredRecordIsNotNotified()
     {
-        assertFalse(NotifyGate.shouldNotify(null, List.of(), "high", "low", AGE_MINUTES, NOW, false));
+        assertFalse(NotifyGate.shouldNotify(null, List.of(), "high", AGE_MINUTES, NOW, false));
     }
 
     @Test
@@ -33,52 +33,35 @@ public class NotifyGate_utest
     {
         // Monitor behaviour: a high-materiality event alerts even when the directional lean is unclear.
         ObjectNode pred = pred("neutral", "high");
-        assertTrue(NotifyGate.shouldNotify(pred, List.of(fresh()), "high", "low", AGE_MINUTES, NOW, false));
+        assertTrue(NotifyGate.shouldNotify(pred, List.of(fresh()), "high", AGE_MINUTES, NOW, false));
     }
 
     @Test
     public void tierBelowMinimumIsNotNotified()
     {
         ObjectNode pred = pred("bullish", "low");
-        assertFalse(NotifyGate.shouldNotify(pred, List.of(fresh()), "high", "low", AGE_MINUTES, NOW, false));
+        assertFalse(NotifyGate.shouldNotify(pred, List.of(fresh()), "high", AGE_MINUTES, NOW, false));
     }
 
     @Test
     public void nonNeutralTierMetWithFreshArticleNotifies()
     {
         ObjectNode pred = pred("bullish", "high");
-        assertTrue(NotifyGate.shouldNotify(pred, List.of(stale(), fresh()), "high", "low", AGE_MINUTES, NOW, false));
+        assertTrue(NotifyGate.shouldNotify(pred, List.of(stale(), fresh()), "high", AGE_MINUTES, NOW, false));
     }
 
     @Test
     public void noFreshArticleFailsAgeGate()
     {
         ObjectNode pred = pred("bearish", "high");
-        assertFalse(NotifyGate.shouldNotify(pred, List.of(stale()), "high", "low", AGE_MINUTES, NOW, false));
+        assertFalse(NotifyGate.shouldNotify(pred, List.of(stale()), "high", AGE_MINUTES, NOW, false));
     }
 
     @Test
     public void skipAgeCheckBypassesFreshness()
     {
         ObjectNode pred = pred("bearish", "high");
-        assertTrue(NotifyGate.shouldNotify(pred, List.of(stale()), "high", "low", AGE_MINUTES, NOW, true));
-    }
-
-    @Test
-    public void confidenceBelowMinimumIsNotNotified()
-    {
-        ObjectNode pred = pred("bullish", "high");
-        pred.put("confidence", "low");
-        // Tier passes but conviction is below the configured floor -> suppressed.
-        assertFalse(NotifyGate.shouldNotify(pred, List.of(fresh()), "high", "high", AGE_MINUTES, NOW, false));
-    }
-
-    @Test
-    public void confidenceAtOrAboveMinimumNotifies()
-    {
-        ObjectNode pred = pred("bullish", "high");
-        pred.put("confidence", "high");
-        assertTrue(NotifyGate.shouldNotify(pred, List.of(fresh()), "high", "high", AGE_MINUTES, NOW, false));
+        assertTrue(NotifyGate.shouldNotify(pred, List.of(stale()), "high", AGE_MINUTES, NOW, true));
     }
 
     private static ObjectNode pred(String direction, String tier)

@@ -127,7 +127,6 @@
             screenerThreshold="2"
             promptsDir="prompts"
             notifyMinImpactTier="high"
-            notifyMinConfidence="low"
             newsAgeToNotify="1h"
             telegramToken="ENV:TELEGRAM_TOKEN"
             telegramChatId="645133217"

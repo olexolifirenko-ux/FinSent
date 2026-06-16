@@ -289,12 +289,6 @@ public final class Config
         return attr(analyserNode_, "notifyMinImpactTier", "high");
     }
 
-    /** Minimum deep-analysis confidence to fire an alert; default "low" leaves the gate unchanged. */
-    public String notifyMinConfidence()
-    {
-        return attr(analyserNode_, "notifyMinConfidence", "low");
-    }
-
     public String newsAgeToNotify()
     {
         return attr(analyserNode_, "newsAgeToNotify", "1h");

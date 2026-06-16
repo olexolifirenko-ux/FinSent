@@ -26,7 +26,6 @@ public final class DeepAnalysisPass
     private static final String NAME = "DeepAnalysisPass";
     private static final int MAX_TOKENS = 1500;
     private static final Set<String> VALID_IMPACT_TIERS = Set.of("high", "low", "noise");
-    private static final Set<String> VALID_CONFIDENCE = Set.of("high", "medium", "low");
 
     private final IClaudeClient client_;
     private final String model_;
@@ -51,7 +50,6 @@ public final class DeepAnalysisPass
         {
             ArrayNode articles = popArticles(prediction);
             clampImpactTier(prediction);
-            defaultConfidence(prediction);
             prediction.remove("macro_regime");
             result = new DeepResult(prediction, articles);
         }
@@ -90,15 +88,6 @@ public final class DeepAnalysisPass
             GlobalSystem.warning().writes(NAME, "Invalid impact_tier '"
                     + prediction.path("impact_tier").asText() + "' -- defaulting to noise.");
             prediction.put("impact_tier", "noise");
-        }
-    }
-
-    /** Default a missing/invalid confidence to "low" -- unknown conviction is treated as weak. */
-    private static void defaultConfidence(ObjectNode prediction)
-    {
-        if (!VALID_CONFIDENCE.contains(prediction.path("confidence").asText()))
-        {
-            prediction.put("confidence", "low");
         }
     }
 }

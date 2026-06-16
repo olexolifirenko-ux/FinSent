@@ -33,14 +33,13 @@ public class OutcomeScorer_utest
                 WINDOW.plusSeconds(3600), 102.0,    // +1h: +2%
                 WINDOW.plusSeconds(86400), 95.0));  // +24h: -5%
 
-        List<ObjectNode> out = OutcomeScorer.score(List.of(pred("bullish", "high", "medium", 100.0)), now48h(), prices);
+        List<ObjectNode> out = OutcomeScorer.score(List.of(pred("bullish", "high", 100.0)), now48h(), prices);
 
         assertEquals(1, out.size());
         ObjectNode outcome = out.get(0);
         assertEquals(2.0, outcome.path("outcome_1h_pct").asDouble(), 1e-9);
         assertEquals(-5.0, outcome.path("outcome_24h_pct").asDouble(), 1e-9);
         assertTrue("bullish + up move = correct", outcome.path("direction_correct").asBoolean());
-        assertEquals("medium", outcome.path("confidence").asText());
     }
 
     @Test
@@ -58,13 +57,13 @@ public class OutcomeScorer_utest
     public void immaturePredictionIsSkipped()
     {
         Instant now = WINDOW.plusSeconds(1800); // only 30 min -> 1h not matured
-        assertEquals(0, OutcomeScorer.score(List.of(pred("bullish", "high", "high", 100.0)), now, stub(Map.of())).size());
+        assertEquals(0, OutcomeScorer.score(List.of(pred("bullish", "high", 100.0)), now, stub(Map.of())).size());
     }
 
     @Test
     public void missingPriceIsSkipped()
     {
-        assertEquals(0, OutcomeScorer.score(List.of(pred("bearish", "low", "low", 100.0)), now48h(), stub(Map.of())).size());
+        assertEquals(0, OutcomeScorer.score(List.of(pred("bearish", "low", 100.0)), now48h(), stub(Map.of())).size());
     }
 
     @Test
@@ -73,7 +72,7 @@ public class OutcomeScorer_utest
         PriceSource prices = stub(Map.of(WINDOW.plusSeconds(3600), 101.0));
         Instant now = WINDOW.plusSeconds(7200); // 2h: 1h matured, 24h not
 
-        ObjectNode outcome = OutcomeScorer.score(List.of(pred("bullish", "high", "high", 100.0)), now, prices).get(0);
+        ObjectNode outcome = OutcomeScorer.score(List.of(pred("bullish", "high", 100.0)), now, prices).get(0);
 
         assertEquals(1.0, outcome.path("outcome_1h_pct").asDouble(), 1e-9);
         assertTrue("24h not yet matured -> null", outcome.path("outcome_24h_pct").isNull());
@@ -118,9 +117,9 @@ public class OutcomeScorer_utest
         return WINDOW.plusSeconds(48 * 3600);
     }
 
-    private static Prediction pred(String dir, String tier, String conf, double base)
+    private static Prediction pred(String dir, String tier, double base)
     {
-        return new Prediction(WINDOW, base, dir, tier, conf, "20260608", "13:20", "news");
+        return new Prediction(WINDOW, base, dir, tier, "20260608", "13:20", "news");
     }
 
     private static PriceSource stub(Map<Instant, Double> prices)

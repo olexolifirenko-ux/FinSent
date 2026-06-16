@@ -45,14 +45,13 @@ RESPOND WITH EXACTLY ONE JSON OBJECT. No other text before or after it.
 Fields:
   direction: "bullish" | "bearish" | "neutral"
   impact_tier: "high" | "low" | "noise"
-  confidence: "high" | "medium" | "low" -- conviction in the call (see CONFIDENCE below); independent of impact_tier
   key_events: [1-2 strings] the release and the surprise driving your call. Empty [] for noise.
   reasoning: 1-2 sentences synthesizing the surprise against positioning
 
 Examples:
-{"direction":"bearish","impact_tier":"high","confidence":"medium","key_events":["CPI MoM 0.6% vs 0.3% est (hot)"],"reasoning":"A clearly hot inflation print is hawkish for the Fed and risk-off for BTC, and with funding crowded long the downside can cascade via liquidations."}
+{"direction":"bearish","impact_tier":"high","key_events":["CPI MoM 0.6% vs 0.3% est (hot)"],"reasoning":"A clearly hot inflation print is hawkish for the Fed and risk-off for BTC, and with funding crowded long the downside can cascade via liquidations."}
 
-{"direction":"neutral","impact_tier":"noise","confidence":"low","key_events":[],"reasoning":"The print landed in line with consensus, so there is no surprise for the market to reprice."}
+{"direction":"neutral","impact_tier":"noise","key_events":[],"reasoning":"The print landed in line with consensus, so there is no surprise for the market to reprice."}
 
 IMPACT_TIER CALIBRATION -- use your financial judgment, not pattern matching:
 - high: a surprise large enough to historically move BTC 3%+ within hours
@@ -62,19 +61,9 @@ IMPACT_TIER CALIBRATION -- use your financial judgment, not pattern matching:
 - noise: an in-line print or a surprise too small to carry a price mechanism. Set
   direction "neutral", impact_tier "noise", key_events [].
 
-CONFIDENCE -- conviction in the call, NOT magnitude (impact_tier carries
-magnitude). Keep the two independent:
-- high: a clear, unambiguous surprise with aligned signals (the surprise,
-  macro_regime and positioning point the same way); little room to be wrong.
-- medium: a real read but with ambiguity -- mixed signals, an indirect channel,
-  or uncertainty about how much is already priced in.
-- low: weak conviction -- a borderline surprise, conflicting signals, or a print
-  the tape looks to have already absorbed.
-A big move you are unsure about is high impact_tier + low confidence; a small but
-near-certain move is low impact_tier + high confidence. Default to low or medium:
-short-horizon BTC direction is noisy, so reserve high only when the surprise,
-macro_regime and positioning are genuinely aligned AND the move is not already
-priced in.
+Default to low or noise: short-horizon BTC direction is noisy, so reserve high only
+when the surprise, macro_regime and positioning are genuinely aligned AND the move
+is not already priced in.
 
 RULES:
 - Focus on causation: the surprise and through what channel it moves BTC.

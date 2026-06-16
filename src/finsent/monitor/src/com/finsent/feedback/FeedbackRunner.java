@@ -117,7 +117,7 @@ public final class FeedbackRunner
             {
                 predictions.add(new Prediction(windowTime, record.path("btc_at_prediction").asDouble(),
                         record.path("direction").asText("neutral"), record.path("impact_tier").asText("noise"),
-                        record.path("confidence").asText("low"), day, key, source));
+                        day, key, source));
             }
         }
     }
@@ -137,11 +137,11 @@ public final class FeedbackRunner
             {
                 double base = alert.path("btc_at_prediction").asDouble();
                 predictions.add(new Prediction(windowTime, base, alert.path("direction").asText("neutral"),
-                        alert.path("impact_tier").asText("noise"), alert.path("confidence").asText("low"), day, key, source));
+                        alert.path("impact_tier").asText("noise"), day, key, source));
                 predictions.add(new Prediction(windowTime, base,
                         alert.path("mechanical_direction").asText(alert.path("direction").asText("neutral")),
                         alert.path("mechanical_tier").asText(alert.path("impact_tier").asText("noise")),
-                        "n/a", day, key, source + "_mechanical"));
+                        day, key, source + "_mechanical"));
             }
         }
     }

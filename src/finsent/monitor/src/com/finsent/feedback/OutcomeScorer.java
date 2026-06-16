@@ -45,7 +45,7 @@ public final class OutcomeScorer
      * mechanical prior of an econ/macro alert -- so the report can compare Claude vs the bare prior).
      */
     public record Prediction(Instant windowTime, double btcBase, String direction, String impactTier,
-                             String confidence, String day, String key, String source)
+                             String day, String key, String source)
     {
     }
 
@@ -87,7 +87,6 @@ public final class OutcomeScorer
             outcome.put("source", prediction.source());
             outcome.put("direction", prediction.direction());
             outcome.put("impact_tier", prediction.impactTier());
-            outcome.put("confidence", prediction.confidence());
             outcome.put("btc_at_prediction", prediction.btcBase());
             outcome.put("outcome_1h_pct", pct1h);
             outcome.put("direction_correct", directionCorrect(prediction.direction(), pct1h));

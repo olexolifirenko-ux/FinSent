@@ -185,7 +185,6 @@ public class NotifyMessages_utest
         ObjectNode pred = Json.newObject();
         pred.put("direction", direction);
         pred.put("impact_tier", tier);
-        pred.put("confidence", "high"); // set but intentionally not rendered in the alert body
         pred.put("macro_regime", regime);
         pred.put("reasoning", reasoning);
         return pred;

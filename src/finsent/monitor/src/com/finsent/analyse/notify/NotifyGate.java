@@ -14,9 +14,7 @@ import com.finsent.core.Times;
  * directional bet -- a material event with an unclear (neutral) lean still alerts. Notifiable when
  * both hold:
  * <ol>
- *   <li>its {@code impact_tier} (materiality) ranks at or above {@code minImpactTier}, and its
- *       {@code confidence} ranks at or above {@code minConfidence} (default {@code "low"} -- a no-op
- *       until raised); and</li>
+ *   <li>its {@code impact_tier} (materiality) ranks at or above {@code minImpactTier}; and</li>
  *   <li>at least one resonant article was published within {@code newsAgeMinutes} of {@code now}
  *       (bypassed by {@code skipAgeCheck}, e.g. a manual re-analysis).</li>
  * </ol>
@@ -28,7 +26,7 @@ public final class NotifyGate
     }
 
     public static boolean shouldNotify(ObjectNode predRecord, List<ObjectNode> resonant,
-                                       String minImpactTier, String minConfidence, int newsAgeMinutes,
+                                       String minImpactTier, int newsAgeMinutes,
                                        Instant now, boolean skipAgeCheck)
     {
         boolean notify;
@@ -40,8 +38,7 @@ public final class NotifyGate
         {
             int minTierVal = ImpactTier.order(minImpactTier, 2);
             int tierVal = ImpactTier.order(predRecord.path("impact_tier").asText("noise"), 0);
-            int confVal = Confidence.order(predRecord.path("confidence").asText("low"), 0);
-            boolean meetsThreshold = tierVal >= minTierVal && confVal >= Confidence.order(minConfidence, 0);
+            boolean meetsThreshold = tierVal >= minTierVal;
             notify = meetsThreshold && (skipAgeCheck || hasFreshArticle(resonant, now, newsAgeMinutes));
         }
         return notify;

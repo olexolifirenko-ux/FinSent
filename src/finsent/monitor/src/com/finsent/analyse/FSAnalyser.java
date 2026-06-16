@@ -164,7 +164,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         TelegramNotifier telegram = new TelegramNotifier(config.telegramToken(), config.telegramChatId(),
                 config.telegramApiBaseUrl());
         EmailNotifier email = new EmailNotifier(mailSender, config.smtpUser(), config.emailTo());
-        return new Notifier(telegram, email, config.notifyMinImpactTier(), config.notifyMinConfidence(),
+        return new Notifier(telegram, email, config.notifyMinImpactTier(),
                 config.newsAgeToNotifyMinutes());
     }
 
@@ -434,7 +434,6 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         JsonNode alert = store_.get(day, key).path("econ_alert");
         return day + " " + key + " -- " + alert.path("label").asText("?")
                 + " -> " + alert.path("direction").asText("?") + "/" + alert.path("impact_tier").asText("?")
-                + " conf=" + alert.path("confidence").asText("?")
                 + (alert.path("claude_available").asBoolean() ? "" : " (mechanical-only)");
     }
 
@@ -475,7 +474,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     /**
      * The stored econ-alert record: the mechanical surprise inputs (event/consensus/actual/surprise/
      * label) and prior (mechanical_direction/tier), then the final call (direction/impact_tier/
-     * confidence/key_events/reasoning) from Claude -- falling back to the mechanical read when the deep
+     * key_events/reasoning) from Claude -- falling back to the mechanical read when the deep
      * call was skipped (in-line) or failed. {@code macro_regime} is computed mechanically, as elsewhere;
      * {@code btc_at_prediction} is the window's BTC price anchor for outcome scoring (#6), null when absent.
      */
@@ -498,7 +497,6 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
                 : signal.path("direction").asText("neutral"));
         alert.put("impact_tier", claudeAvailable ? deepPrediction.path("impact_tier").asText("noise")
                 : signal.path("impact_tier").asText("noise"));
-        alert.put("confidence", claudeAvailable ? deepPrediction.path("confidence").asText("low") : "low");
         alert.put("macro_regime", macroRegime);
         alert.set("key_events", claudeAvailable ? keyEvents(deepPrediction) : Json.newArray());
         alert.put("reasoning", claudeAvailable ? deepPrediction.path("reasoning").asText("")
@@ -523,7 +521,6 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     {
         GlobalSystem.info().writes(NAME, "Econ " + day + " " + key + " -- " + econAlert.path("label").asText("?")
                 + " | call=" + econAlert.path("direction").asText("?") + "/" + econAlert.path("impact_tier").asText("?")
-                + " conf=" + econAlert.path("confidence").asText("?")
                 + " regime=" + econAlert.path("macro_regime").asText("?")
                 + (econAlert.path("claude_available").asBoolean() ? "" : " (mechanical-only)"));
     }
@@ -795,7 +792,6 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         GlobalSystem.info().writes(NAME, "Analysed " + day + " " + key
                 + " -- direction=" + prediction.path("direction").asText("?")
                 + " impact=" + prediction.path("impact_tier").asText("?")
-                + " conf=" + prediction.path("confidence").asText("?")
                 + " regime=" + prediction.path("macro_regime").asText("?")
                 + " options=" + (options.isEmpty() ? "n/a" : options)
                 + " resonant=" + prediction.path("resonant_count").asInt()
@@ -820,7 +816,6 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         pred.put("claude_available", claudeAvailable);
         pred.put("direction", claudeAvailable ? deepPrediction.path("direction").asText("neutral") : "neutral");
         pred.put("impact_tier", claudeAvailable ? deepPrediction.path("impact_tier").asText("noise") : "noise");
-        pred.put("confidence", claudeAvailable ? deepPrediction.path("confidence").asText("low") : "low");
         pred.put("macro_regime", macroRegime);
         pred.set("key_events", claudeAvailable ? keyEvents(deepPrediction) : Json.newArray());
         pred.put("reasoning", claudeAvailable ? deepPrediction.path("reasoning").asText("")

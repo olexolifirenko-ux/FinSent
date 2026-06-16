@@ -20,17 +20,15 @@ public final class Notifier
     private final TelegramNotifier telegram_;
     private final EmailNotifier email_;
     private final String minImpactTier_;
-    private final String minConfidence_;
     private final int newsAgeMinutes_;
     private final ExecutorService dispatch_;
 
     public Notifier(TelegramNotifier telegram, EmailNotifier email, String minImpactTier,
-                    String minConfidence, int newsAgeMinutes)
+                    int newsAgeMinutes)
     {
         telegram_ = telegram;
         email_ = email;
         minImpactTier_ = minImpactTier;
-        minConfidence_ = minConfidence;
         newsAgeMinutes_ = newsAgeMinutes;
         dispatch_ = Executors.newSingleThreadExecutor(runnable ->
         {
@@ -48,7 +46,7 @@ public final class Notifier
     public boolean maybeNotify(ObjectNode prediction, List<ObjectNode> articlePreds, List<ObjectNode> resonant,
                                String intervalKey, Instant now, boolean skipAgeCheck, Supplier<Double> realtimePrice)
     {
-        boolean notify = NotifyGate.shouldNotify(prediction, resonant, minImpactTier_, minConfidence_,
+        boolean notify = NotifyGate.shouldNotify(prediction, resonant, minImpactTier_,
                 newsAgeMinutes_, now, skipAgeCheck);
         if (notify)
         {

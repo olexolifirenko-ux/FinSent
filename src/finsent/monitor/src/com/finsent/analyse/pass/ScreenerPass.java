@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.finsent.analyse.claude.ClaudeJson;
+import com.finsent.analyse.claude.ClaudeSchemas;
 import com.finsent.analyse.claude.IClaudeClient;
 import com.finsent.analyse.claude.PromptBuilder;
 import com.finsent.analyse.claude.PromptTemplates;
@@ -104,7 +105,7 @@ public final class ScreenerPass
         String text = null;
         try
         {
-            text = client_.complete(model_, prompt, maxTokens);
+            text = client_.complete(model_, prompt, maxTokens, false, ClaudeSchemas.SCREENER);
         }
         catch (IOException callFailed)
         {

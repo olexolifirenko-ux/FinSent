@@ -7,6 +7,7 @@ import java.time.Instant;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import com.finsent.analyse.claude.ClaudeSchemas;
 import com.finsent.analyse.claude.PromptBuilder;
 import com.finsent.analyse.claude.PromptTemplates;
 import com.finsent.analyse.notify.Notifier;
@@ -118,7 +119,7 @@ public final class MacroAlertChecker
         {
             String prompt = PromptTemplates.fillContext(PromptTemplates.load(promptsDir_, "macro_analysis"),
                     PromptBuilder.macroAlert(mechanical), marketBlock);
-            ObjectNode claude = deep_.analyse(prompt).prediction();
+            ObjectNode claude = deep_.analyse(prompt, ClaudeSchemas.ALERT_DEEP).prediction();
             if (claude != null)
             {
                 alert = withClaudeJudgment(mechanical, claude);

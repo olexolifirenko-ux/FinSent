@@ -38,10 +38,19 @@ public final class DeepAnalysisPass
         model_ = model;
     }
 
-    /** Run deep analysis on the assembled {@code prompt} and parse the result. */
+    /** Run deep analysis on the assembled {@code prompt} (free-form output) and parse the result. */
     public DeepResult analyse(String prompt)
     {
-        String text = callQuietly(prompt);
+        return analyse(prompt, null);
+    }
+
+    /**
+     * Run deep analysis, constraining the output to {@code schema} (structured outputs) when non-null:
+     * the news pass passes the per-article schema, the econ/macro passes the article-less one.
+     */
+    public DeepResult analyse(String prompt, JsonNode schema)
+    {
+        String text = callQuietly(prompt, schema);
         ObjectNode prediction = text == null ? null : ClaudeJson.extractObject(text);
         DeepResult result;
         if (prediction == null || !prediction.has("direction"))
@@ -58,12 +67,12 @@ public final class DeepAnalysisPass
         return result;
     }
 
-    private String callQuietly(String prompt)
+    private String callQuietly(String prompt, JsonNode schema)
     {
         String text = null;
         try
         {
-            text = client_.complete(model_, prompt, MAX_TOKENS, true); // adaptive thinking on the decisive pass
+            text = client_.complete(model_, prompt, MAX_TOKENS, true, schema); // adaptive thinking on the decisive pass
         }
         catch (IOException callFailed)
         {

@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.finsent.analyse.claude.ClaudeClient;
+import com.finsent.analyse.claude.ClaudeSchemas;
 import com.finsent.analyse.claude.IClaudeClient;
 import com.finsent.analyse.claude.PromptBuilder;
 import com.finsent.analyse.claude.PromptTemplates;
@@ -468,7 +469,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     private ObjectNode runEconDeep(ObjectNode signal, String marketBlock) throws IOException
     {
         String prompt = PromptTemplates.fillContext(loadTemplate("econ_analysis"), PromptBuilder.econEvent(signal), marketBlock);
-        return deep_.analyse(prompt).prediction();
+        return deep_.analyse(prompt, ClaudeSchemas.ALERT_DEEP).prediction();
     }
 
     /**
@@ -723,7 +724,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         String articlesBlock = PromptBuilder.deepArticles(resonant, ohlc, deepIdMap);
         String prompt = PromptTemplates.fillDeep(loadTemplate("deep_analysis"), resonant.size(), market.block(), articlesBlock);
 
-        DeepResult deep = deep_.analyse(prompt);
+        DeepResult deep = deep_.analyse(prompt, ClaudeSchemas.NEWS_DEEP);
         ArrayNode articlePredictions = buildArticlePredictions(resonant, ohlc, deep.articles(), deepIdMap);
         ObjectNode prediction = buildPredictionRecord(WindowContext.btcPrice(ohlc), unique.size(), resonant.size(),
                 deep.prediction(), regimeLabel(market.regime()), market.options(), market.funding(),

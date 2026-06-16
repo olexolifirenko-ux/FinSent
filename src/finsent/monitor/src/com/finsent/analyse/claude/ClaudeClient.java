@@ -41,19 +41,20 @@ public final class ClaudeClient implements IClaudeClient
     @Override
     public String complete(String model, String prompt, int maxTokens) throws IOException, InterruptedException
     {
-        return complete(model, prompt, maxTokens, false);
+        return complete(model, prompt, maxTokens, false, null);
     }
 
     @Override
-    public String complete(String model, String prompt, int maxTokens, boolean thinking)
+    public String complete(String model, String prompt, int maxTokens, boolean thinking, JsonNode schema)
             throws IOException, InterruptedException
     {
         Map<String, String> headers = Map.of("x-api-key", apiKey_, "anthropic-version", ANTHROPIC_VERSION);
-        String response = Http.postJson(messagesUrl_, requestBody(model, prompt, maxTokens, thinking), headers, TIMEOUT);
+        String response = Http.postJson(messagesUrl_, requestBody(model, prompt, maxTokens, thinking, schema), headers, TIMEOUT);
         return firstContentText(response);
     }
 
-    private static String requestBody(String model, String prompt, int maxTokens, boolean thinking) throws IOException
+    private static String requestBody(String model, String prompt, int maxTokens, boolean thinking, JsonNode schema)
+            throws IOException
     {
         ObjectNode message = Json.newObject();
         message.put("role", "user");
@@ -75,6 +76,17 @@ public final class ClaudeClient implements IClaudeClient
         else
         {
             body.put("temperature", TEMPERATURE);
+        }
+        if (schema != null)
+        {
+            // Structured outputs: constrain the response to the given JSON Schema so the API returns
+            // schema-valid JSON (output_config.format / json_schema), removing the malformed-JSON path.
+            ObjectNode format = Json.newObject();
+            format.put("type", "json_schema");
+            format.set("schema", schema);
+            ObjectNode outputConfig = Json.newObject();
+            outputConfig.set("format", format);
+            body.set("output_config", outputConfig);
         }
         body.set("messages", messages);
         return Json.toCompactString(body);

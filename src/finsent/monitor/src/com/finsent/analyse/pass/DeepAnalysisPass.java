@@ -24,7 +24,9 @@ import com.finsent.util.GlobalSystem;
 public final class DeepAnalysisPass
 {
     private static final String NAME = "DeepAnalysisPass";
-    private static final int MAX_TOKENS = 1500;
+    // Headroom for adaptive thinking + the JSON answer: the model reasons privately first, and that
+    // reasoning shares the response budget with the output, so the cap is well above the JSON's size.
+    private static final int MAX_TOKENS = 4000;
     private static final Set<String> VALID_IMPACT_TIERS = Set.of("high", "low", "noise");
 
     private final IClaudeClient client_;
@@ -61,7 +63,7 @@ public final class DeepAnalysisPass
         String text = null;
         try
         {
-            text = client_.complete(model_, prompt, MAX_TOKENS);
+            text = client_.complete(model_, prompt, MAX_TOKENS, true); // adaptive thinking on the decisive pass
         }
         catch (IOException callFailed)
         {

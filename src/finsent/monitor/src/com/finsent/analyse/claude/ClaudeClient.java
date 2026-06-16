@@ -14,9 +14,11 @@ import com.finsent.core.Json;
 /**
  * Anthropic Messages API client (ports Python {@code analyse.call_claude}). Issues a raw HTTP POST
  * through {@link Http} (which handles retry/backoff) with the {@code x-api-key} and
- * {@code anthropic-version} headers, a single-user-message body at {@code temperature} 0 (the passes
- * are deterministic classification/extraction), and returns the text of the first content block. The
- * endpoint URL is injected (from {@code Config}) rather than hardcoded.
+ * {@code anthropic-version} headers, a single-user-message body, and returns the text of the first
+ * <b>text</b> content block (skipping a leading thinking block). The screener runs at {@code
+ * temperature} 0 (deterministic classification); the deep pass runs with adaptive {@code thinking} so
+ * the model reasons through the fact/new/channel test before answering (sampling params are omitted
+ * with thinking on). The endpoint URL is injected (from {@code Config}) rather than hardcoded.
  */
 public final class ClaudeClient implements IClaudeClient
 {
@@ -39,12 +41,19 @@ public final class ClaudeClient implements IClaudeClient
     @Override
     public String complete(String model, String prompt, int maxTokens) throws IOException, InterruptedException
     {
+        return complete(model, prompt, maxTokens, false);
+    }
+
+    @Override
+    public String complete(String model, String prompt, int maxTokens, boolean thinking)
+            throws IOException, InterruptedException
+    {
         Map<String, String> headers = Map.of("x-api-key", apiKey_, "anthropic-version", ANTHROPIC_VERSION);
-        String response = Http.postJson(messagesUrl_, requestBody(model, prompt, maxTokens), headers, TIMEOUT);
+        String response = Http.postJson(messagesUrl_, requestBody(model, prompt, maxTokens, thinking), headers, TIMEOUT);
         return firstContentText(response);
     }
 
-    private static String requestBody(String model, String prompt, int maxTokens) throws IOException
+    private static String requestBody(String model, String prompt, int maxTokens, boolean thinking) throws IOException
     {
         ObjectNode message = Json.newObject();
         message.put("role", "user");
@@ -55,14 +64,38 @@ public final class ClaudeClient implements IClaudeClient
         ObjectNode body = Json.newObject();
         body.put("model", model);
         body.put("max_tokens", maxTokens);
-        body.put("temperature", TEMPERATURE);
+        if (thinking)
+        {
+            // Adaptive thinking: the model decides how much to reason privately before answering. Sampling
+            // params are omitted with thinking on (the thinking-capable models reject them alongside it).
+            ObjectNode think = Json.newObject();
+            think.put("type", "adaptive");
+            body.set("thinking", think);
+        }
+        else
+        {
+            body.put("temperature", TEMPERATURE);
+        }
         body.set("messages", messages);
         return Json.toCompactString(body);
     }
 
+    /** The first {@code text}-type content block's text, skipping any leading {@code thinking} block. */
     private static String firstContentText(String response) throws IOException
     {
         JsonNode content = Json.parse(response).path("content");
-        return content.isArray() && content.size() > 0 ? content.get(0).path("text").asText("") : "";
+        String text = "";
+        if (content.isArray())
+        {
+            for (JsonNode block : content)
+            {
+                if (block.path("type").asText("").equals("text"))
+                {
+                    text = block.path("text").asText("");
+                    break;
+                }
+            }
+        }
+        return text;
     }
 }

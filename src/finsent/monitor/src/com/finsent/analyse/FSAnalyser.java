@@ -384,6 +384,10 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     String reanalyse(String day, String key, boolean notify) throws IOException
     {
         collector_.recoverDay(day);
+        // Hydrate the day's existing analysis records before re-recording: store_.record rewrites the
+        // whole analysis_<day>.json, so an un-resident day (e.g. one older than the startup lookback)
+        // would otherwise collapse the file to just this window, discarding the other windows' records.
+        store_.recoverDay(day);
         List<ObjectNode> window = collector_.articles().forInterval(day, key, false, config_.windowMinutes());
         runWindow(new CollectionResult(day, key, window.size(), window, false), Instant.now(), true, notify);
         return summary(day, key, window.size());
@@ -406,6 +410,9 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     {
         String resolveDay = (day == null || day.isEmpty()) ? Times.dayOf(Times.formatUtcIso(Instant.now())) : day;
         collector_.recoverDay(resolveDay);
+        // Hydrate the day's analysis records first: recordEconAlert rewrites the whole analysis_<day>.json,
+        // so an un-resident (e.g. back-dated) day would otherwise lose its other windows' records.
+        store_.recoverDay(resolveDay);
         ObjectNode resolved = collector_.econ().get(resolveDay, eventName);
         String summary;
         if (resolved.has("actual") && resolved.has("release"))

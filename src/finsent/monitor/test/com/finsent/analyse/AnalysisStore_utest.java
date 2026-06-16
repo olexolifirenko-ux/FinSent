@@ -109,6 +109,53 @@ public class AnalysisStore_utest
     }
 
     @Test
+    public void recordingOneWindowKeepsOtherWindowsOfAnUnrecoveredDay() throws Exception
+    {
+        // The data-loss regression: a day written earlier, then a fresh store (simulating a restart where
+        // the day is older than the recovery lookback) re-analyses ONE window. Because record() rewrites
+        // the whole analysis_<day>.json, the day must be hydrated first or the other windows are lost.
+        AnalysisStore first = new AnalysisStore(dir_);
+        try
+        {
+            first.record(DAY, "12:00", record("bullish", "high", 7));
+            first.record(DAY, "12:10", record("bearish", "low", 3));
+            first.flush();
+        }
+        finally
+        {
+            first.shutdown();
+        }
+
+        AnalysisStore reanalysis = new AnalysisStore(dir_);
+        try
+        {
+            reanalysis.recoverDay(DAY); // the fix: hydrate before re-recording a single window
+            reanalysis.record(DAY, "12:20", record("neutral", "noise"));
+            reanalysis.flush();
+        }
+        finally
+        {
+            reanalysis.shutdown();
+        }
+
+        AnalysisStore verify = new AnalysisStore(dir_);
+        try
+        {
+            verify.recover(30);
+            assertEquals("re-analysed window stored", "neutral",
+                    verify.get(DAY, "12:20").path("prediction_record").path("direction").asText());
+            assertEquals("earlier window preserved", "bullish",
+                    verify.get(DAY, "12:00").path("prediction_record").path("direction").asText());
+            assertEquals("earlier window preserved", "bearish",
+                    verify.get(DAY, "12:10").path("prediction_record").path("direction").asText());
+        }
+        finally
+        {
+            verify.shutdown();
+        }
+    }
+
+    @Test
     public void reAnalysisOverwritesInterval()
     {
         AnalysisStore store = new AnalysisStore(dir_);

@@ -1,48 +1,54 @@
-You are a crypto market analyst. Score each article for its FUTURE BTC price impact.
-The goal: detect NEW events that will move BTC price but have NOT been priced in yet.
+You are a crypto market news triage analyst. For each article below decide ONE thing: is
+it a NEW, material catalyst that could move BTC and is worth a closer look? You are a fast
+RELEVANCE filter, not a price forecaster -- do NOT judge direction (bullish/bearish); a
+later pass does that. Score only how much a closer look is warranted.
 
-SCORE 0 (mandatory) for articles with no predictive value:
-  - Price commentary describing what already happened ("BTC slides to $79K").
-  - Speculation/opinion without new factual triggers.
-  - Recap/rehash of previously reported facts.
-  - Unrelated topics (entertainment, sports, lifestyle, etc.).
+Give each article an integer 0-3:
 
-SCORE nonzero for articles reporting NEW actionable events. Use your financial
-judgment -- any domain can move BTC if the magnitude warrants it:
-  - Crypto-native: ETF flows, exchange failures, hacks, regulatory actions,
-    institutional adoption, stablecoin risk, supply dynamics.
-  - Macro/monetary: rate decisions, inflation data, central bank signals, QE/QT.
-  - Geopolitical: military escalation or de-escalation, peace deals, sanctions
-    on major economies, oil supply disruptions, sovereign debt crises.
-  - Trade policy: tariff announcements, trade war escalation or de-escalation.
+  3  URGENT -- a major NEW catalyst desks would reposition on immediately: a policy
+     surprise, a rate decision, war/peace or a major escalation step, sanctions on a major
+     economy, an oil-supply shock, an exchange collapse/hack, a large ETF-flow reversal, a
+     major regulatory/enforcement action.
+  2  MATERIAL -- a genuine new event desks would note (real, but smaller or less direct
+     than a 3). ALSO score 2 an unverified-but-major claim -- a threat/intention or a
+     single-source report that WOULD be a big catalyst if true -- so the next pass can
+     judge its credibility (see CREDIBILITY).
+  1  WEAK -- real but minor, or a slow / indirect channel to BTC.
+  0  SKIP -- no predictive value: a price/market recap of what already happened ("BTC
+     slides to $79K"), pure opinion/speculation with no new fact, an unrelated topic, or a
+     duplicate/recap (see DUPLICATES).
 
-Scoring scale: -10 (strongly bearish) to +10 (strongly bullish).
-Magnitude test: would institutional desks reposition on this headline?
-  |8-10|: yes, urgently -- major policy surprises, wars/peace deals, exchange
-          collapses, large ETF flow reversals, oil supply shocks.
-  |5-7|:  desks take note -- meaningful but smaller or indirect impact.
-  |1-4|:  minor signal, weak or slow channel to BTC.
+Any domain can qualify -- crypto-native (ETF flows, exchanges, hacks, regulation,
+stablecoins, supply), macro/monetary (rates, inflation, central-bank signals, QE/QT),
+geopolitics (military escalation/de-escalation, peace deals, sanctions, oil, sovereign
+debt), or trade policy (tariffs, trade-war steps). Judge by likely BTC impact, not topic.
 
-Score = novelty x magnitude x how-soon-it-will-impact-price. Higher for breaking news.
+When genuinely unsure whether something is new and material, lean UP (2, not 1): a missed
+catalyst is unrecoverable, whereas an extra closer look is cheap.
 
-CREDIBILITY: a mere THREAT/INTENTION that has not happened, or an unverified
-single-source claim ("X says...", one-sided state media), is not yet a real event --
-score it LOW (1-3), not at full magnitude, unless it is officially confirmed or
-executed. A confirmed, executed action (a policy signed, a rate set, an enforcement
-action filed) scores at full magnitude regardless of who the source is.
+CREDIBILITY (light touch -- the next pass adjudicates): do NOT try to settle whether an
+unverified claim is true. A confirmed, executed action (a policy signed, a rate set, an
+enforcement action filed) is fully material. An unverified threat/intention or single-
+source claim is kept at 2 IF it would be a major catalyst when true, so the next pass can
+weigh it; score mere low-stakes rumor or chatter 0-1.
 
-DUPLICATES & FOLLOW-UPS: Score 0 for any article that covers an event already listed
-under ALREADY COVERED below, or that duplicates another article in this batch. This
-includes market reactions ("oil rose after X", "gold extended a decline"), recaps and
-summaries ("overnight", "exchanged strikes"), and commentary/analysis ("analysts warn",
-"breaks down the situation"). Reason: "dup"/"recap"/"reaction".
-EXCEPTION -- score normally ONLY if the article reports a MATERIALLY NEW development of
-that event: a new strike, a new actor, a new escalation step, or a concrete new fact --
-not merely more coverage of the same one. The goal is the FIRST, CAUSATIVE report of an
-event, never the wave of follow-up coverage it triggers.
+DUPLICATES & FOLLOW-UPS: score 0 for any article covering an event already listed under
+ALREADY COVERED below, or duplicating another article in this batch -- including market
+reactions ("oil rose after X", "gold extended a decline"), recaps/summaries ("overnight",
+"exchanged strikes"), and commentary ("analysts warn", "breaks down the situation").
+EXCEPTION: score normally only if it reports a MATERIALLY NEW development -- a new strike,
+a new actor, a new escalation step, a concrete new fact -- not merely more coverage. The
+goal is the FIRST, causative report, never the wave of follow-up it triggers.
 
-Return ONLY a JSON array, no other text:
-[{"i": 1, "score": 7, "reason": "one-line reason"}, ...]
+Calibration examples:
+  "SEC files suit against a top-3 exchange"                    -> 3 (new, confirmed, crypto-structural)
+  "Unconfirmed: country threatens to shut the strait tonight"  -> 2 (major-if-true; next pass judges)
+  "Analyst says the Fed 'could' cut if data weakens"           -> 1 (speculation, weak/conditional)
+  "BTC slides to $79K in afternoon trade"                      -> 0 (price recap of what already happened)
+  "Oil rose after the strikes reported earlier"                -> 0 (market reaction / dup of a covered event)
+
+Return ONLY a JSON array, no other text. One object per article, every index exactly once:
+[{"i": 1, "score": 2, "reason": "one-line reason"}, ...]
 
 {covered}
 -- ARTICLES TO SCORE --

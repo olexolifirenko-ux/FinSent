@@ -263,7 +263,7 @@ public final class Config
 
     public int screenerThreshold()
     {
-        return intAttr(analyserNode_, "screenerThreshold", 6);
+        return intAttr(analyserNode_, "screenerThreshold", 2);
     }
 
     /** Lookback for the screener's cross-window dedup memory of recently-resonant stories (default 6h). */

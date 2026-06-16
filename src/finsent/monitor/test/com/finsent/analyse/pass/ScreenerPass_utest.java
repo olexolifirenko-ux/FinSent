@@ -28,37 +28,37 @@ public class ScreenerPass_utest
 {
     private static final String TEMPLATE = "SCORE THESE:\n{articles}\n";
     private static final String MODEL = "claude-haiku-test";
-    private static final int THRESHOLD = 6;
+    private static final int THRESHOLD = 2;
 
     @Test
     public void scoresAndSelectsResonantByThreshold()
     {
         StubClaudeClient client = new StubClaudeClient().enqueue(
-                "[{\"i\":1,\"score\":8,\"reason\":\"a\"},{\"i\":2,\"score\":2,\"reason\":\"b\"},"
-                        + "{\"i\":3,\"score\":-7,\"reason\":\"c\"}]");
+                "[{\"i\":1,\"score\":3,\"reason\":\"a\"},{\"i\":2,\"score\":1,\"reason\":\"b\"},"
+                        + "{\"i\":3,\"score\":2,\"reason\":\"c\"}]");
         List<ObjectNode> articles = articles(10, 20, 30);
 
         ScreenerResult result = new ScreenerPass(client, MODEL, THRESHOLD).screen(articles, "", TEMPLATE);
 
-        assertEquals(List.of(10, 30), ids(result.resonant())); // |8| and |-7| pass; |2| does not
-        assertEquals(2, articles.get(1).path("screener_score").asInt());
+        assertEquals(List.of(10, 30), ids(result.resonant())); // 3 and 2 pass (>= 2); 1 does not
+        assertEquals(1, articles.get(1).path("screener_score").asInt());
         assertEquals("b", articles.get(1).path("screener_reason").asText());
         assertEquals(3, result.screenerOut().size());
         assertEquals(10, result.screenerOut().get(0).path("article_id").asInt());
-        assertEquals(8, result.screenerOut().get(0).path("score").asInt());
+        assertEquals(3, result.screenerOut().get(0).path("score").asInt());
         assertEquals(1, client.callCount());
     }
 
     @Test
     public void batchesAtHundredWithOffsetPromptIndices()
     {
-        StubClaudeClient client = new StubClaudeClient().enqueue(scoresJson(1, 100, 7), scoresJson(101, 120, 7));
+        StubClaudeClient client = new StubClaudeClient().enqueue(scoresJson(1, 100, 3), scoresJson(101, 120, 3));
         List<ObjectNode> articles = articleRange(1, 120);
 
         ScreenerResult result = new ScreenerPass(client, MODEL, THRESHOLD).screen(articles, "", TEMPLATE);
 
         assertEquals(2, client.callCount());
-        assertEquals(120, result.resonant().size()); // all score 7 >= 6
+        assertEquals(120, result.resonant().size()); // all score 3 >= 2
         assertTrue("batch 1 numbers from 1", client.promptAt(0).contains("[1] "));
         assertTrue("batch 1 reaches 100", client.promptAt(0).contains("[100] "));
         assertTrue("batch 2 offset starts at 101", client.promptAt(1).contains("[101] "));
@@ -68,27 +68,27 @@ public class ScreenerPass_utest
     public void coercesStringIndicesAndScores()
     {
         StubClaudeClient client = new StubClaudeClient().enqueue(
-                "[{\"i\":\"1\",\"score\":\"8\",\"reason\":\"x\"},{\"i\":\"2\",\"score\":\"3\"}]");
+                "[{\"i\":\"1\",\"score\":\"3\",\"reason\":\"x\"},{\"i\":\"2\",\"score\":\"1\"}]");
         List<ObjectNode> articles = articles(5, 6);
 
         ScreenerResult result = new ScreenerPass(client, MODEL, THRESHOLD).screen(articles, "", TEMPLATE);
 
         assertEquals(List.of(5), ids(result.resonant()));
-        assertEquals(8, articles.get(0).path("screener_score").asInt());
-        assertEquals(3, articles.get(1).path("screener_score").asInt());
+        assertEquals(3, articles.get(0).path("screener_score").asInt());
+        assertEquals(1, articles.get(1).path("screener_score").asInt());
     }
 
     @Test
     public void shiftsWhollyZeroBasedIndices()
     {
         // One article scored at index 0: 1-based coverage is 0, 0-based is 1 -> shift +1.
-        StubClaudeClient client = new StubClaudeClient().enqueue("[{\"i\":0,\"score\":8,\"reason\":\"z\"}]");
+        StubClaudeClient client = new StubClaudeClient().enqueue("[{\"i\":0,\"score\":3,\"reason\":\"z\"}]");
         List<ObjectNode> articles = articles(9);
 
         ScreenerResult result = new ScreenerPass(client, MODEL, THRESHOLD).screen(articles, "", TEMPLATE);
 
         assertEquals(List.of(9), ids(result.resonant()));
-        assertEquals(8, articles.get(0).path("screener_score").asInt());
+        assertEquals(3, articles.get(0).path("screener_score").asInt());
     }
 
     @Test

@@ -190,7 +190,7 @@ public final class ScreenerPass
         List<ObjectNode> resonant = new ArrayList<>();
         for (ObjectNode article : articles)
         {
-            if (Math.abs(article.path("screener_score").asInt(0)) >= threshold_)
+            if (article.path("screener_score").asInt(0) >= threshold_)
             {
                 resonant.add(article);
             }

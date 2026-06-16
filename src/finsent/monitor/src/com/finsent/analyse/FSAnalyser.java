@@ -961,17 +961,17 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         if (resonant.size() > DEEP_ANALYSIS_MAX)
         {
             GlobalSystem.warning().writes(NAME, resonant.size() + " resonant exceeds cap " + DEEP_ANALYSIS_MAX
-                    + " -- keeping top " + DEEP_ANALYSIS_MAX + " by |score|.");
+                    + " -- keeping top " + DEEP_ANALYSIS_MAX + " by score.");
             List<ObjectNode> sorted = new ArrayList<>(resonant);
-            sorted.sort((a, b) -> Integer.compare(absScore(b), absScore(a)));
+            sorted.sort((a, b) -> Integer.compare(score(b), score(a)));
             capped = new ArrayList<>(sorted.subList(0, DEEP_ANALYSIS_MAX));
         }
         return capped;
     }
 
-    private static int absScore(ObjectNode article)
+    private static int score(ObjectNode article)
     {
-        return Math.abs(article.path("screener_score").asInt(0));
+        return article.path("screener_score").asInt(0);
     }
 
     private static String preTrendLabel(ArrayNode bars)

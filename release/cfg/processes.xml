@@ -124,7 +124,7 @@
             claudeDeepAnalModel="claude-sonnet-4-6"
             claudeScreenerModel="claude-haiku-4-5-20251001"
             anthropicMessagesUrl="https://api.anthropic.com/v1/messages"
-            screenerThreshold="6"
+            screenerThreshold="2"
             promptsDir="prompts"
             notifyMinImpactTier="high"
             notifyMinConfidence="low"

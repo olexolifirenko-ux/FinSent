@@ -63,11 +63,16 @@ public final class ArticleSources
         return sources;
     }
 
-    /** The X amplifier source over the configured accounts, or null when the key/accounts are absent. */
+    /**
+     * The X amplifier source over the core + situational accounts (merged into the one squawk query),
+     * or null when the key or both account lists are absent. Core is listed first so that if the
+     * combined list overruns the provider's clause cap, the situational tail is what gets dropped.
+     */
     private static IArticleSource buildX(Config config)
     {
         String apiKey = config.getxapiKey().trim();
-        List<String> accounts = config.xAccounts();
+        List<String> accounts = new ArrayList<>(config.xAccounts());
+        accounts.addAll(config.xSituationalAccounts());
         IArticleSource source = null;
         if (keyConfigured("x", apiKey) && !accounts.isEmpty())
         {

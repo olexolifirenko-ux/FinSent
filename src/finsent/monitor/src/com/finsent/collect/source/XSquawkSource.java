@@ -39,6 +39,9 @@ public final class XSquawkSource implements IArticleSource
     // advanced_search "product": "Latest" returns the most recent tweets (vs the relevance-ranked "Top").
     private static final String PRODUCT = "Latest";
     private static final int MAX_DESC = 500;
+    // GetXAPI advanced_search silently returns ZERO tweets once a query carries more than this many
+    // from: clauses (no error -- a total blackout), so the merged account list is capped here.
+    static final int MAX_ACCOUNTS = 25;
 
     private final String searchUrl_;
     private final String apiKey_;
@@ -55,20 +58,49 @@ public final class XSquawkSource implements IArticleSource
         maxRetries_ = maxRetries;
     }
 
-    /** OR the accounts into one {@code from:a OR from:b ...} query, tolerating a leading {@code @}. */
+    /**
+     * OR the accounts into one {@code from:a OR from:b ...} query (tolerating a leading {@code @}),
+     * capped at {@link #MAX_ACCOUNTS} clauses -- past that the provider silently returns nothing.
+     */
     static String buildQuery(List<String> accounts)
     {
         StringBuilder query = new StringBuilder();
+        for (String handle : capHandles(normalize(accounts)))
+        {
+            query.append(query.length() == 0 ? "" : " OR ").append("from:").append(handle);
+        }
+        return query.toString();
+    }
+
+    /** Trim, drop a leading {@code @}, and skip blanks -- the clean handle list, order preserved. */
+    private static List<String> normalize(List<String> accounts)
+    {
+        List<String> handles = new ArrayList<>();
         for (String account : accounts)
         {
             String handle = account == null ? "" : account.trim();
             handle = handle.startsWith("@") ? handle.substring(1) : handle;
             if (!handle.isEmpty())
             {
-                query.append(query.length() == 0 ? "" : " OR ").append("from:").append(handle);
+                handles.add(handle);
             }
         }
-        return query.toString();
+        return handles;
+    }
+
+    /** Cap to the provider's clause limit, loudly warning and dropping the overflow (the list tail). */
+    private static List<String> capHandles(List<String> handles)
+    {
+        List<String> capped = handles;
+        if (handles.size() > MAX_ACCOUNTS)
+        {
+            GlobalSystem.warning().writes(NAME, "X account list has " + handles.size() + " handles but GetXAPI "
+                    + "advanced_search caps at " + MAX_ACCOUNTS + " from: clauses (it silently returns nothing "
+                    + "past that) -- following the first " + MAX_ACCOUNTS + ", dropping: "
+                    + handles.subList(MAX_ACCOUNTS, handles.size()));
+            capped = handles.subList(0, MAX_ACCOUNTS);
+        }
+        return capped;
     }
 
     @Override

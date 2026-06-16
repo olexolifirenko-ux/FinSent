@@ -90,17 +90,32 @@
 
             <!-- Fast X (Twitter) amplifier accounts, fetched as one merged from:a OR from:b query on the
                  urgent lane (GetXAPI advanced_search). Curate by reliability, not reach. Requires
-                 GETXAPI_KEY in release/.env; without it the source is skipped. Tier 1 fast wires first,
-                 then Tier 2 principals. -->
+                 GETXAPI_KEY in release/.env; without it the source is skipped. Fast wires first, then
+                 principals. NOTE: @realDonaldTrump is intentionally NOT here -- he posts on Truth Social,
+                 not X (his X mirror lags weeks and missed the Iran-deal post), so the trumpstruth.org
+                 RSS in UrgentSources is the faster, primary Trump source. -->
             <XAccounts>
                 <Account handle="DeItaone"/>
                 <Account handle="FirstSquawk"/>
                 <Account handle="unusual_whales"/>
                 <Account handle="WatcherGuru"/>
-                <Account handle="realDonaldTrump"/>
                 <Account handle="federalreserve"/>
                 <Account handle="SECGov"/>
+                <Account handle="NickTimiraos"/>     <!-- WSJ Fed whisperer; monetary-surprise signal -->
+                <Account handle="SecScottBessent"/>  <!-- US Treasury Secretary; debt/dollar/sanctions/deals -->
             </XAccounts>
+
+            <!-- Situational principals: follow temporarily while a specific situation is developing,
+                 PRUNE once it resolves. Merged with XAccounts into one query; total (core + situational)
+                 must stay <= 25 handles or GetXAPI advanced_search silently returns nothing.
+                 Current set (2026-06): the Iran-US peace deal / Middle East / oil-price situation --
+                 these move BTC via the oil -> risk-sentiment channel. Remove after the deal is signed
+                 and priced in. -->
+            <XSituationalAccounts>
+                <!--Account handle="CMShehbaz"/-->   <!-- Pakistan PM; broke the deal announcement. But - commented since he was relevant for exactly one event (Iran mediation) -->
+                <Account handle="SecRubio"/>         <!-- US Secretary of State; deal/sanctions -->
+                <Account handle="Netanyahu"/>        <!-- Israel; Iran/Israel axis -->
+            </XSituationalAccounts>
         </FSCollector>
 
         <!-- What the analyser owns: interpretation & notification. -->

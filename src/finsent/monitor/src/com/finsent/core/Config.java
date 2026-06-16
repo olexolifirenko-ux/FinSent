@@ -162,11 +162,27 @@ public final class Config
         return Secrets.resolve(attr(collectorNode_, "getxapiKey", ""));
     }
 
-    /** X (Twitter) amplifier handles polled as one merged squawk query; empty disables the source. */
+    /** Core X (Twitter) amplifier handles (permanent), polled as part of the merged squawk query. */
     public List<String> xAccounts()
     {
+        return handles("XAccounts");
+    }
+
+    /**
+     * Situational X handles to follow temporarily as world events shift (a principal who matters during
+     * a developing crisis); merged with {@link #xAccounts()} into the one squawk query. Meant to be
+     * curated/pruned by hand as situations resolve.
+     */
+    public List<String> xSituationalAccounts()
+    {
+        return handles("XSituationalAccounts");
+    }
+
+    /** The {@code handle} attributes of {@code <Account>} children under {@code collectorNode_/<container>}. */
+    private List<String> handles(String container)
+    {
         List<String> result = new ArrayList<>();
-        for (XMLData account : children(collectorNode_, "XAccounts", "Account"))
+        for (XMLData account : children(collectorNode_, container, "Account"))
         {
             result.add(account.getAttributeStringValue("handle", ""));
         }

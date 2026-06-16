@@ -1,9 +1,11 @@
 package com.finsent.collect.source;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -28,6 +30,22 @@ public class XSquawkSource_utest
         assertEquals("blank handles are dropped", "from:DeItaone",
                 XSquawkSource.buildQuery(List.of(" ", "DeItaone")));
         assertEquals("empty list yields an empty query", "", XSquawkSource.buildQuery(List.of()));
+    }
+
+    @Test
+    public void buildQueryCapsAtTheProviderClauseLimit()
+    {
+        // Past MAX_ACCOUNTS from: clauses the provider silently returns zero, so the query is capped and
+        // the overflow tail dropped -- the head (core accounts, listed first) is what survives.
+        List<String> many = new ArrayList<>();
+        for (int i = 1; i <= XSquawkSource.MAX_ACCOUNTS + 3; i++)
+        {
+            many.add("acct" + i);
+        }
+        String query = XSquawkSource.buildQuery(many);
+        assertEquals("capped at the provider clause limit", XSquawkSource.MAX_ACCOUNTS, query.split(" OR ").length);
+        assertTrue("keeps the head of the list", query.startsWith("from:acct1 OR "));
+        assertFalse("drops the overflow tail", query.contains("from:acct" + (XSquawkSource.MAX_ACCOUNTS + 1)));
     }
 
     @Test

@@ -14,13 +14,18 @@ import com.finsent.core.Json;
 /**
  * Anthropic Messages API client (ports Python {@code analyse.call_claude}). Issues a raw HTTP POST
  * through {@link Http} (which handles retry/backoff) with the {@code x-api-key} and
- * {@code anthropic-version} headers, a single-user-message body, and returns the text of the first
- * content block. The endpoint URL is injected (from {@code Config}) rather than hardcoded.
+ * {@code anthropic-version} headers, a single-user-message body at {@code temperature} 0 (the passes
+ * are deterministic classification/extraction), and returns the text of the first content block. The
+ * endpoint URL is injected (from {@code Config}) rather than hardcoded.
  */
 public final class ClaudeClient implements IClaudeClient
 {
     private static final String ANTHROPIC_VERSION = "2023-06-01";
     private static final Duration TIMEOUT = Duration.ofSeconds(60);
+    // Both passes are deterministic classification/extraction (screener scoring, deep JSON analysis),
+    // not creative generation, so we pin temperature to 0 for the most reproducible output. Haiku 4.5
+    // and Sonnet 4.6 both still accept the sampling parameter (it is only removed on the Opus-4.7+ tier).
+    private static final double TEMPERATURE = 0.0;
 
     private final String apiKey_;
     private final String messagesUrl_;
@@ -50,6 +55,7 @@ public final class ClaudeClient implements IClaudeClient
         ObjectNode body = Json.newObject();
         body.put("model", model);
         body.put("max_tokens", maxTokens);
+        body.put("temperature", TEMPERATURE);
         body.set("messages", messages);
         return Json.toCompactString(body);
     }

@@ -1,0 +1,12 @@
+{
+  "CPI MoM" : {
+    "event" : "CPI MoM",
+    "release" : "2026-06-11T12:30:00Z",
+    "consensus" : 0.3,
+    "actual" : 0.6315,
+    "unit" : "%",
+    "hot_direction" : "bearish",
+    "inline_band" : 0.1,
+    "high_band" : 0.2
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "12:20" : {
+    "analyzed_at" : "2026-06-15T22:29:17Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 2214, 2217, 2218, 2220, 2224, 2225, 2226 ],
+    "screener" : [ {
+      "article_id" : 2214,
+      "score" : 8,
+      "reason" : "Confirmed military strike threat against Iran with explicit oil infrastructure targeting (Kharg Island); major geopolitical escalation with direct oil supply shock implications for BTC as macro hedge."
+    }, {
+      "article_id" : 2217,
+      "score" : 7,
+      "reason" : "ECB rate hike during Iran war escalation is NEW monetary policy signal; tightening cycle restart in EU amid energy cost surge directly impacts macro risk-off sentiment and BTC positioning."
+    }, {
+      "article_id" : 2218,
+      "score" : 0,
+      "reason" : "dup/recap: follow-up commentary on Trump's claims; does not confirm new oil removal event, merely fact-checks existing statements."
+    }, {
+      "article_id" : 2220,
+      "score" : 0,
+      "reason" : "no predictive value: routine corporate bond issuance unrelated to BTC, macro, geopolitics, or crypto."
+    }, {
+      "article_id" : 2224,
+      "score" : 2,
+      "reason" : "West Bank settlement funding is minor geopolitical signal; incremental escalation but indirect to BTC; no confirmed impact on oil, rates, or macro risk."
+    }, {
+      "article_id" : 2225,
+      "score" : 0,
+      "reason" : "recap/commentary: G7 summit preview with no new confirmed events or decisions; diplomatic setup article with low actionability."
+    }, {
+      "article_id" : 2226,
+      "score" : 0,
+      "reason" : "no predictive value: domestic terror investigation briefing unrelated to BTC or macro; crime/security news, not market-moving event."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 62684.01,
+      "article_count" : 7,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ ],
+      "reasoning" : "Item 1 is a fact (ECB hike executed) but fails Step 2 — it describes a known conjuncture (energy costs rising from the Iran war) and a widely telegraphed policy response, already priced. Item 2 fails Step 1 — Trump's TruthSocial post is an unexecuted threat/posture ('will be hitting... TONIGHT'), not a confirmed military action; Trump is a habitual user of inflammatory leverage-seeking language and such threats routinely do not execute as stated, so it cannot be treated as a causative fact until strikes are confirmed.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.005
+      },
+      "price_context" : {
+        "btc_price" : 63100.01,
+        "change_1h_pct" : -0.01,
+        "change_24h_pct" : 1.53,
+        "range_pos_24h" : 0.927
+      },
+      "articles" : [ {
+        "id" : 2214,
+        "title" : "The United States will be hitting Iran (Whose Navy, Air Force, Radar, Anti Aircraft, and all other forms of Defense, together with most of its offensive capability, are GONE!), VERY HARD TONIGHT. At some point in the not too distant  future, we will be taking Kharg Island, and other oil infrastructure points, and assume total control of their Oil and Gas Markets, much like we have with Venezuela, which is working out brilliantly for both Venezuela and the United States of America. Thank you for your attention to this matter! President DONALD J. TRUMP",
+        "direction" : "neutral",
+        "reasoning" : "Posture, not fact: an unexecuted threat of military strikes posted on TruthSocial by a figure known for inflammatory leverage-seeking statements — the action has not occurred and cannot be treated as a causative event.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-11T12:22:08Z",
+        "url" : "https://www.trumpstruth.org/statuses/39212",
+        "price_at_publish" : 62716.1
+      }, {
+        "id" : 2217,
+        "title" : "ECB hikes interest rates for first time since 2023 as Iran war ramps-up energy costs",
+        "direction" : "neutral",
+        "reasoning" : "Fact but not new: an ECB hike framed against a known energy/war backdrop describes the existing conjuncture and is likely already priced, providing no fresh trigger.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-11T12:29:17Z",
+        "url" : "https://www.cnbc.com/2026/06/11/ecb-hikes-interest-rates.html",
+        "price_at_publish" : 62684.01
+      } ]
+    },
+    "resonant_article_ids" : [ 2214, 2217 ]
+  }
+}

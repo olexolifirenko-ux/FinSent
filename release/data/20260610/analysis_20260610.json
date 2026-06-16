@@ -1,0 +1,3726 @@
+{
+  "00:00" : {
+    "analyzed_at" : "2026-06-10T00:20:17Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1606, 1608, 1610, 1611 ],
+    "screener" : [ {
+      "article_id" : 1606,
+      "score" : 7,
+      "reason" : "Active US-Iran military escalation with direct helicopter downing and vows of response; geopolitical flashpoint that could trigger oil supply shock and risk-off crypto liquidations."
+    }, {
+      "article_id" : 1608,
+      "score" : 5,
+      "reason" : "Iran war spillover effect on Malaysia's fiscal position; indirect macro signal of conflict broadening economic damage and potential EM currency/debt stress that could feed into risk sentiment."
+    }, {
+      "article_id" : 1610,
+      "score" : 0,
+      "reason" : "Trade policy discussion without concrete tariff announcement; speculative positioning rather than NEW actionable trigger; too vague to drive immediate institutional repositioning."
+    }, {
+      "article_id" : 1611,
+      "score" : 0,
+      "reason" : "Routine FX bank inspection announcement; no novel regulatory shock, systemic risk, or stablecoin concern disclosed; procedural not predictive."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61747.04,
+      "article_count" : 4,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "high",
+      "confidence" : "medium",
+      "macro_regime" : "risk_off",
+      "key_events" : [ "US military strikes on Iran following helicopter downing", "Tehran vows response, escalating Middle East conflict risk" ],
+      "reasoning" : "Active US-Iran military escalation is a high-impact geopolitical shock that historically drives risk-off flows; BTC typically sells off alongside equities in acute conflict escalation, and the current macro_regime (4/5 risk-off indicators, VIX up, DXY up, SP500 down) amplifies the bearish transmission. The flat pre-trend suggests this catalyst is not yet priced in, adding incremental downside pressure, though funding neutrality means no cascade amplification from crowded longs.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7877,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 4.0E-4
+      },
+      "price_context" : {
+        "btc_price" : 61747.04,
+        "change_1h_pct" : 0.03,
+        "change_24h_pct" : -1.62,
+        "range_pos_24h" : 0.3522
+      },
+      "articles" : [ {
+        "id" : 1606,
+        "title" : "Iran war live: US strikes after downing of helicopter, Tehran vows response",
+        "direction" : "bearish",
+        "reasoning" : "US strikes on Iran with Tehran vowing retaliation creates acute geopolitical risk escalation, triggering risk-off capital flows that historically pressure BTC alongside equities in the near term.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T00:00:00Z",
+        "url" : "https://www.aljazeera.com/news/liveblog/2026/6/10/iran-war-live-tehran-vows-response-as-us-strikes-over-downed-helicopter?traffic_source=rss",
+        "price_at_publish" : 61747.04
+      } ]
+    },
+    "resonant_article_ids" : [ 1606 ]
+  },
+  "00:20" : {
+    "analyzed_at" : "2026-06-10T00:50:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1612, 1618 ],
+    "screener" : [ {
+      "article_id" : 1612,
+      "score" : 0,
+      "reason" : "No substantive content; unrelated to crypto or macro events affecting BTC"
+    }, {
+      "article_id" : 1618,
+      "score" : 0,
+      "reason" : "Pharmaceutical IPO unrelated to BTC; no crypto, monetary policy, or macro trigger"
+    } ],
+    "prediction_record" : null
+  },
+  "00:30" : {
+    "analyzed_at" : "2026-06-10T00:40:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1614, 1615, 1617 ],
+    "screener" : [ {
+      "article_id" : 1614,
+      "score" : 0,
+      "reason" : "Domestic Iranian food inflation narrative; no new macro trigger, BTC-irrelevant geopolitical commentary."
+    }, {
+      "article_id" : 1615,
+      "score" : 0,
+      "reason" : "No title, no content accessible; unscoreable."
+    }, {
+      "article_id" : 1617,
+      "score" : 2,
+      "reason" : "Hearing on crypto tax legislation reveals disagreement but no new bill, vote, or regulatory action; procedural noise, slow-moving signal."
+    } ],
+    "prediction_record" : null
+  },
+  "00:10" : {
+    "analyzed_at" : "2026-06-10T00:36:20Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1616 ],
+    "screener" : [ {
+      "article_id" : 1616,
+      "score" : 0,
+      "reason" : "Immigration/humanitarian story with no connection to BTC price drivers; unrelated to crypto, macro policy, geopolitics affecting major economies, or trade/sanctions."
+    } ],
+    "prediction_record" : null
+  },
+  "00:40" : {
+    "analyzed_at" : "2026-06-10T01:00:09Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1619 ],
+    "screener" : [ {
+      "article_id" : 1619,
+      "score" : 0,
+      "reason" : "unrelated to crypto/macro/geopolitical factors affecting BTC; domestic law enforcement incident with no systemic economic or policy implications"
+    } ],
+    "prediction_record" : null
+  },
+  "01:00" : {
+    "analyzed_at" : "2026-06-10T01:10:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1620 ],
+    "screener" : [ {
+      "article_id" : 1620,
+      "score" : 0,
+      "reason" : "Unrelated topic (Australian property market commentary); no crypto, macro policy, or geopolitical trigger with BTC impact"
+    } ],
+    "prediction_record" : null
+  },
+  "01:10" : {
+    "analyzed_at" : "2026-06-10T01:20:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1621 ],
+    "screener" : [ {
+      "article_id" : 1621,
+      "score" : 0,
+      "reason" : "Price commentary on Korean equities; US-Iran strike is geopolitical noise without direct BTC catalyst or magnitude; historical precedent shows such events have minimal lasting crypto impact."
+    } ],
+    "prediction_record" : null
+  },
+  "01:20" : {
+    "analyzed_at" : "2026-06-10T01:50:09Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1622, 1626, 1627 ],
+    "screener" : [ {
+      "article_id" : 1622,
+      "score" : 0,
+      "reason" : "No content; unscoreable"
+    }, {
+      "article_id" : 1626,
+      "score" : 0,
+      "reason" : "Pharma IPO unrelated to crypto or macro drivers of BTC"
+    }, {
+      "article_id" : 1627,
+      "score" : 4,
+      "reason" : "Japan inflation spike + Iran war energy pressure is macro-relevant but indirect; moderate signal for risk asset repricing and potential BoJ policy response, not immediate BTC trigger"
+    } ],
+    "prediction_record" : null
+  },
+  "01:30" : {
+    "analyzed_at" : "2026-06-10T02:00:11Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1625, 1630, 1631, 1632 ],
+    "screener" : [ {
+      "article_id" : 1625,
+      "score" : 0,
+      "reason" : "Company IPO unrelated to crypto, monetary policy, or macro events; no BTC impact channel"
+    }, {
+      "article_id" : 1630,
+      "score" : 0,
+      "reason" : "Indian equity market activity; no direct BTC catalyst or macro signal"
+    }, {
+      "article_id" : 1631,
+      "score" : 2,
+      "reason" : "China inflation data is macro-relevant but stalling CPI + persistent deflation suggests weak demand; minor deflationary signal could slightly support BTC as hedge, but impact indirect and slow"
+    }, {
+      "article_id" : 1632,
+      "score" : 0,
+      "reason" : "Gaza ceasefire negotiation setback; geopolitical but no immediate escalation or major economy/oil supply shock announced"
+    } ],
+    "prediction_record" : null
+  },
+  "01:50" : {
+    "analyzed_at" : "2026-06-10T02:15:56Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1628, 1629, 1633, 1634 ],
+    "screener" : [ {
+      "article_id" : 1628,
+      "score" : 0,
+      "reason" : "Political commentary with no crypto/macro policy trigger; election result recap unrelated to BTC."
+    }, {
+      "article_id" : 1629,
+      "score" : 1,
+      "reason" : "Law enforcement action on crypto crime; routine prosecution with no systemic risk or regulatory shock signal."
+    }, {
+      "article_id" : 1633,
+      "score" : 0,
+      "reason" : "Commodity market (zinc) technical/supply issue; no macro or crypto relevance to BTC."
+    }, {
+      "article_id" : 1634,
+      "score" : 0,
+      "reason" : "Regional equity market sentiment; no direct trigger for BTC repricing or institutional reallocation."
+    } ],
+    "prediction_record" : null
+  },
+  "02:00" : {
+    "analyzed_at" : "2026-06-10T02:20:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1635 ],
+    "screener" : [ {
+      "article_id" : 1635,
+      "score" : 0,
+      "reason" : "Regional economic commentary with no new crypto/macro policy trigger or BTC-specific catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "02:20" : {
+    "analyzed_at" : "2026-06-10T02:51:36Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1637, 1638, 1642 ],
+    "screener" : [ {
+      "article_id" : 1637,
+      "score" : 0,
+      "reason" : "Indonesia rate hike is local monetary policy with minimal direct BTC impact; no new trigger for institutional repositioning"
+    }, {
+      "article_id" : 1638,
+      "score" : 0,
+      "reason" : "Hong Kong capital flow commentary is opinion/analysis of existing Beijing crackdown; no new actionable event"
+    }, {
+      "article_id" : 1642,
+      "score" : 0,
+      "reason" : "Local civil unrest unrelated to crypto, macro policy, or geopolitics affecting BTC"
+    } ],
+    "prediction_record" : null
+  },
+  "02:30" : {
+    "analyzed_at" : "2026-06-10T02:40:54Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1639 ],
+    "screener" : [ {
+      "article_id" : 1639,
+      "score" : 0,
+      "reason" : "No article content provided; cannot assess for predictive value or new events."
+    } ],
+    "prediction_record" : null
+  },
+  "02:40" : {
+    "analyzed_at" : "2026-06-10T02:50:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1641 ],
+    "screener" : [ {
+      "article_id" : 1641,
+      "score" : 0,
+      "reason" : "Domestic banking sector news unrelated to crypto, monetary policy, or macro events affecting BTC"
+    } ],
+    "prediction_record" : null
+  },
+  "02:10" : {
+    "analyzed_at" : "2026-06-10T02:51:38Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1643 ],
+    "screener" : [ {
+      "article_id" : 1643,
+      "score" : 0,
+      "reason" : "Local crime/violence incident with no macro, geopolitical, or crypto market relevance"
+    } ],
+    "prediction_record" : null
+  },
+  "02:50" : {
+    "analyzed_at" : "2026-06-10T03:23:10Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1644, 1646, 1649 ],
+    "screener" : [ {
+      "article_id" : 1644,
+      "score" : 0,
+      "reason" : "Diplomatic posturing/negotiation rhetoric with no confirmed policy change; frozen assets dispute is ongoing context, not new trigger"
+    }, {
+      "article_id" : 1646,
+      "score" : 0,
+      "reason" : "Sector rotation within China equities; no macro or crypto-relevant trigger; unrelated to BTC price drivers"
+    }, {
+      "article_id" : 1649,
+      "score" : 7,
+      "reason" : "Escalating Iran-US military conflict with direct Strait of Hormuz involvement; oil supply disruption risk and geopolitical instability warrant immediate institutional reassessment of macro risk premium"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61338.11,
+      "article_count" : 3,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "high",
+      "confidence" : "medium",
+      "macro_regime" : "risk_off",
+      "key_events" : [ "Iran strikes Bahrain and Jordan in retaliation for US attacks in Hormuz, escalating Middle East military conflict" ],
+      "reasoning" : "A major kinetic escalation in the Strait of Hormuz region — a critical global oil chokepoint — triggers acute risk-off across assets; BTC, already near 24h lows in a risk_off macro regime with 4/5 indicators aligned bearish, faces additional selling pressure as institutions reduce risk exposure, though thin Asia-session liquidity and neutral funding (no crowded long to cascade) temper the magnitude somewhat.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8039,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0045
+      },
+      "price_context" : {
+        "btc_price" : 61337.99,
+        "change_1h_pct" : -0.61,
+        "change_24h_pct" : -2.44,
+        "range_pos_24h" : 0.2032
+      },
+      "articles" : [ {
+        "id" : 1649,
+        "title" : "Iran strikes Bahrain and Jordan in retaliation for US attacks in Hormuz",
+        "direction" : "bearish",
+        "reasoning" : "Iran-US military escalation with strikes on US-aligned Gulf states creates a geopolitical shock event that historically drives broad risk-off liquidation including crypto, with the Hormuz angle threatening oil supply disruption and macro destabilization amplifying flight-to-safety flows away from BTC.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T02:58:08Z",
+        "url" : "https://www.aljazeera.com/news/2026/6/10/iran-strikes-bahrain-and-jordan-in-retaliation-for-us-attacks-in-hormuz?traffic_source=rss",
+        "price_at_publish" : 61338.11
+      } ]
+    },
+    "resonant_article_ids" : [ 1649 ]
+  },
+  "03:00" : {
+    "analyzed_at" : "2026-06-10T03:23:09Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1645, 1648 ],
+    "screener" : [ {
+      "article_id" : 1645,
+      "score" : 0,
+      "reason" : "Opinion/commentary on tech stocks; no new factual trigger or actionable macro event affecting BTC."
+    }, {
+      "article_id" : 1648,
+      "score" : 1,
+      "reason" : "Domestic political instability in Bolivia; minimal direct BTC impact unless escalates to sovereign debt/currency crisis or sanctions on major economy."
+    } ],
+    "prediction_record" : null
+  },
+  "03:10" : {
+    "analyzed_at" : "2026-06-10T03:23:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1647 ],
+    "screener" : [ {
+      "article_id" : 1647,
+      "score" : 0,
+      "reason" : "Unrelated to crypto/macro/geopolitical factors affecting BTC; airline fraud incident has no market impact"
+    } ],
+    "prediction_record" : null
+  },
+  "03:20" : {
+    "analyzed_at" : "2026-06-10T03:25:40Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1650 ],
+    "screener" : [ {
+      "article_id" : 1650,
+      "score" : 0,
+      "reason" : "Domestic US parliamentary procedure regarding parliamentarian term limits and election law—no direct crypto/macro/geopolitical trigger material to BTC pricing."
+    } ],
+    "prediction_record" : null
+  },
+  "03:30" : {
+    "analyzed_at" : "2026-06-10T04:00:11Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1656, 1658 ],
+    "screener" : [ {
+      "article_id" : 1656,
+      "score" : 0,
+      "reason" : "Price commentary on rupiah movement; no new macro trigger with BTC relevance. Rate decision already occurred and is being described, not announced."
+    }, {
+      "article_id" : 1658,
+      "score" : 0,
+      "reason" : "Tech infrastructure partnership announcement unrelated to crypto, monetary policy, geopolitics, or trade dynamics affecting BTC."
+    } ],
+    "prediction_record" : null
+  },
+  "04:00" : {
+    "analyzed_at" : "2026-06-11T04:10:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1660, 2051, 2052 ],
+    "screener" : [ {
+      "article_id" : 1660,
+      "score" : 0,
+      "reason" : "dup/recap — market commentary on stock rebounds and BofA warnings; no new actionable trigger for BTC"
+    }, {
+      "article_id" : 2051,
+      "score" : 2,
+      "reason" : "minor signal — AI model release and vulnerability discovery noted; indirect and slow channel to BTC price; no concrete protocol exploit or hack yet"
+    }, {
+      "article_id" : 2052,
+      "score" : 5,
+      "reason" : "new inflation data (4.2% YoY, 3-month stretch, gas-driven) — actionable for Fed policy expectations and macro positioning; may pressure risk assets and influence rate-cut timeline"
+    } ],
+    "prediction_record" : null
+  },
+  "03:40" : {
+    "analyzed_at" : "2026-06-10T04:00:09Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1657 ],
+    "screener" : [ {
+      "article_id" : 1657,
+      "score" : 0,
+      "reason" : "Opinion/commentary on Hong Kong capital policy without new actionable event or concrete regulatory announcement affecting crypto markets"
+    } ],
+    "prediction_record" : null
+  },
+  "03:50" : {
+    "analyzed_at" : "2026-06-10T04:20:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1659, 1661, 1662 ],
+    "screener" : [ {
+      "article_id" : 1659,
+      "score" : 0,
+      "reason" : "Sports/entertainment topic unrelated to BTC price drivers"
+    }, {
+      "article_id" : 1661,
+      "score" : 0,
+      "reason" : "Price commentary on existing market rebound; no new macro trigger or policy announcement"
+    }, {
+      "article_id" : 1662,
+      "score" : 0,
+      "reason" : "Political controversy unrelated to crypto, monetary policy, or BTC market drivers"
+    } ],
+    "prediction_record" : null
+  },
+  "04:10" : {
+    "analyzed_at" : "2026-06-10T04:26:11Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1663 ],
+    "screener" : [ {
+      "article_id" : 1663,
+      "score" : 0,
+      "reason" : "Geopolitical event but no direct crypto/macro policy trigger; regional military activity without systemic economic impact yet priced into risk assets"
+    } ],
+    "prediction_record" : null
+  },
+  "04:20" : {
+    "analyzed_at" : "2026-06-10T04:30:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1664, 1665 ],
+    "screener" : [ {
+      "article_id" : 1664,
+      "score" : 0,
+      "reason" : "Regulatory compliance update at prediction market platform; no new systemic risk or policy shock affecting BTC price discovery or macro conditions."
+    }, {
+      "article_id" : 1665,
+      "score" : 0,
+      "reason" : "Commentary on potential SpaceX listing by HKEx CEO; unrelated to BTC, crypto markets, or macro/monetary/geopolitical events with price impact."
+    } ],
+    "prediction_record" : null
+  },
+  "04:30" : {
+    "analyzed_at" : "2026-06-10T05:10:09Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1666, 1667, 1673 ],
+    "screener" : [ {
+      "article_id" : 1666,
+      "score" : 0,
+      "reason" : "UN report on Israeli-Palestinian conflict; regional politics with no direct crypto/macro trigger or new market-moving event"
+    }, {
+      "article_id" : 1667,
+      "score" : 6,
+      "reason" : "US-Iran military escalation is NEW and material; increases geopolitical risk premium, oil supply concerns, and safe-haven demand for BTC; proportional response lowers immediate war risk but sustains tension"
+    }, {
+      "article_id" : 1673,
+      "score" : 5,
+      "reason" : "Japan-Malaysia defense pact signals China tension and Iran war spillover to Asia supply chains; indirect macro impact via energy/trade disruption risk; moderate institutional signal on macro uncertainty"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61470.51,
+      "article_count" : 3,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "high",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ "US military strikes on Iranian air defense and radar sites following helicopter attack" ],
+      "reasoning" : "A kinetic US-Iran military exchange is a classic geopolitical risk-off shock that historically drives flight from risk assets including BTC; landing into an already weak tape (BTC -2.95% 24h, risk_off macro trend, VIX rising) with a flat pre-trend means little is priced in, amplifying near-term bearish transmission — though the 'proportional/completed' framing may cap the panic bid if markets read this as contained escalation rather than open-ended conflict.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8097,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0042
+      },
+      "price_context" : {
+        "btc_price" : 61470.51,
+        "change_1h_pct" : -0.13,
+        "change_24h_pct" : -2.95,
+        "range_pos_24h" : 0.2515
+      },
+      "articles" : [ {
+        "id" : 1667,
+        "title" : "US Says Completed Iran Strikes After Helicopter Attack",
+        "direction" : "bearish",
+        "reasoning" : "US strikes on Iran trigger geopolitical risk-off sentiment, pressuring speculative assets like BTC as traders reduce exposure and safe-haven flows dominate in thin Asia session liquidity.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T04:30:58Z",
+        "url" : "https://www.bloomberg.com/news/videos/2026-06-10/us-says-completed-iran-strikes-after-helicopter-attack-video",
+        "price_at_publish" : 61470.51
+      } ]
+    },
+    "resonant_article_ids" : [ 1667 ]
+  },
+  "04:40" : {
+    "analyzed_at" : "2026-06-10T05:10:19Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1671, 1674 ],
+    "screener" : [ {
+      "article_id" : 1671,
+      "score" : 0,
+      "reason" : "Market sentiment commentary with no new factual trigger; vague macro outlook without concrete policy or data announcement."
+    }, {
+      "article_id" : 1674,
+      "score" : 0,
+      "reason" : "Unrelated to crypto or macro drivers of BTC; domestic political dispute over real estate project with no systemic financial impact."
+    } ],
+    "prediction_record" : null
+  },
+  "04:50" : {
+    "analyzed_at" : "2026-06-10T05:20:09Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1672, 1677 ],
+    "screener" : [ {
+      "article_id" : 1672,
+      "score" : 0,
+      "reason" : "Weather pattern commentary with no direct crypto/macro policy trigger; El Niño impacts are diffuse and already partially priced into commodity markets"
+    }, {
+      "article_id" : 1677,
+      "score" : 6,
+      "reason" : "Iran war oil supply shock is new geopolitical catalyst; China's strategic reserve drawdown signals real supply constraint risk, which typically drives risk-on sentiment and macro inflation hedging demand for BTC"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61256.01,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "confidence" : "low",
+      "macro_regime" : "mixed",
+      "key_events" : [ ],
+      "reasoning" : "China tapping commercial oil stockpiles is a macro commodity story with no direct BTC transmission channel; with BTC already near 24h lows and funding neutral, this article provides no actionable catalyst for crypto markets in the near term.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8096,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0043
+      },
+      "price_context" : {
+        "btc_price" : 61340.01,
+        "change_1h_pct" : -0.34,
+        "change_24h_pct" : -3.16,
+        "range_pos_24h" : 0.2039
+      },
+      "articles" : [ {
+        "id" : 1677,
+        "title" : "China Taps Commercial Oil Stockpiles to Help Weather Gulf Shock",
+        "direction" : "neutral",
+        "reasoning" : "Oil supply management by China affects energy and commodity markets but has no direct or near-term mechanism to move BTC price.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T04:57:50Z",
+        "url" : "https://www.bloomberg.com/news/articles/2026-06-10/china-taps-commercial-oil-stockpiles-to-help-weather-gulf-shock",
+        "price_at_publish" : 61256.01
+      } ]
+    },
+    "resonant_article_ids" : [ 1677 ]
+  },
+  "05:10" : {
+    "analyzed_at" : "2026-06-10T05:20:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1675, 1676 ],
+    "screener" : [ {
+      "article_id" : 1675,
+      "score" : 0,
+      "reason" : "Price commentary on historical ETF AUM levels; no new trigger or event that will move prices forward"
+    }, {
+      "article_id" : 1676,
+      "score" : 0,
+      "reason" : "Generic observation about Chinese retail investor behavior trends; no specific new policy, flow event, or actionable catalyst with measurable impact"
+    } ],
+    "prediction_record" : null
+  },
+  "05:00" : {
+    "analyzed_at" : "2026-06-10T05:29:12Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1678, 1679 ],
+    "screener" : [ {
+      "article_id" : 1678,
+      "score" : 0,
+      "reason" : "AI espionage and cybersecurity incident; no direct macro/monetary/policy trigger for BTC; unrelated to crypto or financial markets."
+    }, {
+      "article_id" : 1679,
+      "score" : 0,
+      "reason" : "Regional military conflict; no systemic impact on major economies, oil markets, or financial systems; insufficient magnitude for institutional BTC repositioning."
+    } ],
+    "prediction_record" : null
+  },
+  "05:20" : {
+    "analyzed_at" : "2026-06-11T06:30:14Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1680, 1681, 1682, 2091 ],
+    "screener" : [ {
+      "article_id" : 1680,
+      "score" : 0,
+      "reason" : "dup/recap — price commentary on XRP movement already reflected in markets"
+    }, {
+      "article_id" : 1681,
+      "score" : 0,
+      "reason" : "dup/recap — describes ongoing rate-hike expectations and tech selloff, no new event"
+    }, {
+      "article_id" : 1682,
+      "score" : 0,
+      "reason" : "unrelated — entertainment/lifestyle, no crypto or macro relevance"
+    }, {
+      "article_id" : 2091,
+      "score" : 0,
+      "reason" : "dup/reaction — market reaction to already-covered US-Iran strikes; no new geopolitical development"
+    } ],
+    "prediction_record" : null
+  },
+  "05:30" : {
+    "analyzed_at" : "2026-06-10T06:00:24Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1683, 1685, 1688 ],
+    "screener" : [ {
+      "article_id" : 1683,
+      "score" : 0,
+      "reason" : "Commentary on IPO market structure and China regulatory recap; no new BTC-actionable trigger."
+    }, {
+      "article_id" : 1685,
+      "score" : 6,
+      "reason" : "New geopolitical escalation signal: Iran doctrine shift to swift retaliation raises Middle East conflict risk, oil supply shock potential, flight-to-safety demand for BTC."
+    }, {
+      "article_id" : 1688,
+      "score" : 0,
+      "reason" : "Domestic Indian monetary policy adjustment; indirect currency stabilization play, not a novel macro or crypto catalyst for BTC."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61220.02,
+      "article_count" : 3,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "confidence" : "low",
+      "macro_regime" : "mixed",
+      "key_events" : [ ],
+      "reasoning" : "The article is geopolitical commentary/opinion on Iranian doctrine with no concrete event or new policy action; no direct BTC price mechanism is present, and BTC is already near its 24h low absorbing broader macro pressure independently.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8017,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0037
+      },
+      "price_context" : {
+        "btc_price" : 61269.99,
+        "change_1h_pct" : -0.04,
+        "change_24h_pct" : -3.21,
+        "range_pos_24h" : 0.1797
+      },
+      "articles" : [ {
+        "id" : 1685,
+        "title" : "Trita Parsi: Iran is pursuing a doctrine of swift retaliation",
+        "direction" : "neutral",
+        "reasoning" : "Opinion piece on Iranian deterrence doctrine with no actionable event, no sanctions, no market-moving trigger, and no direct transmission channel to BTC pricing.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T05:38:16Z",
+        "url" : "https://www.aljazeera.com/video/newsfeed/2026/6/10/aje-onl-nf_trita-parsi_iran-doctrine-of-swift-retaliation-100626?traffic_source=rss",
+        "price_at_publish" : 61220.02
+      } ]
+    },
+    "resonant_article_ids" : [ 1685 ]
+  },
+  "05:40" : {
+    "analyzed_at" : "2026-06-10T06:00:22Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1684, 1687 ],
+    "screener" : [ {
+      "article_id" : 1684,
+      "score" : 0,
+      "reason" : "Opinion/speculation about Fed rates (known factor) and vague reference to Anthropic IPO with no concrete news trigger or actionable catalyst"
+    }, {
+      "article_id" : 1687,
+      "score" : 0,
+      "reason" : "Generic market commentary with no new event, no crypto relevance, no actionable information"
+    } ],
+    "prediction_record" : null
+  },
+  "06:00" : {
+    "analyzed_at" : "2026-06-10T06:27:36Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1689, 1690, 1691 ],
+    "screener" : [ {
+      "article_id" : 1689,
+      "score" : 0,
+      "reason" : "South African utility restructuring—no direct BTC price trigger; domestic credit concern unrelated to crypto or macro monetary policy."
+    }, {
+      "article_id" : 1690,
+      "score" : 0,
+      "reason" : "Egypt inflation recap—describes past data already released; no new policy decision or surprise; indirect macro signal with minimal BTC relevance."
+    }, {
+      "article_id" : 1691,
+      "score" : 0,
+      "reason" : "US domestic politics/election coverage—unrelated to crypto, macro policy, geopolitics affecting BTC, or trade; entertainment/political news."
+    } ],
+    "prediction_record" : null
+  },
+  "06:10" : {
+    "analyzed_at" : "2026-06-11T06:30:11Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1692, 1693, 2090 ],
+    "screener" : [ {
+      "article_id" : 1692,
+      "score" : 0,
+      "reason" : "dup/recap – rehash of IPO pipeline commentary without new factual trigger; mentions ongoing war but adds no new geopolitical development"
+    }, {
+      "article_id" : 1693,
+      "score" : 0,
+      "reason" : "unrelated – domestic UK civil unrest; no macro, monetary, trade, or geopolitical systemic risk to BTC"
+    }, {
+      "article_id" : 2090,
+      "score" : 0,
+      "reason" : "recap – price commentary describing intraday tech sector moves already happening; no new event or trigger"
+    } ],
+    "prediction_record" : null
+  },
+  "06:20" : {
+    "analyzed_at" : "2026-06-10T07:00:51Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1694, 1695, 1704 ],
+    "screener" : [ {
+      "article_id" : 1694,
+      "score" : 6,
+      "reason" : "US-Iran military escalation + strategic reserves at 40-year low signals potential oil supply shock; macroeconomic tail risk to inflation expectations and risk-off positioning favors BTC as hedge."
+    }, {
+      "article_id" : 1695,
+      "score" : 0,
+      "reason" : "Prediction platform compliance measure; no direct price trigger or macro impact on BTC."
+    }, {
+      "article_id" : 1704,
+      "score" : 0,
+      "reason" : "Swedish euro adoption sentiment; no actionable trigger for BTC or macro shock."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61363.77,
+      "article_count" : 3,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ "US-Iran military escalation in the Gulf raising geopolitical risk-off sentiment", "Oil price spike on strategic reserve concerns amplifying macro stress" ],
+      "reasoning" : "A fresh US-Iran military exchange with rising oil prices reinforces the existing risk-off macro backdrop (VIX↑, SP500↓, sustained 5-week risk-off trend), creating a mild headwind for BTC; however, the signal is low impact as BTC is mid-range on the day and geopolitical oil shocks transmit to crypto indirectly and slowly.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8026,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0031
+      },
+      "price_context" : {
+        "btc_price" : 61448.75,
+        "change_1h_pct" : 0.14,
+        "change_24h_pct" : -2.77,
+        "range_pos_24h" : 0.2511
+      },
+      "articles" : [ {
+        "id" : 1694,
+        "title" : "Ziemba: US Strategic Reserves Lowest in Over 40 Years",
+        "direction" : "bearish",
+        "reasoning" : "US-Iran military strikes escalate geopolitical risk, lifting oil and VIX which compounds the existing risk-off regime and reduces appetite for speculative assets like BTC via a broad risk-reduction channel.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T06:24:56Z",
+        "url" : "https://www.bloomberg.com/news/videos/2026-06-10/ziemba-us-strategic-reserves-lowest-in-over-40-years-video",
+        "price_at_publish" : 61363.77
+      } ]
+    },
+    "resonant_article_ids" : [ 1694 ]
+  },
+  "06:50" : {
+    "analyzed_at" : "2026-06-10T07:10:17Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1696, 1703, 1706 ],
+    "screener" : [ {
+      "article_id" : 1696,
+      "score" : 0,
+      "reason" : "Domestic criminal justice story unrelated to BTC; no macro, monetary, or geopolitical impact on crypto markets."
+    }, {
+      "article_id" : 1703,
+      "score" : 0,
+      "reason" : "PE industry valuation commentary; no new factual trigger affecting BTC or macro conditions."
+    }, {
+      "article_id" : 1706,
+      "score" : 0,
+      "reason" : "Israeli domestic politics polling; no immediate macro, monetary, or geopolitical escalation/de-escalation signal with BTC price impact."
+    } ],
+    "prediction_record" : null
+  },
+  "07:00" : {
+    "analyzed_at" : "2026-06-11T07:30:26Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1705, 1714, 1722, 2107, 2108, 2109 ],
+    "screener" : [ {
+      "article_id" : 1705,
+      "score" : 0,
+      "reason" : "dup/recap - market reaction commentary on existing CPI concerns, no new trigger"
+    }, {
+      "article_id" : 1714,
+      "score" : 0,
+      "reason" : "unrelated - entertainment/real estate, no crypto or macro impact"
+    }, {
+      "article_id" : 1722,
+      "score" : 6,
+      "reason" : "new regulatory escalation - EU crypto sanctions on Russia-linked platforms signals tightening compliance risk for stablecoins and exchanges"
+    }, {
+      "article_id" : 2107,
+      "score" : 1,
+      "reason" : "minor signal - law enforcement cooperation is positive for crypto legitimacy but slow-acting, does not materially move BTC price"
+    }, {
+      "article_id" : 2108,
+      "score" : 0,
+      "reason" : "product launch noise - perpetual contract expansion is routine derivatives activity, no systemic impact"
+    }, {
+      "article_id" : 2109,
+      "score" : 2,
+      "reason" : "weak signal - Tether robotics/AI venture is speculative and off-core, indirect and slow channel to BTC price"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61520.46,
+      "article_count" : 6,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ "EU proposes expanded sanctions targeting Russia-linked crypto platforms" ],
+      "reasoning" : "Regulatory pressure on crypto platforms operating in non-EU jurisdictions introduces compliance uncertainty and potential liquidity fragmentation, a mild bearish signal; however, the proposal stage and Asia-session thin liquidity limit immediate impact while macro backdrop remains mixed with no strong amplifying signals.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7985,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0032
+      },
+      "price_context" : {
+        "btc_price" : 61462.4,
+        "change_1h_pct" : -0.02,
+        "change_24h_pct" : -2.21,
+        "range_pos_24h" : 0.281
+      },
+      "articles" : [ {
+        "id" : 1722,
+        "title" : "EU proposes expanded sanctions on Russia-linked crypto platforms",
+        "direction" : "bearish",
+        "reasoning" : "EU sanctions expansion targeting Russia-linked crypto services signals tightening regulatory perimeter, reducing accessible liquidity pools and creating compliance risk for affected platforms, a mild bearish mechanism through reduced market participation.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T07:05:46Z",
+        "url" : "https://www.theblock.co/post/404207/eu-proposes-russia-crypto-sanction?utm_source=rss&utm_medium=rss",
+        "price_at_publish" : 61520.46
+      } ]
+    },
+    "resonant_article_ids" : [ 1722 ]
+  },
+  "07:10" : {
+    "analyzed_at" : "2026-06-10T07:40:52Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1707, 1708, 1709, 1712, 1713, 1718 ],
+    "screener" : [ {
+      "article_id" : 1707,
+      "score" : 0,
+      "reason" : "Price commentary on derivative instrument; describes already-occurred price action without new fundamental trigger"
+    }, {
+      "article_id" : 1708,
+      "score" : 0,
+      "reason" : "Corporate/investor commentary; no new actionable event or macro signal"
+    }, {
+      "article_id" : 1709,
+      "score" : 0,
+      "reason" : "Retail sector earnings/outlook; unrelated to crypto or macro monetary/geopolitical catalysts moving BTC"
+    }, {
+      "article_id" : 1712,
+      "score" : 0,
+      "reason" : "Corporate technology discussion; no actionable market signal"
+    }, {
+      "article_id" : 1713,
+      "score" : 0,
+      "reason" : "Investment firm commentary; no new announcement or market-moving event"
+    }, {
+      "article_id" : 1718,
+      "score" : 6,
+      "reason" : "Iran-US military escalation day 103 with tit-for-tat strikes and analyst warnings of further escalation; geopolitical risk spike with potential oil/energy supply disruption and macro uncertainty; could drive safe-haven demand and inflation expectations"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61615.5,
+      "article_count" : 6,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bullish",
+      "impact_tier" : "low",
+      "confidence" : "low",
+      "macro_regime" : "mixed",
+      "key_events" : [ "US-Iran military escalation with tit-for-tat strikes raising geopolitical risk" ],
+      "reasoning" : "Geopolitical escalation of this scale typically provides a mild safe-haven bid for BTC as a non-sovereign asset, but the mixed macro regime (VIX up, SP500 down, Gold down) complicates the transmission — Gold's decline suggests the classic safe-haven channel is not firing cleanly, and BTC is mid-range after a modest 24h decline with neutral funding, limiting cascade dynamics in either direction.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7979,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0032
+      },
+      "price_context" : {
+        "btc_price" : 61584.0,
+        "change_1h_pct" : 0.18,
+        "change_24h_pct" : -2.01,
+        "range_pos_24h" : 0.331
+      },
+      "articles" : [ {
+        "id" : 1718,
+        "title" : "Iran war day 103: US strikes after helicopter shot down, Tehran hits back",
+        "direction" : "bullish",
+        "reasoning" : "US-Iran military escalation raises geopolitical risk premium, which can drive marginal flows into BTC as a non-sovereign store of value, though the flat pre-trend and Gold's concurrent weakness suggest this channel is weak in the current environment",
+        "scenario" : "fresh_bullish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T07:16:39Z",
+        "url" : "https://www.aljazeera.com/news/2026/6/10/iran-war-day-103-us-strikes-after-helicopter-shot-down-tehran-hits-back?traffic_source=rss",
+        "price_at_publish" : 61615.5
+      } ]
+    },
+    "resonant_article_ids" : [ 1718 ]
+  },
+  "07:20" : {
+    "analyzed_at" : "2026-06-11T07:30:16Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1710, 1711, 1717, 2106 ],
+    "screener" : [ {
+      "article_id" : 1710,
+      "score" : 0,
+      "reason" : "Lenovo CFO corporate commentary on AI infrastructure; unrelated to BTC fundamentals"
+    }, {
+      "article_id" : 1711,
+      "score" : 0,
+      "reason" : "dup: Iran-US strikes already covered in ALREADY COVERED list (2026-06-10 07:16, 07:05, 04:30)"
+    }, {
+      "article_id" : 1717,
+      "score" : 6,
+      "reason" : "New escalation: Ukrainian strikes on Russian oil refineries deepens fuel crisis; materially expands supply disruption risk beyond prior coverage of US-Iran conflict, bullish for energy/macro hedge demand"
+    }, {
+      "article_id" : 2106,
+      "score" : 3,
+      "reason" : "SpaceX IPO demand signals tech capital reallocation away from crypto; weak indirect bearish signal but retail/momentum-driven, not institutional repricing catalyst"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61659.11,
+      "article_count" : 4,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "low",
+      "confidence" : "low",
+      "macro_regime" : "mixed",
+      "key_events" : [ "Ukrainian drone strikes on Russian oil refineries causing regional fuel crisis" ],
+      "reasoning" : "Geopolitical escalation in Ukraine-Russia conflict has a weak and indirect transmission to BTC; while energy supply disruptions and conflict escalation can theoretically drive safe-haven flows, BTC's response to Ukraine war events has been inconsistent, macro signals are mixed rather than clearly risk-off, and the pre-trend is essentially flat — leaving no clear directional catalyst.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7988,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0032
+      },
+      "price_context" : {
+        "btc_price" : 61668.39,
+        "change_1h_pct" : 0.32,
+        "change_24h_pct" : -1.88,
+        "range_pos_24h" : 0.3658
+      },
+      "articles" : [ {
+        "id" : 1717,
+        "title" : "Ukrainian drones strike Sevastopol museum and key Russian oil refineries",
+        "direction" : "neutral",
+        "reasoning" : "Drone strikes on Russian oil infrastructure create energy supply concerns and mild geopolitical risk-off pressure, but BTC's safe-haven correlation to Ukraine conflict events is historically unreliable and the macro backdrop is mixed, making the transmission channel too weak for a directional call.",
+        "scenario" : "noise",
+        "pre_trend" : "rising",
+        "published_at" : "2026-06-10T07:22:22Z",
+        "url" : "https://www.aljazeera.com/news/2026/6/10/ukrainian-drones-strike-sevastopol-museum-and-key-russian-oil-refineries?traffic_source=rss",
+        "price_at_publish" : 61659.11
+      } ]
+    },
+    "resonant_article_ids" : [ 1717 ]
+  },
+  "07:30" : {
+    "analyzed_at" : "2026-06-11T23:00:38Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1715, 1716, 1719, 1720, 2443 ],
+    "screener" : [ {
+      "article_id" : 1715,
+      "score" : 0,
+      "reason" : "dup/recap - Saudi capital market openness is structural policy commentary, not a new actionable event with immediate BTC price trigger"
+    }, {
+      "article_id" : 1716,
+      "score" : 0,
+      "reason" : "unrelated - sports/entertainment, no crypto or macro relevance"
+    }, {
+      "article_id" : 1719,
+      "score" : 0,
+      "reason" : "dup/recap - hedge fund panel discussion on Asia liquidity is market commentary, not a new event"
+    }, {
+      "article_id" : 1720,
+      "score" : 2,
+      "reason" : "minor signal - Bank Indonesia signaling higher yields and future rate hikes is modest hawkish tilt, but Indonesia is peripheral to global macro and BTC; slow-moving structural shift, not urgent"
+    }, {
+      "article_id" : 2443,
+      "score" : 0,
+      "reason" : "unrelated/data release - BoJ settlement fails data is technical market infrastructure metric with no predictive BTC value"
+    } ],
+    "prediction_record" : null
+  },
+  "07:50" : {
+    "analyzed_at" : "2026-06-10T08:50:24Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1721, 1725, 1726, 1727, 1737 ],
+    "screener" : [ {
+      "article_id" : 1721,
+      "score" : 5,
+      "reason" : "Japanese megabank stablecoin launch signals institutional crypto adoption in major economy; moderate positive for BTC macro narrative but execution risk and long timeline (March 2027) delay impact."
+    }, {
+      "article_id" : 1725,
+      "score" : 6,
+      "reason" : "ECB rate hike amid energy inflation is macro signal affecting risk appetite and USD/EUR dynamics; tightening cycle headwind for risk assets including BTC, but already partially expected."
+    }, {
+      "article_id" : 1726,
+      "score" : 7,
+      "reason" : "Escalating Russia-Ukraine military risk (drone incursions in NATO territory) raises geopolitical tail risk; potential for rapid escalation or sanctions shock; bullish for BTC as safe-haven demand."
+    }, {
+      "article_id" : 1727,
+      "score" : 0,
+      "reason" : "Unrelated to crypto or macro markets; entertainment/sports topic only."
+    }, {
+      "article_id" : 1737,
+      "score" : 4,
+      "reason" : "India's LNG surge addresses energy supply amid Middle East disruption; minor bullish signal for commodity/energy inflation narrative but indirect path to BTC; already-signaled supply issue."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61700.01,
+      "article_count" : 5,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ "ECB expected to raise rates 25bps amid energy-driven inflation", "Baltic states drone incursions raising geopolitical risk near NATO borders" ],
+      "reasoning" : "An ECB rate hike tightens financial conditions in Europe, a mild risk-off signal that weighs on speculative assets like BTC; the geopolitical tension in the Baltics adds a secondary risk-off layer, though neither catalyst is sharp enough for a major move given BTC is mid-range and macro signals are mixed rather than cleanly bearish.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7973,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0033
+      },
+      "price_context" : {
+        "btc_price" : 61709.51,
+        "change_1h_pct" : 0.38,
+        "change_24h_pct" : -1.81,
+        "range_pos_24h" : 0.3827
+      },
+      "articles" : [ {
+        "id" : 1725,
+        "title" : "Energy prices take center stage as the ECB prepares to decide on rates",
+        "direction" : "bearish",
+        "reasoning" : "ECB rate hike driven by energy inflation tightens liquidity conditions and signals a higher-for-longer stance, reducing appetite for speculative assets like BTC through a risk-off financial conditions channel",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T07:54:10Z",
+        "url" : "https://www.cnbc.com/2026/06/10/ecb-rate-hike-energy-prices-inflation.html",
+        "price_at_publish" : 61736.51
+      }, {
+        "id" : 1726,
+        "title" : "Baltic states fear Russia-Ukraine war spillover after drone incursions",
+        "direction" : "bearish",
+        "reasoning" : "Drone incursions near Baltic NATO members elevate geopolitical risk, historically prompting modest safe-haven flows away from risk assets including crypto",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T07:57:57Z",
+        "url" : "https://www.aljazeera.com/news/longform/2026/6/10/baltic-states-fear-russia-ukraine-war-spillover-after-drone-incursions?traffic_source=rss",
+        "price_at_publish" : 61700.01
+      } ]
+    },
+    "resonant_article_ids" : [ 1725, 1726 ]
+  },
+  "07:40" : {
+    "analyzed_at" : "2026-06-10T08:13:20Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1728 ],
+    "screener" : [ {
+      "article_id" : 1728,
+      "score" : 8,
+      "reason" : "Major geopolitical escalation: Iran missile strike on US bases signals regional military conflict, risk-off sentiment, potential oil disruption, and safe-haven demand for BTC"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61722.03,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "high",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ "Iranian missile strike on US bases in Bahrain — major geopolitical escalation in the Middle East" ],
+      "reasoning" : "A direct Iranian military attack on US bases is a significant geopolitical shock that historically triggers risk-off flows; BTC, despite occasional safe-haven narratives, typically sells off alongside equities in acute conflict escalations. The mixed macro regime (VIX already rising, SP500 down) amplifies the bearish transmission, and the flat pre-trend means this headline has not been priced in yet. Confidence is medium rather than high because funding is neutral (no crowded long to cascade) and BTC's safe-haven role in Middle East crises is inconsistent.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7965,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0032
+      },
+      "price_context" : {
+        "btc_price" : 61722.03,
+        "change_1h_pct" : 0.41,
+        "change_24h_pct" : -1.79,
+        "range_pos_24h" : 0.3878
+      },
+      "articles" : [ {
+        "id" : 1728,
+        "title" : "Explosion in Bahrain as Iran attacks US bases",
+        "direction" : "bearish",
+        "reasoning" : "Iranian missile strikes on US military installations represent a major geopolitical escalation that will likely spike VIX and trigger broad risk-off positioning, pulling BTC lower alongside equities in the near term.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T07:40:53Z",
+        "url" : "https://www.aljazeera.com/video/newsfeed/2026/6/10/explosion-in-bahrain-as-iran-attacks-us-bases?traffic_source=rss",
+        "price_at_publish" : 61722.03
+      } ]
+    },
+    "resonant_article_ids" : [ 1728 ]
+  },
+  "08:20" : {
+    "analyzed_at" : "2026-06-10T08:50:15Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1729, 1731, 1734 ],
+    "screener" : [ {
+      "article_id" : 1729,
+      "score" : 0,
+      "reason" : "Price commentary on XRP capitulation; no new actionable trigger, speculative interpretation of on-chain data"
+    }, {
+      "article_id" : 1731,
+      "score" : 0,
+      "reason" : "Unrelated to crypto or macro markets; regional conflict coverage with no direct BTC impact mechanism"
+    }, {
+      "article_id" : 1734,
+      "score" : 6,
+      "reason" : "Hormuz Strait shutdown = major oil supply disruption; rerouting via Suez signals geopolitical stress and potential inflation/macro volatility that historically correlates with BTC safe-haven flows; institutional desks will model macro tail risk"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61588.23,
+      "article_count" : 3,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "confidence" : "low",
+      "macro_regime" : "mixed",
+      "key_events" : [ ],
+      "reasoning" : "Suez Canal oil tanker rerouting is a commodity logistics story with no direct transmission mechanism to BTC in the near term; macro backdrop is mixed but this article provides no actionable crypto catalyst.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8014,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0036
+      },
+      "price_context" : {
+        "btc_price" : 61626.0,
+        "change_1h_pct" : -0.1,
+        "change_24h_pct" : -1.74,
+        "range_pos_24h" : 0.3909
+      },
+      "articles" : [ {
+        "id" : 1734,
+        "title" : "Suez Canal Gets Oil-Tanker Boost Amid Hormuz Strait Shutdown",
+        "direction" : "neutral",
+        "reasoning" : "Oil tanker rerouting via Suez Canal is a supply-chain logistics event with no direct or near-term channel to BTC price movement.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T08:22:01Z",
+        "url" : "https://www.bloomberg.com/news/articles/2026-06-10/suez-canal-gets-oil-tanker-boost-amid-hormuz-strait-shutdown",
+        "price_at_publish" : 61588.23
+      } ]
+    },
+    "resonant_article_ids" : [ 1734 ]
+  },
+  "08:30" : {
+    "analyzed_at" : "2026-06-10T08:43:33Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1730 ],
+    "screener" : [ {
+      "article_id" : 1730,
+      "score" : 0,
+      "reason" : "Domestic crime/social unrest unrelated to crypto, monetary policy, or macro financial conditions; no actionable trigger for BTC price."
+    } ],
+    "prediction_record" : null
+  },
+  "08:10" : {
+    "analyzed_at" : "2026-06-10T08:43:37Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1732, 1733 ],
+    "screener" : [ {
+      "article_id" : 1732,
+      "score" : 0,
+      "reason" : "Sports/entertainment event unrelated to crypto or macro markets"
+    }, {
+      "article_id" : 1733,
+      "score" : 0,
+      "reason" : "Local crime incident with no systemic macro, geopolitical, or market-moving significance"
+    } ],
+    "prediction_record" : null
+  },
+  "08:00" : {
+    "analyzed_at" : "2026-06-10T08:50:22Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1735, 1736 ],
+    "screener" : [ {
+      "article_id" : 1735,
+      "score" : 0,
+      "reason" : "India-specific capital flow policy; no direct BTC trigger or macro shock evident; indirect macro exposure insufficient for institutional BTC repositioning."
+    }, {
+      "article_id" : 1736,
+      "score" : 0,
+      "reason" : "dup of [1] — same India inflow policy theme; additional commentary without new factual trigger."
+    } ],
+    "prediction_record" : null
+  },
+  "08:40" : {
+    "analyzed_at" : "2026-06-10T08:50:36Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1738 ],
+    "screener" : [ {
+      "article_id" : 1738,
+      "score" : 0,
+      "reason" : "Geopolitical infrastructure deal with no direct crypto/macro trigger; no monetary policy, sanctions on major economies, or acute market disruption indicated."
+    } ],
+    "prediction_record" : null
+  },
+  "08:50" : {
+    "analyzed_at" : "2026-06-10T09:02:49Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1739 ],
+    "screener" : [ {
+      "article_id" : 1739,
+      "score" : 0,
+      "reason" : "sports entertainment content unrelated to BTC price drivers"
+    } ],
+    "prediction_record" : null
+  },
+  "09:00" : {
+    "analyzed_at" : "2026-06-10T09:10:38Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1742, 1743, 1744, 1745 ],
+    "screener" : [ {
+      "article_id" : 1742,
+      "score" : 3,
+      "reason" : "Japanese megabank stablecoin council signals institutional crypto adoption but still exploratory; indirect positive signal for BTC as stable rail infrastructure, low immediate price impact"
+    }, {
+      "article_id" : 1743,
+      "score" : 2,
+      "reason" : "L2 project shutdown is operational/ecosystem news, not systemic; minor negative sentiment for Bitcoin ecosystem credibility but no direct macro trigger"
+    }, {
+      "article_id" : 1744,
+      "score" : 0,
+      "reason" : "Geopolitical context-setting on Hormuz disruptions and trade routes; existing known issue (Iran war), not new event; no direct actionable macro signal yet"
+    }, {
+      "article_id" : 1745,
+      "score" : 0,
+      "reason" : "Central bank hold decision is routine policy management; no surprise or new trigger; existing macro backdrop already priced in"
+    } ],
+    "prediction_record" : null
+  },
+  "09:20" : {
+    "analyzed_at" : "2026-06-10T09:40:16Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1746, 1748 ],
+    "screener" : [ {
+      "article_id" : 1746,
+      "score" : 0,
+      "reason" : "Domestic migration/religious tensions; no direct macro, monetary, or geopolitical trigger affecting BTC pricing"
+    }, {
+      "article_id" : 1748,
+      "score" : 0,
+      "reason" : "Internal Israeli military policy dispute; no systemic macro, trade, or geopolitical escalation impact on BTC"
+    } ],
+    "prediction_record" : null
+  },
+  "09:30" : {
+    "analyzed_at" : "2026-06-11T09:40:24Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1747, 1750, 1751, 2145 ],
+    "screener" : [ {
+      "article_id" : 1747,
+      "score" : 0,
+      "reason" : "Unrelated topic (wedding industry); no BTC price impact vector"
+    }, {
+      "article_id" : 1750,
+      "score" : 0,
+      "reason" : "Local crime; no macro or crypto relevance to BTC"
+    }, {
+      "article_id" : 1751,
+      "score" : 0,
+      "reason" : "Domestic Israeli political debate; no direct BTC impact"
+    }, {
+      "article_id" : 2145,
+      "score" : 0,
+      "reason" : "Recap of market state ahead of data; no new event or surprise announced"
+    } ],
+    "prediction_record" : null
+  },
+  "09:40" : {
+    "analyzed_at" : "2026-06-11T10:40:31Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1749, 1754, 1755, 2162 ],
+    "screener" : [ {
+      "article_id" : 1749,
+      "score" : 0,
+      "reason" : "dup: Carlyle India IPO is unrelated to BTC and lacks macro/crypto triggers"
+    }, {
+      "article_id" : 1754,
+      "score" : 0,
+      "reason" : "dup: Iran missile launch already covered under 'Iran war day 103: US strikes after helicopter shot down'"
+    }, {
+      "article_id" : 1755,
+      "score" : 0,
+      "reason" : "unrelated: Israeli domestic political/legal dispute has no BTC price impact"
+    }, {
+      "article_id" : 2162,
+      "score" : 0,
+      "reason" : "dup: 'EU proposes expanded sanctions on Russia-linked crypto platforms' already covered at 2026-06-10 07:05; no new material development reported"
+    } ],
+    "prediction_record" : null
+  },
+  "09:50" : {
+    "analyzed_at" : "2026-06-10T10:01:40Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1752, 1753 ],
+    "screener" : [ {
+      "article_id" : 1752,
+      "score" : 0,
+      "reason" : "BOJ governor hospitalization is a personnel/health matter with no direct policy change announced; June meeting still happening under deputy leadership; no monetary policy surprise or shift signaled"
+    }, {
+      "article_id" : 1753,
+      "score" : 0,
+      "reason" : "Unrelated to crypto/macro/geopolitical factors affecting BTC; sports entertainment topic"
+    } ],
+    "prediction_record" : null
+  },
+  "10:10" : {
+    "analyzed_at" : "2026-06-10T10:30:15Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1757, 1758, 1759, 1766 ],
+    "screener" : [ {
+      "article_id" : 1757,
+      "score" : 0,
+      "reason" : "Price commentary on past action ('modest rebound'); no new factual trigger or event"
+    }, {
+      "article_id" : 1758,
+      "score" : 6,
+      "reason" : "US-Iran military conflict (new/breaking); geopolitical escalation historically correlates with risk-off/safe-haven demand, potential oil disruption, macro uncertainty—strong indirect BTC impact but sentiment-dependent"
+    }, {
+      "article_id" : 1759,
+      "score" : 0,
+      "reason" : "No title or content provided; cannot assess"
+    }, {
+      "article_id" : 1766,
+      "score" : 5,
+      "reason" : "DP World bond refinancing stress tied to US-Iran war confirms conflict impact on corporate/financial system; signals broader economic disruption risk that favors BTC as hedge, but is secondary signal to the war itself"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61243.35,
+      "article_count" : 4,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "confidence" : "low",
+      "macro_regime" : "mixed",
+      "key_events" : [ ],
+      "reasoning" : "This article is a public opinion survey about retrospective views on a past event, not a new geopolitical development or policy action with any direct price-moving mechanism for BTC.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8043,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0049
+      },
+      "price_context" : {
+        "btc_price" : 61223.63,
+        "change_1h_pct" : -0.18,
+        "change_24h_pct" : -2.37,
+        "range_pos_24h" : 0.219
+      },
+      "articles" : [ {
+        "id" : 1758,
+        "title" : "Survey finds vast gaps in support for Iran war between Israelis and Palestinians",
+        "direction" : "neutral",
+        "reasoning" : "A Pew survey on public opinion regarding a past military action carries no actionable catalyst for BTC markets — it is commentary with no new geopolitical escalation or de-escalation signal.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T10:12:26Z",
+        "url" : "https://www.timesofisrael.com/survey-finds-vast-gaps-in-support-for-iran-war-between-israelis-and-palestinians/",
+        "price_at_publish" : 61243.35
+      } ]
+    },
+    "resonant_article_ids" : [ 1758 ]
+  },
+  "10:20" : {
+    "analyzed_at" : "2026-06-10T10:27:23Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1762, 1763, 1764 ],
+    "screener" : [ {
+      "article_id" : 1762,
+      "score" : 0,
+      "reason" : "No title or content; unscoreable"
+    }, {
+      "article_id" : 1763,
+      "score" : 0,
+      "reason" : "Sports/entertainment (World Cup economics); unrelated to BTC"
+    }, {
+      "article_id" : 1764,
+      "score" : 0,
+      "reason" : "US primary election results; no crypto or macro policy trigger for BTC"
+    } ],
+    "prediction_record" : null
+  },
+  "10:00" : {
+    "analyzed_at" : "2026-06-10T10:27:25Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1765 ],
+    "screener" : [ {
+      "article_id" : 1765,
+      "score" : 0,
+      "reason" : "Human interest story; no new macro/geopolitical event with market impact"
+    } ],
+    "prediction_record" : null
+  },
+  "10:30" : {
+    "analyzed_at" : "2026-06-10T10:50:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1767, 1768, 1769, 1770 ],
+    "screener" : [ {
+      "article_id" : 1767,
+      "score" : 5,
+      "reason" : "New stablecoin regulation (NYDFS GENIUS Act alignment) introduces reserve concentration caps; material for stablecoin risk pricing and potential USD-pegged asset constraints, but domestic US regulation with indirect BTC impact."
+    }, {
+      "article_id" : 1768,
+      "score" : 0,
+      "reason" : "Political opinion/commentary unrelated to crypto, macro, geopolitical events, or trade policy; no actionable BTC trigger."
+    }, {
+      "article_id" : 1769,
+      "score" : 0,
+      "reason" : "SpaceX IPO speculation unrelated to BTC; no crypto, macro, geopolitical, or trade policy signal."
+    }, {
+      "article_id" : 1770,
+      "score" : 0,
+      "reason" : "Ghana economic growth data is micro-regional and not a novel macro shock; 'Iran war impact' is background context, not a new escalation or de-escalation event."
+    } ],
+    "prediction_record" : null
+  },
+  "10:50" : {
+    "analyzed_at" : "2026-06-10T11:00:29Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1771, 1773, 1774 ],
+    "screener" : [ {
+      "article_id" : 1771,
+      "score" : 0,
+      "reason" : "dup/recap - references upcoming inflation data (known event) without reporting new facts; price commentary on token losses"
+    }, {
+      "article_id" : 1773,
+      "score" : 0,
+      "reason" : "unrelated - entertainment/media commentary, zero crypto or macro relevance"
+    }, {
+      "article_id" : 1774,
+      "score" : 0,
+      "reason" : "unrelated - local social violence, no macro, monetary, geopolitical or trade policy nexus to BTC"
+    } ],
+    "prediction_record" : null
+  },
+  "10:40" : {
+    "analyzed_at" : "2026-06-10T11:00:09Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1772 ],
+    "screener" : [ {
+      "article_id" : 1772,
+      "score" : 0,
+      "reason" : "Regional seafood trade dispute with no macro/geopolitical magnitude; isolated bilateral issue unlikely to impact BTC; no systemic risk or major economy involvement."
+    } ],
+    "prediction_record" : null
+  },
+  "11:00" : {
+    "analyzed_at" : "2026-06-11T11:50:23Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1775, 1776, 1777, 1779, 2197, 2198, 2199 ],
+    "screener" : [ {
+      "article_id" : 1775,
+      "score" : 0,
+      "reason" : "Opinion/commentary on Iran military status; no new actionable trigger or policy decision"
+    }, {
+      "article_id" : 1776,
+      "score" : 0,
+      "reason" : "Port concession in Spain; unrelated to BTC price drivers"
+    }, {
+      "article_id" : 1777,
+      "score" : 0,
+      "reason" : "Labor market theory debate; no new event or macro trigger affecting BTC"
+    }, {
+      "article_id" : 1779,
+      "score" : 0,
+      "reason" : "Price commentary describing what already happened (BTC selloff); no new event"
+    }, {
+      "article_id" : 2197,
+      "score" : 2,
+      "reason" : "Prediction market compliance tightening; minor crypto governance signal, slow channel to BTC"
+    }, {
+      "article_id" : 2198,
+      "score" : 0,
+      "reason" : "Mortgage demand data; modest macro signal but lag to BTC impact and insufficient novelty"
+    }, {
+      "article_id" : 2199,
+      "score" : 0,
+      "reason" : "Used car supply dynamics; unrelated to BTC price drivers"
+    } ],
+    "prediction_record" : null
+  },
+  "11:10" : {
+    "analyzed_at" : "2026-06-10T11:50:15Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1778, 1790 ],
+    "screener" : [ {
+      "article_id" : 1778,
+      "score" : 0,
+      "reason" : "dup/recap - price commentary on unrealized losses; no new event or trigger"
+    }, {
+      "article_id" : 1790,
+      "score" : 0,
+      "reason" : "incomplete article stub; no actual CPI data or surprise disclosed"
+    } ],
+    "prediction_record" : null
+  },
+  "11:20" : {
+    "analyzed_at" : "2026-06-11T11:50:21Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1785, 1786, 1789, 2195, 2196 ],
+    "screener" : [ {
+      "article_id" : 1785,
+      "score" : 0,
+      "reason" : "dup/recap - speculation on inflation scenarios without new data or event trigger"
+    }, {
+      "article_id" : 1786,
+      "score" : 0,
+      "reason" : "unrelated - China's power grid investment has no direct crypto or macro policy trigger for BTC"
+    }, {
+      "article_id" : 1789,
+      "score" : 0,
+      "reason" : "unrelated - fintech spinoff/corporate reorganization with no crypto or macro implications"
+    }, {
+      "article_id" : 2195,
+      "score" : 0,
+      "reason" : "recap - commentary on existing market condition (underwater positions), no new causative event"
+    }, {
+      "article_id" : 2196,
+      "score" : 0,
+      "reason" : "recap/reaction - post-hoc analysis of already-occurred market move, no new forward-looking trigger"
+    } ],
+    "prediction_record" : null
+  },
+  "11:30" : {
+    "analyzed_at" : "2026-06-11T11:50:19Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1787, 2194 ],
+    "screener" : [ {
+      "article_id" : 1787,
+      "score" : 0,
+      "reason" : "dup/opinion - Trump rhetoric on Iran blockade is commentary, not new actionable fact; Iran war already covered"
+    }, {
+      "article_id" : 2194,
+      "score" : 0,
+      "reason" : "recap/reaction - describes market movement (gold/silver/BTC falling) in response to existing Fed rate expectations, no new trigger"
+    } ],
+    "prediction_record" : null
+  },
+  "11:40" : {
+    "analyzed_at" : "2026-06-11T11:50:15Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1791, 1792, 1795, 1796, 2192, 2193 ],
+    "screener" : [ {
+      "article_id" : 1791,
+      "score" : 0,
+      "reason" : "recap/reaction of already-covered Iran strikes and market movement"
+    }, {
+      "article_id" : 1792,
+      "score" : 3,
+      "reason" : "Iraq oil export boost is minor positive for oil supply resilience; indirect macro tailwind for risk assets but incremental given Suez/Hormuz already covered"
+    }, {
+      "article_id" : 1795,
+      "score" : 0,
+      "reason" : "damage assessment from ongoing Israel-Iran war; no new escalation trigger or policy change"
+    }, {
+      "article_id" : 1796,
+      "score" : 0,
+      "reason" : "sports/entertainment commentary, not actionable for BTC"
+    }, {
+      "article_id" : 2192,
+      "score" : 1,
+      "reason" : "Bitcoin DeFi project failure; niche, no systemic risk or institutional impact signal"
+    }, {
+      "article_id" : 2193,
+      "score" : 0,
+      "reason" : "sports/gambling commentary unrelated to macro or crypto drivers of BTC"
+    } ],
+    "prediction_record" : null
+  },
+  "11:50" : {
+    "analyzed_at" : "2026-06-10T12:10:10Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1793, 1794, 1799 ],
+    "screener" : [ {
+      "article_id" : 1793,
+      "score" : 0,
+      "reason" : "dup/recap - Netanyahu political positioning is commentary/analysis on already-covered Iran conflict, no new actionable event"
+    }, {
+      "article_id" : 1794,
+      "score" : 0,
+      "reason" : "dup/recap - analysis of US-Iran attacks already covered under 'Iran war day 103' and Hormuz Strait incidents; no new development reported"
+    }, {
+      "article_id" : 1799,
+      "score" : 0,
+      "reason" : "unrelated - stock premarket movers have no crypto or macro relevance to BTC price"
+    } ],
+    "prediction_record" : null
+  },
+  "12:00" : {
+    "analyzed_at" : "2026-06-10T12:20:09Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1797, 1798, 1800 ],
+    "screener" : [ {
+      "article_id" : 1797,
+      "score" : 0,
+      "reason" : "dup - project failure recap/postmortem with no new trigger; DeFi narratives already priced in"
+    }, {
+      "article_id" : 1798,
+      "score" : 0,
+      "reason" : "EU budget dispute over energy aid; indirect macro signal but no new policy decision or concrete measure affecting BTC"
+    }, {
+      "article_id" : 1800,
+      "score" : 0,
+      "reason" : "SpaceX IPO preparation logistics; unrelated to crypto/macro/geopolitical BTC drivers"
+    } ],
+    "prediction_record" : null
+  },
+  "12:10" : {
+    "analyzed_at" : "2026-06-11T13:00:26Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1801, 1803, 1804, 2235 ],
+    "screener" : [ {
+      "article_id" : 1801,
+      "score" : 0,
+      "reason" : "dup: Israel-Palestine conflict already covered; human rights accusation is commentary, not new actionable event"
+    }, {
+      "article_id" : 1803,
+      "score" : 0,
+      "reason" : "unrelated: Kashmir judicial decision has no BTC price impact channel"
+    }, {
+      "article_id" : 1804,
+      "score" : 0,
+      "reason" : "unrelated: sports/entertainment topic, no macro or crypto relevance"
+    }, {
+      "article_id" : 2235,
+      "score" : 0,
+      "reason" : "recap: headline lists multiple topics without detail; 'US strikes Iran' already covered in ALREADY COVERED list"
+    } ],
+    "prediction_record" : null
+  },
+  "12:30" : {
+    "analyzed_at" : "2026-06-10T12:50:42Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1802, 1805, 1814 ],
+    "screener" : [ {
+      "article_id" : 1802,
+      "score" : 0,
+      "reason" : "dup: Pakistan helicopter crash is unrelated geopolitical event with no macro/crypto impact on BTC"
+    }, {
+      "article_id" : 1805,
+      "score" : 6,
+      "reason" : "NEW inflation data: May CPI acceleration driven by Iran war energy spike; core softer than expected. Material for Fed policy expectations and macro risk-off/on positioning."
+    }, {
+      "article_id" : 1814,
+      "score" : 0,
+      "reason" : "Hong Kong fund tax change is niche financial policy with negligible direct BTC price impact; no new macro/crypto trigger"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61662.01,
+      "article_count" : 3,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "high",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ "US headline inflation accelerated in May driven by Iran war energy price surge", "Core inflation softer than forecast, providing partial offset" ],
+      "reasoning" : "Accelerating headline inflation driven by energy (Iran war) raises stagflation concerns and reduces Fed rate-cut expectations, a net bearish macro impulse for risk assets including BTC; however, the softer core print muddies the signal, limiting conviction. Mixed macro regime and neutral funding mean no strong cascade amplifier in either direction, but the inflation acceleration is the dominant read.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8281,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0033
+      },
+      "price_context" : {
+        "btc_price" : 61296.0,
+        "change_1h_pct" : 0.43,
+        "change_24h_pct" : -1.57,
+        "range_pos_24h" : 0.2728
+      },
+      "articles" : [ {
+        "id" : 1805,
+        "title" : "US Inflation Accelerates, Though Core Gauge Comes in Softer",
+        "direction" : "bearish",
+        "reasoning" : "Hotter headline CPI from energy-driven inflation reduces Fed easing probability and raises stagflation fears, pressuring risk assets like BTC, though the softer core partially offsets the hawkish transmission channel",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "volatile",
+        "published_at" : "2026-06-10T12:32:17Z",
+        "url" : "https://www.bloomberg.com/news/articles/2026-06-10/us-inflation-accelerates-though-core-gauge-comes-in-softer",
+        "price_at_publish" : 61662.01
+      } ]
+    },
+    "resonant_article_ids" : [ 1805 ]
+  },
+  "12:20" : {
+    "analyzed_at" : "2026-06-10T12:40:10Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1806 ],
+    "screener" : [ {
+      "article_id" : 1806,
+      "score" : 0,
+      "reason" : "dup/reaction: SpaceX IPO demand is unrelated to crypto/BTC and has no direct macro or monetary impact on bitcoin markets"
+    } ],
+    "prediction_record" : null
+  },
+  "12:40" : {
+    "analyzed_at" : "2026-06-11T13:00:10Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1812, 1813, 1815, 1816, 1818, 1825, 1826, 2234, 2236 ],
+    "screener" : [ {
+      "article_id" : 1812,
+      "score" : 0,
+      "reason" : "dup: inflation data already covered at 12:32; price commentary adds no new signal"
+    }, {
+      "article_id" : 1813,
+      "score" : 0,
+      "reason" : "unrelated: AI safety debate, no BTC impact vector"
+    }, {
+      "article_id" : 1815,
+      "score" : 0,
+      "reason" : "dup: CPI 4.2% already covered; recap of expected data point"
+    }, {
+      "article_id" : 1816,
+      "score" : 0,
+      "reason" : "reaction/recap: summarizes already-covered geopolitics, inflation, ETF flows without new event"
+    }, {
+      "article_id" : 1818,
+      "score" : 0,
+      "reason" : "unrelated: SpaceX IPO timing irrelevant to BTC fundamentals"
+    }, {
+      "article_id" : 1825,
+      "score" : 0,
+      "reason" : "dup: escalation of Israel-Palestine conflict already on ALREADY COVERED list; this is incident detail, not new event"
+    }, {
+      "article_id" : 1826,
+      "score" : 0,
+      "reason" : "dup: Ukraine strike activity already covered (drone strikes on refineries at 07:22); new missile type is tactical detail, not strategic shift"
+    }, {
+      "article_id" : 2234,
+      "score" : 0,
+      "reason" : "reaction/recap: aggregates already-covered macro events without new catalyst; Morpho funding is minor DeFi event"
+    }, {
+      "article_id" : 2236,
+      "score" : 0,
+      "reason" : "dup: US inflation 4.2% already covered at 12:32; framing (war causation) is analysis, not new fact"
+    } ],
+    "prediction_record" : null
+  },
+  "12:50" : {
+    "analyzed_at" : "2026-06-10T13:20:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1817, 1823, 1824, 1829 ],
+    "screener" : [ {
+      "article_id" : 1817,
+      "score" : 0,
+      "reason" : "dup/recap—CPI report already covered; this is market reaction commentary on previously reported inflation data"
+    }, {
+      "article_id" : 1823,
+      "score" : 2,
+      "reason" : "Argentine peso weakness is a local emerging-market event with minimal direct BTC impact; weak macro signal"
+    }, {
+      "article_id" : 1824,
+      "score" : 0,
+      "reason" : "unrelated—SpaceX depositary receipt offering has no crypto or macro relevance to BTC price"
+    }, {
+      "article_id" : 1829,
+      "score" : 0,
+      "reason" : "unrelated—human rights commentary on Israel-Palestine conflict; no new escalation trigger or macro shock; pure political narrative"
+    } ],
+    "prediction_record" : null
+  },
+  "13:00" : {
+    "analyzed_at" : "2026-06-11T14:00:37Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1819, 1820, 1821, 1822, 1838, 2260, 2261 ],
+    "screener" : [ {
+      "article_id" : 1819,
+      "score" : 0,
+      "reason" : "dup"
+    }, {
+      "article_id" : 1820,
+      "score" : 1,
+      "reason" : "niche DeFi protocol launch; minimal systemic impact on BTC"
+    }, {
+      "article_id" : 1821,
+      "score" : 2,
+      "reason" : "oracle infrastructure expansion; minor positive for crypto ecosystem but indirect BTC impact"
+    }, {
+      "article_id" : 1822,
+      "score" : 0,
+      "reason" : "dup"
+    }, {
+      "article_id" : 1838,
+      "score" : 0,
+      "reason" : "unrelated sports entertainment"
+    }, {
+      "article_id" : 2260,
+      "score" : 0,
+      "reason" : "dup"
+    }, {
+      "article_id" : 2261,
+      "score" : 0,
+      "reason" : "niche prediction market integration; no material BTC price driver"
+    } ],
+    "prediction_record" : null
+  },
+  "13:10" : {
+    "analyzed_at" : "2026-06-11T14:00:33Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1827, 1828, 1831, 2259 ],
+    "screener" : [ {
+      "article_id" : 1827,
+      "score" : 0,
+      "reason" : "dup: Iran domestic politics, no new macro/geopolitical escalation trigger for BTC"
+    }, {
+      "article_id" : 1828,
+      "score" : 0,
+      "reason" : "unrelated: US domestic property zoning, zero BTC impact"
+    }, {
+      "article_id" : 1831,
+      "score" : 0,
+      "reason" : "unrelated: Swedish pension policy, no crypto or macro relevance to BTC"
+    }, {
+      "article_id" : 2259,
+      "score" : 0,
+      "reason" : "recap: price commentary on already-occurring ETF flows, not a new event trigger"
+    } ],
+    "prediction_record" : null
+  },
+  "13:20" : {
+    "analyzed_at" : "2026-06-10T13:43:31Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1830, 1836, 1837 ],
+    "screener" : [ {
+      "article_id" : 1830,
+      "score" : 0,
+      "reason" : "dup/recap - price commentary on index constituents already moving; no new event"
+    }, {
+      "article_id" : 1836,
+      "score" : 2,
+      "reason" : "Brazil central bank autonomy dispute; minor indirect macro signal, slow channel to BTC"
+    }, {
+      "article_id" : 1837,
+      "score" : 0,
+      "reason" : "dup - US-Iran military exchange already covered under 'US, Iran Attack Each Other' and 'Explosion in Bahrain'; this is reaction/follow-up commentary, not new development"
+    } ],
+    "prediction_record" : null
+  },
+  "13:30" : {
+    "analyzed_at" : "2026-06-11T14:00:41Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1832, 1833, 1834, 1835, 1839, 1847, 2262 ],
+    "screener" : [ {
+      "article_id" : 1832,
+      "score" : 0,
+      "reason" : "Trump praise for Citigroup M&A ranking; unrelated to BTC, no macro/crypto impact"
+    }, {
+      "article_id" : 1833,
+      "score" : 2,
+      "reason" : "Ripple toolkit for agentic payments on XRPL is XRP-native development, weak indirect signal for broader crypto adoption"
+    }, {
+      "article_id" : 1834,
+      "score" : 0,
+      "reason" : "dup: CPI report already covered (2026-06-10 12:32); this is recap/commentary"
+    }, {
+      "article_id" : 1835,
+      "score" : 0,
+      "reason" : "Generic financial opinion piece; no new event or BTC-relevant trigger"
+    }, {
+      "article_id" : 1839,
+      "score" : 0,
+      "reason" : "Sports (Brazil soccer friendly); unrelated to BTC"
+    }, {
+      "article_id" : 1847,
+      "score" : 0,
+      "reason" : "Political opinion/speculation on Israeli leadership; no concrete new geopolitical event with immediate macro impact"
+    }, {
+      "article_id" : 2262,
+      "score" : 0,
+      "reason" : "Financial advice commentary on inflation erosion; recap of known macro condition, no new trigger"
+    } ],
+    "prediction_record" : null
+  },
+  "13:40" : {
+    "analyzed_at" : "2026-06-10T14:10:16Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1841, 1842, 1843, 1844, 1845, 1846, 1854, 1855 ],
+    "screener" : [ {
+      "article_id" : 1841,
+      "score" : 0,
+      "reason" : "dup - Securitize NYSE listing is equity coverage, not new BTC-impacting event; analyst target reiterations have no predictive value"
+    }, {
+      "article_id" : 1842,
+      "score" : 3,
+      "reason" : "CFTC prediction market rules are regulatory but indirect; may expand crypto-adjacent markets but unclear near-term BTC impact; low institutional repositioning signal"
+    }, {
+      "article_id" : 1843,
+      "score" : 0,
+      "reason" : "unrelated - criminal arson trial has no bearing on BTC or macro conditions"
+    }, {
+      "article_id" : 1844,
+      "score" : 5,
+      "reason" : "BoC rate hold + policy uncertainty on trade/Iran war is material macro signal; elevated geopolitical tail risk acknowledged by central bank; minor but actionable for risk-off positioning"
+    }, {
+      "article_id" : 1845,
+      "score" : 0,
+      "reason" : "unrelated - Middle East intelligence/espionage story has no direct BTC price impact"
+    }, {
+      "article_id" : 1846,
+      "score" : 2,
+      "reason" : "escalation rhetoric but not new material escalation; recap of existing tensions already covered; Erdogan comments are political positioning, not concrete new events"
+    }, {
+      "article_id" : 1854,
+      "score" : 0,
+      "reason" : "opinion/commentary - editorial analysis with no new factual triggers or actionable events"
+    }, {
+      "article_id" : 1855,
+      "score" : 0,
+      "reason" : "unrelated - Israeli domestic politics (job-fixing allegations) has no BTC or macro relevance"
+    } ],
+    "prediction_record" : null
+  },
+  "13:50" : {
+    "analyzed_at" : "2026-06-11T14:00:25Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1848, 1849, 1850, 1851, 2258 ],
+    "screener" : [ {
+      "article_id" : 1848,
+      "score" : 5,
+      "reason" : "CFTC prediction market rule proposal is new regulatory framework; meaningful for crypto but indirect channel to BTC; approval timeline unclear."
+    }, {
+      "article_id" : 1849,
+      "score" : 0,
+      "reason" : "dup/recap—MicroStrategy share dilution debate is market commentary on already-known BTC purchase; no new event or trigger."
+    }, {
+      "article_id" : 1850,
+      "score" : 0,
+      "reason" : "unrelated—Amazon corporate financing has no direct or material link to BTC price."
+    }, {
+      "article_id" : 1851,
+      "score" : 0,
+      "reason" : "unrelated—wealth management industry trends and robo-advisors are entertainment/lifestyle adjacent; no BTC price lever."
+    }, {
+      "article_id" : 2258,
+      "score" : 2,
+      "reason" : "Delaware Bitcoin ATM ban is niche state-level restriction; minimal BTC impact; one small state, no national precedent signal yet."
+    } ],
+    "prediction_record" : null
+  },
+  "14:00" : {
+    "analyzed_at" : "2026-06-11T15:00:32Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1852, 1853, 1857, 1858, 2257, 2291 ],
+    "screener" : [ {
+      "article_id" : 1852,
+      "score" : 3,
+      "reason" : "South Africa rate hike signal is minor macro event; indirect BTC impact via rand weakness and EM risk sentiment, but low magnitude for global markets."
+    }, {
+      "article_id" : 1853,
+      "score" : 0,
+      "reason" : "dup/recap — generic interview with ECB official; no new policy announcement or actionable trigger reported."
+    }, {
+      "article_id" : 1857,
+      "score" : 0,
+      "reason" : "dup/recap — equity strategist commentary on market health; no new event or policy change; retrospective on IPO activity."
+    }, {
+      "article_id" : 1858,
+      "score" : 1,
+      "reason" : "Prediction market rules are niche regulatory; minimal direct BTC price impact; only enters comment period (no finality)."
+    }, {
+      "article_id" : 2257,
+      "score" : 2,
+      "reason" : "Pyth's new crypto-native indexing product; positive for on-chain infrastructure but no systemic BTC price driver; niche adoption signal."
+    }, {
+      "article_id" : 2291,
+      "score" : 0,
+      "reason" : "dup/recap — analyst commentary interpreting already-known ETF outflows and rate fears; no new event or data point."
+    } ],
+    "prediction_record" : null
+  },
+  "14:10" : {
+    "analyzed_at" : "2026-06-11T15:00:36Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1856, 1862, 2293 ],
+    "screener" : [ {
+      "article_id" : 1856,
+      "score" : 0,
+      "reason" : "dup/recap - commentary on already-covered CPI report from 2026-06-10 12:32; analyst opinion without new macro trigger"
+    }, {
+      "article_id" : 1862,
+      "score" : 0,
+      "reason" : "unrelated - domestic Israeli political rhetoric; no crypto/macro/geopolitical escalation impact"
+    }, {
+      "article_id" : 2293,
+      "score" : 0,
+      "reason" : "dup/recap - inflation breakdown of already-covered May 2026 CPI report from 2026-06-10 12:32; no new data"
+    } ],
+    "prediction_record" : null
+  },
+  "14:20" : {
+    "analyzed_at" : "2026-06-11T15:00:27Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1859, 1860, 1861, 2290 ],
+    "screener" : [ {
+      "article_id" : 1859,
+      "score" : 0,
+      "reason" : "dup/recap - opinion/speculation on equity market rotation, no new macro/crypto trigger"
+    }, {
+      "article_id" : 1860,
+      "score" : 0,
+      "reason" : "unrelated - entertainment/politics event, no market impact"
+    }, {
+      "article_id" : 1861,
+      "score" : 0,
+      "reason" : "dup - Iran negotiation tensions already covered; no NEW escalation step or concrete development"
+    }, {
+      "article_id" : 2290,
+      "score" : 2,
+      "reason" : "minor signal - Fold's $45M BTC liquidation is company-specific rebalancing, not systemic; weak channel to broader BTC price via liquidity"
+    } ],
+    "prediction_record" : null
+  },
+  "14:30" : {
+    "analyzed_at" : "2026-06-11T15:00:25Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1863, 2288, 2289 ],
+    "screener" : [ {
+      "article_id" : 1863,
+      "score" : 0,
+      "reason" : "dup/unrelated – state treasury allocation between tech startups; no BTC price trigger"
+    }, {
+      "article_id" : 2288,
+      "score" : 3,
+      "reason" : "stablecoin regulatory pushback on AML rules; incremental crypto policy noise, slow channel to BTC"
+    }, {
+      "article_id" : 2289,
+      "score" : 2,
+      "reason" : "Robinhood underwriter approval and IPO commentary; tangential to BTC, no new macro/regulatory catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "14:50" : {
+    "analyzed_at" : "2026-06-10T15:20:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1869, 1872, 1874, 1877 ],
+    "screener" : [ {
+      "article_id" : 1869,
+      "score" : 0,
+      "reason" : "dup/recap – US inflation acceleration already covered in ALREADY COVERED list (2026-06-10 12:32)"
+    }, {
+      "article_id" : 1872,
+      "score" : 0,
+      "reason" : "no predictive value – personnel confirmation at BLS does not move BTC materially; routine political appointment"
+    }, {
+      "article_id" : 1874,
+      "score" : 0,
+      "reason" : "recap/opinion – sponsored geopolitical commentary with no new factual trigger or actionable development"
+    }, {
+      "article_id" : 1877,
+      "score" : 0,
+      "reason" : "dup/reaction – analyst commentary on already-reported inflation data and Fed stance; no new event"
+    } ],
+    "prediction_record" : null
+  },
+  "14:40" : {
+    "analyzed_at" : "2026-06-11T15:00:20Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1870, 1871, 1876, 2286, 2287, 2292 ],
+    "screener" : [ {
+      "article_id" : 1870,
+      "score" : 0,
+      "reason" : "dup/recap - subprime lender distress is micro-level credit event, no systemic BTC trigger"
+    }, {
+      "article_id" : 1871,
+      "score" : 0,
+      "reason" : "recap - generic IPO market commentary, no new event or concrete fact"
+    }, {
+      "article_id" : 1876,
+      "score" : 0,
+      "reason" : "unrelated - Lebanese political parties, no BTC or macro relevance"
+    }, {
+      "article_id" : 2286,
+      "score" : 0,
+      "reason" : "dup/recap - SpaceX IPO pricing is equity market noise, not a BTC-moving event"
+    }, {
+      "article_id" : 2287,
+      "score" : 0,
+      "reason" : "dup/recap - inflation data already covered (ALREADY COVERED: 'US Inflation Accelerates'); this is market reaction only"
+    }, {
+      "article_id" : 2292,
+      "score" : 0,
+      "reason" : "unrelated - screwworm cattle disease is commodity micro-story, no systemic macro or crypto relevance"
+    } ],
+    "prediction_record" : null
+  },
+  "15:00" : {
+    "analyzed_at" : "2026-06-11T15:00:17Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1873, 1875, 2284, 2285 ],
+    "screener" : [ {
+      "article_id" : 1873,
+      "score" : 2,
+      "reason" : "Fold debt repayment is positive micro-signal but $45M BTC sale is modest; local stock move doesn't predict macro BTC direction."
+    }, {
+      "article_id" : 1875,
+      "score" : 0,
+      "reason" : "Political appointment & FISA renewal discussion; no direct crypto or macro monetary/fiscal trigger."
+    }, {
+      "article_id" : 2284,
+      "score" : 0,
+      "reason" : "Recap of 2025 gambling stats and Q1 2026 trend; no new actionable event, describes existing market activity."
+    }, {
+      "article_id" : 2285,
+      "score" : 0,
+      "reason" : "AI/deepfake regulation concern unrelated to crypto fundamentals or macro drivers; no BTC price lever."
+    } ],
+    "prediction_record" : null
+  },
+  "15:20" : {
+    "analyzed_at" : "2026-06-10T15:40:10Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1878, 1879, 1880, 1884 ],
+    "screener" : [ {
+      "article_id" : 1878,
+      "score" : 0,
+      "reason" : "dup - Argentina political commentary unrelated to crypto/macro triggers"
+    }, {
+      "article_id" : 1879,
+      "score" : 2,
+      "reason" : "ETH protocol roadmap speculation; no new concrete development announced, long-term vision statement only"
+    }, {
+      "article_id" : 1880,
+      "score" : 1,
+      "reason" : "minor crypto funding round; small pre-seed, no systemic risk or major adoption signal"
+    }, {
+      "article_id" : 1884,
+      "score" : 0,
+      "reason" : "sponsored content - education advertisement unrelated to BTC price drivers"
+    } ],
+    "prediction_record" : null
+  },
+  "15:10" : {
+    "analyzed_at" : "2026-06-10T15:30:12Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1881 ],
+    "screener" : [ {
+      "article_id" : 1881,
+      "score" : 0,
+      "reason" : "Brazilian domestic political polling; no macro trigger for BTC (no fiscal/monetary/trade policy change announced)"
+    } ],
+    "prediction_record" : null
+  },
+  "15:30" : {
+    "analyzed_at" : "2026-06-10T15:58:51Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1882, 1883, 1886, 1887 ],
+    "screener" : [ {
+      "article_id" : 1882,
+      "score" : 6,
+      "reason" : "Mastercard legitimizes stablecoin payments at institutional scale; signals major payment infrastructure adoption of crypto rails, bullish for systemic BTC utility and adoption narrative."
+    }, {
+      "article_id" : 1883,
+      "score" : 0,
+      "reason" : "recap"
+    }, {
+      "article_id" : 1886,
+      "score" : 0,
+      "reason" : "unrelated"
+    }, {
+      "article_id" : 1887,
+      "score" : 0,
+      "reason" : "unrelated"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 62308.01,
+      "article_count" : 4,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "confidence" : "low",
+      "macro_regime" : "mixed",
+      "key_events" : [ ],
+      "reasoning" : "Mastercard's AI agent payment infrastructure announcement is a fintech/stablecoin story with no direct BTC price mechanism; it does not affect BTC supply, demand, or market positioning in the near term.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8465,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0019
+      },
+      "price_context" : {
+        "btc_price" : 62277.99,
+        "change_1h_pct" : 0.13,
+        "change_24h_pct" : 1.45,
+        "range_pos_24h" : 0.9006
+      },
+      "articles" : [ {
+        "id" : 1882,
+        "title" : "Mastercard unveils Agent Pay for Machines to support autonomous AI transactions, including stablecoins",
+        "direction" : "neutral",
+        "reasoning" : "Mastercard's Agent Pay targets stablecoin-based AI micro-transactions — a future-looking product announcement with no immediate BTC buy/sell pressure or institutional repositioning trigger.",
+        "scenario" : "noise",
+        "pre_trend" : "rising",
+        "published_at" : "2026-06-10T15:34:29Z",
+        "url" : "https://www.theblock.co/post/404288/mastercard-agent-pay-machines-support-autonomous-ai-transactions-stablecoins?utm_source=rss&utm_medium=rss",
+        "price_at_publish" : 62308.01
+      } ]
+    },
+    "resonant_article_ids" : [ 1882 ]
+  },
+  "15:40" : {
+    "analyzed_at" : "2026-06-10T16:00:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1885, 1888 ],
+    "screener" : [ {
+      "article_id" : 1885,
+      "score" : 0,
+      "reason" : "Unrelated to crypto/macro/geopolitical drivers of BTC; isolated diplomatic incident with no systemic impact"
+    }, {
+      "article_id" : 1888,
+      "score" : 4,
+      "reason" : "BOC hold + weak economic signal is modest bullish for risk assets (easing cycle expectation), but indirect and already partially telegraphed; minor positive for BTC"
+    } ],
+    "prediction_record" : null
+  },
+  "16:00" : {
+    "analyzed_at" : "2026-06-11T16:10:16Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1891, 1892, 1893, 1895, 1896, 1897, 1898, 1900, 2317, 2319 ],
+    "screener" : [ {
+      "article_id" : 1891,
+      "score" : 3,
+      "reason" : "Quantum risk to Bitcoin is theoretical/long-term; Citi research note is commentary, not a concrete triggering event; institutional impact delayed and uncertain."
+    }, {
+      "article_id" : 1892,
+      "score" : 0,
+      "reason" : "dup/recap: CPI data already covered; this is market reaction commentary, not new factual trigger."
+    }, {
+      "article_id" : 1893,
+      "score" : 0,
+      "reason" : "Unrelated to crypto/macro drivers; state pension allocation decisions don't move BTC."
+    }, {
+      "article_id" : 1895,
+      "score" : 6,
+      "reason" : "Trump's USMCA non-renewal is concrete trade policy escalation; threatens USD stability and risk appetite; could drive macro repricing into BTC as safe-haven hedge."
+    }, {
+      "article_id" : 1896,
+      "score" : 0,
+      "reason" : "Unrelated to BTC; Israeli electoral politics has no direct macro/crypto impact."
+    }, {
+      "article_id" : 1897,
+      "score" : 0,
+      "reason" : "dup/recap: Iranian missile attack already in ALREADY COVERED survey context; this is damage assessment follow-up, not escalation."
+    }, {
+      "article_id" : 1898,
+      "score" : 0,
+      "reason" : "Unrelated; Argentine political positioning has no material BTC impact."
+    }, {
+      "article_id" : 1900,
+      "score" : 0,
+      "reason" : "Unrelated entertainment/documentary content; no crypto or macro relevance."
+    }, {
+      "article_id" : 2317,
+      "score" : 0,
+      "reason" : "dup: Mastercard Agent Pay already covered in ALREADY COVERED; this is the same event repackaged."
+    }, {
+      "article_id" : 2319,
+      "score" : 0,
+      "reason" : "Unrelated; corporate climate strategy book launch has no BTC price trigger."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 62404.0,
+      "article_count" : 10,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ "Trump announces US will not renew USMCA, triggering prolonged trade uncertainty with Canada and Mexico" ],
+      "reasoning" : "USMCA non-renewal injects fresh trade policy uncertainty into an already mixed macro backdrop (VIX rising, SP500 down), which modestly pressures risk assets including BTC; however, the transmission channel is indirect and funding is neutral so no cascade risk is present, limiting the move.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8503,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0025
+      },
+      "price_context" : {
+        "btc_price" : 62638.0,
+        "change_1h_pct" : 0.0,
+        "change_24h_pct" : 1.53,
+        "range_pos_24h" : 0.8954
+      },
+      "articles" : [ {
+        "id" : 1895,
+        "title" : "Trump Says US Won’t Renew USMCA, Setting Up Months of Talks",
+        "direction" : "bearish",
+        "reasoning" : "Abandoning USMCA raises North American trade uncertainty, weighing on risk sentiment broadly and dragging BTC lower as a risk asset in a mixed macro regime with VIX already elevated.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "volatile",
+        "published_at" : "2026-06-10T16:08:31Z",
+        "url" : "https://www.bloomberg.com/news/articles/2026-06-10/trump-says-us-won-t-renew-usmca-setting-up-months-of-talks",
+        "price_at_publish" : 62404.0
+      } ]
+    },
+    "resonant_article_ids" : [ 1895 ]
+  },
+  "16:10" : {
+    "analyzed_at" : "2026-06-10T16:20:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1894 ],
+    "screener" : [ {
+      "article_id" : 1894,
+      "score" : 0,
+      "reason" : "Opinion/speculation from CEO about future market potential; no new factual trigger or concrete adoption announcement."
+    } ],
+    "prediction_record" : null
+  },
+  "16:20" : {
+    "analyzed_at" : "2026-06-10T16:40:09Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1899, 1903 ],
+    "screener" : [ {
+      "article_id" : 1899,
+      "score" : 0,
+      "reason" : "Opinion/analysis piece on DeFi governance structure; no new factual trigger or event."
+    }, {
+      "article_id" : 1903,
+      "score" : 0,
+      "reason" : "Commentary on IPO market conditions; unrelated to crypto or macro drivers affecting BTC."
+    } ],
+    "prediction_record" : null
+  },
+  "15:50" : {
+    "analyzed_at" : "2026-06-11T16:10:26Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1901, 2318 ],
+    "screener" : [ {
+      "article_id" : 1901,
+      "score" : 7,
+      "reason" : "NEW escalation: Trump threatens renewed strikes on Iran civilian infrastructure; geopolitical risk premium spike triggers flight-to-safety bid in BTC as macro hedge against conflict/USD volatility."
+    }, {
+      "article_id" : 2318,
+      "score" : 0,
+      "reason" : "dup/recap: inflation already covered (2026-06-10 12:32); price commentary and technical speculation add no new factual trigger."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 62666.0,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ "Trump escalates rhetoric on Iran military strikes, threatening civilian infrastructure" ],
+      "reasoning" : "Geopolitical escalation in the Middle East is a risk-off catalyst that typically pressures speculative assets like BTC; however, BTC is already near its 24h high suggesting some resilience, and the macro regime is mixed rather than cleanly risk-off, limiting transmission strength. Flat pre-trend means the news hasn't been absorbed yet, giving it marginal room to nudge price lower.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8502,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0024
+      },
+      "price_context" : {
+        "btc_price" : 62306.0,
+        "change_1h_pct" : 0.18,
+        "change_24h_pct" : 1.49,
+        "range_pos_24h" : 0.853
+      },
+      "articles" : [ {
+        "id" : 1901,
+        "title" : "Trump hardens tone against Iran, says ‘may keep going’ with strikes",
+        "direction" : "bearish",
+        "reasoning" : "Escalating US-Iran military tensions raise geopolitical risk, historically triggering a flight from risk assets including BTC as investors reduce speculative exposure in uncertain environments.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T15:53:21Z",
+        "url" : "https://www.aljazeera.com/news/2026/6/10/trump-hardens-tone-against-iran-says-may-keep-going-with-strikes?traffic_source=rss",
+        "price_at_publish" : 62666.0
+      } ]
+    },
+    "resonant_article_ids" : [ 1901 ]
+  },
+  "16:30" : {
+    "analyzed_at" : "2026-06-11T17:20:33Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1902, 1904, 1909, 2340, 2342 ],
+    "screener" : [ {
+      "article_id" : 1902,
+      "score" : 0,
+      "reason" : "dup/recap - UK banking restrictions on crypto are ongoing regulatory friction, not a NEW event; no material development reported"
+    }, {
+      "article_id" : 1904,
+      "score" : 0,
+      "reason" : "unrelated - coal vs oil energy preference in Asia has no direct BTC impact channel"
+    }, {
+      "article_id" : 1909,
+      "score" : 0,
+      "reason" : "unrelated - local crime/violence unrelated to crypto or macro BTC drivers"
+    }, {
+      "article_id" : 2340,
+      "score" : 2,
+      "reason" : "weak signal - company recovery is micro-level sentiment; no systemic or institutional repositioning trigger"
+    }, {
+      "article_id" : 2342,
+      "score" : 0,
+      "reason" : "dup/reaction - Trump's comment on inflation is commentary/reaction to the already-covered 2026-06-10 12:32 inflation data; no NEW fact"
+    } ],
+    "prediction_record" : null
+  },
+  "16:50" : {
+    "analyzed_at" : "2026-06-11T17:20:31Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1905, 1907, 1914, 2339 ],
+    "screener" : [ {
+      "article_id" : 1905,
+      "score" : 0,
+      "reason" : "dup/recap: M&A commentary, no new event or BTC-specific trigger"
+    }, {
+      "article_id" : 1907,
+      "score" : 0,
+      "reason" : "dup: US inflation data already covered 2026-06-10 12:32; this is market reaction recap"
+    }, {
+      "article_id" : 1914,
+      "score" : 0,
+      "reason" : "dup/recap: stock price movements, no new event, unrelated to BTC"
+    }, {
+      "article_id" : 2339,
+      "score" : 0,
+      "reason" : "dup: Mastercard Agent Pay already covered 2026-06-10 15:34; this is follow-up coverage of same announcement"
+    } ],
+    "prediction_record" : null
+  },
+  "16:40" : {
+    "analyzed_at" : "2026-06-10T17:06:27Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1906, 1908 ],
+    "screener" : [ {
+      "article_id" : 1906,
+      "score" : 0,
+      "reason" : "Fashion/retail M&A unrelated to crypto, macro, or geopolitics affecting BTC"
+    }, {
+      "article_id" : 1908,
+      "score" : 0,
+      "reason" : "Sports entertainment; no crypto, macro, or geopolitical relevance to BTC"
+    } ],
+    "prediction_record" : null
+  },
+  "17:00" : {
+    "analyzed_at" : "2026-06-11T17:20:20Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1910, 1911, 1912, 1913, 1918, 2338, 2341 ],
+    "screener" : [ {
+      "article_id" : 1910,
+      "score" : 2,
+      "reason" : "DEX exploit is crypto-native but $1.34M is small, treasury covers losses, minimal systemic impact"
+    }, {
+      "article_id" : 1911,
+      "score" : 4,
+      "reason" : "Tether expanding into robotics/AI ecosystem with stablecoin integration signals macro adoption vector, but timing and scale unclear"
+    }, {
+      "article_id" : 1912,
+      "score" : 0,
+      "reason" : "dup/recap: SpaceX IPO coverage, historical biography, no new BTC-relevant trigger"
+    }, {
+      "article_id" : 1913,
+      "score" : 0,
+      "reason" : "unrelated: shipping/commodity commentary, no BTC nexus"
+    }, {
+      "article_id" : 1918,
+      "score" : 0,
+      "reason" : "dup/recap: SpaceX IPO analysis and speculation, no new actionable fact for BTC"
+    }, {
+      "article_id" : 2338,
+      "score" : 0,
+      "reason" : "opinion/educational: generic advice on choosing swap platforms, no new event or market trigger"
+    }, {
+      "article_id" : 2341,
+      "score" : 6,
+      "reason" : "geopolitical: Trump reveals active US oil seizure from Iran (new escalation detail beyond prior 'may keep going' signal), direct oil supply shock with macro inflation implications"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 62275.89,
+      "article_count" : 7,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ "Trump claims to 'love the inflation' — signals tolerance for inflationary macro environment", "US covertly extracting Iranian oil — geopolitical escalation risk in Middle East" ],
+      "reasoning" : "Two intertwined signals: Trump's embrace of inflation reduces probability of near-term Fed easing (mildly risk-off for speculative assets like BTC), while the surprise revelation of covert Iranian oil operations injects geopolitical tail risk that historically triggers short-term risk reduction. The mixed macro regime and flat pre-trend mean this news hasn't been priced in, but neutral funding and the lack of crowded longs limit cascade risk — making this a modest bearish lean rather than a sharp move.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8468,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0018
+      },
+      "price_context" : {
+        "btc_price" : 62223.0,
+        "change_1h_pct" : 0.01,
+        "change_24h_pct" : 0.7,
+        "range_pos_24h" : 0.6981
+      },
+      "articles" : [ {
+        "id" : 2341,
+        "title" : "Trump: 'I love the inflation'",
+        "direction" : "bearish",
+        "reasoning" : "Trump's inflationary tolerance dampens rate-cut hopes while covert Iran oil operations introduce sudden geopolitical risk, both of which push risk assets including BTC lower through reduced appetite for speculative exposure.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T17:05:20Z",
+        "url" : "https://www.bbc.com/news/videos/c0rygjggl7zo",
+        "price_at_publish" : 62275.89
+      } ]
+    },
+    "resonant_article_ids" : [ 2341 ]
+  },
+  "17:10" : {
+    "analyzed_at" : "2026-06-10T17:20:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1915, 1916, 1917 ],
+    "screener" : [ {
+      "article_id" : 1915,
+      "score" : 0,
+      "reason" : "No content to evaluate; cannot assess predictive value of empty post."
+    }, {
+      "article_id" : 1916,
+      "score" : 0,
+      "reason" : "SpaceX IPO is equity market event unrelated to BTC; no crypto, macro, geopolitical, or trade policy trigger."
+    }, {
+      "article_id" : 1917,
+      "score" : 0,
+      "reason" : "Biotech IPO performance is equity market event with no bearing on BTC fundamentals or macro drivers."
+    } ],
+    "prediction_record" : null
+  },
+  "17:20" : {
+    "analyzed_at" : "2026-06-11T17:20:17Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1919, 1920, 1921, 2337 ],
+    "screener" : [ {
+      "article_id" : 1919,
+      "score" : 0,
+      "reason" : "Political congratulations post with no market impact; unrelated to BTC/macro/geopolitical triggers."
+    }, {
+      "article_id" : 1920,
+      "score" : 0,
+      "reason" : "Political endorsement commentary; no new actionable geopolitical, trade, or macro event affecting BTC."
+    }, {
+      "article_id" : 1921,
+      "score" : 0,
+      "reason" : "Corporate bond issuance commentary; no BTC-relevant macro signal, monetary policy shift, or systemic risk implication."
+    }, {
+      "article_id" : 2337,
+      "score" : 2,
+      "reason" : "Stablecoin compliance/AML clarification sought; minor positive for regulatory clarity but slow-moving, limited immediate price impact."
+    } ],
+    "prediction_record" : null
+  },
+  "17:40" : {
+    "analyzed_at" : "2026-06-11T18:30:21Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1922, 1923, 1928, 2358 ],
+    "screener" : [ {
+      "article_id" : 1922,
+      "score" : 0,
+      "reason" : "Political endorsement unrelated to BTC; no macro/crypto trigger"
+    }, {
+      "article_id" : 1923,
+      "score" : 0,
+      "reason" : "Entertainment/media content; no relevance to BTC"
+    }, {
+      "article_id" : 1928,
+      "score" : 0,
+      "reason" : "SpaceX IPO is tech/equity event; no direct BTC impact channel"
+    }, {
+      "article_id" : 2358,
+      "score" : 0,
+      "reason" : "recap: speculation/opinion ('might be nearing', 'analysts said') without new factual event"
+    } ],
+    "prediction_record" : null
+  },
+  "17:30" : {
+    "analyzed_at" : "2026-06-10T17:51:17Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1924 ],
+    "screener" : [ {
+      "article_id" : 1924,
+      "score" : 0,
+      "reason" : "EU migration policy analysis with no direct macro/crypto trigger for BTC; no new actionable event or concrete policy implementation date reported."
+    } ],
+    "prediction_record" : null
+  },
+  "17:50" : {
+    "analyzed_at" : "2026-06-10T18:10:09Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1925, 1926, 1927, 1931, 1932 ],
+    "screener" : [ {
+      "article_id" : 1925,
+      "score" : 7,
+      "reason" : "NEW geopolitical escalation: US military intervention securing Strait of Hormuz oil flows signals de-escalation with Iran, reducing oil supply risk premium and lowering macro inflation expectations—bullish for risk assets including BTC."
+    }, {
+      "article_id" : 1926,
+      "score" : 0,
+      "reason" : "dup/recap: Bank transfer bans are ongoing regulatory friction; this is organizational activity (complaint filing) without new regulatory trigger or concrete policy change."
+    }, {
+      "article_id" : 1927,
+      "score" : 0,
+      "reason" : "unrelated: Brexit debate commentary has no new facts or policy trigger relevant to BTC."
+    }, {
+      "article_id" : 1931,
+      "score" : 1,
+      "reason" : "Minor signal: UK tax relief for wealthy US expats may slightly boost capital inflows to UK crypto hubs, but indirect and incremental effect on BTC."
+    }, {
+      "article_id" : 1932,
+      "score" : 0,
+      "reason" : "unrelated: Israeli startup fundraising and shekel strength are tech/FX stories with no direct or material BTC trigger."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61902.54,
+      "article_count" : 5,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ "Trump claims US military controls Strait of Hormuz, Iran defeated — geopolitical escalation signal with oil supply implications" ],
+      "reasoning" : "The announcement implies a significant, ongoing US military operation in a critical oil chokepoint, which reduces geopolitical risk premium in oil but raises broader Middle East tension uncertainty; in a mixed macro regime with VIX rising and SP500 falling, this type of assertive geopolitical posturing tends to weigh on risk assets including BTC as markets reprice tail-risk scenarios rather than celebrate the oil supply relief.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8475,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 9.0E-4
+      },
+      "price_context" : {
+        "btc_price" : 62024.01,
+        "change_1h_pct" : -0.31,
+        "change_24h_pct" : 0.38,
+        "range_pos_24h" : 0.6034
+      },
+      "articles" : [ {
+        "id" : 1925,
+        "title" : "Last month, I directed our Great U.S. Military to execute a secret mission to support Oil Tankers and other Commercial Ships through the Straight of Hormuz. Today, I am pleased to announce that this effort has resulted in more than 100 MILLION Barrels of Oil making its way through the Straight, and into the Open Market. More than 200 Commercial Ships have safely traveled through the Strait. This wildly successful effort is because the UNITED STATES of AMERICA CONTROLS the Strait of Hormuz — NOT Iran. Their military is defeated, and their economy is lost. It’s over for Iran! Thank you for your attention to this matter. President DONALD J. TRUMP",
+        "direction" : "bearish",
+        "reasoning" : "Revelation of a covert US military operation controlling the Strait of Hormuz introduces geopolitical uncertainty and escalation risk — in a mixed/risk-off macro backdrop (VIX rising), this type of headline nudges institutional desks toward risk reduction rather than accumulation, with BTC historically correlating with broad risk-off sentiment on unexpected geopolitical shocks.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T17:50:24Z",
+        "url" : "https://www.trumpstruth.org/statuses/39210",
+        "price_at_publish" : 61902.54
+      } ]
+    },
+    "resonant_article_ids" : [ 1925 ]
+  },
+  "18:00" : {
+    "analyzed_at" : "2026-06-11T18:30:19Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1929, 1930, 1936, 2357 ],
+    "screener" : [ {
+      "article_id" : 1929,
+      "score" : 0,
+      "reason" : "Domestic UK violence; unrelated to BTC"
+    }, {
+      "article_id" : 1930,
+      "score" : 0,
+      "reason" : "Brexit debate recap; no new event or policy trigger"
+    }, {
+      "article_id" : 1936,
+      "score" : 2,
+      "reason" : "Cuba military warning; geopolitical signal but indirect/slow channel to BTC; no major escalation or new sanction announced"
+    }, {
+      "article_id" : 2357,
+      "score" : 5,
+      "reason" : "BlackRock/Fidelity ETF consolidation signal new institutional flow dynamics; if true duopoly forming, suggests sustained institutional BTC demand and potential future flow acceleration"
+    } ],
+    "prediction_record" : null
+  },
+  "18:10" : {
+    "analyzed_at" : "2026-06-11T18:30:16Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1933, 1934, 1935, 1940, 2356 ],
+    "screener" : [ {
+      "article_id" : 1933,
+      "score" : 0,
+      "reason" : "dup/recap - privacy exploration is ongoing Ethereum developer work, no new event or catalyst"
+    }, {
+      "article_id" : 1934,
+      "score" : 0,
+      "reason" : "opinion/speculation - analyst prediction of future price level, not a new factual event"
+    }, {
+      "article_id" : 1935,
+      "score" : 0,
+      "reason" : "unrelated - SpaceX IPO banking logistics have no direct BTC impact"
+    }, {
+      "article_id" : 1940,
+      "score" : 0,
+      "reason" : "dup/recap - commentary on already-covered Iran geopolitical situation, no new development"
+    }, {
+      "article_id" : 2356,
+      "score" : 2,
+      "reason" : "minor negative - Bitcoin L2 shutdown signals weak ecosystem demand, but limited systemic impact"
+    } ],
+    "prediction_record" : null
+  },
+  "18:40" : {
+    "analyzed_at" : "2026-06-11T19:40:17Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1941, 1947, 2387 ],
+    "screener" : [ {
+      "article_id" : 1941,
+      "score" : 0,
+      "reason" : "dup/recap: SpaceX IPO demand story; unrelated to BTC; no macro or crypto trigger"
+    }, {
+      "article_id" : 1947,
+      "score" : 0,
+      "reason" : "dup/recap: same SpaceX IPO coverage; unrelated to BTC"
+    }, {
+      "article_id" : 2387,
+      "score" : 5,
+      "reason" : "NEW event: pending BOJ rate decision is forward-looking macro trigger; historical 22.5% BTC sell-off on hikes signals material impact; timing unknown but decision imminent"
+    } ],
+    "prediction_record" : null
+  },
+  "18:30" : {
+    "analyzed_at" : "2026-06-10T19:03:10Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1942, 1943, 1944, 1945, 1948 ],
+    "screener" : [ {
+      "article_id" : 1942,
+      "score" : 0,
+      "reason" : "dup/recap: SpaceX IPO coverage is unrelated to BTC; no crypto or macro trigger"
+    }, {
+      "article_id" : 1943,
+      "score" : 6,
+      "reason" : "NEW: $22B tariff refund signals Trump trade policy reversal after Supreme Court ruling; reduces disinflationary tailwind, bullish for risk assets including BTC"
+    }, {
+      "article_id" : 1944,
+      "score" : 0,
+      "reason" : "unrelated: domestic Israeli legislative matter, no macro/crypto/geopolitical impact on BTC"
+    }, {
+      "article_id" : 1945,
+      "score" : 0,
+      "reason" : "unrelated: local Israeli industrial closure with 2029 timeline; no immediate BTC relevance"
+    }, {
+      "article_id" : 1948,
+      "score" : 0,
+      "reason" : "dup/recap: Iran-US clashes already covered under 2026-06-10 14:21 Trump statement and 2026-06-10 17:50 Trump military statement; no NEW escalation detail"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61798.12,
+      "article_count" : 5,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "low",
+      "confidence" : "low",
+      "macro_regime" : "mixed",
+      "key_events" : [ "US Treasury refunds $22B in tariffs following Supreme Court ruling on Trump trade policy" ],
+      "reasoning" : "The tariff refund is a macro event with indirect BTC transmission: it could be mildly risk-positive (trade policy rollback reduces cost pressure) but the mixed macro regime, risk-off trend, and flat pre-move suggest no strong directional catalyst here. The channel from tariff refunds to BTC is too indirect and slow to drive a near-term move.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8406,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 2.0E-4
+      },
+      "price_context" : {
+        "btc_price" : 62004.01,
+        "change_1h_pct" : 0.05,
+        "change_24h_pct" : -0.15,
+        "range_pos_24h" : 0.5939
+      },
+      "articles" : [ {
+        "id" : 1943,
+        "title" : "US Refunds $22 Billion in Tariffs, Canceling Out Customs Revenue",
+        "direction" : "neutral",
+        "reasoning" : "Tariff revenue reversal is a macro policy development that could loosely support risk assets, but the transmission to BTC within minutes-to-hours is too indirect and the signal is dampened by the prevailing risk-off macro trend.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T18:37:25Z",
+        "url" : "https://www.bloomberg.com/news/articles/2026-06-10/us-refunds-22-billion-in-tariffs-canceling-out-customs-revenue",
+        "price_at_publish" : 61798.12
+      } ]
+    },
+    "resonant_article_ids" : [ 1943 ]
+  },
+  "18:50" : {
+    "analyzed_at" : "2026-06-11T19:40:14Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1946, 1951, 1952, 2386 ],
+    "screener" : [ {
+      "article_id" : 1946,
+      "score" : 0,
+      "reason" : "dup/recap: M&A in crypto infrastructure; no new systemic risk, regulatory trigger, or macro event"
+    }, {
+      "article_id" : 1951,
+      "score" : 0,
+      "reason" : "recap: geopolitical update on already-covered Israel-Iran conflict; no new escalation or de-escalation event"
+    }, {
+      "article_id" : 1952,
+      "score" : 0,
+      "reason" : "no predictive value: speculation/opinion on UK-EU relations in 2036; unrelated to BTC"
+    }, {
+      "article_id" : 2386,
+      "score" : 2,
+      "reason" : "minor signal: UK bank restrictions on exchange transfers; slow/indirect channel, applies to one jurisdiction only, regulatory friction but not systemic threat yet"
+    } ],
+    "prediction_record" : null
+  },
+  "18:20" : {
+    "analyzed_at" : "2026-06-10T19:03:25Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1949, 1950 ],
+    "screener" : [ {
+      "article_id" : 1949,
+      "score" : 0,
+      "reason" : "dup/recap: immigration bill is domestic policy with no direct crypto/macro trigger; no new actionable event for BTC"
+    }, {
+      "article_id" : 1950,
+      "score" : 6,
+      "reason" : "NEW escalation: US Apache helicopter downed by Iran + Trump warning of further attacks signals potential major geopolitical escalation; oil supply/sanctions risk could spike risk assets including BTC as safe-haven hedge or macro volatility play"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61879.45,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ "Trump threatens further military strikes on Iran following Apache helicopter downing, escalating Middle East tensions" ],
+      "reasoning" : "Geopolitical escalation in the Middle East introduces near-term risk-off sentiment; however, mixed macro regime and neutral funding limit cascade potential, keeping impact modest rather than severe.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8405,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 3.0E-4
+      },
+      "price_context" : {
+        "btc_price" : 61915.99,
+        "change_1h_pct" : -0.09,
+        "change_24h_pct" : -0.29,
+        "range_pos_24h" : 0.5521
+      },
+      "articles" : [ {
+        "id" : 1950,
+        "title" : "Trump warns of more attacks on Iran after US Apache helicopter downing",
+        "direction" : "bearish",
+        "reasoning" : "Renewed US-Iran military confrontation signals escalating geopolitical risk, which historically prompts short-term risk-off rotation away from volatile assets like BTC, though the flat pre-trend suggests limited immediate absorption.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T18:22:13Z",
+        "url" : "https://www.aljazeera.com/video/newsfeed/2026/6/10/trump-warns-of-more-attacks-on-iran-after-us-apache-helicopter-downing?traffic_source=rss",
+        "price_at_publish" : 61879.45
+      } ]
+    },
+    "resonant_article_ids" : [ 1950 ]
+  },
+  "19:10" : {
+    "analyzed_at" : "2026-06-11T19:40:10Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1953, 1954, 1959, 2385 ],
+    "screener" : [ {
+      "article_id" : 1953,
+      "score" : 0,
+      "reason" : "Speculation about retail IPO allocation causing crypto exit; no concrete BTC-specific trigger, speculative chain of causation"
+    }, {
+      "article_id" : 1954,
+      "score" : 0,
+      "reason" : "Unrelated to crypto/markets; entertainment/media interview"
+    }, {
+      "article_id" : 1959,
+      "score" : 0,
+      "reason" : "Unrelated to crypto or macro factors; political/personal news"
+    }, {
+      "article_id" : 2385,
+      "score" : 0,
+      "reason" : "AI product release drama; no actionable impact on BTC price"
+    } ],
+    "prediction_record" : null
+  },
+  "19:00" : {
+    "analyzed_at" : "2026-06-10T19:20:10Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1955, 1956 ],
+    "screener" : [ {
+      "article_id" : 1955,
+      "score" : 0,
+      "reason" : "dup/recap—UK political speculation unrelated to BTC; no new actionable macro trigger"
+    }, {
+      "article_id" : 1956,
+      "score" : 4,
+      "reason" : "new—federal probe into debanking could signal regulatory tightening on crypto-adjacent banking, but early-stage; indirect impact on stablecoin/exchange access channels"
+    } ],
+    "prediction_record" : null
+  },
+  "19:20" : {
+    "analyzed_at" : "2026-06-11T19:40:21Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1957, 1958, 1961, 2388 ],
+    "screener" : [ {
+      "article_id" : 1957,
+      "score" : 0,
+      "reason" : "dup - Israeli-Lebanese escalation already covered under Iran tensions; tactical strike with no new strategic development"
+    }, {
+      "article_id" : 1958,
+      "score" : 0,
+      "reason" : "unrelated - visa/World Cup policy has no crypto/macro impact"
+    }, {
+      "article_id" : 1961,
+      "score" : 0,
+      "reason" : "unrelated - book review/opinion commentary; no new event or market trigger"
+    }, {
+      "article_id" : 2388,
+      "score" : 0,
+      "reason" : "recap - restates existing Iran deal speculation already covered; no new factual development or changed probability"
+    } ],
+    "prediction_record" : null
+  },
+  "19:30" : {
+    "analyzed_at" : "2026-06-11T19:40:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1960, 1963, 1964, 1965, 1966, 2384 ],
+    "screener" : [ {
+      "article_id" : 1960,
+      "score" : 0,
+      "reason" : "SpaceX IPO is equity market event, no direct BTC price mechanism; analyst opinion on valuation"
+    }, {
+      "article_id" : 1963,
+      "score" : 0,
+      "reason" : "Sponsored content about real estate in Israel; unrelated to BTC"
+    }, {
+      "article_id" : 1964,
+      "score" : 0,
+      "reason" : "Cultural event coverage; unrelated to BTC"
+    }, {
+      "article_id" : 1965,
+      "score" : 0,
+      "reason" : "Criminal charges against domestic activist network; no macro or crypto market impact"
+    }, {
+      "article_id" : 1966,
+      "score" : 0,
+      "reason" : "Political messaging/recap of ongoing Israel-Hezbollah dynamics already covered in earlier signals"
+    }, {
+      "article_id" : 2384,
+      "score" : 3,
+      "reason" : "Tether capital deployment into robotics signals confidence in stablecoin stability and institutional reach, but indirect and incremental signal"
+    } ],
+    "prediction_record" : null
+  },
+  "19:40" : {
+    "analyzed_at" : "2026-06-10T20:00:10Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1962, 1967, 1969 ],
+    "screener" : [ {
+      "article_id" : 1962,
+      "score" : 0,
+      "reason" : "Routine CFPB nomination; no direct BTC price impact channel."
+    }, {
+      "article_id" : 1967,
+      "score" : 0,
+      "reason" : "Recap of already-covered Iran escalation and negotiations; no new development."
+    }, {
+      "article_id" : 1969,
+      "score" : 0,
+      "reason" : "SpaceX IPO announcement is equity market news, not a BTC-actionable macro or crypto event."
+    } ],
+    "prediction_record" : null
+  },
+  "19:50" : {
+    "analyzed_at" : "2026-06-10T20:10:09Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1968, 1972, 1973, 1974 ],
+    "screener" : [ {
+      "article_id" : 1968,
+      "score" : 0,
+      "reason" : "Argentina shale NGL project funding; no direct BTC price catalyst or macro trigger"
+    }, {
+      "article_id" : 1972,
+      "score" : 0,
+      "reason" : "SpaceX bond rating news; unrelated to crypto, monetary policy, or systemic risk"
+    }, {
+      "article_id" : 1973,
+      "score" : 0,
+      "reason" : "Entertainment/culture; filmmaker boycott has no predictive value for BTC"
+    }, {
+      "article_id" : 1974,
+      "score" : 0,
+      "reason" : "Regional conflict commentary; no new escalation, no material macro or geopolitical shock announced"
+    } ],
+    "prediction_record" : null
+  },
+  "20:00" : {
+    "analyzed_at" : "2026-06-10T20:38:14Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1970, 1971, 1978 ],
+    "screener" : [ {
+      "article_id" : 1970,
+      "score" : 0,
+      "reason" : "dup/recap: sentiment survey on advisor preferences, no new actionable event or policy trigger"
+    }, {
+      "article_id" : 1971,
+      "score" : 0,
+      "reason" : "unrelated: Nike corporate strategy has no bearing on BTC price"
+    }, {
+      "article_id" : 1978,
+      "score" : 6,
+      "reason" : "geopolitical escalation: US military attack on civilian ship (Indian crew) off Oman signals regional instability and potential Strait of Hormuz disruption; threatens oil supply and increases macro uncertainty favoring safe-haven assets like BTC"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61801.97,
+      "article_count" : 3,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "confidence" : "low",
+      "macro_regime" : "mixed",
+      "key_events" : [ ],
+      "reasoning" : "A geopolitical incident involving a US attack on a ship near Oman could theoretically stir risk-off sentiment, but the event lacks the scale and directness to materially reprice BTC in the near term; the macro backdrop is already mixed with no amplifying crypto-specific triggers.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8353,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -8.0E-4
+      },
+      "price_context" : {
+        "btc_price" : 61949.21,
+        "change_1h_pct" : 0.01,
+        "change_24h_pct" : 0.3,
+        "range_pos_24h" : 0.5679
+      },
+      "articles" : [ {
+        "id" : 1978,
+        "title" : "India summons US envoy over attack on ship carrying Indian sailors off Oman",
+        "direction" : "neutral",
+        "reasoning" : "A diplomatic incident between India and the US over a maritime attack is a geopolitical story with no direct transmission channel to BTC pricing, and BTC's flat pre-trend suggests no market anticipation or reaction is underway.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T20:05:59Z",
+        "url" : "https://www.aljazeera.com/news/2026/6/10/india-summons-us-envoy-over-ship-attack-that-left-three-indians-missing?traffic_source=rss",
+        "price_at_publish" : 61801.97
+      } ]
+    },
+    "resonant_article_ids" : [ 1978 ]
+  },
+  "20:10" : {
+    "analyzed_at" : "2026-06-11T20:40:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1975, 1976, 2410, 2411 ],
+    "screener" : [ {
+      "article_id" : 1975,
+      "score" : 0,
+      "reason" : "dup/recap - bond market commentary on existing AI infrastructure financing trends, no new trigger"
+    }, {
+      "article_id" : 1976,
+      "score" : 0,
+      "reason" : "dup/recap - M&A forecasting and commentary, no new deal or policy announcement"
+    }, {
+      "article_id" : 2410,
+      "score" : 2,
+      "reason" : "DeFi exploit on Solana (non-BTC ecosystem), modest signal of smart contract risk but isolated and small magnitude"
+    }, {
+      "article_id" : 2411,
+      "score" : 0,
+      "reason" : "unrelated - agricultural pest commentary, no crypto or macro relevance to BTC"
+    } ],
+    "prediction_record" : null
+  },
+  "20:30" : {
+    "analyzed_at" : "2026-06-10T20:56:03Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1977, 1982, 1986 ],
+    "screener" : [ {
+      "article_id" : 1977,
+      "score" : 0,
+      "reason" : "dup—Trump's inflation commentary is reaction/opinion to already-reported CPI data; no new policy trigger"
+    }, {
+      "article_id" : 1982,
+      "score" : 0,
+      "reason" : "recap/opinion—historical analogy and commentary on existing trends (AI, crypto, deregulation); no new factual event"
+    }, {
+      "article_id" : 1986,
+      "score" : 0,
+      "reason" : "unrelated—humanitarian/Gaza news has no direct crypto or macro policy impact"
+    } ],
+    "prediction_record" : null
+  },
+  "20:40" : {
+    "analyzed_at" : "2026-06-11T23:00:15Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1983, 1984, 1985, 2428 ],
+    "screener" : [ {
+      "article_id" : 1983,
+      "score" : 0,
+      "reason" : "dup - Israel-Lebanon conflict already priced in; UN probe is procedural follow-up, not new escalation"
+    }, {
+      "article_id" : 1984,
+      "score" : 0,
+      "reason" : "unrelated - sports/entertainment, no macro or crypto relevance"
+    }, {
+      "article_id" : 1985,
+      "score" : 0,
+      "reason" : "unrelated - celebrity real estate, no market impact"
+    }, {
+      "article_id" : 2428,
+      "score" : 0,
+      "reason" : "recap - describes already-observable market conditions (miner margins, price level); no new event or trigger"
+    } ],
+    "prediction_record" : null
+  },
+  "20:50" : {
+    "analyzed_at" : "2026-06-11T23:00:24Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1987, 2432 ],
+    "screener" : [ {
+      "article_id" : 1987,
+      "score" : 0,
+      "reason" : "dup: IAEA nuclear demand on Iran already embedded in geopolitical coverage; no new escalation trigger or concrete sanction action that moves oil/macro markets"
+    }, {
+      "article_id" : 2432,
+      "score" : 0,
+      "reason" : "dup: Trump inflation comment already covered at 2026-06-10 17:05; this is recap/reaction commentary with no new data or policy announcement"
+    } ],
+    "prediction_record" : null
+  },
+  "21:00" : {
+    "analyzed_at" : "2026-06-10T21:40:55Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1988, 1994 ],
+    "screener" : [ {
+      "article_id" : 1988,
+      "score" : 0,
+      "reason" : "Entertainment/sports topic unrelated to crypto or macro drivers of BTC price"
+    }, {
+      "article_id" : 1994,
+      "score" : 0,
+      "reason" : "Domestic US personnel/organizational change with no direct macro or policy impact on monetary, trade, or geopolitical risk factors affecting BTC"
+    } ],
+    "prediction_record" : null
+  },
+  "21:10" : {
+    "analyzed_at" : "2026-06-10T21:30:08Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1989, 1990 ],
+    "screener" : [ {
+      "article_id" : 1989,
+      "score" : 0,
+      "reason" : "recap/reaction: commentary on already-covered Iran escalation and oil price movement; no new event"
+    }, {
+      "article_id" : 1990,
+      "score" : 6,
+      "reason" : "new policy shift: US loosening Venezuela sanctions/legal restrictions to enable oil investment — bullish for global oil supply, hawkish-lite on de-escalation vs Iran posture, eases energy macro pressure on BTC"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61659.39,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "confidence" : "low",
+      "macro_regime" : "mixed",
+      "key_events" : [ ],
+      "reasoning" : "US Treasury easing Venezuela sanctions is a geopolitical/energy story with no direct BTC price transmission mechanism; macro signals are mixed but this event doesn't meaningfully alter crypto market positioning.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8366,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0026
+      },
+      "price_context" : {
+        "btc_price" : 61619.99,
+        "change_1h_pct" : -0.3,
+        "change_24h_pct" : -0.16,
+        "range_pos_24h" : 0.4113
+      },
+      "articles" : [ {
+        "id" : 1990,
+        "title" : "US Treasury Eases Legal Restrictions Across Venezuela Licenses",
+        "direction" : "neutral",
+        "reasoning" : "Venezuela sanctions relief affects oil/energy investment channels, not crypto markets directly, and has no credible mechanism to shift BTC demand or supply in the near term.",
+        "scenario" : "noise",
+        "pre_trend" : "falling",
+        "published_at" : "2026-06-10T21:17:56Z",
+        "url" : "https://www.bloomberg.com/news/articles/2026-06-10/us-treasury-eases-legal-restrictions-across-venezuela-licenses",
+        "price_at_publish" : 61659.39
+      } ]
+    },
+    "resonant_article_ids" : [ 1990 ]
+  },
+  "21:20" : {
+    "analyzed_at" : "2026-06-10T21:40:12Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1993 ],
+    "screener" : [ {
+      "article_id" : 1993,
+      "score" : 0,
+      "reason" : "Entertainment/sports content (FIFA World Cup halftime show); no crypto or macro trigger"
+    } ],
+    "prediction_record" : null
+  },
+  "21:40" : {
+    "analyzed_at" : "2026-06-10T22:10:09Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 1995, 1997, 2000 ],
+    "screener" : [ {
+      "article_id" : 1995,
+      "score" : 0,
+      "reason" : "dup/recap - stock price reaction to already-reported Trump endorsement, no new macro trigger"
+    }, {
+      "article_id" : 1997,
+      "score" : 3,
+      "reason" : "new factual claim: Iran war depleting US critical minerals, but indirect/slow channel to BTC and magnitude unclear without concrete supply data"
+    }, {
+      "article_id" : 2000,
+      "score" : 6,
+      "reason" : "new escalation: second consecutive night of US strikes on Iran announced; material geopolitical risk surge affecting oil/macro outlook, likely to trigger institutional repositioning"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61676.0,
+      "article_count" : 3,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "high",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ "US launches second consecutive night of military strikes on Iran, targeting key facilities" ],
+      "reasoning" : "Active US military strikes on Iran represent a meaningful geopolitical shock that historically triggers risk-off flight — equities and crypto sell off while gold and safe havens bid. The mixed macro backdrop (VIX already elevated, SP500 down) amplifies the bearish channel, and BTC entering this headline on a flat tape means limited pre-absorption. Confidence is medium rather than high because BTC sometimes catches a safe-haven bid during geopolitical escalation, and funding is neutral so no cascade amplification from crowded longs.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8363,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0031
+      },
+      "price_context" : {
+        "btc_price" : 61624.0,
+        "change_1h_pct" : -0.29,
+        "change_24h_pct" : -0.15,
+        "range_pos_24h" : 0.4132
+      },
+      "articles" : [ {
+        "id" : 2000,
+        "title" : "US launches new round of ‘self-defense strikes’ in Iran; Hegseth: ‘Key facilities’ will be bombed",
+        "direction" : "bearish",
+        "reasoning" : "Escalating US-Iran military conflict drives acute risk-off sentiment, suppressing appetite for risk assets including BTC, with VIX already elevated and the pre-trend flat indicating the move is not yet priced in.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T21:46:32Z",
+        "url" : "https://www.timesofisrael.com/liveblog-june-11-2026/",
+        "price_at_publish" : 61676.0
+      } ]
+    },
+    "resonant_article_ids" : [ 2000 ]
+  },
+  "21:50" : {
+    "analyzed_at" : "2026-06-11T23:00:22Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1996, 1998, 2431 ],
+    "screener" : [ {
+      "article_id" : 1996,
+      "score" : 0,
+      "reason" : "AI technology commentary unrelated to crypto/macro/geopolitical drivers of BTC"
+    }, {
+      "article_id" : 1998,
+      "score" : 0,
+      "reason" : "dup: Iran strikes already covered in ALREADY COVERED section (21:46 Hegseth announcement)"
+    }, {
+      "article_id" : 2431,
+      "score" : 0,
+      "reason" : "recap/analysis: Trump's inflation comment already in ALREADY COVERED (16:05); this is market reaction commentary, not new fact"
+    } ],
+    "prediction_record" : null
+  },
+  "22:00" : {
+    "analyzed_at" : "2026-06-11T23:00:20Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 1999, 2002, 2003, 2430 ],
+    "screener" : [ {
+      "article_id" : 1999,
+      "score" : 0,
+      "reason" : "dup/reaction: market response to already-covered US strikes on Iran (2026-06-10 21:46)"
+    }, {
+      "article_id" : 2002,
+      "score" : 0,
+      "reason" : "dup/recap: overnight market wrap summarizing already-covered Iran strikes and oil move"
+    }, {
+      "article_id" : 2003,
+      "score" : 0,
+      "reason" : "unrelated: Bill Gates testimony on Epstein has no crypto/macro/geopolitical impact on BTC"
+    }, {
+      "article_id" : 2430,
+      "score" : 0,
+      "reason" : "recap/reaction: live market commentary on already-covered Middle East tensions and chip selloff"
+    } ],
+    "prediction_record" : null
+  },
+  "22:10" : {
+    "analyzed_at" : "2026-06-10T22:53:13Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 2001, 2011 ],
+    "screener" : [ {
+      "article_id" : 2001,
+      "score" : 0,
+      "reason" : "Recap of already-reported inflation data with analyst commentary; no new factual trigger or policy decision announced."
+    }, {
+      "article_id" : 2011,
+      "score" : 0,
+      "reason" : "Sports entertainment; unrelated to crypto or macro drivers."
+    } ],
+    "prediction_record" : null
+  },
+  "22:20" : {
+    "analyzed_at" : "2026-06-10T22:53:10Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 2007, 2008, 2010 ],
+    "screener" : [ {
+      "article_id" : 2007,
+      "score" : 0,
+      "reason" : "Unrelated to crypto/macro/geopolitical drivers of BTC; lifestyle/nature content."
+    }, {
+      "article_id" : 2008,
+      "score" : 0,
+      "reason" : "Localized West Bank incident; no macro, monetary, or geopolitical escalation material enough to move BTC."
+    }, {
+      "article_id" : 2010,
+      "score" : 0,
+      "reason" : "Domestic social media regulation; no direct impact on BTC price or macro drivers."
+    } ],
+    "prediction_record" : null
+  },
+  "22:30" : {
+    "analyzed_at" : "2026-06-11T23:00:17Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 2009, 2012, 2013, 2429 ],
+    "screener" : [ {
+      "article_id" : 2009,
+      "score" : 0,
+      "reason" : "dup/recap - Fonterra fuel cost commentary is downstream market reaction to already-covered oil situation, not new event"
+    }, {
+      "article_id" : 2012,
+      "score" : 0,
+      "reason" : "dup/reaction - gold price movement is a market reaction to already-covered Iran strikes (2026-06-10 21:46)"
+    }, {
+      "article_id" : 2013,
+      "score" : 0,
+      "reason" : "unrelated - IDF personnel policy has no predictive value for BTC"
+    }, {
+      "article_id" : 2429,
+      "score" : 1,
+      "reason" : "minor regulatory signal on prediction markets; indirect and slow channel to BTC, limited institutional repositioning trigger"
+    } ],
+    "prediction_record" : null
+  },
+  "23:00" : {
+    "analyzed_at" : "2026-06-10T23:24:41Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 2014 ],
+    "screener" : [ {
+      "article_id" : 2014,
+      "score" : 0,
+      "reason" : "Unrelated topic (criminal trial for wildfire); no crypto or macro market impact."
+    } ],
+    "prediction_record" : null
+  },
+  "23:20" : {
+    "analyzed_at" : "2026-06-10T23:40:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 2015, 2016, 2018 ],
+    "screener" : [ {
+      "article_id" : 2015,
+      "score" : 0,
+      "reason" : "AI workplace trends; unrelated to BTC price drivers"
+    }, {
+      "article_id" : 2016,
+      "score" : 0,
+      "reason" : "Conference recap of regulatory/tech topics; no new actionable event or concrete trigger"
+    }, {
+      "article_id" : 2018,
+      "score" : 0,
+      "reason" : "Australian mortgage demand decline; no macro monetary policy signal or BTC-relevant catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "23:30" : {
+    "analyzed_at" : "2026-06-10T23:40:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 2017 ],
+    "screener" : [ {
+      "article_id" : 2017,
+      "score" : 0,
+      "reason" : "dup/recap - second round of strikes already covered under 'US launches new round of self-defense strikes in Iran' from 21:46; this is follow-up coverage of same escalation event"
+    } ],
+    "prediction_record" : null
+  },
+  "23:50" : {
+    "analyzed_at" : "2026-06-12T00:10:14Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 2020, 2021, 2022, 2487 ],
+    "screener" : [ {
+      "article_id" : 2020,
+      "score" : 9,
+      "reason" : "Iran closes Hormuz Strait to all ships after US bombing—critical oil supply shock; major geopolitical escalation with immediate energy market impact, upstream to BTC via risk-off macro."
+    }, {
+      "article_id" : 2021,
+      "score" : 0,
+      "reason" : "dup/recap—commentary on Trump's earlier Hormuz claims; no new factual trigger, analysis only."
+    }, {
+      "article_id" : 2022,
+      "score" : 0,
+      "reason" : "unrelated—domestic US political comment on Guantanamo; no crypto, macro, or geopolitical price lever."
+    }, {
+      "article_id" : 2487,
+      "score" : 0,
+      "reason" : "unrelated—corporate relocation trend; lifestyle/business news, no BTC impact channel."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61504.17,
+      "article_count" : 4,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "high",
+      "confidence" : "high",
+      "macro_regime" : "mixed",
+      "key_events" : [ "US military strikes on Iran after Trump threat", "Iran closes Strait of Hormuz to all ships" ],
+      "reasoning" : "A direct US military strike on Iran combined with closure of the Strait of Hormuz is a severe geopolitical shock — a major global supply disruption catalyst that historically triggers immediate risk-off flight; despite BTC sometimes acting as a safe haven, macro_regime is already mixed with VIX elevated and equities down, and BTC's flat pre-trend means this news is not yet priced in, strongly favoring a sharp near-term selloff as institutional desks de-risk across all assets.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8412,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0012
+      },
+      "price_context" : {
+        "btc_price" : 61487.47,
+        "change_1h_pct" : 0.17,
+        "change_24h_pct" : -0.7,
+        "range_pos_24h" : 0.3483
+      },
+      "articles" : [ {
+        "id" : 2020,
+        "title" : "US bombs Iran after Trump threat, Tehran closes Hormuz Strait to all ships",
+        "direction" : "bearish",
+        "reasoning" : "US bombing of Iran and Hormuz closure is a high-magnitude geopolitical escalation that triggers immediate risk-off repricing — VIX will spike further, equities will dump, and BTC will be sold alongside risk assets in the initial shock phase, with no pre-move absorption given the flat pre-trend.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-10T23:57:12Z",
+        "url" : "https://www.aljazeera.com/news/2026/6/10/us-bombs-iran-after-trump-threat-tehran-closes-hormuz-strait-to-all-ships?traffic_source=rss",
+        "price_at_publish" : 61504.17
+      } ]
+    },
+    "resonant_article_ids" : [ 2020 ]
+  },
+  "01:40" : {
+    "analyzed_at" : "2026-06-11T02:00:13Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 2036 ],
+    "screener" : [ {
+      "article_id" : 2036,
+      "score" : 0,
+      "reason" : "dup/recap: Iran conflict impact on commodities already covered; China inflation data is backward-looking commentary on existing events, not a new trigger"
+    } ],
+    "prediction_record" : null
+  },
+  "05:50" : {
+    "analyzed_at" : "2026-06-11T06:30:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 2089 ],
+    "screener" : [ {
+      "article_id" : 2089,
+      "score" : 0,
+      "reason" : "dup/recap - regulatory commentary on prediction markets; no new policy action or announcement; speculative analyst opinion without actionable trigger"
+    } ],
+    "prediction_record" : null
+  },
+  "06:40" : {
+    "analyzed_at" : "2026-06-11T07:30:34Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 2110 ],
+    "screener" : [ {
+      "article_id" : 2110,
+      "score" : 0,
+      "reason" : "dup/recap - regulatory commentary on existing GENIUS Act proposal; no new event or material development; industry advocacy without concrete policy change"
+    } ],
+    "prediction_record" : null
+  },
+  "09:10" : {
+    "analyzed_at" : "2026-06-11T09:40:17Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 2144 ],
+    "screener" : [ {
+      "article_id" : 2144,
+      "score" : 6,
+      "reason" : "Institutional stablecoin launch by major Japanese megabanks signals growing mainstream adoption and crypto infrastructure maturation; potential liquidity influx and legitimacy boost for BTC markets, though execution timeline (March 2027) is distant."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 61036.0,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "confidence" : "medium",
+      "macro_regime" : "mixed",
+      "key_events" : [ ],
+      "reasoning" : "A stablecoin planning announcement from Japanese megabanks with a multi-year timeline (March 2027) is a long-horizon institutional development with no near-term BTC price mechanism; BTC is already near its 24h low in a risk-off macro environment, and this news provides no incremental catalyst in either direction.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8046,
+        "dvol_trend" : "flat"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -0.0046
+      },
+      "price_context" : {
+        "btc_price" : 61132.01,
+        "change_1h_pct" : -0.21,
+        "change_24h_pct" : -2.63,
+        "range_pos_24h" : 0.1664
+      },
+      "articles" : [ {
+        "id" : 2144,
+        "title" : "Japan's Largest Banks Plan Joint Stablecoin Launch by March 2027",
+        "direction" : "neutral",
+        "reasoning" : "Japanese bank stablecoin consortium is a multi-year infrastructure story with no direct BTC supply/demand or sentiment mechanism in the minutes-to-hours timeframe.",
+        "scenario" : "noise",
+        "pre_trend" : "falling",
+        "published_at" : "2026-06-10T09:19:08Z",
+        "url" : "https://decrypt.co/370615/japans-largest-banks-plan-joint-stablecoin-launch-by-march-2027",
+        "price_at_publish" : 61036.0
+      } ]
+    },
+    "resonant_article_ids" : [ 2144 ]
+  }
+}

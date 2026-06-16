@@ -1,0 +1,3852 @@
+{
+  "00:00" : {
+    "fetched_at" : "2026-06-09T00:01:06Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 100.039,
+        "prev_close" : 99.53,
+        "change_pct" : 0.51,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4337.1,
+        "prev_close" : 4436.7,
+        "change_pct" : -2.24,
+        "yield_pct" : null
+      }
+    }
+  },
+  "00:10" : {
+    "fetched_at" : "2026-06-09T00:10:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 100.048,
+        "prev_close" : 99.53,
+        "change_pct" : 0.52,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4340.0,
+        "prev_close" : 4436.7,
+        "change_pct" : -2.18,
+        "yield_pct" : null
+      }
+    }
+  },
+  "00:20" : {
+    "fetched_at" : "2026-06-09T00:20:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 100.039,
+        "prev_close" : 99.53,
+        "change_pct" : 0.51,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4342.4,
+        "prev_close" : 4436.7,
+        "change_pct" : -2.13,
+        "yield_pct" : null
+      }
+    }
+  },
+  "00:30" : {
+    "fetched_at" : "2026-06-09T00:30:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 100.041,
+        "prev_close" : 99.53,
+        "change_pct" : 0.51,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4344.0,
+        "prev_close" : 4436.7,
+        "change_pct" : -2.09,
+        "yield_pct" : null
+      }
+    }
+  },
+  "00:40" : {
+    "fetched_at" : "2026-06-09T00:40:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 100.041,
+        "prev_close" : 99.53,
+        "change_pct" : 0.51,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4340.6,
+        "prev_close" : 4436.7,
+        "change_pct" : -2.17,
+        "yield_pct" : null
+      }
+    }
+  },
+  "00:50" : {
+    "fetched_at" : "2026-06-09T00:50:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 100.029,
+        "prev_close" : 99.53,
+        "change_pct" : 0.5,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4342.9,
+        "prev_close" : 4436.7,
+        "change_pct" : -2.11,
+        "yield_pct" : null
+      }
+    }
+  },
+  "01:00" : {
+    "fetched_at" : "2026-06-09T01:00:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 100.034,
+        "prev_close" : 99.53,
+        "change_pct" : 0.51,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4341.1,
+        "prev_close" : 4436.7,
+        "change_pct" : -2.15,
+        "yield_pct" : null
+      }
+    }
+  },
+  "01:10" : {
+    "fetched_at" : "2026-06-09T01:10:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 100.027,
+        "prev_close" : 99.53,
+        "change_pct" : 0.5,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4343.7,
+        "prev_close" : 4436.7,
+        "change_pct" : -2.1,
+        "yield_pct" : null
+      }
+    }
+  },
+  "01:20" : {
+    "fetched_at" : "2026-06-09T01:20:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 100.02,
+        "prev_close" : 99.53,
+        "change_pct" : 0.49,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4349.5,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.97,
+        "yield_pct" : null
+      }
+    }
+  },
+  "01:30" : {
+    "fetched_at" : "2026-06-09T01:30:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 100.009,
+        "prev_close" : 99.53,
+        "change_pct" : 0.48,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4348.7,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.98,
+        "yield_pct" : null
+      }
+    }
+  },
+  "01:40" : {
+    "fetched_at" : "2026-06-09T01:40:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.992,
+        "prev_close" : 99.53,
+        "change_pct" : 0.46,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4359.8,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.73,
+        "yield_pct" : null
+      }
+    }
+  },
+  "01:50" : {
+    "fetched_at" : "2026-06-09T01:50:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.982,
+        "prev_close" : 99.53,
+        "change_pct" : 0.45,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4359.9,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.73,
+        "yield_pct" : null
+      }
+    }
+  },
+  "02:00" : {
+    "fetched_at" : "2026-06-09T02:00:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.97,
+        "prev_close" : 99.53,
+        "change_pct" : 0.44,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4358.8,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.76,
+        "yield_pct" : null
+      }
+    }
+  },
+  "02:10" : {
+    "fetched_at" : "2026-06-09T02:10:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.955,
+        "prev_close" : 99.53,
+        "change_pct" : 0.43,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4360.8,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.71,
+        "yield_pct" : null
+      }
+    }
+  },
+  "02:20" : {
+    "fetched_at" : "2026-06-09T02:20:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.953,
+        "prev_close" : 99.53,
+        "change_pct" : 0.42,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4355.4,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.83,
+        "yield_pct" : null
+      }
+    }
+  },
+  "02:30" : {
+    "fetched_at" : "2026-06-09T02:30:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.977,
+        "prev_close" : 99.53,
+        "change_pct" : 0.45,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4357.1,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.79,
+        "yield_pct" : null
+      }
+    }
+  },
+  "02:40" : {
+    "fetched_at" : "2026-06-09T02:40:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.961,
+        "prev_close" : 99.53,
+        "change_pct" : 0.43,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4359.9,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.73,
+        "yield_pct" : null
+      }
+    }
+  },
+  "02:50" : {
+    "fetched_at" : "2026-06-09T02:50:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.966,
+        "prev_close" : 99.53,
+        "change_pct" : 0.44,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4359.7,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.74,
+        "yield_pct" : null
+      }
+    }
+  },
+  "03:00" : {
+    "fetched_at" : "2026-06-09T03:00:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.961,
+        "prev_close" : 99.53,
+        "change_pct" : 0.43,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4361.9,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.69,
+        "yield_pct" : null
+      }
+    }
+  },
+  "03:10" : {
+    "fetched_at" : "2026-06-09T03:10:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.974,
+        "prev_close" : 99.53,
+        "change_pct" : 0.45,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4360.1,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.73,
+        "yield_pct" : null
+      }
+    }
+  },
+  "03:20" : {
+    "fetched_at" : "2026-06-09T03:20:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.966,
+        "prev_close" : 99.53,
+        "change_pct" : 0.44,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4362.7,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.67,
+        "yield_pct" : null
+      }
+    }
+  },
+  "03:30" : {
+    "fetched_at" : "2026-06-09T03:30:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.97,
+        "prev_close" : 99.53,
+        "change_pct" : 0.44,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4364.0,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.64,
+        "yield_pct" : null
+      }
+    }
+  },
+  "03:40" : {
+    "fetched_at" : "2026-06-09T03:40:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.98,
+        "prev_close" : 99.53,
+        "change_pct" : 0.45,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4361.1,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.7,
+        "yield_pct" : null
+      }
+    }
+  },
+  "03:50" : {
+    "fetched_at" : "2026-06-09T03:50:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.978,
+        "prev_close" : 99.53,
+        "change_pct" : 0.45,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4359.7,
+        "prev_close" : 4436.7,
+        "change_pct" : -1.74,
+        "yield_pct" : null
+      }
+    }
+  },
+  "04:00" : {
+    "fetched_at" : "2026-06-09T04:00:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.976,
+        "prev_close" : 99.41,
+        "change_pct" : 0.57,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4363.5,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.51,
+        "yield_pct" : null
+      }
+    }
+  },
+  "04:10" : {
+    "fetched_at" : "2026-06-09T04:10:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.973,
+        "prev_close" : 99.41,
+        "change_pct" : 0.57,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4360.7,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.57,
+        "yield_pct" : null
+      }
+    }
+  },
+  "04:20" : {
+    "fetched_at" : "2026-06-09T04:20:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.966,
+        "prev_close" : 99.41,
+        "change_pct" : 0.56,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4361.8,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.55,
+        "yield_pct" : null
+      }
+    }
+  },
+  "04:30" : {
+    "fetched_at" : "2026-06-09T04:30:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.958,
+        "prev_close" : 99.41,
+        "change_pct" : 0.55,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4354.1,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.72,
+        "yield_pct" : null
+      }
+    }
+  },
+  "04:40" : {
+    "fetched_at" : "2026-06-09T04:40:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.943,
+        "prev_close" : 99.41,
+        "change_pct" : 0.54,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4355.0,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.7,
+        "yield_pct" : null
+      }
+    }
+  },
+  "04:50" : {
+    "fetched_at" : "2026-06-09T04:50:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.913,
+        "prev_close" : 99.41,
+        "change_pct" : 0.51,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4354.4,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.71,
+        "yield_pct" : null
+      }
+    }
+  },
+  "05:00" : {
+    "fetched_at" : "2026-06-09T05:00:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.892,
+        "prev_close" : 99.41,
+        "change_pct" : 0.48,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4353.6,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.73,
+        "yield_pct" : null
+      }
+    }
+  },
+  "05:10" : {
+    "fetched_at" : "2026-06-09T05:10:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.909,
+        "prev_close" : 99.41,
+        "change_pct" : 0.5,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4356.5,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.67,
+        "yield_pct" : null
+      }
+    }
+  },
+  "05:20" : {
+    "fetched_at" : "2026-06-09T05:20:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.93,
+        "prev_close" : 99.41,
+        "change_pct" : 0.52,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4357.0,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.65,
+        "yield_pct" : null
+      }
+    }
+  },
+  "05:30" : {
+    "fetched_at" : "2026-06-09T05:30:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.935,
+        "prev_close" : 99.41,
+        "change_pct" : 0.53,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4357.5,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.64,
+        "yield_pct" : null
+      }
+    }
+  },
+  "05:40" : {
+    "fetched_at" : "2026-06-09T05:40:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.929,
+        "prev_close" : 99.41,
+        "change_pct" : 0.52,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4358.2,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.63,
+        "yield_pct" : null
+      }
+    }
+  },
+  "05:50" : {
+    "fetched_at" : "2026-06-09T05:50:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.894,
+        "prev_close" : 99.41,
+        "change_pct" : 0.49,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4368.7,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.39,
+        "yield_pct" : null
+      }
+    }
+  },
+  "06:00" : {
+    "fetched_at" : "2026-06-09T06:00:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.884,
+        "prev_close" : 99.41,
+        "change_pct" : 0.48,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4371.4,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.33,
+        "yield_pct" : null
+      }
+    }
+  },
+  "06:10" : {
+    "fetched_at" : "2026-06-09T06:10:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.901,
+        "prev_close" : 99.41,
+        "change_pct" : 0.49,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4367.8,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.41,
+        "yield_pct" : null
+      }
+    }
+  },
+  "06:20" : {
+    "fetched_at" : "2026-06-09T06:20:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.89,
+        "prev_close" : 99.41,
+        "change_pct" : 0.48,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4368.4,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.4,
+        "yield_pct" : null
+      }
+    }
+  },
+  "06:30" : {
+    "fetched_at" : "2026-06-09T06:30:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.832,
+        "prev_close" : 99.41,
+        "change_pct" : 0.42,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4367.3,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.42,
+        "yield_pct" : null
+      }
+    }
+  },
+  "06:40" : {
+    "fetched_at" : "2026-06-09T06:40:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.863,
+        "prev_close" : 99.41,
+        "change_pct" : 0.46,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4362.5,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.53,
+        "yield_pct" : null
+      }
+    }
+  },
+  "06:50" : {
+    "fetched_at" : "2026-06-09T06:50:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.876,
+        "prev_close" : 99.41,
+        "change_pct" : 0.47,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 15.77,
+        "change_pct" : 19.97,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4361.9,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.54,
+        "yield_pct" : null
+      }
+    }
+  },
+  "07:00" : {
+    "fetched_at" : "2026-06-09T07:00:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.894,
+        "prev_close" : 99.41,
+        "change_pct" : 0.49,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 16.06,
+        "change_pct" : 17.81,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4363.4,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.51,
+        "yield_pct" : null
+      }
+    }
+  },
+  "07:10" : {
+    "fetched_at" : "2026-06-09T07:10:11Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.906,
+        "prev_close" : 99.41,
+        "change_pct" : 0.5,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 16.06,
+        "change_pct" : 17.81,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4353.7,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.73,
+        "yield_pct" : null
+      }
+    }
+  },
+  "07:20" : {
+    "fetched_at" : "2026-06-09T07:20:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.923,
+        "prev_close" : 99.41,
+        "change_pct" : 0.52,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.92,
+        "prev_close" : 16.06,
+        "change_pct" : 17.81,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4356.5,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.67,
+        "yield_pct" : null
+      }
+    }
+  },
+  "07:30" : {
+    "fetched_at" : "2026-06-09T07:30:12Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.949,
+        "prev_close" : 99.41,
+        "change_pct" : 0.54,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.19,
+        "prev_close" : 16.06,
+        "change_pct" : 13.26,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4352.1,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.76,
+        "yield_pct" : null
+      }
+    }
+  },
+  "07:40" : {
+    "fetched_at" : "2026-06-09T07:40:12Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.932,
+        "prev_close" : 99.41,
+        "change_pct" : 0.53,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.23,
+        "prev_close" : 16.06,
+        "change_pct" : 13.51,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4355.0,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.7,
+        "yield_pct" : null
+      }
+    }
+  },
+  "07:50" : {
+    "fetched_at" : "2026-06-09T07:50:12Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.929,
+        "prev_close" : 99.41,
+        "change_pct" : 0.52,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.26,
+        "prev_close" : 16.06,
+        "change_pct" : 13.7,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4349.5,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.82,
+        "yield_pct" : null
+      }
+    }
+  },
+  "08:00" : {
+    "fetched_at" : "2026-06-09T08:00:12Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.92,
+        "prev_close" : 99.41,
+        "change_pct" : 0.51,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.22,
+        "prev_close" : 16.06,
+        "change_pct" : 13.45,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4349.6,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.82,
+        "yield_pct" : null
+      }
+    }
+  },
+  "08:10" : {
+    "fetched_at" : "2026-06-09T08:10:00Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.943,
+        "prev_close" : 99.41,
+        "change_pct" : 0.54,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.29,
+        "prev_close" : 16.06,
+        "change_pct" : 13.89,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4350.2,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.81,
+        "yield_pct" : null
+      }
+    }
+  },
+  "08:20" : {
+    "fetched_at" : "2026-06-09T08:20:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.95,
+        "prev_close" : 99.41,
+        "change_pct" : 0.54,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.25,
+        "prev_close" : 16.06,
+        "change_pct" : 13.64,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4350.1,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.81,
+        "yield_pct" : null
+      }
+    }
+  },
+  "08:30" : {
+    "fetched_at" : "2026-06-09T08:30:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.929,
+        "prev_close" : 99.41,
+        "change_pct" : 0.52,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.11,
+        "prev_close" : 16.06,
+        "change_pct" : 12.76,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4355.6,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.69,
+        "yield_pct" : null
+      }
+    }
+  },
+  "08:40" : {
+    "fetched_at" : "2026-06-09T08:40:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.905,
+        "prev_close" : 99.41,
+        "change_pct" : 0.5,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.13,
+        "prev_close" : 16.06,
+        "change_pct" : 12.89,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4358.1,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.63,
+        "yield_pct" : null
+      }
+    }
+  },
+  "08:50" : {
+    "fetched_at" : "2026-06-09T08:50:12Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.898,
+        "prev_close" : 99.41,
+        "change_pct" : 0.49,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.17,
+        "prev_close" : 16.06,
+        "change_pct" : 13.14,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4357.6,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.64,
+        "yield_pct" : null
+      }
+    }
+  },
+  "09:00" : {
+    "fetched_at" : "2026-06-09T09:00:12Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.9,
+        "prev_close" : 99.41,
+        "change_pct" : 0.49,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.09,
+        "prev_close" : 16.06,
+        "change_pct" : 12.64,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4351.2,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.78,
+        "yield_pct" : null
+      }
+    }
+  },
+  "09:10" : {
+    "fetched_at" : "2026-06-09T09:10:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.865,
+        "prev_close" : 99.41,
+        "change_pct" : 0.46,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.18,
+        "prev_close" : 16.06,
+        "change_pct" : 13.2,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4350.4,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.8,
+        "yield_pct" : null
+      }
+    }
+  },
+  "09:20" : {
+    "fetched_at" : "2026-06-09T09:20:13Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.824,
+        "prev_close" : 99.41,
+        "change_pct" : 0.42,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.12,
+        "prev_close" : 16.06,
+        "change_pct" : 12.83,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4353.8,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.73,
+        "yield_pct" : null
+      }
+    }
+  },
+  "09:30" : {
+    "fetched_at" : "2026-06-09T09:30:12Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.824,
+        "prev_close" : 99.41,
+        "change_pct" : 0.42,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.07,
+        "prev_close" : 16.06,
+        "change_pct" : 12.52,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4353.5,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.73,
+        "yield_pct" : null
+      }
+    }
+  },
+  "09:40" : {
+    "fetched_at" : "2026-06-09T09:40:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.831,
+        "prev_close" : 99.41,
+        "change_pct" : 0.42,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.06,
+        "prev_close" : 16.06,
+        "change_pct" : 12.45,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4350.3,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.8,
+        "yield_pct" : null
+      }
+    }
+  },
+  "09:50" : {
+    "fetched_at" : "2026-06-09T09:50:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.812,
+        "prev_close" : 99.41,
+        "change_pct" : 0.4,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.09,
+        "prev_close" : 16.06,
+        "change_pct" : 12.64,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.455,
+        "change_pct" : 2.18,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4352.9,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.75,
+        "yield_pct" : null
+      }
+    }
+  },
+  "13:10" : {
+    "fetched_at" : "2026-06-09T13:11:35Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.707,
+        "prev_close" : 99.41,
+        "change_pct" : 0.3,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.05,
+        "prev_close" : 16.06,
+        "change_pct" : 12.39,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.546,
+        "prev_close" : 4.491,
+        "change_pct" : 1.22,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4367.3,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.42,
+        "yield_pct" : null
+      }
+    }
+  },
+  "13:20" : {
+    "fetched_at" : "2026-06-09T13:20:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.691,
+        "prev_close" : 99.41,
+        "change_pct" : 0.28,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.0,
+        "prev_close" : 16.06,
+        "change_pct" : 12.08,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.544,
+        "prev_close" : 4.491,
+        "change_pct" : 1.18,
+        "yield_pct" : 0.454
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4365.6,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.46,
+        "yield_pct" : null
+      }
+    }
+  },
+  "13:30" : {
+    "fetched_at" : "2026-06-09T13:30:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.71,
+        "prev_close" : 99.41,
+        "change_pct" : 0.3,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.0,
+        "prev_close" : 16.06,
+        "change_pct" : 12.08,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.536,
+        "prev_close" : 4.491,
+        "change_pct" : 1.0,
+        "yield_pct" : 0.454
+      },
+      "SP500" : {
+        "price" : 7405.73,
+        "prev_close" : 7599.96,
+        "change_pct" : -2.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4358.4,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.62,
+        "yield_pct" : null
+      }
+    }
+  },
+  "13:40" : {
+    "fetched_at" : "2026-06-09T13:40:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.723,
+        "prev_close" : 99.41,
+        "change_pct" : 0.31,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 18.05,
+        "prev_close" : 16.06,
+        "change_pct" : 12.39,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.54,
+        "prev_close" : 4.491,
+        "change_pct" : 1.09,
+        "yield_pct" : 0.454
+      },
+      "SP500" : {
+        "price" : 7457.87,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.0,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4355.2,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.69,
+        "yield_pct" : null
+      }
+    }
+  },
+  "13:50" : {
+    "fetched_at" : "2026-06-09T13:50:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.774,
+        "prev_close" : 99.41,
+        "change_pct" : 0.37,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 17.92,
+        "prev_close" : 16.06,
+        "change_pct" : 11.58,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.536,
+        "prev_close" : 4.491,
+        "change_pct" : 1.0,
+        "yield_pct" : 0.454
+      },
+      "SP500" : {
+        "price" : 7481.16,
+        "prev_close" : 7609.78,
+        "change_pct" : -1.69,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4355.7,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.68,
+        "yield_pct" : null
+      }
+    }
+  },
+  "14:00" : {
+    "fetched_at" : "2026-06-09T14:00:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.718,
+        "prev_close" : 99.41,
+        "change_pct" : 0.31,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 17.66,
+        "prev_close" : 16.06,
+        "change_pct" : 9.96,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.536,
+        "prev_close" : 4.491,
+        "change_pct" : 1.0,
+        "yield_pct" : 0.454
+      },
+      "SP500" : {
+        "price" : 7457.34,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.0,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4377.2,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.2,
+        "yield_pct" : null
+      }
+    }
+  },
+  "14:10" : {
+    "fetched_at" : "2026-06-09T14:10:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.769,
+        "prev_close" : 99.41,
+        "change_pct" : 0.36,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 17.69,
+        "prev_close" : 16.06,
+        "change_pct" : 10.15,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.538,
+        "prev_close" : 4.491,
+        "change_pct" : 1.05,
+        "yield_pct" : 0.454
+      },
+      "SP500" : {
+        "price" : 7453.55,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.05,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4352.2,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.76,
+        "yield_pct" : null
+      }
+    }
+  },
+  "14:20" : {
+    "fetched_at" : "2026-06-09T14:20:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.727,
+        "prev_close" : 99.41,
+        "change_pct" : 0.32,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 17.73,
+        "prev_close" : 16.06,
+        "change_pct" : 10.4,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.542,
+        "prev_close" : 4.491,
+        "change_pct" : 1.14,
+        "yield_pct" : 0.454
+      },
+      "SP500" : {
+        "price" : 7413.6,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.58,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4352.7,
+        "prev_close" : 4475.8,
+        "change_pct" : -2.75,
+        "yield_pct" : null
+      }
+    }
+  },
+  "15:40" : {
+    "fetched_at" : "2026-06-09T15:45:42Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.915,
+        "prev_close" : 99.41,
+        "change_pct" : 0.51,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 20.54,
+        "prev_close" : 16.06,
+        "change_pct" : 27.9,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.554,
+        "prev_close" : 4.491,
+        "change_pct" : 1.4,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7331.98,
+        "prev_close" : 7609.78,
+        "change_pct" : -3.65,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4296.0,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.02,
+        "yield_pct" : null
+      }
+    }
+  },
+  "15:50" : {
+    "fetched_at" : "2026-06-09T15:50:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.921,
+        "prev_close" : 99.41,
+        "change_pct" : 0.51,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 20.45,
+        "prev_close" : 16.06,
+        "change_pct" : 27.33,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.552,
+        "prev_close" : 4.491,
+        "change_pct" : 1.36,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7332.09,
+        "prev_close" : 7609.78,
+        "change_pct" : -3.65,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4294.0,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.06,
+        "yield_pct" : null
+      }
+    }
+  },
+  "16:00" : {
+    "fetched_at" : "2026-06-09T16:00:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.886,
+        "prev_close" : 99.41,
+        "change_pct" : 0.48,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 20.08,
+        "prev_close" : 16.06,
+        "change_pct" : 25.03,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.546,
+        "prev_close" : 4.491,
+        "change_pct" : 1.22,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7302.03,
+        "prev_close" : 7609.78,
+        "change_pct" : -4.04,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4305.1,
+        "prev_close" : 4475.8,
+        "change_pct" : -3.81,
+        "yield_pct" : null
+      }
+    }
+  },
+  "16:10" : {
+    "fetched_at" : "2026-06-09T16:10:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.862,
+        "prev_close" : 99.41,
+        "change_pct" : 0.45,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 20.31,
+        "prev_close" : 16.06,
+        "change_pct" : 26.46,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.54,
+        "prev_close" : 4.491,
+        "change_pct" : 1.09,
+        "yield_pct" : 0.454
+      },
+      "SP500" : {
+        "price" : 7294.44,
+        "prev_close" : 7609.78,
+        "change_pct" : -4.14,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4296.8,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.0,
+        "yield_pct" : null
+      }
+    }
+  },
+  "16:20" : {
+    "fetched_at" : "2026-06-09T16:20:21Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.91,
+        "prev_close" : 99.41,
+        "change_pct" : 0.5,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 20.83,
+        "prev_close" : 16.06,
+        "change_pct" : 29.7,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7267.43,
+        "prev_close" : 7609.78,
+        "change_pct" : -4.5,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4291.1,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.13,
+        "yield_pct" : null
+      }
+    }
+  },
+  "16:30" : {
+    "fetched_at" : "2026-06-09T16:30:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.947,
+        "prev_close" : 99.41,
+        "change_pct" : 0.54,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 21.33,
+        "prev_close" : 16.06,
+        "change_pct" : 32.81,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7283.39,
+        "prev_close" : 7609.78,
+        "change_pct" : -4.29,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4277.7,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.43,
+        "yield_pct" : null
+      }
+    }
+  },
+  "16:40" : {
+    "fetched_at" : "2026-06-09T16:40:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.946,
+        "prev_close" : 99.41,
+        "change_pct" : 0.54,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 21.86,
+        "prev_close" : 16.06,
+        "change_pct" : 36.11,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.524,
+        "prev_close" : 4.491,
+        "change_pct" : 0.73,
+        "yield_pct" : 0.452
+      },
+      "SP500" : {
+        "price" : 7244.35,
+        "prev_close" : 7609.78,
+        "change_pct" : -4.8,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4286.3,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.23,
+        "yield_pct" : null
+      }
+    }
+  },
+  "16:50" : {
+    "fetched_at" : "2026-06-09T16:50:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 100.041,
+        "prev_close" : 99.41,
+        "change_pct" : 0.63,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 21.75,
+        "prev_close" : 16.06,
+        "change_pct" : 35.43,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.524,
+        "prev_close" : 4.491,
+        "change_pct" : 0.73,
+        "yield_pct" : 0.452
+      },
+      "SP500" : {
+        "price" : 7260.3,
+        "prev_close" : 7609.78,
+        "change_pct" : -4.59,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4263.2,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.75,
+        "yield_pct" : null
+      }
+    }
+  },
+  "17:00" : {
+    "fetched_at" : "2026-06-09T17:00:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 100.024,
+        "prev_close" : 99.41,
+        "change_pct" : 0.62,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 22.98,
+        "prev_close" : 16.06,
+        "change_pct" : 43.09,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.546,
+        "prev_close" : 4.491,
+        "change_pct" : 1.22,
+        "yield_pct" : 0.455
+      },
+      "SP500" : {
+        "price" : 7278.14,
+        "prev_close" : 7609.78,
+        "change_pct" : -4.36,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4273.3,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.52,
+        "yield_pct" : null
+      }
+    }
+  },
+  "17:10" : {
+    "fetched_at" : "2026-06-09T17:10:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.989,
+        "prev_close" : 99.41,
+        "change_pct" : 0.58,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 23.11,
+        "prev_close" : 16.06,
+        "change_pct" : 43.9,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.542,
+        "prev_close" : 4.491,
+        "change_pct" : 1.14,
+        "yield_pct" : 0.454
+      },
+      "SP500" : {
+        "price" : 7294.93,
+        "prev_close" : 7609.78,
+        "change_pct" : -4.14,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4277.5,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.43,
+        "yield_pct" : null
+      }
+    }
+  },
+  "17:20" : {
+    "fetched_at" : "2026-06-09T17:20:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.958,
+        "prev_close" : 99.41,
+        "change_pct" : 0.55,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 21.58,
+        "prev_close" : 16.06,
+        "change_pct" : 34.37,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.538,
+        "prev_close" : 4.491,
+        "change_pct" : 1.05,
+        "yield_pct" : 0.454
+      },
+      "SP500" : {
+        "price" : 7311.83,
+        "prev_close" : 7609.78,
+        "change_pct" : -3.92,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4286.0,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.24,
+        "yield_pct" : null
+      }
+    }
+  },
+  "17:30" : {
+    "fetched_at" : "2026-06-09T17:30:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.941,
+        "prev_close" : 99.41,
+        "change_pct" : 0.53,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 21.69,
+        "prev_close" : 16.06,
+        "change_pct" : 35.06,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.538,
+        "prev_close" : 4.491,
+        "change_pct" : 1.05,
+        "yield_pct" : 0.454
+      },
+      "SP500" : {
+        "price" : 7319.76,
+        "prev_close" : 7609.78,
+        "change_pct" : -3.81,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4288.4,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.19,
+        "yield_pct" : null
+      }
+    }
+  },
+  "17:40" : {
+    "fetched_at" : "2026-06-09T17:40:03Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.905,
+        "prev_close" : 99.41,
+        "change_pct" : 0.5,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 21.09,
+        "prev_close" : 16.06,
+        "change_pct" : 31.32,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7333.93,
+        "prev_close" : 7609.78,
+        "change_pct" : -3.62,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4287.7,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.2,
+        "yield_pct" : null
+      }
+    }
+  },
+  "17:50" : {
+    "fetched_at" : "2026-06-09T17:50:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.912,
+        "prev_close" : 99.41,
+        "change_pct" : 0.5,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 20.8,
+        "prev_close" : 16.06,
+        "change_pct" : 29.51,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.53,
+        "prev_close" : 4.491,
+        "change_pct" : 0.87,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7324.37,
+        "prev_close" : 7609.78,
+        "change_pct" : -3.75,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4287.2,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.21,
+        "yield_pct" : null
+      }
+    }
+  },
+  "18:00" : {
+    "fetched_at" : "2026-06-09T18:00:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.92,
+        "prev_close" : 99.41,
+        "change_pct" : 0.51,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 20.35,
+        "prev_close" : 16.06,
+        "change_pct" : 26.71,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.53,
+        "prev_close" : 4.491,
+        "change_pct" : 0.87,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7338.58,
+        "prev_close" : 7609.78,
+        "change_pct" : -3.56,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4281.7,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.34,
+        "yield_pct" : null
+      }
+    }
+  },
+  "19:30" : {
+    "fetched_at" : "2026-06-09T19:36:37Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.966,
+        "prev_close" : 99.41,
+        "change_pct" : 0.56,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 20.17,
+        "prev_close" : 16.06,
+        "change_pct" : 25.59,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7356.07,
+        "prev_close" : 7609.78,
+        "change_pct" : -3.33,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4278.8,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.4,
+        "yield_pct" : null
+      }
+    }
+  },
+  "19:40" : {
+    "fetched_at" : "2026-06-09T19:40:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.961,
+        "prev_close" : 99.41,
+        "change_pct" : 0.55,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 20.16,
+        "prev_close" : 16.06,
+        "change_pct" : 25.53,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7348.73,
+        "prev_close" : 7609.78,
+        "change_pct" : -3.43,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4281.6,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.34,
+        "yield_pct" : null
+      }
+    }
+  },
+  "19:50" : {
+    "fetched_at" : "2026-06-09T19:50:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.966,
+        "prev_close" : 99.41,
+        "change_pct" : 0.56,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 20.0,
+        "prev_close" : 16.06,
+        "change_pct" : 24.53,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7349.55,
+        "prev_close" : 7609.78,
+        "change_pct" : -3.42,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4277.6,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.43,
+        "yield_pct" : null
+      }
+    }
+  },
+  "20:00" : {
+    "fetched_at" : "2026-06-09T20:00:03Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.977,
+        "prev_close" : 99.41,
+        "change_pct" : 0.57,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 20.17,
+        "prev_close" : 16.06,
+        "change_pct" : 25.59,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7385.35,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.95,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4275.9,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.47,
+        "yield_pct" : null
+      }
+    }
+  },
+  "20:10" : {
+    "fetched_at" : "2026-06-09T20:10:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.968,
+        "prev_close" : 99.41,
+        "change_pct" : 0.56,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4282.3,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.32,
+        "yield_pct" : null
+      }
+    }
+  },
+  "20:20" : {
+    "fetched_at" : "2026-06-09T20:20:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.961,
+        "prev_close" : 99.41,
+        "change_pct" : 0.55,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.64,
+        "prev_close" : 16.06,
+        "change_pct" : 22.29,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4281.9,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.33,
+        "yield_pct" : null
+      }
+    }
+  },
+  "20:30" : {
+    "fetched_at" : "2026-06-09T20:30:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.942,
+        "prev_close" : 99.41,
+        "change_pct" : 0.54,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4283.0,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.31,
+        "yield_pct" : null
+      }
+    }
+  },
+  "20:40" : {
+    "fetched_at" : "2026-06-09T20:40:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.952,
+        "prev_close" : 99.41,
+        "change_pct" : 0.55,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4283.0,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.31,
+        "yield_pct" : null
+      }
+    }
+  },
+  "20:50" : {
+    "fetched_at" : "2026-06-09T20:50:03Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.958,
+        "prev_close" : 99.41,
+        "change_pct" : 0.55,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4284.3,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.28,
+        "yield_pct" : null
+      }
+    }
+  },
+  "21:00" : {
+    "fetched_at" : "2026-06-09T21:00:07Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.949,
+        "prev_close" : 99.41,
+        "change_pct" : 0.54,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4285.1,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.26,
+        "yield_pct" : null
+      }
+    }
+  },
+  "21:10" : {
+    "fetched_at" : "2026-06-09T21:10:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.955,
+        "prev_close" : 99.41,
+        "change_pct" : 0.55,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4284.8,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.27,
+        "yield_pct" : null
+      }
+    }
+  },
+  "21:20" : {
+    "fetched_at" : "2026-06-09T21:20:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.945,
+        "prev_close" : 99.41,
+        "change_pct" : 0.54,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4284.8,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.27,
+        "yield_pct" : null
+      }
+    }
+  },
+  "21:30" : {
+    "fetched_at" : "2026-06-09T21:30:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.943,
+        "prev_close" : 99.41,
+        "change_pct" : 0.54,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4284.8,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.27,
+        "yield_pct" : null
+      }
+    }
+  },
+  "21:40" : {
+    "fetched_at" : "2026-06-09T21:40:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.973,
+        "prev_close" : 99.41,
+        "change_pct" : 0.57,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4284.8,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.27,
+        "yield_pct" : null
+      }
+    }
+  },
+  "21:50" : {
+    "fetched_at" : "2026-06-09T21:50:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.992,
+        "prev_close" : 99.41,
+        "change_pct" : 0.59,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4284.8,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.27,
+        "yield_pct" : null
+      }
+    }
+  },
+  "22:00" : {
+    "fetched_at" : "2026-06-09T22:00:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.991,
+        "prev_close" : 99.41,
+        "change_pct" : 0.58,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4284.8,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.27,
+        "yield_pct" : null
+      }
+    }
+  },
+  "22:10" : {
+    "fetched_at" : "2026-06-09T22:10:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.985,
+        "prev_close" : 99.41,
+        "change_pct" : 0.58,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4284.8,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.27,
+        "yield_pct" : null
+      }
+    }
+  },
+  "22:20" : {
+    "fetched_at" : "2026-06-09T22:20:03Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.995,
+        "prev_close" : 99.41,
+        "change_pct" : 0.59,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4277.0,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.44,
+        "yield_pct" : null
+      }
+    }
+  },
+  "22:30" : {
+    "fetched_at" : "2026-06-09T22:30:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.995,
+        "prev_close" : 99.41,
+        "change_pct" : 0.59,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4277.3,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.43,
+        "yield_pct" : null
+      }
+    }
+  },
+  "22:40" : {
+    "fetched_at" : "2026-06-09T22:40:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.995,
+        "prev_close" : 99.41,
+        "change_pct" : 0.59,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4280.6,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.36,
+        "yield_pct" : null
+      }
+    }
+  },
+  "22:50" : {
+    "fetched_at" : "2026-06-09T22:50:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.995,
+        "prev_close" : 99.41,
+        "change_pct" : 0.59,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4276.7,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.45,
+        "yield_pct" : null
+      }
+    }
+  },
+  "23:00" : {
+    "fetched_at" : "2026-06-09T23:00:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.995,
+        "prev_close" : 99.41,
+        "change_pct" : 0.59,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4263.2,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.75,
+        "yield_pct" : null
+      }
+    }
+  },
+  "23:10" : {
+    "fetched_at" : "2026-06-09T23:10:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.995,
+        "prev_close" : 99.41,
+        "change_pct" : 0.59,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4260.3,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.81,
+        "yield_pct" : null
+      }
+    }
+  },
+  "23:20" : {
+    "fetched_at" : "2026-06-09T23:20:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.995,
+        "prev_close" : 99.41,
+        "change_pct" : 0.59,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4264.9,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.71,
+        "yield_pct" : null
+      }
+    }
+  },
+  "23:30" : {
+    "fetched_at" : "2026-06-09T23:30:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.995,
+        "prev_close" : 99.41,
+        "change_pct" : 0.59,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4255.7,
+        "prev_close" : 4475.8,
+        "change_pct" : -4.92,
+        "yield_pct" : null
+      }
+    }
+  },
+  "23:40" : {
+    "fetched_at" : "2026-06-09T23:40:01Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.995,
+        "prev_close" : 99.41,
+        "change_pct" : 0.59,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4247.2,
+        "prev_close" : 4475.8,
+        "change_pct" : -5.11,
+        "yield_pct" : null
+      }
+    }
+  },
+  "23:50" : {
+    "fetched_at" : "2026-06-09T23:50:02Z",
+    "yahoo" : {
+      "DXY" : {
+        "price" : 99.995,
+        "prev_close" : 99.41,
+        "change_pct" : 0.59,
+        "yield_pct" : null
+      },
+      "VIX" : {
+        "price" : 19.87,
+        "prev_close" : 16.06,
+        "change_pct" : 23.72,
+        "yield_pct" : null
+      },
+      "US10Y" : {
+        "price" : 4.528,
+        "prev_close" : 4.491,
+        "change_pct" : 0.82,
+        "yield_pct" : 0.453
+      },
+      "SP500" : {
+        "price" : 7386.65,
+        "prev_close" : 7609.78,
+        "change_pct" : -2.93,
+        "yield_pct" : null
+      },
+      "Gold" : {
+        "price" : 4245.2,
+        "prev_close" : 4475.8,
+        "change_pct" : -5.15,
+        "yield_pct" : null
+      }
+    }
+  }
+}

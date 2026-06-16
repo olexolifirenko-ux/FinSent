@@ -1,0 +1,866 @@
+{
+  "00:00" : {
+    "btc_price" : 61056.47,
+    "change_1h_pct" : 0.0,
+    "change_24h_pct" : -3.66,
+    "range_pos_24h" : 0.4225
+  },
+  "00:10" : {
+    "btc_price" : 61452.87,
+    "change_1h_pct" : 0.65,
+    "change_24h_pct" : -3.03,
+    "range_pos_24h" : 0.5095
+  },
+  "00:20" : {
+    "btc_price" : 61289.81,
+    "change_1h_pct" : 0.38,
+    "change_24h_pct" : -3.29,
+    "range_pos_24h" : 0.4737
+  },
+  "00:30" : {
+    "btc_price" : 61310.39,
+    "change_1h_pct" : 0.42,
+    "change_24h_pct" : -3.26,
+    "range_pos_24h" : 0.4783
+  },
+  "00:40" : {
+    "btc_price" : 61322.0,
+    "change_1h_pct" : 0.43,
+    "change_24h_pct" : -3.24,
+    "range_pos_24h" : 0.4808
+  },
+  "00:50" : {
+    "btc_price" : 61246.5,
+    "change_1h_pct" : 0.31,
+    "change_24h_pct" : -3.36,
+    "range_pos_24h" : 0.4642
+  },
+  "01:00" : {
+    "btc_price" : 61297.12,
+    "change_1h_pct" : 0.04,
+    "change_24h_pct" : -2.11,
+    "range_pos_24h" : 0.4753
+  },
+  "01:10" : {
+    "btc_price" : 61325.41,
+    "change_1h_pct" : 0.09,
+    "change_24h_pct" : -2.06,
+    "range_pos_24h" : 0.4816
+  },
+  "01:20" : {
+    "btc_price" : 61098.01,
+    "change_1h_pct" : -0.29,
+    "change_24h_pct" : -2.43,
+    "range_pos_24h" : 0.4317
+  },
+  "01:30" : {
+    "btc_price" : 61277.65,
+    "change_1h_pct" : 0.01,
+    "change_24h_pct" : -2.14,
+    "range_pos_24h" : 0.4711
+  },
+  "01:40" : {
+    "btc_price" : 61116.02,
+    "change_1h_pct" : -0.26,
+    "change_24h_pct" : -2.4,
+    "range_pos_24h" : 0.4356
+  },
+  "01:50" : {
+    "btc_price" : 61056.95,
+    "change_1h_pct" : -0.35,
+    "change_24h_pct" : -2.49,
+    "range_pos_24h" : 0.4226
+  },
+  "02:00" : {
+    "btc_price" : 61056.34,
+    "change_1h_pct" : 0.0,
+    "change_24h_pct" : -2.67,
+    "range_pos_24h" : 0.4225
+  },
+  "02:10" : {
+    "btc_price" : 61022.75,
+    "change_1h_pct" : -0.06,
+    "change_24h_pct" : -2.72,
+    "range_pos_24h" : 0.4151
+  },
+  "02:20" : {
+    "btc_price" : 60704.05,
+    "change_1h_pct" : -0.58,
+    "change_24h_pct" : -3.23,
+    "range_pos_24h" : 0.3452
+  },
+  "02:30" : {
+    "btc_price" : 60815.24,
+    "change_1h_pct" : -0.4,
+    "change_24h_pct" : -3.05,
+    "range_pos_24h" : 0.3696
+  },
+  "02:40" : {
+    "btc_price" : 61015.84,
+    "change_1h_pct" : -0.07,
+    "change_24h_pct" : -2.73,
+    "range_pos_24h" : 0.4136
+  },
+  "02:50" : {
+    "btc_price" : 61107.19,
+    "change_1h_pct" : 0.08,
+    "change_24h_pct" : -2.59,
+    "range_pos_24h" : 0.4337
+  },
+  "03:00" : {
+    "btc_price" : 60939.9,
+    "change_1h_pct" : -0.02,
+    "change_24h_pct" : -4.21,
+    "range_pos_24h" : 0.397
+  },
+  "03:10" : {
+    "btc_price" : 60814.45,
+    "change_1h_pct" : -0.23,
+    "change_24h_pct" : -4.4,
+    "range_pos_24h" : 0.3694
+  },
+  "03:20" : {
+    "btc_price" : 60920.97,
+    "change_1h_pct" : -0.05,
+    "change_24h_pct" : -4.24,
+    "range_pos_24h" : 0.3928
+  },
+  "03:30" : {
+    "btc_price" : 60784.26,
+    "change_1h_pct" : -0.27,
+    "change_24h_pct" : -4.45,
+    "range_pos_24h" : 0.3628
+  },
+  "03:40" : {
+    "btc_price" : 60632.64,
+    "change_1h_pct" : -0.52,
+    "change_24h_pct" : -4.69,
+    "range_pos_24h" : 0.3295
+  },
+  "03:50" : {
+    "btc_price" : 60650.13,
+    "change_1h_pct" : -0.49,
+    "change_24h_pct" : -4.66,
+    "range_pos_24h" : 0.3334
+  },
+  "04:00" : {
+    "btc_price" : 60673.99,
+    "change_1h_pct" : -0.02,
+    "change_24h_pct" : -2.66,
+    "range_pos_24h" : 0.3386
+  },
+  "04:10" : {
+    "btc_price" : 60400.93,
+    "change_1h_pct" : -0.47,
+    "change_24h_pct" : -3.09,
+    "range_pos_24h" : 0.2787
+  },
+  "04:20" : {
+    "btc_price" : 60049.71,
+    "change_1h_pct" : -1.05,
+    "change_24h_pct" : -3.66,
+    "range_pos_24h" : 0.2016
+  },
+  "04:30" : {
+    "btc_price" : 59984.11,
+    "change_1h_pct" : -1.16,
+    "change_24h_pct" : -3.76,
+    "range_pos_24h" : 0.1872
+  },
+  "04:40" : {
+    "btc_price" : 59682.94,
+    "change_1h_pct" : -1.65,
+    "change_24h_pct" : -4.25,
+    "range_pos_24h" : 0.1211
+  },
+  "04:50" : {
+    "btc_price" : 59801.99,
+    "change_1h_pct" : -1.46,
+    "change_24h_pct" : -4.05,
+    "range_pos_24h" : 0.1473
+  },
+  "05:00" : {
+    "btc_price" : 60074.14,
+    "change_1h_pct" : -0.05,
+    "change_24h_pct" : -3.02,
+    "range_pos_24h" : 0.2284
+  },
+  "05:10" : {
+    "btc_price" : 60128.33,
+    "change_1h_pct" : 0.05,
+    "change_24h_pct" : -2.94,
+    "range_pos_24h" : 0.2416
+  },
+  "05:20" : {
+    "btc_price" : 60150.01,
+    "change_1h_pct" : 0.08,
+    "change_24h_pct" : -2.9,
+    "range_pos_24h" : 0.2468
+  },
+  "05:30" : {
+    "btc_price" : 60740.01,
+    "change_1h_pct" : 1.06,
+    "change_24h_pct" : -1.95,
+    "range_pos_24h" : 0.3897
+  },
+  "05:40" : {
+    "btc_price" : 60822.2,
+    "change_1h_pct" : 1.2,
+    "change_24h_pct" : -1.82,
+    "range_pos_24h" : 0.4096
+  },
+  "05:50" : {
+    "btc_price" : 60980.98,
+    "change_1h_pct" : 1.46,
+    "change_24h_pct" : -1.56,
+    "range_pos_24h" : 0.4481
+  },
+  "06:00" : {
+    "btc_price" : 60950.97,
+    "change_1h_pct" : 0.01,
+    "change_24h_pct" : -3.43,
+    "range_pos_24h" : 0.4408
+  },
+  "06:10" : {
+    "btc_price" : 61143.26,
+    "change_1h_pct" : 0.33,
+    "change_24h_pct" : -3.13,
+    "range_pos_24h" : 0.4874
+  },
+  "06:20" : {
+    "btc_price" : 61042.25,
+    "change_1h_pct" : 0.16,
+    "change_24h_pct" : -3.29,
+    "range_pos_24h" : 0.4629
+  },
+  "06:30" : {
+    "btc_price" : 61035.27,
+    "change_1h_pct" : 0.15,
+    "change_24h_pct" : -3.3,
+    "range_pos_24h" : 0.4612
+  },
+  "06:40" : {
+    "btc_price" : 61013.97,
+    "change_1h_pct" : 0.12,
+    "change_24h_pct" : -3.33,
+    "range_pos_24h" : 0.4561
+  },
+  "06:50" : {
+    "btc_price" : 60826.78,
+    "change_1h_pct" : -0.19,
+    "change_24h_pct" : -3.63,
+    "range_pos_24h" : 0.4107
+  },
+  "07:00" : {
+    "btc_price" : 60735.05,
+    "change_1h_pct" : -0.09,
+    "change_24h_pct" : -2.75,
+    "range_pos_24h" : 0.3885
+  },
+  "07:10" : {
+    "btc_price" : 61038.01,
+    "change_1h_pct" : 0.41,
+    "change_24h_pct" : -2.27,
+    "range_pos_24h" : 0.4619
+  },
+  "07:20" : {
+    "btc_price" : 61015.99,
+    "change_1h_pct" : 0.38,
+    "change_24h_pct" : -2.3,
+    "range_pos_24h" : 0.4565
+  },
+  "07:30" : {
+    "btc_price" : 60870.28,
+    "change_1h_pct" : 0.14,
+    "change_24h_pct" : -2.54,
+    "range_pos_24h" : 0.4213
+  },
+  "07:40" : {
+    "btc_price" : 60992.05,
+    "change_1h_pct" : 0.34,
+    "change_24h_pct" : -2.34,
+    "range_pos_24h" : 0.4507
+  },
+  "07:50" : {
+    "btc_price" : 61032.53,
+    "change_1h_pct" : 0.4,
+    "change_24h_pct" : -2.28,
+    "range_pos_24h" : 0.4606
+  },
+  "08:00" : {
+    "btc_price" : 60974.19,
+    "change_1h_pct" : -0.05,
+    "change_24h_pct" : -3.0,
+    "range_pos_24h" : 0.4464
+  },
+  "08:10" : {
+    "btc_price" : 61095.45,
+    "change_1h_pct" : 0.15,
+    "change_24h_pct" : -2.81,
+    "range_pos_24h" : 0.4758
+  },
+  "08:20" : {
+    "btc_price" : 61097.04,
+    "change_1h_pct" : 0.15,
+    "change_24h_pct" : -2.8,
+    "range_pos_24h" : 0.4762
+  },
+  "08:30" : {
+    "btc_price" : 61368.01,
+    "change_1h_pct" : 0.6,
+    "change_24h_pct" : -2.37,
+    "range_pos_24h" : 0.5418
+  },
+  "08:40" : {
+    "btc_price" : 61341.24,
+    "change_1h_pct" : 0.55,
+    "change_24h_pct" : -2.42,
+    "range_pos_24h" : 0.5353
+  },
+  "08:50" : {
+    "btc_price" : 61364.95,
+    "change_1h_pct" : 0.59,
+    "change_24h_pct" : -2.38,
+    "range_pos_24h" : 0.5411
+  },
+  "09:00" : {
+    "btc_price" : 61248.29,
+    "change_1h_pct" : -0.03,
+    "change_24h_pct" : -2.06,
+    "range_pos_24h" : 0.5571
+  },
+  "09:10" : {
+    "btc_price" : 61209.49,
+    "change_1h_pct" : -0.09,
+    "change_24h_pct" : -2.12,
+    "range_pos_24h" : 0.5469
+  },
+  "09:20" : {
+    "btc_price" : 61200.01,
+    "change_1h_pct" : -0.1,
+    "change_24h_pct" : -2.14,
+    "range_pos_24h" : 0.5444
+  },
+  "09:30" : {
+    "btc_price" : 61292.01,
+    "change_1h_pct" : 0.05,
+    "change_24h_pct" : -1.99,
+    "range_pos_24h" : 0.5686
+  },
+  "09:40" : {
+    "btc_price" : 61243.45,
+    "change_1h_pct" : -0.03,
+    "change_24h_pct" : -2.07,
+    "range_pos_24h" : 0.5558
+  },
+  "09:50" : {
+    "btc_price" : 60924.24,
+    "change_1h_pct" : -0.55,
+    "change_24h_pct" : -2.58,
+    "range_pos_24h" : 0.4718
+  },
+  "10:00" : {
+    "btc_price" : 60977.22,
+    "change_1h_pct" : -0.01,
+    "change_24h_pct" : -1.59,
+    "range_pos_24h" : 0.5255
+  },
+  "10:10" : {
+    "btc_price" : 60716.44,
+    "change_1h_pct" : -0.43,
+    "change_24h_pct" : -2.01,
+    "range_pos_24h" : 0.4513
+  },
+  "10:20" : {
+    "btc_price" : 60515.17,
+    "change_1h_pct" : -0.76,
+    "change_24h_pct" : -2.34,
+    "range_pos_24h" : 0.394
+  },
+  "10:30" : {
+    "btc_price" : 60512.01,
+    "change_1h_pct" : -0.77,
+    "change_24h_pct" : -2.34,
+    "range_pos_24h" : 0.3931
+  },
+  "10:40" : {
+    "btc_price" : 60318.98,
+    "change_1h_pct" : -1.09,
+    "change_24h_pct" : -2.66,
+    "range_pos_24h" : 0.3381
+  },
+  "10:50" : {
+    "btc_price" : 60432.0,
+    "change_1h_pct" : -0.9,
+    "change_24h_pct" : -2.47,
+    "range_pos_24h" : 0.3703
+  },
+  "11:00" : {
+    "btc_price" : 60580.48,
+    "change_1h_pct" : -0.02,
+    "change_24h_pct" : -2.23,
+    "range_pos_24h" : 0.4357
+  },
+  "11:10" : {
+    "btc_price" : 60699.14,
+    "change_1h_pct" : 0.18,
+    "change_24h_pct" : -2.03,
+    "range_pos_24h" : 0.4714
+  },
+  "11:20" : {
+    "btc_price" : 60669.23,
+    "change_1h_pct" : 0.13,
+    "change_24h_pct" : -2.08,
+    "range_pos_24h" : 0.4624
+  },
+  "11:30" : {
+    "btc_price" : 60794.5,
+    "change_1h_pct" : 0.33,
+    "change_24h_pct" : -1.88,
+    "range_pos_24h" : 0.5
+  },
+  "11:40" : {
+    "btc_price" : 60853.98,
+    "change_1h_pct" : 0.43,
+    "change_24h_pct" : -1.78,
+    "range_pos_24h" : 0.5179
+  },
+  "11:50" : {
+    "btc_price" : 60862.0,
+    "change_1h_pct" : 0.44,
+    "change_24h_pct" : -1.77,
+    "range_pos_24h" : 0.5203
+  },
+  "12:00" : {
+    "btc_price" : 60815.98,
+    "change_1h_pct" : 0.02,
+    "change_24h_pct" : 0.14,
+    "range_pos_24h" : 0.5274
+  },
+  "12:10" : {
+    "btc_price" : 61061.03,
+    "change_1h_pct" : 0.42,
+    "change_24h_pct" : 0.54,
+    "range_pos_24h" : 0.6041
+  },
+  "12:20" : {
+    "btc_price" : 60948.58,
+    "change_1h_pct" : 0.24,
+    "change_24h_pct" : 0.36,
+    "range_pos_24h" : 0.5689
+  },
+  "12:30" : {
+    "btc_price" : 60742.03,
+    "change_1h_pct" : -0.1,
+    "change_24h_pct" : 0.02,
+    "range_pos_24h" : 0.5042
+  },
+  "12:40" : {
+    "btc_price" : 60747.7,
+    "change_1h_pct" : -0.09,
+    "change_24h_pct" : 0.03,
+    "range_pos_24h" : 0.506
+  },
+  "12:50" : {
+    "btc_price" : 61001.98,
+    "change_1h_pct" : 0.33,
+    "change_24h_pct" : 0.44,
+    "range_pos_24h" : 0.5856
+  },
+  "13:00" : {
+    "btc_price" : 61014.75,
+    "change_1h_pct" : -0.03,
+    "change_24h_pct" : 0.24,
+    "range_pos_24h" : 0.6566
+  },
+  "13:10" : {
+    "btc_price" : 61025.99,
+    "change_1h_pct" : -0.01,
+    "change_24h_pct" : 0.26,
+    "range_pos_24h" : 0.6605
+  },
+  "13:20" : {
+    "btc_price" : 60957.24,
+    "change_1h_pct" : -0.12,
+    "change_24h_pct" : 0.15,
+    "range_pos_24h" : 0.6366
+  },
+  "13:30" : {
+    "btc_price" : 60887.16,
+    "change_1h_pct" : -0.24,
+    "change_24h_pct" : 0.03,
+    "range_pos_24h" : 0.6121
+  },
+  "13:40" : {
+    "btc_price" : 60815.71,
+    "change_1h_pct" : -0.35,
+    "change_24h_pct" : -0.09,
+    "range_pos_24h" : 0.5872
+  },
+  "13:50" : {
+    "btc_price" : 60821.93,
+    "change_1h_pct" : -0.34,
+    "change_24h_pct" : -0.08,
+    "range_pos_24h" : 0.5894
+  },
+  "14:00" : {
+    "btc_price" : 60786.0,
+    "change_1h_pct" : -0.02,
+    "change_24h_pct" : 0.58,
+    "range_pos_24h" : 0.5769
+  },
+  "14:10" : {
+    "btc_price" : 60871.68,
+    "change_1h_pct" : 0.12,
+    "change_24h_pct" : 0.72,
+    "range_pos_24h" : 0.6067
+  },
+  "14:20" : {
+    "btc_price" : 61016.0,
+    "change_1h_pct" : 0.35,
+    "change_24h_pct" : 0.96,
+    "range_pos_24h" : 0.657
+  },
+  "14:30" : {
+    "btc_price" : 60872.47,
+    "change_1h_pct" : 0.12,
+    "change_24h_pct" : 0.72,
+    "range_pos_24h" : 0.607
+  },
+  "14:40" : {
+    "btc_price" : 60939.84,
+    "change_1h_pct" : 0.23,
+    "change_24h_pct" : 0.83,
+    "range_pos_24h" : 0.6305
+  },
+  "14:50" : {
+    "btc_price" : 60969.38,
+    "change_1h_pct" : 0.28,
+    "change_24h_pct" : 0.88,
+    "range_pos_24h" : 0.6408
+  },
+  "15:00" : {
+    "btc_price" : 60835.22,
+    "change_1h_pct" : 0.07,
+    "change_24h_pct" : -0.91,
+    "range_pos_24h" : 0.594
+  },
+  "15:10" : {
+    "btc_price" : 60694.15,
+    "change_1h_pct" : -0.16,
+    "change_24h_pct" : -1.14,
+    "range_pos_24h" : 0.5449
+  },
+  "15:20" : {
+    "btc_price" : 60478.0,
+    "change_1h_pct" : -0.51,
+    "change_24h_pct" : -1.49,
+    "range_pos_24h" : 0.4695
+  },
+  "15:30" : {
+    "btc_price" : 60671.71,
+    "change_1h_pct" : -0.2,
+    "change_24h_pct" : -1.18,
+    "range_pos_24h" : 0.537
+  },
+  "15:40" : {
+    "btc_price" : 60791.58,
+    "change_1h_pct" : 0.0,
+    "change_24h_pct" : -0.98,
+    "range_pos_24h" : 0.5788
+  },
+  "15:50" : {
+    "btc_price" : 60811.63,
+    "change_1h_pct" : 0.03,
+    "change_24h_pct" : -0.95,
+    "range_pos_24h" : 0.5858
+  },
+  "16:00" : {
+    "btc_price" : 60753.24,
+    "change_1h_pct" : -0.05,
+    "change_24h_pct" : -0.1,
+    "range_pos_24h" : 0.5655
+  },
+  "16:10" : {
+    "btc_price" : 60810.0,
+    "change_1h_pct" : 0.04,
+    "change_24h_pct" : -0.01,
+    "range_pos_24h" : 0.5852
+  },
+  "16:20" : {
+    "btc_price" : 60778.01,
+    "change_1h_pct" : -0.01,
+    "change_24h_pct" : -0.06,
+    "range_pos_24h" : 0.5741
+  },
+  "16:30" : {
+    "btc_price" : 60605.27,
+    "change_1h_pct" : -0.29,
+    "change_24h_pct" : -0.34,
+    "range_pos_24h" : 0.5139
+  },
+  "16:40" : {
+    "btc_price" : 60602.55,
+    "change_1h_pct" : -0.3,
+    "change_24h_pct" : -0.35,
+    "range_pos_24h" : 0.5129
+  },
+  "16:50" : {
+    "btc_price" : 60834.96,
+    "change_1h_pct" : 0.08,
+    "change_24h_pct" : 0.03,
+    "range_pos_24h" : 0.5939
+  },
+  "17:00" : {
+    "btc_price" : 60791.41,
+    "change_1h_pct" : 0.03,
+    "change_24h_pct" : 2.35,
+    "range_pos_24h" : 0.5788
+  },
+  "17:10" : {
+    "btc_price" : 60628.61,
+    "change_1h_pct" : -0.24,
+    "change_24h_pct" : 2.08,
+    "range_pos_24h" : 0.522
+  },
+  "17:20" : {
+    "btc_price" : 60716.93,
+    "change_1h_pct" : -0.09,
+    "change_24h_pct" : 2.22,
+    "range_pos_24h" : 0.5528
+  },
+  "17:30" : {
+    "btc_price" : 60682.0,
+    "change_1h_pct" : -0.15,
+    "change_24h_pct" : 2.17,
+    "range_pos_24h" : 0.5406
+  },
+  "17:40" : {
+    "btc_price" : 60646.58,
+    "change_1h_pct" : -0.21,
+    "change_24h_pct" : 2.11,
+    "range_pos_24h" : 0.5283
+  },
+  "17:50" : {
+    "btc_price" : 60598.29,
+    "change_1h_pct" : -0.29,
+    "change_24h_pct" : 2.02,
+    "range_pos_24h" : 0.5114
+  },
+  "18:00" : {
+    "btc_price" : 60581.51,
+    "change_1h_pct" : 0.01,
+    "change_24h_pct" : 0.47,
+    "range_pos_24h" : 0.5056
+  },
+  "18:10" : {
+    "btc_price" : 60459.48,
+    "change_1h_pct" : -0.19,
+    "change_24h_pct" : 0.26,
+    "range_pos_24h" : 0.4631
+  },
+  "18:20" : {
+    "btc_price" : 60434.12,
+    "change_1h_pct" : -0.23,
+    "change_24h_pct" : 0.22,
+    "range_pos_24h" : 0.4542
+  },
+  "18:30" : {
+    "btc_price" : 60698.0,
+    "change_1h_pct" : 0.2,
+    "change_24h_pct" : 0.66,
+    "range_pos_24h" : 0.5462
+  },
+  "18:40" : {
+    "btc_price" : 60647.22,
+    "change_1h_pct" : 0.12,
+    "change_24h_pct" : 0.58,
+    "range_pos_24h" : 0.5285
+  },
+  "18:50" : {
+    "btc_price" : 60536.83,
+    "change_1h_pct" : -0.06,
+    "change_24h_pct" : 0.39,
+    "range_pos_24h" : 0.49
+  },
+  "19:00" : {
+    "btc_price" : 60621.81,
+    "change_1h_pct" : -0.03,
+    "change_24h_pct" : -1.62,
+    "range_pos_24h" : 0.4487
+  },
+  "19:10" : {
+    "btc_price" : 60747.99,
+    "change_1h_pct" : 0.18,
+    "change_24h_pct" : -1.42,
+    "range_pos_24h" : 0.4992
+  },
+  "19:20" : {
+    "btc_price" : 60650.01,
+    "change_1h_pct" : 0.02,
+    "change_24h_pct" : -1.57,
+    "range_pos_24h" : 0.46
+  },
+  "19:30" : {
+    "btc_price" : 60611.05,
+    "change_1h_pct" : -0.04,
+    "change_24h_pct" : -1.64,
+    "range_pos_24h" : 0.4444
+  },
+  "19:40" : {
+    "btc_price" : 60576.07,
+    "change_1h_pct" : -0.1,
+    "change_24h_pct" : -1.69,
+    "range_pos_24h" : 0.4304
+  },
+  "19:50" : {
+    "btc_price" : 60620.52,
+    "change_1h_pct" : -0.03,
+    "change_24h_pct" : -1.62,
+    "range_pos_24h" : 0.4482
+  },
+  "20:00" : {
+    "btc_price" : 60598.39,
+    "change_1h_pct" : 0.0,
+    "change_24h_pct" : -1.74,
+    "range_pos_24h" : 0.4394
+  },
+  "20:10" : {
+    "btc_price" : 60580.31,
+    "change_1h_pct" : -0.03,
+    "change_24h_pct" : -1.77,
+    "range_pos_24h" : 0.4321
+  },
+  "20:20" : {
+    "btc_price" : 60570.0,
+    "change_1h_pct" : -0.05,
+    "change_24h_pct" : -1.78,
+    "range_pos_24h" : 0.428
+  },
+  "20:30" : {
+    "btc_price" : 60594.1,
+    "change_1h_pct" : -0.01,
+    "change_24h_pct" : -1.75,
+    "range_pos_24h" : 0.4376
+  },
+  "20:40" : {
+    "btc_price" : 60669.58,
+    "change_1h_pct" : 0.11,
+    "change_24h_pct" : -1.62,
+    "range_pos_24h" : 0.4678
+  },
+  "20:50" : {
+    "btc_price" : 60667.83,
+    "change_1h_pct" : 0.11,
+    "change_24h_pct" : -1.63,
+    "range_pos_24h" : 0.4671
+  },
+  "21:00" : {
+    "btc_price" : 60711.7,
+    "change_1h_pct" : 0.0,
+    "change_24h_pct" : -1.42,
+    "range_pos_24h" : 0.4914
+  },
+  "21:10" : {
+    "btc_price" : 60741.1,
+    "change_1h_pct" : 0.05,
+    "change_24h_pct" : -1.37,
+    "range_pos_24h" : 0.5033
+  },
+  "21:20" : {
+    "btc_price" : 60873.45,
+    "change_1h_pct" : 0.27,
+    "change_24h_pct" : -1.15,
+    "range_pos_24h" : 0.557
+  },
+  "21:30" : {
+    "btc_price" : 60890.93,
+    "change_1h_pct" : 0.3,
+    "change_24h_pct" : -1.13,
+    "range_pos_24h" : 0.564
+  },
+  "21:40" : {
+    "btc_price" : 60835.99,
+    "change_1h_pct" : 0.2,
+    "change_24h_pct" : -1.22,
+    "range_pos_24h" : 0.5418
+  },
+  "21:50" : {
+    "btc_price" : 60857.66,
+    "change_1h_pct" : 0.24,
+    "change_24h_pct" : -1.18,
+    "range_pos_24h" : 0.5506
+  },
+  "22:00" : {
+    "btc_price" : 60747.18,
+    "change_1h_pct" : -0.01,
+    "change_24h_pct" : -0.51,
+    "range_pos_24h" : 0.548
+  },
+  "22:10" : {
+    "btc_price" : 60625.97,
+    "change_1h_pct" : -0.21,
+    "change_24h_pct" : -0.71,
+    "range_pos_24h" : 0.4947
+  },
+  "22:20" : {
+    "btc_price" : 60742.07,
+    "change_1h_pct" : -0.02,
+    "change_24h_pct" : -0.51,
+    "range_pos_24h" : 0.5457
+  },
+  "22:30" : {
+    "btc_price" : 60468.05,
+    "change_1h_pct" : -0.47,
+    "change_24h_pct" : -0.96,
+    "range_pos_24h" : 0.4253
+  },
+  "22:40" : {
+    "btc_price" : 60544.01,
+    "change_1h_pct" : -0.34,
+    "change_24h_pct" : -0.84,
+    "range_pos_24h" : 0.4587
+  },
+  "22:50" : {
+    "btc_price" : 60650.01,
+    "change_1h_pct" : -0.17,
+    "change_24h_pct" : -0.67,
+    "range_pos_24h" : 0.5053
+  },
+  "23:00" : {
+    "btc_price" : 60553.89,
+    "change_1h_pct" : 0.02,
+    "change_24h_pct" : -1.17,
+    "range_pos_24h" : 0.5191
+  },
+  "23:10" : {
+    "btc_price" : 60720.82,
+    "change_1h_pct" : 0.29,
+    "change_24h_pct" : -0.9,
+    "range_pos_24h" : 0.6014
+  },
+  "23:20" : {
+    "btc_price" : 60656.24,
+    "change_1h_pct" : 0.19,
+    "change_24h_pct" : -1.01,
+    "range_pos_24h" : 0.5696
+  },
+  "23:30" : {
+    "btc_price" : 60713.58,
+    "change_1h_pct" : 0.28,
+    "change_24h_pct" : -0.91,
+    "range_pos_24h" : 0.5978
+  },
+  "23:40" : {
+    "btc_price" : 60836.92,
+    "change_1h_pct" : 0.48,
+    "change_24h_pct" : -0.71,
+    "range_pos_24h" : 0.6586
+  },
+  "23:50" : {
+    "btc_price" : 60854.93,
+    "change_1h_pct" : 0.51,
+    "change_24h_pct" : -0.68,
+    "range_pos_24h" : 0.6674
+  }
+}

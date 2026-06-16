@@ -1,0 +1,13 @@
+{
+  "23:50" : {
+    "analyzed_at" : "2026-06-11T23:00:51Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 2446 ],
+    "screener" : [ {
+      "article_id" : 2446,
+      "score" : 0,
+      "reason" : "dup/recap - historical data release, not forward-looking policy signal or surprise"
+    } ],
+    "prediction_record" : null
+  }
+}

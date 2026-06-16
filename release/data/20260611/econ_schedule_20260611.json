@@ -1,0 +1,13 @@
+[
+  {
+    "_comment": "DYNAMIC econ schedule for this release date (BACKLOG #21): the releases happening today with their hand-entered release time + consensus. Joined to cfg/econ_definitions.json by `name`. Author ahead of the day; the scheduler arms these at 00:00 UTC / startup.",
+    "name": "CPI MoM",
+    "release": "2026-06-11T12:30:00Z",
+    "consensus": 0.3
+  },
+  {
+    "name": "Core CPI MoM",
+    "release": "2026-06-11T12:30:00Z",
+    "consensus": 0.3
+  }
+]

@@ -50,10 +50,6 @@ import com.finsent.util.GlobalSystem;
 public final class FSCollector
 {
     private static final String NAME = "FSCollector";
-    // Backdrop price context: one extra Binance call per window for 24h of hourly bars, from which
-    // the 1h/24h change and 24h range position are derived (stored so backfill is historically correct).
-    private static final Duration PRICE_CONTEXT_LOOKBACK = Duration.ofHours(24);
-    private static final String PRICE_CONTEXT_BAR_SIZE = "1h";
 
     private final Config config_;
     private final PersistenceService persistence_;
@@ -83,7 +79,7 @@ public final class FSCollector
     public FSCollector(Config config, Path dataDir)
     {
         this(config, dataDir, ArticleSources.fromConfig(config),
-                List.of(ArticleSources.urgentFromConfig(config)),
+                ArticleSources.urgentSourcesFromConfig(config),
                 new MacroFetcher(config.yahooChartBaseUrl()),
                 new OptionsFetcher(config.deribitBaseUrl()),
                 new OhlcFetcher(config.binanceBaseUrl()),
@@ -383,7 +379,7 @@ public final class FSCollector
             // The OHLC series is fetched incrementally on the regular boundary lane only; the urgent
             // lane covers its own articles via addUrgentOhlc, so it skips the boundary strip fetch.
             boolean ohlcStored = !urgent && storeOhlcStrip(batch, now, window);
-            boolean priceStored = storePriceContext(batch, now, day, key);
+            boolean priceStored = storePriceContext(batch, day, key);
             boolean fundingStored = storeFunding(batch, day, key);
             logContextWhenCaptured(day, key,
                     macroStored || optionsStored || ohlcStored || priceStored || fundingStored);
@@ -497,7 +493,7 @@ public final class FSCollector
     /** Macro snapshot for the interval, unless it is a weekend (stale Yahoo data) or already stored. */
     private boolean storeMacro(CollectionBatch batch, Instant now, String day, String key)
     {
-        boolean stored = macroFetcher_ != null && !isWeekend(now) && macro_.get(day, key).isEmpty();
+        boolean stored = macroFetcher_ != null && config_.macroEnabled() && !isWeekend(now) && macro_.get(day, key).isEmpty();
         if (stored)
         {
             batch.add(macro_.putIfAbsent(day, key, macroFetcher_.fetchSnapshot()));
@@ -563,50 +559,35 @@ public final class FSCollector
      * Stored per window (like macro/options) so re-analysis of an older window reads its own
      * historical backdrop rather than today's. Skipped when already present or the fetch is empty.
      */
-    private boolean storePriceContext(CollectionBatch batch, Instant now, String day, String key)
+    private boolean storePriceContext(CollectionBatch batch, String day, String key)
     {
         boolean stored = false;
         if (ohlcFetcher_ != null && price_.get(day, key).isEmpty())
         {
-            ArrayNode bars = ohlcFetcher_.fetchCandles(now.minus(PRICE_CONTEXT_LOOKBACK).toEpochMilli(),
-                    now.toEpochMilli(), PRICE_CONTEXT_BAR_SIZE);
-            if (bars.size() > 0)
+            JsonNode ticker = ohlcFetcher_.fetch24hTicker();
+            if (ticker != null)
             {
-                batch.add(price_.putIfAbsent(day, key, buildPriceSnapshot(bars)));
+                batch.add(price_.putIfAbsent(day, key, buildPriceSnapshot(ticker)));
                 stored = true;
             }
         }
         return stored;
     }
 
-    /** Reduce 24h of hourly bars to the current price, 1h/24h percent change, and 24h range position. */
-    private static ObjectNode buildPriceSnapshot(ArrayNode bars)
+    /** Reduce a Binance 24h ticker to the current price, 24h percent change, and 24h range position. */
+    private static ObjectNode buildPriceSnapshot(JsonNode ticker)
     {
-        int last = bars.size() - 1;
-        double current = bars.get(last).path("c").asDouble();
-        double ago1h = bars.get(Math.max(0, last - 1)).path("c").asDouble();
-        double ago24h = bars.get(0).path("c").asDouble();
-        double high = current;
-        double low = current;
-        for (JsonNode bar : bars)
-        {
-            high = Math.max(high, bar.path("h").asDouble());
-            low = Math.min(low, bar.path("l").asDouble());
-        }
+        double current = ticker.path("lastPrice").asDouble();
+        double high = ticker.path("highPrice").asDouble();
+        double low = ticker.path("lowPrice").asDouble();
         ObjectNode snapshot = Json.newObject();
-        snapshot.put("btc_price", current);
-        snapshot.put("change_1h_pct", pctChange(ago1h, current));
-        snapshot.put("change_24h_pct", pctChange(ago24h, current));
+        snapshot.put("btc_price", Num.round(current, 2));
+        snapshot.put("change_24h_pct", Num.round(ticker.path("priceChangePercent").asDouble(), 4));
         if (high > low)
         {
             snapshot.put("range_pos_24h", Num.round((current - low) / (high - low), 4));
         }
         return snapshot;
-    }
-
-    private static double pctChange(double from, double to)
-    {
-        return from == 0.0 ? 0.0 : Num.round((to - from) / from * 100.0, 2);
     }
 
     private static String present(boolean yes)

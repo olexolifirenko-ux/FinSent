@@ -16,9 +16,9 @@ import com.finsent.core.Times;
 import com.finsent.util.GlobalSystem;
 
 /**
- * BTC OHLC candle fetcher (ports Python {@code collect._fetch_btc_candles}). Reads klines from the
- * public Binance endpoint and normalizes each into a {@code {ts,o,h,l,c,v}} bar (prices rounded to
- * 2dp, volume to 4dp, timestamp the bar's open time as UTC ISO) &mdash; the bar shape the
+ * Binance BTC market-data fetcher: OHLC klines (ports Python {@code collect._fetch_btc_candles}) plus
+ * the 24h rolling ticker for price context. Klines are normalized into {@code {ts,o,h,l,c,v}} bars
+ * (prices 2dp, volume 4dp, timestamp the bar's open time as UTC ISO) &mdash; the shape the
  * {@code OhlcRegistry} stores. This module only fetches; the boundary-strip and per-article time
  * ranges are computed by {@link OhlcWindows}, and the store/merge semantics live in the registry.
  */
@@ -30,10 +30,41 @@ public final class OhlcFetcher
     private static final int MAX_LIMIT = 1000;
 
     private final String klinesUrl_;
+    private final String ticker24hUrl_;
 
     public OhlcFetcher(String binanceBaseUrl)
     {
         klinesUrl_ = binanceBaseUrl;
+        // The 24h ticker is a sibling endpoint of klines on the same Binance base (no extra config).
+        int lastSlash = binanceBaseUrl.lastIndexOf('/');
+        ticker24hUrl_ = (lastSlash > 0 ? binanceBaseUrl.substring(0, lastSlash) : binanceBaseUrl) + "/ticker/24hr";
+    }
+
+    /**
+     * Fetch the 24h rolling-window ticker for BTC (last price, 24h high/low, 24h percent change) in one
+     * light call &mdash; the price-context backdrop without pulling a full day of candles. Null on failure.
+     */
+    public JsonNode fetch24hTicker()
+    {
+        JsonNode ticker = null;
+        try
+        {
+            JsonNode parsed = Json.parse(Http.get(ticker24hUrl_, Map.of("symbol", SYMBOL), null, TIMEOUT));
+            if (parsed.has("lastPrice"))
+            {
+                ticker = parsed;
+            }
+        }
+        catch (IOException | RuntimeException fetchFailed)
+        {
+            GlobalSystem.warning().writes(NAME, "24h ticker fetch failed", fetchFailed);
+        }
+        catch (InterruptedException interrupted)
+        {
+            Thread.currentThread().interrupt();
+            GlobalSystem.warning().writes(NAME, "Interrupted fetching 24h ticker", interrupted);
+        }
+        return ticker;
     }
 
     /**

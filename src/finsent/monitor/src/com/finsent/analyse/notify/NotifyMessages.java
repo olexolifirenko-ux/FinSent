@@ -29,59 +29,50 @@ public final class NotifyMessages
      */
     public static String telegram(ObjectNode pred, int resonantCount, Double realtimePrice)
     {
-        String direction = pred.path("direction").asText("?");
-        String tier = pred.path("impact_tier").asText("?");
-        String regime = pred.path("macro_regime").asText("?");
+        String events = bulletEvents(pred.path("key_events"));
         String reasoning = pred.path("reasoning").asText("");
         String price = priceText(pred, realtimePrice);
-        String context = contextLine(pred);
-        // confidence is deliberately NOT shown in the alert body: it's model self-rated and
-        // uncalibrated, so surfacing it to a trader manufactures false certainty. It stays in the
-        // stored record (for the feedback loop to validate) and the operational log line only.
-        String message = "BTC ALERT (" + countPhrase(resonantCount) + ")\n"
-                + (price.isEmpty() ? "" : price + "\n")
-                + upper(direction) + " | " + tier + " impact | macro: " + regime + "\n"
-                + (context.isEmpty() ? "" : context + "\n")
-                + reasoning + "\n"
-                + bulletEvents(pred.path("key_events"));
+        // Event-first: lead with WHAT happened (the causative events + the analyst read), then the
+        // materiality and a secondary directional lean. Confidence is deliberately not shown (model
+        // self-rated and uncalibrated); it stays in the stored record and the operational log line.
+        String message = "CRYPTO EVENT (" + countPhrase(resonantCount) + ")\n"
+                + (events.isEmpty() ? "" : events + "\n")
+                + (reasoning.isEmpty() ? "" : reasoning + "\n")
+                + "Materiality " + upper(pred.path("impact_tier").asText("?")) + " | Lean " + lean(pred)
+                + (price.isEmpty() ? "" : " | " + price);
         return message.strip();
     }
 
-    /** Email subject for a window alert: {@code BTC Alert: <DIRECTION>}. */
-    public static String emailSubject(ObjectNode pred)
+    /** The crypto lean for display: {@code BULLISH}/{@code BEARISH}, or {@code unclear} for a neutral lean. */
+    private static String lean(ObjectNode pred)
     {
-        String direction = pred.path("direction").asText("");
-        return "BTC Alert: " + upper(direction.isEmpty() ? "neutral" : direction);
+        String direction = pred.path("direction").asText("neutral");
+        return direction.equals("neutral") ? "unclear" : upper(direction);
     }
 
-    /** Extended email body: aggregate prediction followed by the per-article breakdown. */
+    /** Email subject for an event alert: {@code Crypto Event -- <materiality> materiality, <lean> lean}. */
+    public static String emailSubject(ObjectNode pred)
+    {
+        return "Crypto Event -- " + pred.path("impact_tier").asText("?") + " materiality, " + lean(pred) + " lean";
+    }
+
+    /** Extended email body: the event (materiality, lean, what happened) followed by the per-item breakdown. */
     public static String emailBody(ObjectNode pred, List<ObjectNode> articlePreds, int resonantCount,
                                    Double realtimePrice)
     {
         List<String> lines = new ArrayList<>();
-        lines.add("BTC ANALYSIS (" + countPhrase(resonantCount) + ")");
-        lines.add("Direction: " + upper(pred.path("direction").asText("?")));
-        lines.add("Impact: " + pred.path("impact_tier").asText("?"));
-        lines.add("Macro regime: " + pred.path("macro_regime").asText("?"));
+        lines.add("CRYPTO EVENT (" + countPhrase(resonantCount) + ")");
+        lines.add("Materiality: " + pred.path("impact_tier").asText("?"));
+        lines.add("Lean: " + lean(pred));
         String price = priceText(pred, realtimePrice);
         if (!price.isEmpty())
         {
             lines.add(price);
         }
-        String positioning = positioningTag(pred);
-        if (!positioning.isEmpty())
-        {
-            lines.add("Positioning: " + positioning);
-        }
-        String range = rangeTag(pred);
-        if (!range.isEmpty())
-        {
-            lines.add("24h range: " + range);
-        }
         lines.add("Reasoning: " + pred.path("reasoning").asText(""));
         appendKeyEvents(lines, pred.path("key_events"));
         lines.add("");
-        lines.add("--- PER-ARTICLE ANALYSIS ---");
+        lines.add("--- ITEMS ---");
         lines.add("");
         appendArticleBreakdown(lines, articlePreds);
         return String.join("\n", lines);
@@ -256,49 +247,6 @@ public final class NotifyMessages
             result = iso.substring(11, 16);
         }
         return result;
-    }
-
-    /** Mechanical-context line for telegram: funding crowding + 24h range position, " · "-joined; "" when neither. */
-    private static String contextLine(ObjectNode pred)
-    {
-        List<String> parts = new ArrayList<>();
-        String positioning = positioningTag(pred);
-        if (!positioning.isEmpty())
-        {
-            parts.add(positioning);
-        }
-        String range = rangeTag(pred);
-        if (!range.isEmpty())
-        {
-            parts.add(range);
-        }
-        return String.join(" · ", parts);
-    }
-
-    /** Funding crowding as {@code "crowded_long (cascade risk)"} / {@code "crowded_short (squeeze risk)"}; "" when
-     *  neutral/absent. Crowded longs cascade on a drop (liquidations), crowded shorts squeeze on a pop. */
-    private static String positioningTag(ObjectNode pred)
-    {
-        String positioning = pred.path("funding_signal").path("positioning").asText("");
-        String tag = "";
-        if (!positioning.isEmpty() && !positioning.equals("neutral"))
-        {
-            tag = positioning + (positioning.endsWith("long") ? " (cascade risk)" : " (squeeze risk)");
-        }
-        return tag;
-    }
-
-    /** 24h range position as {@code "near 24h low"|"near 24h high"|"mid 24h range"}; "" when no price context. */
-    private static String rangeTag(ObjectNode pred)
-    {
-        JsonNode pos = pred.path("price_context").path("range_pos_24h");
-        String tag = "";
-        if (pos.isNumber())
-        {
-            double position = pos.asDouble();
-            tag = position <= 0.25 ? "near 24h low" : (position >= 0.75 ? "near 24h high" : "mid 24h range");
-        }
-        return tag;
     }
 
     private static String bulletEvents(JsonNode keyEvents)

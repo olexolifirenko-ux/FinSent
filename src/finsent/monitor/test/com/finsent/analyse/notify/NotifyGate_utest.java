@@ -29,10 +29,11 @@ public class NotifyGate_utest
     }
 
     @Test
-    public void neutralDirectionIsNotNotified()
+    public void materialEventWithNeutralLeanStillNotifies()
     {
+        // Monitor behaviour: a high-materiality event alerts even when the directional lean is unclear.
         ObjectNode pred = pred("neutral", "high");
-        assertFalse(NotifyGate.shouldNotify(pred, List.of(fresh()), "high", "low", AGE_MINUTES, NOW, false));
+        assertTrue(NotifyGate.shouldNotify(pred, List.of(fresh()), "high", "low", AGE_MINUTES, NOW, false));
     }
 
     @Test

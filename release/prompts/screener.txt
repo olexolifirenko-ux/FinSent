@@ -25,6 +25,12 @@ Magnitude test: would institutional desks reposition on this headline?
 
 Score = novelty x magnitude x how-soon-it-will-impact-price. Higher for breaking news.
 
+CREDIBILITY: a mere THREAT/INTENTION that has not happened, or an unverified
+single-source claim ("X says...", one-sided state media), is not yet a real event --
+score it LOW (1-3), not at full magnitude, unless it is officially confirmed or
+executed. A confirmed, executed action (a policy signed, a rate set, an enforcement
+action filed) scores at full magnitude regardless of who the source is.
+
 DUPLICATES & FOLLOW-UPS: Score 0 for any article that covers an event already listed
 under ALREADY COVERED below, or that duplicates another article in this batch. This
 includes market reactions ("oil rose after X", "gold extended a decline"), recaps and

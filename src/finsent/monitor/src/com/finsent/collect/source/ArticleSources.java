@@ -47,10 +47,33 @@ public final class ArticleSources
         return sources;
     }
 
-    /** The urgent poller's single RSS source over the urgent feeds. */
-    public static IArticleSource urgentFromConfig(Config config)
+    /**
+     * The urgent poller's sources: the RSS squawk feeds plus the X (Twitter) amplifier source when its
+     * GetXAPI key and account list are configured (skipped cleanly otherwise, like the keyed sources).
+     */
+    public static List<IArticleSource> urgentSourcesFromConfig(Config config)
     {
-        return new RssSource(config.urgentSources(), URGENT_TIMEOUT, URGENT_RETRIES, Http.Channel.URGENT);
+        List<IArticleSource> sources = new ArrayList<>();
+        sources.add(new RssSource(config.urgentSources(), URGENT_TIMEOUT, URGENT_RETRIES, Http.Channel.URGENT));
+        IArticleSource x = buildX(config);
+        if (x != null)
+        {
+            sources.add(x);
+        }
+        return sources;
+    }
+
+    /** The X amplifier source over the configured accounts, or null when the key/accounts are absent. */
+    private static IArticleSource buildX(Config config)
+    {
+        String apiKey = config.getxapiKey().trim();
+        List<String> accounts = config.xAccounts();
+        IArticleSource source = null;
+        if (keyConfigured("x", apiKey) && !accounts.isEmpty())
+        {
+            source = new XSquawkSource(config.getxapiSearchUrl(), apiKey, accounts, URGENT_TIMEOUT, URGENT_RETRIES);
+        }
+        return source;
     }
 
     private static IArticleSource build(Config.Source entry, Config config)

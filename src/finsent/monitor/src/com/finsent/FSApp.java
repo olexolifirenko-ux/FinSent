@@ -91,6 +91,9 @@ public class FSApp extends AbstractAppInitializer
 
         collectorRunner_.start();
         urgentPoller_.start();
-        econScheduler_.start();
+        if (config.econEnabled())
+        {
+            econScheduler_.start();
+        }
     }
 }

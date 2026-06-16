@@ -127,6 +127,12 @@ public final class Config
         return Secrets.resolve(attr(collectorNode_, "blsApiKey", ""));
     }
 
+    /** Whether the econ-calendar scheduler auto-arms scheduled releases; manual {@code collect/anal econ} stay available. */
+    public boolean econEnabled()
+    {
+        return boolAttr(collectorNode_, "econEnabled", false);
+    }
+
     /** Static econ-event definitions catalog (#21), resolved against the run dir; "" disables the module. */
     public String econDefinitionsFile()
     {
@@ -142,6 +148,29 @@ public final class Config
     public int recoveryLookbackInDays()
     {
         return intAttr(collectorNode_, "recoveryLookbackInDays", 3);
+    }
+
+    /** GetXAPI advanced-search endpoint the fast X (Twitter) amplifier source polls. */
+    public String getxapiSearchUrl()
+    {
+        return attr(collectorNode_, "getxapiSearchUrl", "https://api.getxapi.com/twitter/tweet/advanced_search");
+    }
+
+    /** GetXAPI registration key for the X amplifier source; "" disables the source. */
+    public String getxapiKey()
+    {
+        return Secrets.resolve(attr(collectorNode_, "getxapiKey", ""));
+    }
+
+    /** X (Twitter) amplifier handles polled as one merged squawk query; empty disables the source. */
+    public List<String> xAccounts()
+    {
+        List<String> result = new ArrayList<>();
+        for (XMLData account : children(collectorNode_, "XAccounts", "Account"))
+        {
+            result.add(account.getAttributeStringValue("handle", ""));
+        }
+        return result;
     }
 
     /**
@@ -185,6 +214,12 @@ public final class Config
     public boolean fundingEnabled()
     {
         return boolAttr(collectorNode_, "fundingEnabled", false);
+    }
+
+    /** Whether the macro tape (VIX/DXY/S&amp;P/10y/gold) is collected; also gates the macro-alert breach check. */
+    public boolean macroEnabled()
+    {
+        return boolAttr(collectorNode_, "macroEnabled", false);
     }
 
     // == Analyser-owned: Claude analysis & screening ===========================

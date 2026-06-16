@@ -19,23 +19,22 @@ import com.finsent.core.Json;
 public class NotifyMessages_utest
 {
     @Test
-    public void telegramWithPriceAndEvents()
+    public void telegramLeadsWithEventThenMaterialityAndLean()
     {
         ObjectNode pred = pred("bullish", "high", "risk_on", "ETF inflows accelerating.");
         pred.put("btc_at_prediction", 79000);
         pred.set("key_events", events("ETF approval", "Whale accumulation"));
 
         assertEquals(""
-                + "BTC ALERT (2 articles)\n"
-                + "BTC: $79,000\n"
-                + "BULLISH | high impact | macro: risk_on\n"
-                + "ETF inflows accelerating.\n"
+                + "CRYPTO EVENT (2 articles)\n"
                 + "• ETF approval\n"
-                + "• Whale accumulation", NotifyMessages.telegram(pred, 2, null));
+                + "• Whale accumulation\n"
+                + "ETF inflows accelerating.\n"
+                + "Materiality HIGH | Lean BULLISH | BTC: $79,000", NotifyMessages.telegram(pred, 2, null));
     }
 
     @Test
-    public void telegramShowsRealtimePriceMoveCatalystTimeAndContext()
+    public void telegramShowsRealtimePriceMove()
     {
         ObjectNode pred = pred("bearish", "high", "risk_off", "Geopolitical shock.");
         pred.put("btc_at_prediction", 61362);
@@ -45,20 +44,13 @@ public class NotifyMessages_utest
         ArrayNode articles = Json.newArray();
         articles.add(article);
         pred.set("articles", articles);
-        ObjectNode funding = Json.newObject();
-        funding.put("positioning", "crowded_long");
-        pred.set("funding_signal", funding);
-        ObjectNode priceCtx = Json.newObject();
-        priceCtx.put("range_pos_24h", 0.10);
-        pred.set("price_context", priceCtx);
 
         assertEquals(""
-                + "BTC ALERT (1 article)\n"
-                + "BTC: $60,900 now | $61,362 at news (-0.8% since, 16:38)\n"
-                + "BEARISH | high impact | macro: risk_off\n"
-                + "crowded_long (cascade risk) · near 24h low\n"
+                + "CRYPTO EVENT (1 article)\n"
+                + "• Trump vows response\n"
                 + "Geopolitical shock.\n"
-                + "• Trump vows response", NotifyMessages.telegram(pred, 1, 60900.0));
+                + "Materiality HIGH | Lean BEARISH | BTC: $60,900 now | $61,362 at news (-0.8% since, 16:38)",
+                NotifyMessages.telegram(pred, 1, 60900.0));
     }
 
     @Test
@@ -66,31 +58,25 @@ public class NotifyMessages_utest
     {
         ObjectNode pred = pred("bearish", "low", "neutral", "Minor.");
         assertEquals(""
-                + "BTC ALERT (1 article)\n"
-                + "BEARISH | low impact | macro: neutral\n"
-                + "Minor.", NotifyMessages.telegram(pred, 1, null));
+                + "CRYPTO EVENT (1 article)\n"
+                + "Minor.\n"
+                + "Materiality LOW | Lean BEARISH", NotifyMessages.telegram(pred, 1, null));
     }
 
     @Test
-    public void emailSubjectUsesDirectionOrNeutral()
+    public void emailSubjectShowsMaterialityAndLean()
     {
-        assertEquals("BTC Alert: BULLISH",
+        assertEquals("Crypto Event -- high materiality, BULLISH lean",
                 NotifyMessages.emailSubject(pred("bullish", "high", "risk_on", "x")));
-        assertEquals("BTC Alert: NEUTRAL", NotifyMessages.emailSubject(Json.newObject()));
+        assertEquals("Crypto Event -- ? materiality, unclear lean", NotifyMessages.emailSubject(Json.newObject()));
     }
 
     @Test
-    public void emailBodyWithPerArticleBreakdown()
+    public void emailBodyWithPerItemBreakdown()
     {
         ObjectNode pred = pred("bullish", "high", "risk_on", "ETF inflows accelerating.");
         pred.put("btc_at_prediction", 79000);
         pred.set("key_events", events("ETF approval", "Whale accumulation"));
-        ObjectNode funding = Json.newObject();
-        funding.put("positioning", "crowded_short");
-        pred.set("funding_signal", funding);
-        ObjectNode priceCtx = Json.newObject();
-        priceCtx.put("range_pos_24h", 0.85);
-        pred.set("price_context", priceCtx);
         ObjectNode etf = articlePred("Spot ETF approved by SEC", "bullish", "fresh_bullish", "Institutional inflows");
         etf.put("published_at", "2026-06-09T14:05:00Z");
         etf.put("url", "https://x/1");
@@ -98,19 +84,16 @@ public class NotifyMessages_utest
                 articlePred("Minor wallet update", "neutral", "noise", ""));
 
         assertEquals(""
-                + "BTC ANALYSIS (2 articles)\n"
-                + "Direction: BULLISH\n"
-                + "Impact: high\n"
-                + "Macro regime: risk_on\n"
+                + "CRYPTO EVENT (2 articles)\n"
+                + "Materiality: high\n"
+                + "Lean: BULLISH\n"
                 + "BTC: $79,500 now | $79,000 at news (+0.6% since)\n"
-                + "Positioning: crowded_short (squeeze risk)\n"
-                + "24h range: near 24h high\n"
                 + "Reasoning: ETF inflows accelerating.\n"
                 + "Key events:\n"
                 + "  - ETF approval\n"
                 + "  - Whale accumulation\n"
                 + "\n"
-                + "--- PER-ARTICLE ANALYSIS ---\n"
+                + "--- ITEMS ---\n"
                 + "\n"
                 + "[BULLISH] 14:05  Spot ETF approved by SEC\n"
                 + "  Scenario: fresh_bullish\n"
@@ -123,17 +106,16 @@ public class NotifyMessages_utest
     }
 
     @Test
-    public void emailBodyWithoutPerArticleAnalysis()
+    public void emailBodyWithoutPerItemAnalysis()
     {
         ObjectNode pred = pred("neutral", "noise", "neutral", "No catalysts.");
         assertEquals(""
-                + "BTC ANALYSIS (1 article)\n"
-                + "Direction: NEUTRAL\n"
-                + "Impact: noise\n"
-                + "Macro regime: neutral\n"
+                + "CRYPTO EVENT (1 article)\n"
+                + "Materiality: noise\n"
+                + "Lean: unclear\n"
                 + "Reasoning: No catalysts.\n"
                 + "\n"
-                + "--- PER-ARTICLE ANALYSIS ---\n"
+                + "--- ITEMS ---\n"
                 + "\n"
                 + "(no per-article analysis available)", NotifyMessages.emailBody(pred, List.of(), 1, null));
     }

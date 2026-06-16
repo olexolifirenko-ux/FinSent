@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  FinSent backend bootstrap configuration.
+
+  Loaded by AbstractAppInitializer (the -bootstrapDataFile launcher argument)
+  and handed to GlobalSystem.initialize(). GlobalSystem selects the top-level
+  element matching the process -type / -name (see GlobalSystem.getProcessData)
+  and then reads the <GlobalSystem> child of that section (see
+  GlobalSystem.registerOrRunInitializers).
+
+  Declare one top-level element per process type. Add more sections here as
+  further process types are introduced.
+-->
+<Bootstrap>
+    <!-- Launched by release/bin/FSSatellite.pl (-type FSSatellite). This is the default,
+         *unnamed* section: GlobalSystem.getProcessData selects it for an FSSatellite process
+         whether or not a -name is given (a -name with no matching named section falls back here). -->
+    <FSSatellite>
+        <GlobalSystem
+            configDataResource="cfg/system.xml"
+            logFacilityName="FSSatelliteLogFacility"
+        >
+            <!--
+              Process-specific custom initializers are declared here, e.g.:
+              <InitializerList>
+                  <Initializer customInitializerClassName="com.finsent.<Initializer>"/>
+              </InitializerList>
+            -->
+        </GlobalSystem>
+
+        <!--
+          Pipeline configuration (ported from the Python sentiment_config.json), split by
+          ownership into two sibling sections that com.finsent.core.Config reads from this
+          bootstrap node. Scalars are attributes; source/feed lists and macro thresholds are
+          child elements. Secret-bearing attributes use the ENV:VAR convention, resolved at
+          read time by com.finsent.core.Secrets. Duration specs (10m / 12h / 30m / 1h) carry
+          their unit in the value; numeric measurements use unit-suffixed names.
+        -->
+
+        <!--
+          What the collector owns: data cadence & shape. The three params marked [shared]
+          (analysisNewsWindow / ohlcImpactWindow / optionsEnabled) are read by the analyser
+          via the collector at runtime, so they live here as the single source of truth.
+        -->
+        <FSCollector
+            dataDir="data"
+            analysisNewsWindow="10m"
+            ohlcImpactWindow="30m"
+            macroEnabled="false"
+            optionsEnabled="false"
+            fundingEnabled="true"
+            econEnabled="false"
+            ohlcBarSize="1m"
+            articleMaxAge="72h"
+            urgentPollInSec="30"
+            recoveryLookbackInDays="3"
+            yahooChartBaseUrl="https://query1.finance.yahoo.com/v8/finance/chart"
+            deribitBaseUrl="https://www.deribit.com/api/v2"
+            binanceFuturesBaseUrl="https://fapi.binance.com/fapi/v1"
+            blsApiKey="ENV:BLS_API_KEY"
+            getxapiKey="ENV:GETXAPI_KEY"
+        >
+            <Sources>
+                <Source name="newsapi"     apiKey="ENV:NEWSAPI_KEY"/>
+                <Source name="polygon"     apiKey="ENV:POLYGON_KEY"/>
+                <Source name="cryptopanic" apiKey="ENV:CRYPTOPANIC_KEY"/>
+                <Source name="rss"/>
+            </Sources>
+
+            <!-- Crypto-native + primary monetary/regulatory sources. The lagged general-macro wires
+                 (Bloomberg Markets/Economics, CNBC) and low-crypto-yield geopolitical feeds (ArabNews,
+                 TimesOfIsrael) were pruned (monitor reframe); the fast squawk feeds replace them. -->
+            <RssFeeds>
+                <Feed name="CoinDesk"           url="https://www.coindesk.com/arc/outboundfeeds/rss/"/>
+                <Feed name="TheBlock"           url="https://www.theblock.co/rss.xml"/>
+                <Feed name="BloombergCrypto"    url="https://feeds.bloomberg.com/crypto/news.rss"/>
+                <Feed name="ECB_Press"          url="https://www.ecb.europa.eu/rss/press.html"/>
+                <Feed name="BoJ"                url="https://www.boj.or.jp/en/rss/whatsnew.xml"/>
+                <Feed name="BoE"                url="https://www.bankofengland.co.uk/rss/news"/>
+                <Feed name="SEC_Press"          url="https://www.sec.gov/news/pressreleases.rss"/>
+            </RssFeeds>
+
+            <!-- Fast official/primary sources only. The geopolitical wires (AlJazeera, IranIntl) were
+                 pruned: a low-crypto-yield bearish firehose the analyser repeatedly mis-called. -->
+            <UrgentSources>
+                <Source name="TruthSocial_Trump" url="https://www.trumpstruth.org/feed"/>
+                <Source name="FedReserve"        url="https://www.federalreserve.gov/feeds/press_all.xml"/>
+                <Source name="WhiteHouse"        url="https://www.whitehouse.gov/presidential-actions/feed/"/>
+            </UrgentSources>
+
+            <!-- Fast X (Twitter) amplifier accounts, fetched as one merged from:a OR from:b query on the
+                 urgent lane (GetXAPI advanced_search). Curate by reliability, not reach. Requires
+                 GETXAPI_KEY in release/.env; without it the source is skipped. Tier 1 fast wires first,
+                 then Tier 2 principals. -->
+            <XAccounts>
+                <Account handle="DeItaone"/>
+                <Account handle="FirstSquawk"/>
+                <Account handle="unusual_whales"/>
+                <Account handle="WatcherGuru"/>
+                <Account handle="realDonaldTrump"/>
+                <Account handle="federalreserve"/>
+                <Account handle="SECGov"/>
+            </XAccounts>
+        </FSCollector>
+
+        <!-- What the analyser owns: interpretation & notification. -->
+        <FSAnalyser
+            anthropicApiKey="ENV:ANTHROPIC_API_KEY"
+            claudeDeepAnalModel="claude-sonnet-4-6"
+            claudeScreenerModel="claude-haiku-4-5-20251001"
+            anthropicMessagesUrl="https://api.anthropic.com/v1/messages"
+            screenerThreshold="6"
+            promptsDir="prompts"
+            notifyMinImpactTier="high"
+            notifyMinConfidence="low"
+            newsAgeToNotify="1h"
+            telegramToken="ENV:TELEGRAM_TOKEN"
+            telegramChatId="645133217"
+            telegramApiBaseUrl="https://api.telegram.org"
+            emailTo="olex.olifirenko@gmail.com"
+            smtpHost="smtp.gmail.com"
+            smtpPort="587"
+            smtpUser="olex.olifirenko@gmail.com"
+            smtpPassword="ENV:SMTP_PASSWORD"
+        >
+            <MacroAlertThresholds
+                vixInPct="10.0"
+                dxyInPct="0.5"
+                sp500InPct="1.0"
+                us10yInPct="3.0"
+                goldInPct="1.0"
+            />
+        </FSAnalyser>
+    </FSSatellite>
+</Bootstrap>

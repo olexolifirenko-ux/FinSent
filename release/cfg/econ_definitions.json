@@ -1,0 +1,39 @@
+[
+  {
+    "_comment": "STATIC econ-event definitions (BACKLOG #21). Stable per-event fields only -- edited when you start/stop tracking an event, NOT monthly. The volatile release time + consensus live per-date in data/<date>/econ_schedule_<date>.json and are joined to a definition by `name` when the scheduler arms the day. hot_direction = BTC direction when actual > consensus (CPI/Core/NFP=bearish i.e. hawkish; unemployment=bullish i.e. dovish). inline_band = surprise within which it's in-line (neutral); high_band = surprise beyond which it's high impact, else low. kind: mom_pct = MoM % from an index series (actual=(latest-prev)/prev*100); mom_change = latest-prev in the series' own units; level = the latest value as-is.",
+    "name": "CPI MoM",
+    "series": "CUUR0000SA0",
+    "kind": "mom_pct",
+    "unit": "%",
+    "hot_direction": "bearish",
+    "inline_band": 0.1,
+    "high_band": 0.2
+  },
+  {
+    "name": "Core CPI MoM",
+    "series": "CUUR0000SA0L1E",
+    "kind": "mom_pct",
+    "unit": "%",
+    "hot_direction": "bearish",
+    "inline_band": 0.1,
+    "high_band": 0.2
+  },
+  {
+    "name": "Nonfarm Payrolls",
+    "series": "CES0000000001",
+    "kind": "mom_change",
+    "unit": "K",
+    "hot_direction": "bearish",
+    "inline_band": 25,
+    "high_band": 75
+  },
+  {
+    "name": "Unemployment Rate",
+    "series": "LNS14000000",
+    "kind": "level",
+    "unit": "%",
+    "hot_direction": "bullish",
+    "inline_band": 0.1,
+    "high_band": 0.2
+  }
+]

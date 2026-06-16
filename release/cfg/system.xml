@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  FinSent system configuration (the GlobalSystem configDataResource).
+
+  Referenced from cfg/processes.xml via the GlobalSystem
+  configDataResource attribute. It carries only the output log facility
+  specification; the pipeline configuration lives in cfg/processes.xml,
+  split into the <FSCollector> and <FSAnalyser> sections of the <FSSatellite>
+  bootstrap node (read by com.finsent.core.Config). Further system-level
+  configuration can be added here later.
+-->
+<GlobalSystem>
+    <OutputLogFacilityList>
+        <OutputLogFacility name="FSSatelliteLogFacility" processAlias="FSSatellite">
+            <ErrorLogger
+                alsoToStandardError="true"
+                enabled="true"
+                outputDestination="%LOGS_DIR%/%fullProcessName%.log"
+                outputLevel="2"
+                prefix="***** error: "
+                threadInfoEnabled="true"
+                timeStampEnabled="true"
+            />
+            <WarningLogger
+                alsoToStandardError="true"
+                enabled="true"
+                outputDestination="%LOGS_DIR%/%fullProcessName%.log"
+                outputLevel="2"
+                prefix="!!!!! warning: "
+                threadInfoEnabled="true"
+                timeStampEnabled="true"
+            />
+            <DebugLogger
+                alsoToStandardOutput="true"
+                enabled="true"
+                outputDestination="%LOGS_DIR%/%fullProcessName%.log"
+                outputLevel="2"
+                prefix="    debug: "
+                threadInfoEnabled="true"
+                timeStampEnabled="true"
+            />
+            <InfoLogger
+                alsoToStandardOutput="true"
+                enabled="true"
+                outputDestination="%LOGS_DIR%/%fullProcessName%.log"
+                outputLevel="2"
+                prefix="     info: "
+                threadInfoEnabled="true"
+                timeStampEnabled="true"
+            />
+        </OutputLogFacility>
+    </OutputLogFacilityList>
+</GlobalSystem>

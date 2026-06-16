@@ -71,6 +71,10 @@ public final class MacroSignals
         }
 
         ObjectNode result = Json.newObject();
+        // Whether a macro snapshot was actually present: distinguishes a real "neutral" reading from
+        // the degenerate "no macro data" case (e.g. macro collection disabled), so a fabricated regime
+        // is not fed to the prompt or stored as if it were a reading.
+        result.put("has_data", yahoo != null && yahoo.size() > 0);
         result.put("regime", classify(riskOff, riskOn));
         result.put("risk_off_count", riskOff);
         result.put("risk_on_count", riskOn);

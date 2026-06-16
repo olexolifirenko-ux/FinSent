@@ -454,7 +454,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
             boolean inline = "neutral".equals(signal.path("direction").asText("neutral"));
             ObjectNode deepPrediction = inline ? null : runEconDeep(signal, market.block());
             ObjectNode econAlert = buildEconAlert(Times.formatUtcIso(now), signal, deepPrediction,
-                    market.regime().path("regime").asText(), market.anchor());
+                    regimeLabel(market.regime()), market.anchor());
             store_.recordEconAlert(day, key, econAlert);
             logEcon(day, key, econAlert);
             if (notify && deepPrediction != null)
@@ -502,6 +502,12 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         alert.put("reasoning", claudeAvailable ? deepPrediction.path("reasoning").asText("")
                 : "Mechanical surprise read (no deep analysis).");
         return alert;
+    }
+
+    /** The macro-regime label for storage/logging, or {@code "n/a"} when no macro snapshot was read. */
+    private static String regimeLabel(ObjectNode regime)
+    {
+        return regime.path("has_data").asBoolean() ? regime.path("regime").asText() : "n/a";
     }
 
     /** Set the {@code btc_at_prediction} price anchor (#6) on a record, null-safe (explicit null when absent). */
@@ -720,7 +726,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         DeepResult deep = deep_.analyse(prompt);
         ArrayNode articlePredictions = buildArticlePredictions(resonant, ohlc, deep.articles(), deepIdMap);
         ObjectNode prediction = buildPredictionRecord(WindowContext.btcPrice(ohlc), unique.size(), resonant.size(),
-                deep.prediction(), market.regime().path("regime").asText(), market.options(), market.funding(),
+                deep.prediction(), regimeLabel(market.regime()), market.options(), market.funding(),
                 market.priceContext(), articlePredictions);
 
         store_.record(day, key, interval(analyzedAt, config_.claudeDeepAnalModel(), unique, screenerOut, prediction, resonant));

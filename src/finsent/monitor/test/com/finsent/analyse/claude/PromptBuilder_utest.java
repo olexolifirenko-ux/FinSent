@@ -141,14 +141,22 @@ public class PromptBuilder_utest
     @Test
     public void marketSignalsNeutralIsRegimeOnly()
     {
-        ObjectNode regime = MacroSignals.regime(Json.newObject());
+        ObjectNode regime = MacroSignals.regime(macroSnap(0, 0, 0));
         assertEquals("macro_regime: neutral", PromptBuilder.marketSignals(regime, null, null, null, null));
+    }
+
+    @Test
+    public void marketSignalsOmitsRegimeWhenMacroAbsent()
+    {
+        // No macro snapshot (e.g. macro collection disabled) must NOT fabricate a "neutral" regime line.
+        ObjectNode regime = MacroSignals.regime(Json.newObject());
+        assertEquals("", PromptBuilder.marketSignals(regime, null, null, null, null));
     }
 
     @Test
     public void marketSignalsLeadsWithPriceContext()
     {
-        ObjectNode regime = MacroSignals.regime(Json.newObject());
+        ObjectNode regime = MacroSignals.regime(macroSnap(0, 0, 0));
 
         String block = PromptBuilder.marketSignals(regime, null, null, null, priceCtx(67432.10, 0.8, -3.4, 0.12));
 
@@ -176,7 +184,7 @@ public class PromptBuilder_utest
     @Test
     public void marketSignalsIncludesFundingLine()
     {
-        ObjectNode regime = MacroSignals.regime(Json.newObject());
+        ObjectNode regime = MacroSignals.regime(macroSnap(0, 0, 0));
         ObjectNode funding = FundingSignals.signal(funding(0.00038));
 
         String block = PromptBuilder.marketSignals(regime, null, funding, null, null);

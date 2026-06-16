@@ -256,14 +256,19 @@ public final class PromptBuilder
 
     private static void appendRegimeLines(List<String> lines, ObjectNode regime)
     {
-        String name = regime.path("regime").asText();
-        JsonNode triggered = regime.path("triggered");
-        lines.add("macro_regime: " + name);
-        boolean detailed = (name.equals("risk_off") || name.equals("risk_on") || name.equals("mixed"))
-                && triggered.size() > 0;
-        if (detailed)
+        // Only emit the regime when a macro snapshot was actually read; otherwise the line would assert
+        // a fabricated "neutral" from no data (e.g. with macro collection disabled), misleading the model.
+        if (regime.path("has_data").asBoolean())
         {
-            lines.add("macro_detail: " + triggered.size() + "/5 indicators (" + joinNode(triggered) + ")");
+            String name = regime.path("regime").asText();
+            JsonNode triggered = regime.path("triggered");
+            lines.add("macro_regime: " + name);
+            boolean detailed = (name.equals("risk_off") || name.equals("risk_on") || name.equals("mixed"))
+                    && triggered.size() > 0;
+            if (detailed)
+            {
+                lines.add("macro_detail: " + triggered.size() + "/5 indicators (" + joinNode(triggered) + ")");
+            }
         }
     }
 

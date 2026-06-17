@@ -383,5 +383,6 @@ release/
 
 - **`AGENTS.md`** — build/test/run commands, runtime flags/commands, non-obvious invariants, gotchas.
   Read it first.
-- **`BACKLOG.md`** — the canonical planning doc: strategic framing, what's shipped, and open work.
+- **`BACKLOG.md`** — the canonical planning doc: strategic framing + open work; **`BACKLOG_ARCHIVE.md`**
+  is the dated changelog of shipped/decided items.
 - **`.claude/rules/coding-guidelines.md`** — the coding standard for all source changes.

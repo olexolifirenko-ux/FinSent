@@ -59,7 +59,7 @@ start(
         # Initial state of the fast X (Twitter) source, read by FSApp via Boolean.getBoolean("fetchX").
         # Default is off when absent; set "true" to start polling X at launch. Toggle live with
         # `collect x on|off` (no restart). Requires getxapiKey + <XAccounts> to have any effect.
-        "-DfetchX" => "true",
+        "-DfetchX" => "false",
     },
     _CLASS()     => "com.finsent.FSApp",
     _ARGUMENTS() => $arguments,

@@ -1,6 +1,7 @@
 package com.finsent.collect;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 import java.time.Instant;
@@ -37,5 +38,25 @@ public class FundingFetcher_utest
     public void nullSnapshotWhenRateAbsent() throws Exception
     {
         assertNull(FundingFetcher.buildSnapshot(NOW, Json.parse("{\"symbol\":\"BTCUSDT\"}")));
+    }
+
+    @Test
+    public void includesOpenInterestWhenPresent() throws Exception
+    {
+        JsonNode premium = Json.parse("{\"lastFundingRate\":\"0.00038000\",\"markPrice\":\"64250.5\"}");
+        JsonNode openInterest = Json.parse("{\"openInterest\":\"81234.567\",\"symbol\":\"BTCUSDT\"}");
+
+        ObjectNode snapshot = FundingFetcher.buildSnapshot(NOW, premium, openInterest);
+
+        assertEquals(81234.57, snapshot.path("open_interest").asDouble(), 1e-9);
+        assertEquals(0.00038, snapshot.path("funding_rate").asDouble(), 1e-9);
+    }
+
+    @Test
+    public void omitsOpenInterestWhenAbsent() throws Exception
+    {
+        ObjectNode snapshot = FundingFetcher.buildSnapshot(NOW,
+                Json.parse("{\"lastFundingRate\":\"0.00038000\"}"), null);
+        assertFalse("OI is best-effort: its absence just omits the field", snapshot.has("open_interest"));
     }
 }

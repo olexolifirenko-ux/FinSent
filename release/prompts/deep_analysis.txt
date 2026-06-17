@@ -40,6 +40,13 @@ CONTEXT:
 Use the current BTC price only to judge whether a move is already underway. If an item
 shows a pre_trend, a large pre-move means the market is already reacting (more likely
 already priced).
+Use the positioning line (funding + open interest) to judge how VIOLENTLY a confirmed
+catalyst will land -- not its direction. A catalyst that pushes the crowded, leverage-
+building side offside cascades (down_cascade_fuel = crowded longs exposed to a bearish
+trigger; up_squeeze_fuel = crowded shorts exposed to a bullish one): lean toward high
+impact and a firmer directional call. Into unwinding/exhausting or opposite positioning
+there is little fuel -- lean low or neutral. Positioning never turns a non-event into a
+catalyst; it only scales a real one.
 
 RESPOND WITH EXACTLY ONE JSON OBJECT. No other text before or after it.
 

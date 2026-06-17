@@ -199,16 +199,29 @@ public final class PromptBuilder
     }
 
     /**
-     * Funding-rate positioning line, e.g. {@code "funding: +0.038% crowded_long"} -- which side of the
-     * perpetual market is crowded (and thus where a catalyst can cascade/squeeze). Omitted when absent.
+     * Perpetual-positioning line, e.g. {@code "positioning: crowded_long (funding +0.038%) | OI
+     * +2.1%/1h building -> down_cascade_fuel"} -- which side is crowded, whether leverage is
+     * building/unwinding, and the fused cascade/squeeze setup (the OI and setup parts appear only when
+     * an open-interest delta is available). Omitted entirely when no funding snapshot exists.
      */
     private static void appendFundingLine(List<String> lines, ObjectNode funding)
     {
         if (funding != null && funding.has("positioning"))
         {
-            lines.add("funding: "
-                    + String.format(Locale.ROOT, "%+.3f%%", funding.path("funding_rate_pct").asDouble())
-                    + " " + funding.path("positioning").asText());
+            StringBuilder line = new StringBuilder("positioning: ");
+            line.append(funding.path("positioning").asText());
+            line.append(String.format(Locale.ROOT, " (funding %+.3f%%)", funding.path("funding_rate_pct").asDouble()));
+            if (funding.path("oi_change_pct").isNumber())
+            {
+                line.append(String.format(Locale.ROOT, " | OI %+.1f%%/1h %s",
+                        funding.path("oi_change_pct").asDouble(), funding.path("oi_trend").asText()));
+            }
+            String setup = funding.path("setup").asText("");
+            if (!setup.isEmpty() && !setup.equals("neutral"))
+            {
+                line.append(" -> ").append(setup);
+            }
+            lines.add(line.toString());
         }
     }
 

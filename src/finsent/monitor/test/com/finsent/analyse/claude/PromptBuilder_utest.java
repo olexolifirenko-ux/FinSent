@@ -191,7 +191,22 @@ public class PromptBuilder_utest
 
         assertEquals(""
                 + "macro_regime: neutral\n"
-                + "funding: +0.038% crowded_long", block);
+                + "positioning: crowded_long (funding +0.038%)", block);
+    }
+
+    @Test
+    public void marketSignalsFundingWithOiFoldsSetup()
+    {
+        ObjectNode current = funding(0.00038);
+        current.put("open_interest", 105.0);
+        ObjectNode prior = Json.newObject();
+        prior.put("open_interest", 100.0);
+        ObjectNode funding = FundingSignals.signal(current, prior, 1.2); // OI +5% into a rising price
+
+        // No macro snapshot -> no regime line; positioning carries the OI delta and the fused setup.
+        String block = PromptBuilder.marketSignals(MacroSignals.regime(Json.newObject()), null, funding, null, null);
+
+        assertEquals("positioning: crowded_long (funding +0.038%) | OI +5.0%/1h building -> down_cascade_fuel", block);
     }
 
     private static ObjectNode funding(double rate)

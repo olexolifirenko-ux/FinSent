@@ -1,6 +1,7 @@
 package com.finsent.analyse.signal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -49,6 +50,39 @@ public class FundingSignals_utest
     {
         assertNull("empty snapshot -> no signal", FundingSignals.signal(Json.newObject()));
         assertNull("null snapshot -> no signal", FundingSignals.signal(null));
+    }
+
+    @Test
+    public void fusesOiTrendAndPriceMoveIntoSetup()
+    {
+        ObjectNode building = withOi(snapshot(0.0002), 105.0); // +5% vs prior 100
+        ObjectNode prior = withOi(Json.newObject(), 100.0);
+
+        ObjectNode up = FundingSignals.signal(building, prior, 1.2); // building into a rising price
+        assertEquals(5.0, up.path("oi_change_pct").asDouble(), 1e-9);
+        assertEquals("building", up.path("oi_trend").asText());
+        assertEquals("new longs -> down-cascade fuel", "down_cascade_fuel", up.path("setup").asText());
+
+        assertEquals("new shorts -> up-squeeze fuel", "up_squeeze_fuel",
+                FundingSignals.signal(building, prior, -1.2).path("setup").asText());
+
+        ObjectNode unwinding = withOi(snapshot(0.0002), 90.0); // -10% vs prior
+        assertEquals("OI unwinding -> exhausting", "exhausting",
+                FundingSignals.signal(unwinding, prior, 1.2).path("setup").asText());
+    }
+
+    @Test
+    public void noOiFusionWithoutPriorOpenInterest()
+    {
+        ObjectNode signal = FundingSignals.signal(withOi(snapshot(0.0002), 105.0), null, 1.2);
+        assertEquals("crowded_long", signal.path("positioning").asText());
+        assertFalse("no OI delta -> no setup field", signal.has("setup"));
+    }
+
+    private static ObjectNode withOi(ObjectNode snapshot, double openInterest)
+    {
+        snapshot.put("open_interest", openInterest);
+        return snapshot;
     }
 
     private static String positioning(double rate)

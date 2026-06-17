@@ -31,6 +31,7 @@ public final class WindowContext
 {
     private static final int MACRO_TREND_LOOKBACK = 6; // windows (~1h at 10-min cadence)
     private static final int OPTIONS_DELTA_WINDOWS = 3;
+    private static final int FUNDING_LOOKBACK = 6; // windows (~1h) for the OI build/unwind + price move
 
     private WindowContext()
     {
@@ -64,17 +65,31 @@ public final class WindowContext
     }
 
     /**
-     * Mechanical perpetual-funding positioning signal for the window, or {@code null} when funding is
-     * disabled or no snapshot exists. A single-snapshot read (no delta), so no previous window needed.
+     * Mechanical perpetual-positioning signal for the window (funding crowding fused with the ~1h open-
+     * interest change and the ~1h BTC move), or {@code null} when funding is disabled or no snapshot
+     * exists. Reads the funding snapshot {@value #FUNDING_LOOKBACK} windows back for the OI delta and
+     * the price-context price then vs now for the move (both tolerated absent, e.g. early after startup).
      */
-    public static ObjectNode fundingSignal(FSCollector collector, String day, String key)
+    public static ObjectNode fundingSignal(FSCollector collector, String day, String key, int windowMinutes)
     {
         ObjectNode signal = null;
         if (collector.config().fundingEnabled())
         {
-            signal = FundingSignals.signal(collector.funding().get(day, key));
+            Intervals.Shift back = Intervals.back(key, FUNDING_LOOKBACK, windowMinutes);
+            String backDay = back.dayOffset() == 0 ? day : Intervals.minusDays(day, back.dayOffset());
+            ObjectNode priorFunding = collector.funding().get(backDay, back.key());
+            signal = FundingSignals.signal(collector.funding().get(day, key), priorFunding,
+                    priceChangePct(collector, day, key, backDay, back.key()));
         }
         return signal;
+    }
+
+    /** The ~1h BTC percent move from the price-context snapshots ({@code backDay/backKey} -> {@code day/key}), or null. */
+    private static Double priceChangePct(FSCollector collector, String day, String key, String backDay, String backKey)
+    {
+        double now = collector.price().get(day, key).path("btc_price").asDouble(0.0);
+        double then = collector.price().get(backDay, backKey).path("btc_price").asDouble(0.0);
+        return now > 0.0 && then > 0.0 ? (now - then) / then * 100.0 : null;
     }
 
     /**
@@ -105,7 +120,7 @@ public final class WindowContext
     {
         ObjectNode regime = MacroSignals.regime(collector.macro().get(day, key));
         ObjectNode options = optionsSignal(collector, day, key, windowMinutes);
-        ObjectNode funding = fundingSignal(collector, day, key);
+        ObjectNode funding = fundingSignal(collector, day, key, windowMinutes);
         ObjectNode trend = macroTrend(collector, day, key, windowMinutes);
         ObjectNode price = collector.price().get(day, key);
         String block = PromptBuilder.marketSignals(regime, options, funding, trend, price);

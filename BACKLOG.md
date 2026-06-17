@@ -10,20 +10,48 @@ Keep this file updated as items land or change.
 
 ## Strategic framing
 
-The goal: detect a potentially BTC-impacting event **before the market prices it in**, then judge
-**long or short**. Two linked sub-problems:
-1. **Detection** — see the event before the market reacts (speed + coverage).
-2. **Prediction** — given the event + market context, which way does BTC move?
+**Current identity: a fast BTC news-event MONITOR** (reframed 2026-06). It catches real, materially
+crypto-impactful events fast, filters out bluff/speculation/already-priced noise, and notifies — it is
+NOT a price predictor. The deep pass is an event **detector** (a fact-vs-posture / new-vs-priced /
+channel test) that emits a materiality tier + a secondary directional **lean**. A long/short **trading
+module is deferred** — the future direction the positioning signals (funding + OI) are being built toward.
 
-**The measured reality (from the feedback loop, #6):** the directional *call* is ~coin-flip on small
-samples; the system's real edge is **detection**. So weight detection (Phase-1 items, faster/broader
-sourcing) over chasing oracle accuracy — and treat every prediction-quality change as unprovable until
-the feedback loop has weeks of *live* matured data.
+**The measured reality (from the feedback loop, #6):** short-horizon directional *prediction* is
+~coin-flip on small samples; the system's real edge is **detection** (seeing the event before the
+market fully reacts). So weight detection (faster/broader sourcing) over chasing oracle accuracy, and
+treat every prediction-quality change as unprovable until the feedback loop has weeks of *live* data.
 
 **Deprioritize:** more macro-indicator sophistication (VIX/DXY/SP500/Gold → `macro_regime`/`macro_trend`/
-macro-only alerts). Keep them as environment framing, but they don't directly drive the BTC long/short
-call — don't invest further there until the derivatives/positioning signals (Signal-quality section) are
-in and empirically compared.
+macro-only alerts). Macro collection is **off by default** now; keep it as optional environment framing,
+but it doesn't drive the call. The **perp-positioning signals (funding + OI)** are the higher-value
+context for both the monitor's materiality read and the future trading module.
+
+---
+
+## Recently shipped (2026-06-16/17, this session)
+
+- **Monitor reframe** — `deep_analysis.txt` rewritten to a 3-step **fact-vs-posture / new-vs-priced /
+  channel** test (event detection, not forecasting); output is materiality tier + directional *lean*;
+  notifications reframed to "CRYPTO EVENT" (materiality + lean); `NotifyGate` fires on materiality
+  (no non-neutral requirement).
+- **Screener rewritten** to a **direction-free 0–3 relevance ordinal** (was a signed −10..+10 score),
+  threshold 2, with a recall lean, a light-bluff rule (major-if-true claims kept for the deep pass),
+  and few-shot calibration. The signed scale was false precision (the decision was always binary).
+- **`confidence` removed** end-to-end (see #5).
+- **Structured outputs** (`output_config.format`, schemas in `ClaudeSchemas`) on both passes — the API
+  guarantees schema-valid JSON, removing the malformed-response → noise path. Shapes verified live.
+- **Adaptive thinking on the deep pass** (Sonnet reasons before answering) + `temperature:0` on both
+  passes + parse the first `text` block (skip the thinking block).
+- **Funding + Open Interest** fused positioning signal (#25 done; #24 partly).
+- **Fast X (Twitter) source** via GetXAPI (`XSquawkSource`): one merged `from:a OR from:b` query on the
+  urgent lane, core + situational accounts (`<XAccounts>`/`<XSituationalAccounts>`), a 25-clause cap
+  guard, runtime `collect x on|off` toggle + `-DfetchX`. Finding: GetXAPI returns originals +
+  quote-tweets but **never native retweets** (any endpoint) — follow principals directly to cover that.
+- **Hollow-signal fix** — `macro_regime` is omitted (not a fabricated "neutral") when no macro snapshot
+  was read.
+- **`anal start/pause` → `anal on/off`** (start/pause kept as aliases); **`-DpauseAnalyser` →
+  `-DrunAnalyser`** (positive sense); both startup flags default OFF when absent.
+- **Data layout** reorganised into per-day `data/<date>/` folders and **git-tracked**.
 
 ---
 
@@ -54,21 +82,22 @@ the resonant articles most-recent-first (by `publishedAt`) before emitting the b
 weights the current catalyst over a 40-minute-old one. Per-article results still key by id, so the
 reorder is safe (`deepArticlesOrderedMostRecentFirst` covers it).
 
-### 5. Add a `confidence` field to the deep output **[done 2026-06-09]**
-`impact_tier` conflated *magnitude* with *conviction*. **Done:** the deep pass now emits
-`confidence: high|medium|low` (conviction, independent of magnitude) — `deep_analysis.txt` schema +
-examples + a CONFIDENCE calibration paragraph; `DeepAnalysisPass.defaultConfidence` validates/defaults
-it to `low`; stored in the prediction record + the `Analysed` log line. **Deliberately NOT shown in the
-human alert** (model self-rated, uncalibrated → false certainty); the prompt also leans against
-overconfidence. New `Confidence` ordinal helper. The notify gate gained an optional `minConfidence`
-floor (`Config.notifyMinConfidence`, **default `low` = no-op**). Captured per-window so #6 can test
-"are high-confidence calls more accurate?". (This is IP-4d's `conviction` field.)
+### 5. `confidence` field on the deep output **[added 2026-06-09, REMOVED 2026-06-17]**
+Added as `confidence: high|medium|low`, then **removed end-to-end**. Why it didn't earn its place:
+LLM-verbalised self-confidence is poorly calibrated; it **co-moved with `impact_tier`** (little
+independent signal); it duplicated Step 1 (fact-vs-posture) of the deep test; it was a **no-op in the
+gate** (`minConfidence` defaulted to `low`) and was already hidden from alerts as "uncalibrated". Gone
+from the deep/econ/macro prompts, `NotifyGate`, the records/logs, `Config` (`notifyMinConfidence`), the
+feedback scorer/report, and `Confidence.java` (deleted). Lesson for any future self-rated scalar: keep
+it only as a *measured* variable in the feedback loop until the data shows it separates winners — don't
+gate on it.
 
 ### 6. Feedback / scoring loop — *the long-term ceiling* **[done 2026-06-09 (window-level v1)]**
 **Done:** `OutcomeScorer` (pure) scores each stored prediction's `direction` vs the realized BTC move
 at +1h/+24h (one Binance kline via injected `PriceSource`; bullish→up, bearish→down, neutral→|move|<0.05%).
 `FeedbackReport` renders directional accuracy with **naive baselines** (always-up/down/random — essential
-on a coin-flip target) + `impact_tier`/`confidence` breakdowns. `FeedbackRunner` reads `analysis_*.json`,
+on a coin-flip target) + `impact_tier`/`source` breakdowns (the `confidence` breakdown was dropped with
+#5). `FeedbackRunner` reads `analysis_*.json`,
 writes `outcomes.jsonl`; exposed as **`anal feedback [--days N]`** (command thread; read-only, keyless) +
 the standalone `ScorePastPredictions` (`feedback_report.pl`). Article-level scenario validation added
 (`scoreArticles` → `article_outcomes.jsonl`): each resonant article's scenario checked vs its realized 1h
@@ -133,25 +162,26 @@ over-suppression (missing a real new development) vs under (residual dups).
 ## Signal quality (positioning inputs)
 
 > Replace the macro-analyst data mix with **derivatives-trader** signals that directly serve the
-> long/short margin decision. Order: funding trend (#24, cheap) → perp OI (#25) → liquidations (#27) →
-> whale flow (#28), then unify the prompt block (#29). Each follows the established fetcher → snapshot
-> registry → signal-class → deep-prompt pattern (mirror the macro/options/funding fetchers).
+> long/short margin decision. **Done: funding + OI fusion (#24/#25).** Remaining order: liquidations
+> (#27) → whale flow (#28), then unify the prompt block (#29). Each follows the established fetcher →
+> snapshot registry → signal-class → deep-prompt pattern (mirror the macro/options/funding fetchers).
 
-### 24. Funding-rate trend — building vs unwinding **[idea — best value/effort here]**
-Funding is currently **level-only**: `FundingSignals` labels `crowded_long`/`crowded_short` from a single
-per-window snapshot, while macro (`MacroTrend`) and options (`OptionsSignals` delta) already use a
-*change-over-windows*. Add a funding **delta over ~1h** computed from the per-window funding series
-**already on disk** (no new collection) — `crowded_long` → `crowded_long and rising` (more cascade fuel)
-vs `unwinding` (deleveraging). **Scope:** a `FundingTrend` (or extend `FundingSignals`) reading the last N
-snapshots (mirror `WindowContext.macroTrend`); thread into the funding signal + deep-prompt line +
-(optionally) the alert positioning tag. **Don't sample funding finer or rarer than per-window** — it's
-slow-moving (8h settlement), so per-window is the right cadence and is what feeds this trend.
+### 24. Funding-rate trend — building vs unwinding **[partly addressed 2026-06-17]**
+The intent — distinguish leverage **building** vs **unwinding** — is now delivered via the **OI** trend
+(#25): `FundingSignals` fuses funding crowding (level) with the ~1h **OI** change into a setup. The
+funding-*rate* delta itself (is the crowding intensifying) is **not** added and is largely redundant now
+that OI carries the build/unwind signal. Revisit only if the rate-delta proves to add signal over OI.
 
-### 25. Perp open interest (IP-2b) **[idea — pairs with 24]**
-Funding says **which side** is crowded; OI says **how much leverage** is on and whether it's **building**.
-Together: `crowded_long + OI rising` = conviction long, real cascade risk; `crowded_long + OI falling` =
-longs capitulating. New keyless Binance Futures fetcher (`/openInterest`, `/openInterestHist`) → snapshot
-+ `oi_change_pct` vs prior interval + prompt line, on the funding pattern (same stream/module).
+### 25. Perp open interest (IP-2b) **[done 2026-06-17]**
+**Done:** `FundingFetcher` fetches OI from the keyless Binance `/openInterest` alongside funding and
+stores the raw value **in the funding snapshot** (`{funding_rate, mark_price, open_interest}`; one
+fetch, no new stream). `FundingSignals` now fuses **funding crowding × ~1h OI Δ × ~1h price move** into
+a cascade/squeeze `setup` via the OI×price matrix: OI building into rising price = new longs
+(`down_cascade_fuel`), into falling price = new shorts (`up_squeeze_fuel`), OI unwinding = `exhausting`.
+`WindowContext` reads the funding snapshot ~1h back (OI delta) + price-context price then-vs-now.
+Prompt line: `positioning: crowded_long (funding +0.038%) | OI +2.1%/1h building -> down_cascade_fuel`,
+and the deep prompt is told to use it to scale how *violently* a confirmed catalyst lands. Endpoint shape
+verified live. Liquidation clusters (#27) are the natural next step (WHERE it cascades).
 
 ### 27. Liquidation clusters (IP-2c) **[idea — needs CoinGlass key]**
 Funding/OI say leverage is loaded; liquidation clusters say **WHERE it cascades** — the nearest large
@@ -290,15 +320,16 @@ Covers the Asian-session blind spot (00–07 UTC, thin liquidity amplifies moves
 market-moving Asian news breaks in *local-language* sources first; English editions (NHK/SCMP/Yonhap)
 **lag**. Prioritize **SCMP (China-regulatory) + Yonhap (Korea)** over NHK.
 
-### 21. Economic-calendar integration (IP-1e) — *highest ceiling* **[idea]**
-Closes the single biggest **category** blind spot: scheduled prints (FOMC/CPI/NFP/GDP) are the most
-*reliable* BTC catalysts and move price 2–5% in minutes; the system can't tell a 12:31 move is the 12:30
-CPI vs a window article. Two reasons it's bigger than "~100 lines": (a) the **surprise vs forecast** is
-the signal, not "CPI occurred" — needs actual-vs-consensus; (b) **data source is fragile** (Forex Factory
-no API/blocks scrapers; TradingEconomics free tier narrow/keyed). **Better path than a calendar scraper:
-poll the data APIs directly** (BLS for CPI/NFP, BEA for GDP/PCE) at the known release time — see "Primary
-sources" below. Adds a `scheduled_event` prompt line + guidance on reading the surprise. **Verdict: high
-value; treat as a proper module, not a footnote.**
+### 21. Economic-calendar integration (IP-1e) — *highest ceiling* **[done 2026-06 (CPI/NFP via BLS)]**
+**Done as a proper module (Stage 3).** A static catalog `cfg/econ_definitions.json` (name/series/kind/
+unit/hot_direction/bands) is joined by name to per-date `data/<date>/econ_schedule_<date>.json`
+(release time + consensus) → `EconEvent`. `EconScheduler` arms a timer at each release time and polls the
+**BLS public API v2** until the fresh print lands, computes the **surprise vs consensus**
+(`EconEventSignals`), and — when it clears the band — runs an article-less deep pass (`econ_analysis.txt`)
+→ `econ_alert` (a `scheduled_event`-style record), notifying via the news-free gate. Manual `collect econ`
+(fetch-only) / `anal econ` (analyse) catch-ups for releases missed while down. Gated off by default
+(`econEnabled`). The only manual step left is authoring the schedule's consensus — see #21a. Covers
+CPI/NFP; BEA (GDP/PCE) not yet added.
 
 ### 21a. Auto-build the econ schedule via a scheduled Claude routine **[idea]**
 The econ module (#21) is built (static `cfg/econ_definitions.json` + per-date dynamic
@@ -360,15 +391,20 @@ A DES + PGP utility package was deliberately **not** imported. Add only if a con
 
 ## Recommended order
 
-1. **Funding trend (#24)** — cheap, completes funding, no new collection. Do now.
-2. **Keyword-hit-rate audit → faster polling (#17)** — biggest detection win, now unblocked.
-3. **Primary central-bank/exec feeds (#35/#18 remainder)** — Fed + White House into the urgent lane (free
-   RSS, near-zero lag); the highest-leverage *new* sources.
-4. **Economic data APIs (#21 via BLS/BEA)** — the biggest scheduled-event gap; the raw-number-at-release
-   approach beats a calendar scraper.
-5. **Perp OI (#25) → liquidation clusters (#27)** — the positioning chain; #27 enables `cascade_risk` (#34).
-6. **Prompt-input wins (#33 full description, #32 all-articles context, #31 article body, #30 since_publish)**
+Done since this list was last drawn: funding+OI (#24/#25), econ module (#21), screener 0–3, structured
+outputs, deep-pass thinking, the X source, the monitor reframe. Remaining, in rough value order:
+
+1. **Keyword-hit-rate audit → faster polling (#17)** — biggest detection win; audit broad-feed keyword
+   hit-rate, then move boundary feeds to the 30s urgent model.
+2. **Primary central-bank/exec feeds (#35/#18 remainder)** — SEC-litigation / Treasury via a non-RSS
+   source or per-feed UA; AP/AFP wires (verify feeds).
+3. **Liquidation clusters (#27)** — WHERE leverage cascades (pairs with funding+OI; needs CoinGlass key);
+   enables `cascade_risk` (#34).
+4. **Prompt-input wins (#33 full description, #32 all-articles context, #31 article body, #30 since_publish)**
    — cheap-to-moderate inputs to the decisive pass.
-7. **Whale flow (#28), unified prompt block (#29), rolling-synthesis (#1)** — later, larger builds.
+5. **Whale flow (#28), unified positioning block (#29), rolling-synthesis (#1)** — later, larger builds.
+6. **ETF-flow regime + BEA (GDP/PCE)** — for the future trading/daily-synthesis layer, not the fast
+   monitor (daily cadence; assessed not worth a real-time fetcher now — catch flow *news* via a source).
+7. **Auto-build the econ schedule (#21a)** — a scheduled Claude routine to author the consensus files.
 
 Running continuously alongside all of it: **let it bake + `anal feedback`** (the measurement gate).

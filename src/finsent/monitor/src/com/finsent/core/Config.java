@@ -150,6 +150,12 @@ public final class Config
         return intAttr(collectorNode_, "recoveryLookbackInDays", 3);
     }
 
+    /** Whether the fast X (Twitter) amplifier source is collected (also needs a key + accounts). */
+    public boolean xEnabled()
+    {
+        return boolAttr(collectorNode_, "xEnabled", false);
+    }
+
     /** GetXAPI advanced-search endpoint the fast X (Twitter) amplifier source polls. */
     public String getxapiSearchUrl()
     {

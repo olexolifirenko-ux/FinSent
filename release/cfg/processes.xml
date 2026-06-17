@@ -58,7 +58,6 @@
             deribitBaseUrl="https://www.deribit.com/api/v2"
             binanceFuturesBaseUrl="https://fapi.binance.com/fapi/v1"
             blsApiKey="ENV:BLS_API_KEY"
-            xEnabled="true"
             getxapiKey="ENV:GETXAPI_KEY"
         >
             <Sources>

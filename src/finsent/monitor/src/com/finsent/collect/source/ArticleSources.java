@@ -70,16 +70,13 @@ public final class ArticleSources
      */
     private static IArticleSource buildX(Config config)
     {
+        String apiKey = config.getxapiKey().trim();
+        List<String> accounts = new ArrayList<>(config.xAccounts());
+        accounts.addAll(config.xSituationalAccounts());
         IArticleSource source = null;
-        if (config.xEnabled())
+        if (keyConfigured("x", apiKey) && !accounts.isEmpty())
         {
-            String apiKey = config.getxapiKey().trim();
-            List<String> accounts = new ArrayList<>(config.xAccounts());
-            accounts.addAll(config.xSituationalAccounts());
-            if (keyConfigured("x", apiKey) && !accounts.isEmpty())
-            {
-                source = new XSquawkSource(config.getxapiSearchUrl(), apiKey, accounts, URGENT_TIMEOUT, URGENT_RETRIES);
-            }
+            source = new XSquawkSource(config.getxapiSearchUrl(), apiKey, accounts, URGENT_TIMEOUT, URGENT_RETRIES);
         }
         return source;
     }

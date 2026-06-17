@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.finsent.collect.source.ArticleSources;
 import com.finsent.collect.source.IArticleSource;
+import com.finsent.collect.source.XSquawkSource;
 import com.finsent.core.Config;
 import com.finsent.core.Json;
 import com.finsent.core.Num;
@@ -64,6 +65,9 @@ public final class FSCollector
     private final List<IRegistry> registries_;
     private final List<IArticleSource> sources_;
     private final List<IArticleSource> urgentSources_;
+    // The X (Twitter) squawk source if configured (key + accounts), else null -- held so its polling
+    // can be toggled at runtime via the `collect x on|off` command.
+    private final XSquawkSource xSource_;
     private final MacroFetcher macroFetcher_;
     private final OptionsFetcher optionsFetcher_;
     private final OhlcFetcher ohlcFetcher_;
@@ -105,6 +109,7 @@ public final class FSCollector
         registries_ = List.of(articles_, macro_, options_, ohlc_, price_, funding_, econ_);
         sources_ = sources;
         urgentSources_ = urgentSources;
+        xSource_ = findXSource(urgentSources);
         macroFetcher_ = macroFetcher;
         optionsFetcher_ = optionsFetcher;
         ohlcFetcher_ = ohlcFetcher;
@@ -122,6 +127,41 @@ public final class FSCollector
     public void addEconListener(IEventListener<EconResolved> listener)
     {
         eventBus_.subscribe(EconResolved.class, listener);
+    }
+
+    /** Turn the X (Twitter) source's polling on/off at runtime; no-op when X is not configured. */
+    public void setXEnabled(boolean enabled)
+    {
+        if (xSource_ != null)
+        {
+            xSource_.setEnabled(enabled);
+        }
+    }
+
+    /** Whether the X source is configured at all (a key + accounts) -- i.e. whether it can be toggled. */
+    public boolean xConfigured()
+    {
+        return xSource_ != null;
+    }
+
+    /** Whether the X source is currently polling. */
+    public boolean xEnabled()
+    {
+        return xSource_ != null && xSource_.isEnabled();
+    }
+
+    /** The X squawk source among the urgent sources, or null when it is not configured. */
+    private static XSquawkSource findXSource(List<IArticleSource> urgentSources)
+    {
+        XSquawkSource found = null;
+        for (IArticleSource source : urgentSources)
+        {
+            if (source instanceof XSquawkSource)
+            {
+                found = (XSquawkSource) source;
+            }
+        }
+        return found;
     }
 
     /** Rebuild every registry's runtime state from the most recent {@code lookbackDays}. */

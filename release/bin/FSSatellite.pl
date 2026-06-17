@@ -55,6 +55,10 @@ start(
         # start the analyser paused so the user runs `anal start` when ready. Must live in
         # _JAVA_OPTIONS (not _SCRIPT_OPTIONS) -- only that block becomes -D... on the java line.
         "-DpauseAnalyser" => "true",
+        # Initial state of the fast X (Twitter) source, read by FSApp via Boolean.getBoolean("fetchX").
+        # Default is off when absent; set "true" to start polling X at launch. Toggle live with
+        # `collect x on|off` (no restart). Requires getxapiKey + <XAccounts> to have any effect.
+        "-DfetchX" => "true",
     },
     _CLASS()     => "com.finsent.FSApp",
     _ARGUMENTS() => $arguments,

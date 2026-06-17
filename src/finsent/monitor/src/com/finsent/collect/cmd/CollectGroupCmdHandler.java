@@ -3,8 +3,10 @@ package com.finsent.collect.cmd;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.finsent.collect.EconScheduler;
+import com.finsent.collect.FSCollector;
 import com.finsent.util.CmdGroupHandler;
 import com.finsent.util.ICmdHandler;
 import com.finsent.util.UtilityFunctions;
@@ -15,23 +17,86 @@ import com.finsent.util.UtilityFunctions;
  * <ul>
  *   <li>{@code econ [YYYYMMDD] <event name>} &mdash; fetch a scheduled release's BLS actual on demand
  *       (the catch-up for a release the scheduler missed, e.g. one that fired while the app was down).</li>
+ *   <li>{@code x <on|off|status>} &mdash; turn the fast X (Twitter) amplifier source's polling on/off
+ *       at runtime (no restart), or report its state. The initial state comes from the {@code -DfetchX}
+ *       launcher flag.</li>
  * </ul>
- * Fetch-only: it stores the actual but does not analyse or notify, so a back-dated catch-up never fires a
- * stale alert -- run {@code anal econ} afterwards to analyse. Registered once the components exist (see
- * {@code FSApp}).
+ * The {@code econ} fetch is fetch-only (stores the actual but does not analyse/notify, so a back-dated
+ * catch-up never fires a stale alert -- run {@code anal econ} afterwards). Registered once the components
+ * exist (see {@code FSApp}).
  */
 public final class CollectGroupCmdHandler extends CmdGroupHandler
 {
     public static final String COMMAND = "collect";
     public static final String[] COMMAND_ALIASES = null;
     public static final String DESCRIPTION = "Collector control,\nusage: " + COMMAND
-            + " <econ [YYYYMMDD] <event name>>";
+            + " <econ [YYYYMMDD] <event name> | x <on|off|status>>";
 
-    public CollectGroupCmdHandler(EconScheduler econScheduler)
+    public CollectGroupCmdHandler(EconScheduler econScheduler, FSCollector collector)
     {
         registerCmdHandler("econ", new EconFetchCmdHandler(econScheduler),
                 "Fetch a scheduled release's BLS actual on demand: econ [YYYYMMDD] <event name> "
                         + "(day defaults to today). Fetch-only -- run `anal econ` afterwards to analyse.", null);
+        registerCmdHandler("x", new XToggleCmdHandler(collector),
+                "Turn the X (Twitter) source's polling on/off at runtime: x <on|off|status>.", null);
+    }
+
+    /** {@code collect x <on|off|status>}: toggle (or report) the X amplifier source's polling at runtime. */
+    private static final class XToggleCmdHandler implements ICmdHandler
+    {
+        private static final String USAGE = "Usage: collect x <on|off|status>";
+        private final FSCollector collector_;
+
+        private XToggleCmdHandler(FSCollector collector)
+        {
+            collector_ = collector;
+        }
+
+        @Override
+        public int commandEntered(Writer writer, String command, String[] args)
+        {
+            int code = 0;
+            String sub = args.length > 0 ? args[0].toLowerCase(Locale.ROOT) : "status";
+            if (sub.equals("on"))
+            {
+                code = setX(writer, true);
+            }
+            else if (sub.equals("off"))
+            {
+                code = setX(writer, false);
+            }
+            else if (sub.equals("status"))
+            {
+                UtilityFunctions.writeln(writer, "X fetching: " + state());
+            }
+            else
+            {
+                UtilityFunctions.writeln(writer, USAGE);
+                code = 1;
+            }
+            return code;
+        }
+
+        private int setX(Writer writer, boolean on)
+        {
+            int code = 0;
+            if (collector_.xConfigured())
+            {
+                collector_.setXEnabled(on);
+                UtilityFunctions.writeln(writer, "X fetching " + (on ? "ON" : "OFF") + ".");
+            }
+            else
+            {
+                UtilityFunctions.writeln(writer, "X source not configured (needs getxapiKey + <XAccounts>).");
+                code = 1;
+            }
+            return code;
+        }
+
+        private String state()
+        {
+            return !collector_.xConfigured() ? "not configured" : (collector_.xEnabled() ? "ON" : "OFF");
+        }
     }
 
     /**

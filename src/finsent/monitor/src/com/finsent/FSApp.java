@@ -65,6 +65,9 @@ public class FSApp extends AbstractAppInitializer
 
         collector_ = new FSCollector(config, dataDir);
         collector_.recover(config.recoveryLookbackInDays());
+        // Initial X (Twitter) fetch state from the -DfetchX launcher flag (default off); toggled at
+        // runtime via `collect x on|off`. No-op when X is not configured (no key/accounts).
+        collector_.setXEnabled(Boolean.getBoolean("fetchX"));
 
         analyser_ = new FSAnalyser(collector_, config, Boolean.getBoolean("pauseAnalyser"));
         collector_.addListener(analyser_);
@@ -76,7 +79,7 @@ public class FSApp extends AbstractAppInitializer
         urgentPoller_ = new UrgentPoller(collector_);
         econScheduler_ = new EconScheduler(collector_, dataDir);
         GlobalSystem.getCmdInterpreter().registerCmdHandler(CollectGroupCmdHandler.COMMAND,
-                new CollectGroupCmdHandler(econScheduler_), CollectGroupCmdHandler.DESCRIPTION,
+                new CollectGroupCmdHandler(econScheduler_, collector_), CollectGroupCmdHandler.DESCRIPTION,
                 CollectGroupCmdHandler.COMMAND_ALIASES);
 
         // Registration order matters: uninitializers run last-registered-first, so the schedulers

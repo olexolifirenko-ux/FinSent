@@ -48,6 +48,9 @@ public final class XSquawkSource implements IArticleSource
     private final String query_;
     private final Duration timeout_;
     private final int maxRetries_;
+    // Runtime on/off (the `collect x on|off` command). Starts off; FSApp sets the initial state from
+    // the -DfetchX launcher flag. Volatile: the cmd thread writes it, the urgent poll thread reads it.
+    private volatile boolean enabled_;
 
     public XSquawkSource(String searchUrl, String apiKey, List<String> accounts, Duration timeout, int maxRetries)
     {
@@ -109,11 +112,23 @@ public final class XSquawkSource implements IArticleSource
         return NAME;
     }
 
+    /** Turn polling on/off at runtime; off means no fetch and no GetXAPI call at all. */
+    public void setEnabled(boolean enabled)
+    {
+        enabled_ = enabled;
+    }
+
+    /** Whether the source is currently polling. */
+    public boolean isEnabled()
+    {
+        return enabled_;
+    }
+
     @Override
     public List<ObjectNode> fetch(Map<String, String> fromTsMap)
     {
         List<ObjectNode> articles = new ArrayList<>();
-        if (!query_.isEmpty())
+        if (enabled_ && !query_.isEmpty())
         {
             articles = fetchArticles(fromTsMap.getOrDefault(NAME, ""));
         }

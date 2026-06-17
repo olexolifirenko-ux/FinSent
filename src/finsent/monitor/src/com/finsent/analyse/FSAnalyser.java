@@ -64,7 +64,7 @@ import com.finsent.util.MailSender;
  * synchronous {@link #analyse(CollectionResult, Instant)} with {@code Instant.now()}; that method
  * (with {@code now} injected) is the unit-testable seam, just as {@code FSCollector.collect(now)} is
  * for collection. Analysis is paused/resumed at runtime via the {@code anal} command group and
- * seeded paused/running from the {@code -DpauseAnalyser} launcher property.
+ * seeded paused/running from the {@code -DrunAnalyser} launcher property.
  *
  * <p>Like {@link FSCollector} (which builds its sources/fetchers from config), the production
  * constructor builds everything the analyser drives &mdash; its own {@link AnalysisStore}, the
@@ -228,7 +228,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         }
     }
 
-    /** Resume analysis (the {@code anal start} command). */
+    /** Resume analysis (the {@code anal on} command). */
     public void resume()
     {
         if (paused_.compareAndSet(true, false))
@@ -237,7 +237,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         }
     }
 
-    /** Pause analysis (the {@code anal pause} command); windows already queued still run. */
+    /** Pause analysis (the {@code anal off} command); windows already queued still run. */
     public void pause()
     {
         if (paused_.compareAndSet(false, true))

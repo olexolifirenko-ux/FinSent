@@ -51,10 +51,11 @@ start(
         # back from a dead IPv6 address to IPv4 -- so the connect hangs until the (tight, urgent)
         # request timeout fires. IPv4-only avoids the wasted IPv6 connect attempt entirely.
         "-Djava.net.preferIPv4Stack=true" => undef,
-        # JVM system property read by FSApp via Boolean.getBoolean("pauseAnalyser"):
-        # start the analyser paused so the user runs `anal start` when ready. Must live in
-        # _JAVA_OPTIONS (not _SCRIPT_OPTIONS) -- only that block becomes -D... on the java line.
-        "-DpauseAnalyser" => "true",
+        # JVM system property read by FSApp via Boolean.getBoolean("runAnalyser"): whether the analyser
+        # starts running. "false" (or absent) starts it paused so the user runs `anal on` when ready
+        # (no Claude calls / alerts until then). Must live in _JAVA_OPTIONS (not _SCRIPT_OPTIONS) --
+        # only that block becomes -D... on the java line.
+        "-DrunAnalyser" => "false",
         # Initial state of the fast X (Twitter) source, read by FSApp via Boolean.getBoolean("fetchX").
         # Default is off when absent; set "true" to start polling X at launch. Toggle live with
         # `collect x on|off` (no restart). Requires getxapiKey + <XAccounts> to have any effect.

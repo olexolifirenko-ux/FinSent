@@ -69,7 +69,9 @@ public class FSApp extends AbstractAppInitializer
         // runtime via `collect x on|off`. No-op when X is not configured (no key/accounts).
         collector_.setXEnabled(Boolean.getBoolean("fetchX"));
 
-        analyser_ = new FSAnalyser(collector_, config, Boolean.getBoolean("pauseAnalyser"));
+        // Start paused unless -DrunAnalyser=true (default off when the flag is absent -> no Claude
+        // calls / alerts until `anal on`). startPaused is the inverse of the run flag.
+        analyser_ = new FSAnalyser(collector_, config, !Boolean.getBoolean("runAnalyser"));
         collector_.addListener(analyser_);
         collector_.addEconListener(analyser_::onEconResolved);
         GlobalSystem.getCmdInterpreter().registerCmdHandler(AnalGroupCmdHandler.COMMAND,

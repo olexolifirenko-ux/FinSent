@@ -18,7 +18,8 @@ import com.finsent.util.UtilityFunctions;
  * (mirrors the {@code [anal]} log tag and replaces Python's {@code --no-analyse} flag with a live
  * toggle). Sub-commands:
  * <ul>
- *   <li>{@code start} / {@code pause} / {@code status} &mdash; live analysis control;</li>
+ *   <li>{@code on} / {@code off} / {@code status} &mdash; live analysis control ({@code start} /
+ *       {@code pause} are accepted as aliases);</li>
  *   <li>{@code window <YYYYMMDD_HHMM>} &mdash; re-analyse one stored window now (ports {@code --window});</li>
  *   <li>{@code windows -start .. -end ..} &mdash; scan/backfill a range of windows (dry-run by default);</li>
  *   <li>{@code econ [YYYYMMDD] <event name> [-quiet]} &mdash; manually run the econ analysis for a resolved release;</li>
@@ -31,13 +32,13 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
     public static final String COMMAND = "anal";
     public static final String[] COMMAND_ALIASES = null;
     public static final String DESCRIPTION = "Analyser control,\nusage: " + COMMAND
-            + " <start|pause|status|window <YYYYMMDD_HHMM>|windows -start .. -end ..|show <YYYYMMDD_HHMM>"
+            + " <on|off|status|window <YYYYMMDD_HHMM>|windows -start .. -end ..|show <YYYYMMDD_HHMM>"
             + "|econ [YYYYMMDD] <event name> [-quiet]|feedback [--days N]>";
 
     public AnalGroupCmdHandler(FSAnalyser analyser)
     {
-        registerCmdHandler("start", new StartCmdHandler(analyser), "Start (resume) analysis.", null);
-        registerCmdHandler("pause", new PauseCmdHandler(analyser), "Pause analysis.", null);
+        registerCmdHandler("on", new OnCmdHandler(analyser), "Turn analysis on (resume).", new String[] {"start"});
+        registerCmdHandler("off", new OffCmdHandler(analyser), "Turn analysis off (pause).", new String[] {"pause"});
         registerCmdHandler("status", new StatusCmdHandler(analyser), "Show analyser status.", null);
         registerCmdHandler("window", new WindowCmdHandler(analyser),
                 "Re-analyse a stored window now: window <YYYYMMDD_HHMM> (e.g. 20260517_2210).", null);
@@ -64,11 +65,11 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
         return result;
     }
 
-    private static final class StartCmdHandler implements ICmdHandler
+    private static final class OnCmdHandler implements ICmdHandler
     {
         private final FSAnalyser analyser_;
 
-        private StartCmdHandler(FSAnalyser analyser)
+        private OnCmdHandler(FSAnalyser analyser)
         {
             analyser_ = analyser;
         }
@@ -77,16 +78,16 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
         public int commandEntered(Writer writer, String command, String[] args)
         {
             analyser_.resume();
-            UtilityFunctions.writeln(writer, "Analysis started.");
+            UtilityFunctions.writeln(writer, "Analysis ON (running).");
             return 0;
         }
     }
 
-    private static final class PauseCmdHandler implements ICmdHandler
+    private static final class OffCmdHandler implements ICmdHandler
     {
         private final FSAnalyser analyser_;
 
-        private PauseCmdHandler(FSAnalyser analyser)
+        private OffCmdHandler(FSAnalyser analyser)
         {
             analyser_ = analyser;
         }
@@ -95,7 +96,7 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
         public int commandEntered(Writer writer, String command, String[] args)
         {
             analyser_.pause();
-            UtilityFunctions.writeln(writer, "Analysis paused.");
+            UtilityFunctions.writeln(writer, "Analysis OFF (paused).");
             return 0;
         }
     }

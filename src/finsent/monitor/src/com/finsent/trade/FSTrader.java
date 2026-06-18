@@ -61,7 +61,8 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     /** Production wiring: build the recovered book and the paper broker from config. */
     public FSTrader(FSCollector collector, Config config, boolean startPaused)
     {
-        this(buildBook(config), new PaperBroker(), collector::currentPrice, paramsFrom(config), startPaused);
+        // The live ticker price is always "now", so the PriceSource timestamp is ignored.
+        this(buildBook(config), new PaperBroker(), target -> collector.currentPrice(), paramsFrom(config), startPaused);
     }
 
     /** Injecting constructor: book, broker, price source and params supplied directly (used by tests). */
@@ -130,11 +131,6 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
         {
             GlobalSystem.info().writes(NAME, "Trading paused.");
         }
-    }
-
-    public boolean isPaused()
-    {
-        return paused_.get();
     }
 
     /** One-word state for the {@code trade status} command. */

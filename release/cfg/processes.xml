@@ -162,6 +162,12 @@
             profitGraceInMin="30"
             maxHoldInHours="24"
             pricePollInSec="20"
+            whitebitApiKey="ENV:WHITEBIT_API_KEY"
+            whitebitApiSecret="ENV:WHITEBIT_API_SECRET"
+            whitebitBaseUrl="https://whitebit.com"
         />
+        <!-- WhiteBIT keys above are used ONLY by the read-only `trade wbcheck` connectivity test
+             (step 1 of the live integration); they place no orders. Put the real values in
+             release/.env as WHITEBIT_API_KEY / WHITEBIT_API_SECRET (gitignored). -->
     </FSSatellite>
 </Bootstrap>

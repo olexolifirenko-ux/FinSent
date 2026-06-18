@@ -415,6 +415,24 @@ public final class Config
         return intAttr(traderNode_, "pricePollInSec", 20);
     }
 
+    /** WhiteBIT private-API public key (read-only connectivity check for now); "" disables it. */
+    public String whitebitApiKey()
+    {
+        return Secrets.resolve(attr(traderNode_, "whitebitApiKey", ""));
+    }
+
+    /** WhiteBIT private-API secret used to HMAC-sign requests; "" disables the WhiteBIT client. */
+    public String whitebitApiSecret()
+    {
+        return Secrets.resolve(attr(traderNode_, "whitebitApiSecret", ""));
+    }
+
+    /** Base URL of the WhiteBIT API the private client posts to (paths like {@code /api/v4/...}). */
+    public String whitebitBaseUrl()
+    {
+        return attr(traderNode_, "whitebitBaseUrl", "https://whitebit.com");
+    }
+
     // == Helpers ===============================================================
 
     private static XMLData subSection(XMLData parent, String tag)

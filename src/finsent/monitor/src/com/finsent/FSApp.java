@@ -14,6 +14,7 @@ import com.finsent.collect.cmd.CollectGroupCmdHandler;
 import com.finsent.core.Config;
 import com.finsent.directory.DirectorySystem;
 import com.finsent.trade.FSTrader;
+import com.finsent.trade.broker.whitebit.WhiteBitClient;
 import com.finsent.trade.cmd.TradeGroupCmdHandler;
 import com.finsent.util.GlobalSystem;
 
@@ -85,8 +86,12 @@ public class FSApp extends AbstractAppInitializer
         // analyser's AnalysisReady signals over the same bus. Paper broker by default -- no live orders.
         trader_ = new FSTrader(collector_, config, !Boolean.getBoolean("runTrader"));
         collector_.subscribe(AnalysisReady.class, trader_);
+        // Read-only WhiteBIT client for the `trade wbcheck` connectivity test (step 1); no orders.
+        WhiteBitClient whitebit = new WhiteBitClient(config.whitebitApiKey(), config.whitebitApiSecret(),
+                config.whitebitBaseUrl());
         GlobalSystem.getCmdInterpreter().registerCmdHandler(TradeGroupCmdHandler.COMMAND,
-                new TradeGroupCmdHandler(trader_), TradeGroupCmdHandler.DESCRIPTION, TradeGroupCmdHandler.COMMAND_ALIASES);
+                new TradeGroupCmdHandler(trader_, whitebit), TradeGroupCmdHandler.DESCRIPTION,
+                TradeGroupCmdHandler.COMMAND_ALIASES);
 
         collectorRunner_ = new CollectorRunner(collector_);
         urgentPoller_ = new UrgentPoller(collector_);

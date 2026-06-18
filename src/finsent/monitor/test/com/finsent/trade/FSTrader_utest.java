@@ -31,7 +31,10 @@ public class FSTrader_utest
     private static final String KEY = "08:00";
     private static final Instant NOW = Instant.parse("2026-06-04T08:00:00Z");
     private static final FSTrader.Params PARAMS =
-            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L);
+            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L); // time stop off
+    // Same, but with a 10-minute profit-grace time stop enabled and a long max-hold (so only the time stop fires).
+    private static final FSTrader.Params GRACE_PARAMS =
+            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 86_400_000L, 20_000L, 600_000L);
 
     private Path dir_;
     private TradeBook book_;
@@ -139,6 +142,33 @@ public class FSTrader_utest
         ArrayNode closed = closed();
         assertEquals(1, closed.size());
         assertEquals("max_hold", closed.get(0).path("close_reason").asText());
+    }
+
+    @Test
+    public void timeStopClosesAPositionNotInProfitByTheGrace()
+    {
+        FSTrader trader = new FSTrader(book_, new PaperBroker(), target -> price_, GRACE_PARAMS, false);
+        price_ = 100.0;
+        trader.onSignal(signal("bullish", "high"), NOW); // stop 99, grace 10m
+        price_ = 99.5; // above the stop, but still under water (not in profit)
+        trader.manage(NOW.plusMillis(GRACE_PARAMS.profitGraceMillis())); // grace elapsed, still not green
+
+        ArrayNode closed = closed();
+        assertEquals(1, closed.size());
+        assertEquals("no_profit_timeout", closed.get(0).path("close_reason").asText());
+    }
+
+    @Test
+    public void timeStopSparesAPositionAlreadyInProfit()
+    {
+        FSTrader trader = new FSTrader(book_, new PaperBroker(), target -> price_, GRACE_PARAMS, false);
+        price_ = 100.0;
+        trader.onSignal(signal("bullish", "high"), NOW);
+        price_ = 100.5; // in profit at the grace deadline -> let it ride
+        trader.manage(NOW.plusMillis(GRACE_PARAMS.profitGraceMillis()));
+
+        assertEquals(0, closed().size());
+        assertTrue(trader.describe(NOW).contains("Open LONG"));
     }
 
     @Test

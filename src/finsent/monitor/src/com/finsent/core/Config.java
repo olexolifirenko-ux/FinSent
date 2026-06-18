@@ -394,6 +394,15 @@ public final class Config
         return doubleAttr(traderNode_, "trailInPct", 1.0);
     }
 
+    /**
+     * Grace period after entry to become profitable: if the position is not in profit by then it is
+     * closed (the fast-catalyst "is the thesis working yet?" exit). {@code 0} disables the time stop.
+     */
+    public int tradeProfitGraceInMin()
+    {
+        return intAttr(traderNode_, "profitGraceInMin", 30);
+    }
+
     /** Max holding time before a position is closed regardless of price (a chop backstop). */
     public int tradeMaxHoldInHours()
     {

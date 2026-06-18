@@ -149,14 +149,17 @@
         <!-- What the trader owns: a paper long/short BTC strategy off the analyser's signals.
              Opens long on bullish / short on bearish at entryImpactTier or higher, one net position
              at a time; a trailing stop (initial stopLossInPct adverse, ratcheting trailInPct behind
-             the best price) manages the exit, with maxHoldInHours as a chop backstop. Paper only (no
-             broker keys); starts paused unless -DrunTrader=true, toggled at runtime with `trade`. -->
+             the best price) manages the exit. profitGraceInMin is a time stop: if the trade is not in
+             profit by then it is closed (the catalyst is not working); 0 disables it. maxHoldInHours
+             is a final chop backstop. Paper only (no broker keys); starts paused unless
+             -DrunTrader=true, toggled at runtime with `trade`. -->
         <FSTrader
             entryImpactTier="high"
             notionalInUsd="1000.0"
             leverage="2.0"
             stopLossInPct="1.0"
             trailInPct="1.0"
+            profitGraceInMin="30"
             maxHoldInHours="24"
             pricePollInSec="20"
         />

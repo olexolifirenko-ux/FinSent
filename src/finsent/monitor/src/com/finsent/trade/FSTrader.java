@@ -28,7 +28,8 @@ import com.finsent.util.IUninitializer;
  * The trading module: it subscribes to the analyser's {@link AnalysisReady} signals and runs a
  * paper long/short BTC strategy off them. A directional, sufficiently material call opens a single
  * net position (long on bullish, short on bearish); a trailing stop manages the exit (initial stop
- * adverse, ratcheting toward the trade as price moves favorably) with a max-hold backstop. It mirrors
+ * adverse, ratcheting toward the trade as price moves favorably), with an optional "not in profit by
+ * N minutes" time stop and a max-hold backstop. It mirrors
  * {@link FSCollector}/{@code FSAnalyser}: it both runs the strategy and owns its runtime concerns
  * &mdash; its own {@link TradeBook} (persistence), the {@link IBroker} (paper in v1) and a single
  * daemon thread that drains queued signals and re-evaluates the open position every
@@ -91,7 +92,7 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     {
         return new Params(config.tradeEntryImpactTier(), config.tradeNotionalInUsd(), config.tradeLeverage(),
                 config.tradeStopLossInPct(), config.tradeTrailInPct(), config.tradeMaxHoldInHours() * 3_600_000L,
-                config.tradePricePollInSec() * 1000L);
+                config.tradePricePollInSec() * 1000L, config.tradeProfitGraceInMin() * 60_000L);
     }
 
     /** Start the worker thread (called by {@code FSApp} after wiring; tests drive the seams directly). */
@@ -275,11 +276,17 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     private String exitReason(Position open, double price, Instant now)
     {
         String reason = null;
+        long heldMillis = now.toEpochMilli() - open.openedAt().toEpochMilli();
         if (TrailingStop.breached(open.side(), price, open.currentStop()))
         {
             reason = "trailing_stop";
         }
-        else if (now.toEpochMilli() - open.openedAt().toEpochMilli() >= params_.maxHoldMillis())
+        else if (params_.profitGraceMillis() > 0 && heldMillis >= params_.profitGraceMillis()
+                && open.pnlUsd(price) <= 0.0)
+        {
+            reason = "no_profit_timeout"; // catalyst not working: not in profit by the grace deadline
+        }
+        else if (heldMillis >= params_.maxHoldMillis())
         {
             reason = "max_hold";
         }
@@ -385,7 +392,7 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
 
     /** The numeric strategy parameters, built from {@link Config} in production and directly in tests. */
     public record Params(String entryImpactTier, double notionalInUsd, double leverage, double stopLossInPct,
-            double trailInPct, long maxHoldMillis, long pricePollMillis)
+            double trailInPct, long maxHoldMillis, long pricePollMillis, long profitGraceMillis)
     {
     }
 }

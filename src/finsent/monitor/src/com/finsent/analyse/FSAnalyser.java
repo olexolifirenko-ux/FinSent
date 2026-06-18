@@ -733,10 +733,26 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         store_.record(day, key, interval(analyzedAt, config_.claudeDeepAnalModel(), unique, screenerOut, prediction, resonant));
         logAnalysis(day, key, prediction);
         logResonant(resonant);
+        publishAnalysisReady(day, key, prediction, now);
         if (notify)
         {
             maybeNotifyOnChange(day, key, prediction, asList(articlePredictions), resonant, now, skipAgeCheck);
         }
+    }
+
+    /**
+     * Publish the recorded news prediction as an {@link AnalysisReady} on the collector-owned bus so a
+     * downstream consumer (the trading module) can act on it &mdash; the same way the analyser itself
+     * subscribes to the collector's {@code CollectionResult}. Carries only the decision inputs
+     * (direction, impact tier, BTC anchor); gating is the consumer's job. Fires on every recorded
+     * deep prediction, live or re-analysis (mirroring the existing notify path).
+     */
+    private void publishAnalysisReady(String day, String key, ObjectNode prediction, Instant now)
+    {
+        JsonNode anchor = prediction.path("btc_at_prediction");
+        Double anchorPrice = anchor.isNumber() ? anchor.asDouble() : null;
+        collector_.publish(new AnalysisReady(day, key, "news", prediction.path("direction").asText(""),
+                prediction.path("impact_tier").asText(""), anchorPrice, now));
     }
 
     /**

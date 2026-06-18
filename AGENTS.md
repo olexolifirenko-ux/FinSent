@@ -38,6 +38,9 @@ direction). `FSCollector` collects and never interprets; `FSAnalyser` subscribes
   Claude calls / alerts until `anal on`). Read by `FSApp` via `Boolean.getBoolean`.
 - **`-DfetchX`** — `true` starts the X (Twitter) source polling; `false`/absent starts it **off**
   (no GetXAPI calls until `collect x on`). Needs `getxapiKey` + `<XAccounts>` to have any effect.
+- **`-DrunTrader`** — `true` starts the paper trader acting on `AnalysisReady` signals; `false`/absent
+  starts it **paused** (no positions opened until `trade on`). Paper only (no real orders). Read by
+  `FSApp` via `Boolean.getBoolean`.
 
 ### Runtime commands
 - **`anal on | off | status`** — turn analysis on/off (resume/pause), show state. `start`/`pause` are
@@ -45,6 +48,8 @@ direction). `FSCollector` collects and never interprets; `FSAnalyser` subscribes
   `anal show <key>`, `anal econ [YYYYMMDD] <event> [-quiet]`, `anal feedback [--days N]`.
 - **`collect x on | off | status`** — turn the X source's polling on/off at runtime (no restart).
   Also: `collect econ [YYYYMMDD] <event>` (fetch-only BLS catch-up).
+- **`trade on | off | status | flatten`** — turn the paper trader on/off (resume/pause acting on
+  signals), show state + open position + today's realized P&L, or close the open position now.
 
 ## Environment gotchas (this workspace)
 - **Run the Gradle build and JUnit runs via PowerShell.** The **Bash** tool works for `git` / `grep` /
@@ -85,6 +90,10 @@ direction). `FSCollector` collects and never interprets; `FSAnalyser` subscribes
   go-ahead.** It spends Anthropic tokens and contacts third parties. The analyser starting off is the
   guard; `anal on` is the trigger. The X source (GetXAPI) is a **paid** API — `collect x on` / `-DfetchX`
   starts spending; keep it off unless intended.
+- **The trader is paper-only:** `FSTrader` places **no real orders** (the `PaperBroker` simulates fills
+  against the collected BTC price) and starts **off**; `trade on` / `-DrunTrader` only begins
+  *simulated* trading. A live broker adapter does not exist yet — adding one is outward-facing work
+  that needs explicit go-ahead and credentials.
 - **Secrets:** `release/.env` is the gitignored fallback (real env vars win) — `ANTHROPIC_API_KEY`,
   `GETXAPI_KEY`, `BLS_API_KEY`, `TELEGRAM_TOKEN`, `SMTP_PASSWORD`. Never commit secrets;
   `git check-ignore release/.env` must pass.
@@ -105,8 +114,13 @@ direction). `FSCollector` collects and never interprets; `FSAnalyser` subscribes
   `analyse/claude/ClaudeSchemas.java`.
 - New **config** param → `core/Config.java` getter + `release/cfg/processes.xml` attribute (use a
   measurement suffix, e.g. `...InSec` / `...InPct`). A startup on/off knob → a `-D` flag read in `FSApp`.
-- A new **command** → `com.finsent.analyse.cmd.AnalGroupCmdHandler` (analyser ops) or
-  `com.finsent.collect.cmd.CollectGroupCmdHandler` (collector ops), both built on `CmdArgParser`.
+- A new **command** → `com.finsent.analyse.cmd.AnalGroupCmdHandler` (analyser ops),
+  `com.finsent.collect.cmd.CollectGroupCmdHandler` (collector ops) or
+  `com.finsent.trade.cmd.TradeGroupCmdHandler` (trader ops), all built on `CmdArgParser`.
+- New/changed **trading** behaviour → `com.finsent.trade.*`: the strategy/runtime in `FSTrader`, the
+  trailing-stop math in `TrailingStop`, persistence in `TradeBook`/`TradeRegistry`, the execution seam
+  in `trade/broker/` (`IBroker` + `PaperBroker`; a live venue adapter goes here). It consumes the
+  analyser's `AnalysisReady` event off the collector-owned bus.
 
 ## Conventions
 Allman braces; `field_` trailing underscore; single structured return (avoid mid-method `return`

@@ -24,7 +24,11 @@ public enum DataStream
     /** Resolved scheduled-economic actuals, one JSON object per day keyed by event name. */
     ECON("econ_actuals_", ".json", Format.JSON),
     /** Analyser output, one JSON object per day keyed by {@code HH:MM} (analyser-owned). */
-    ANALYSIS("analysis_", ".json", Format.JSON);
+    ANALYSIS("analysis_", ".json", Format.JSON),
+    /** Closed paper trades, one JSONL file per day (one trade object per line); trader-owned. */
+    TRADES("trades_", ".jsonl", Format.JSONL),
+    /** The trader's current open position, one JSON object per day (empty when flat); trader-owned. */
+    OPEN_POSITION("open_position_", ".json", Format.JSON);
 
     /** On-disk serialization of a stream's per-day file. */
     public enum Format

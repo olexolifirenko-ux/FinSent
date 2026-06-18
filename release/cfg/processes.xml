@@ -145,5 +145,20 @@
                 goldInPct="1.0"
             />
         </FSAnalyser>
+
+        <!-- What the trader owns: a paper long/short BTC strategy off the analyser's signals.
+             Opens long on bullish / short on bearish at entryImpactTier or higher, one net position
+             at a time; a trailing stop (initial stopLossInPct adverse, ratcheting trailInPct behind
+             the best price) manages the exit, with maxHoldInHours as a chop backstop. Paper only (no
+             broker keys); starts paused unless -DrunTrader=true, toggled at runtime with `trade`. -->
+        <FSTrader
+            entryImpactTier="high"
+            notionalInUsd="1000.0"
+            leverage="2.0"
+            stopLossInPct="1.0"
+            trailInPct="1.0"
+            maxHoldInHours="24"
+            pricePollInSec="20"
+        />
     </FSSatellite>
 </Bootstrap>

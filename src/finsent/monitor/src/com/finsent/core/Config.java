@@ -28,6 +28,7 @@ public final class Config
 {
     private final XMLData collectorNode_;
     private final XMLData analyserNode_;
+    private final XMLData traderNode_;
 
     /**
      * Wrap the process bootstrap node (the {@code <FSSatellite>} section) that carries the
@@ -37,6 +38,7 @@ public final class Config
     {
         collectorNode_ = subSection(processNode, "FSCollector");
         analyserNode_ = subSection(processNode, "FSAnalyser");
+        traderNode_ = subSection(processNode, "FSTrader");
     }
 
     /** Build from this process's bootstrap section ({@link GlobalSystem#getBootstrapConfigData()}). */
@@ -361,6 +363,49 @@ public final class Config
         return thresholds;
     }
 
+    // == Trader-owned: paper trading strategy (FSTrader) =======================
+
+    /** Minimum impact tier a directional call must reach to open a position ({@code high} by default). */
+    public String tradeEntryImpactTier()
+    {
+        return attr(traderNode_, "entryImpactTier", "high");
+    }
+
+    /** Margin committed per trade in USD; exposure is this times {@link #tradeLeverage()}. */
+    public double tradeNotionalInUsd()
+    {
+        return doubleAttr(traderNode_, "notionalInUsd", 1000.0);
+    }
+
+    public double tradeLeverage()
+    {
+        return doubleAttr(traderNode_, "leverage", 2.0);
+    }
+
+    /** Initial stop distance from entry, in percent (the trailing stop ratchets from here). */
+    public double tradeStopLossInPct()
+    {
+        return doubleAttr(traderNode_, "stopLossInPct", 1.0);
+    }
+
+    /** Trailing-stop distance behind the best price, in percent. */
+    public double tradeTrailInPct()
+    {
+        return doubleAttr(traderNode_, "trailInPct", 1.0);
+    }
+
+    /** Max holding time before a position is closed regardless of price (a chop backstop). */
+    public int tradeMaxHoldInHours()
+    {
+        return intAttr(traderNode_, "maxHoldInHours", 24);
+    }
+
+    /** How often the open position is re-evaluated against the price for the trailing stop. */
+    public int tradePricePollInSec()
+    {
+        return intAttr(traderNode_, "pricePollInSec", 20);
+    }
+
     // == Helpers ===============================================================
 
     private static XMLData subSection(XMLData parent, String tag)
@@ -406,6 +451,11 @@ public final class Config
     private static boolean boolAttr(XMLData node, String name, boolean defaultValue)
     {
         return node == null ? defaultValue : node.getAttributeBooleanValue(name, defaultValue);
+    }
+
+    private static double doubleAttr(XMLData node, String name, double defaultValue)
+    {
+        return node == null ? defaultValue : node.getAttributeDoubleValue(name, defaultValue);
     }
 
     /** A configured article source and its (resolved) API key. */

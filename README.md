@@ -9,9 +9,12 @@ already-priced noise that dominate the feed.
 
 It is a **monitor, not a price oracle.** The analysis decides whether an item is a *new, concrete
 reason to act* and how *material* it is; it adds a secondary directional **lean** (bullish / bearish /
-unclear), but it does **not** forecast prices, percentages, or timing. A long/short **trading module is
-a deferred future direction** — the positioning signals it would need (perpetual funding + open
-interest) are already being collected and fused, but no orders are placed.
+unclear), but it does **not** forecast prices, percentages, or timing. A long/short **paper trading
+module** (`FSTrader`) now runs off the analyser's signals — opening a simulated long on bullish /
+short on bearish high-impact news and managing the exit with a trailing stop — but it is **paper only**
+(no real orders, no exchange keys) and **off by default**. The positioning signals a live version would
+lean on (perpetual funding + open interest) are already collected and fused; a live broker (WhiteBIT
+USD-M perpetual futures) is a future drop-in behind the same `IBroker` interface.
 
 ---
 

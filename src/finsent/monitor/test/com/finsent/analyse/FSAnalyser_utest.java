@@ -15,6 +15,9 @@ import java.util.ArrayDeque;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -103,6 +106,32 @@ public class FSAnalyser_utest
         assertEquals("fresh_bearish", prediction.path("articles").get(0).path("scenario").asText()); // no OHLC -> fresh
         assertTrue(store_.hasResonant(DAY, KEY));
         assertEquals("screener + deep = 2 Claude calls", 2, client.callCount());
+    }
+
+    @Test
+    public void resonantWindowPublishesAnalysisReadyOnTheBus() throws Exception
+    {
+        AtomicReference<AnalysisReady> received = new AtomicReference<>();
+        CountDownLatch delivered = new CountDownLatch(1);
+        collector_.subscribe(AnalysisReady.class, signal ->
+        {
+            received.set(signal);
+            delivered.countDown();
+        });
+
+        StubClaudeClient client = new StubClaudeClient().enqueue(
+                "[{\"i\":1,\"score\":8,\"reason\":\"a\"}]",
+                "{\"direction\":\"bearish\",\"impact_tier\":\"high\",\"key_events\":[\"war\"],\"reasoning\":\"r\","
+                        + "\"articles\":[{\"i\":1,\"direction\":\"bearish\",\"reasoning\":\"x\"}]}");
+        analyser(client).analyse(result(article(1, "War breaks out")), NOW);
+
+        assertTrue("AnalysisReady delivered on the bus", delivered.await(2, TimeUnit.SECONDS));
+        AnalysisReady signal = received.get();
+        assertEquals("news", signal.source());
+        assertEquals("bearish", signal.direction());
+        assertEquals("high", signal.impactTier());
+        assertEquals(DAY, signal.day());
+        assertEquals(KEY, signal.intervalKey());
     }
 
     @Test

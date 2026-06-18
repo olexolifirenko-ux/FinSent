@@ -129,6 +129,23 @@ public final class FSCollector
         eventBus_.subscribe(EconResolved.class, listener);
     }
 
+    /**
+     * Subscribe a listener for events of {@code eventType} on the collector-owned bus. Generic so a
+     * downstream consumer (e.g. the analyser's {@code AnalysisReady}, which the trading module
+     * observes) can subscribe without the collector having to know the event class &mdash; keeping
+     * the collect layer free of any analyse/trade import.
+     */
+    public <E> void subscribe(Class<E> eventType, IEventListener<E> listener)
+    {
+        eventBus_.subscribe(eventType, listener);
+    }
+
+    /** Publish an event on the collector-owned bus (used by the analyser to emit downstream signals). */
+    public void publish(Object event)
+    {
+        eventBus_.publish(event);
+    }
+
     /** Turn the X (Twitter) source's polling on/off at runtime; no-op when X is not configured. */
     public void setXEnabled(boolean enabled)
     {

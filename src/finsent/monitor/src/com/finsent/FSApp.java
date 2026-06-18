@@ -2,6 +2,7 @@ package com.finsent;
 
 import java.nio.file.Path;
 
+import com.finsent.analyse.AnalysisReady;
 import com.finsent.analyse.FSAnalyser;
 import com.finsent.analyse.cmd.AnalGroupCmdHandler;
 import com.finsent.app.AbstractAppInitializer;
@@ -12,6 +13,8 @@ import com.finsent.collect.UrgentPoller;
 import com.finsent.collect.cmd.CollectGroupCmdHandler;
 import com.finsent.core.Config;
 import com.finsent.directory.DirectorySystem;
+import com.finsent.trade.FSTrader;
+import com.finsent.trade.cmd.TradeGroupCmdHandler;
 import com.finsent.util.GlobalSystem;
 
 /**
@@ -34,6 +37,7 @@ public class FSApp extends AbstractAppInitializer
 {
     private FSCollector collector_;
     private FSAnalyser analyser_;
+    private FSTrader trader_;
     private CollectorRunner collectorRunner_;
     private UrgentPoller urgentPoller_;
     private EconScheduler econScheduler_;
@@ -77,6 +81,13 @@ public class FSApp extends AbstractAppInitializer
         GlobalSystem.getCmdInterpreter().registerCmdHandler(AnalGroupCmdHandler.COMMAND,
                 new AnalGroupCmdHandler(analyser_), AnalGroupCmdHandler.DESCRIPTION, AnalGroupCmdHandler.COMMAND_ALIASES);
 
+        // Trader: start paused unless -DrunTrader=true (default off, like the analyser); acts on the
+        // analyser's AnalysisReady signals over the same bus. Paper broker by default -- no live orders.
+        trader_ = new FSTrader(collector_, config, !Boolean.getBoolean("runTrader"));
+        collector_.subscribe(AnalysisReady.class, trader_);
+        GlobalSystem.getCmdInterpreter().registerCmdHandler(TradeGroupCmdHandler.COMMAND,
+                new TradeGroupCmdHandler(trader_), TradeGroupCmdHandler.DESCRIPTION, TradeGroupCmdHandler.COMMAND_ALIASES);
+
         collectorRunner_ = new CollectorRunner(collector_);
         urgentPoller_ = new UrgentPoller(collector_);
         econScheduler_ = new EconScheduler(collector_, dataDir);
@@ -93,6 +104,9 @@ public class FSApp extends AbstractAppInitializer
         GlobalSystem.registerUninitializer(collectorRunner_);
         GlobalSystem.registerUninitializer(urgentPoller_);
         GlobalSystem.registerUninitializer(econScheduler_);
+        // Registered last so it stops first: the trader stops acting and flushes its book before the
+        // analyser/collector tear down, so no entry/exit fires while the rest is shutting down.
+        GlobalSystem.registerUninitializer(trader_);
 
         collectorRunner_.start();
         urgentPoller_.start();
@@ -100,5 +114,6 @@ public class FSApp extends AbstractAppInitializer
         {
             econScheduler_.start();
         }
+        trader_.start();
     }
 }

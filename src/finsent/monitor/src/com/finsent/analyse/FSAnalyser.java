@@ -796,7 +796,8 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         String call = prediction.path("direction").asText("?") + "/" + prediction.path("impact_tier").asText("?");
         // Live regular/urgent path only (skipAgeCheck == false): attach the realtime BTC price so the
         // alert shows the move since the catalyst. Manual re-analysis of an old window has no useful "now".
-        Supplier<Double> realtimePrice = skipAgeCheck ? null : () -> collector_.fetchClosePriceAt(Instant.now());
+        // Uses the live ticker price (no mid-minute kline gap), not a per-minute close lookup.
+        Supplier<Double> realtimePrice = skipAgeCheck ? null : () -> collector_.currentPrice();
         if (!call.equals(lastNotifiedByWindow_.get(windowId))
                 && notifier_.maybeNotify(prediction, articlePreds, resonant, key, now, skipAgeCheck, realtimePrice))
         {

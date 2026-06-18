@@ -775,7 +775,10 @@ public final class FSCollector
 
     /**
      * Realized BTC close at {@code target} (one 1-minute Binance kline), or null when unavailable.
-     * Used by the feedback scorer (BL#6) to look up the price at a past prediction's horizon.
+     * Used by the feedback scorer (BL#6) to look up the price at a past prediction's horizon. Note:
+     * this is a point-in-time lookup keyed on a kline open time, so it only resolves a {@code target}
+     * that aligns with a completed minute boundary; for a live "price right now" use
+     * {@link #currentPrice()} (the still-forming current minute has no kline at {@code target} yet).
      */
     public Double fetchClosePriceAt(Instant target)
     {
@@ -787,6 +790,25 @@ public final class FSCollector
             if (bars.size() > 0)
             {
                 price = bars.get(0).path("c").asDouble();
+            }
+        }
+        return price;
+    }
+
+    /**
+     * The current BTC price from the Binance 24h ticker ({@code lastPrice}), or null when unavailable.
+     * The robust real-time price for the trader: unlike {@link #fetchClosePriceAt} it has no
+     * mid-minute kline gap (the ticker is a live rolling value, not a per-minute bar).
+     */
+    public Double currentPrice()
+    {
+        Double price = null;
+        if (ohlcFetcher_ != null)
+        {
+            JsonNode ticker = ohlcFetcher_.fetch24hTicker();
+            if (ticker != null && ticker.has("lastPrice"))
+            {
+                price = ticker.path("lastPrice").asDouble();
             }
         }
         return price;

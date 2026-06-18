@@ -61,7 +61,7 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     /** Production wiring: build the recovered book and the paper broker from config. */
     public FSTrader(FSCollector collector, Config config, boolean startPaused)
     {
-        this(buildBook(config), new PaperBroker(), collector::fetchClosePriceAt, paramsFrom(config), startPaused);
+        this(buildBook(config), new PaperBroker(), collector::currentPrice, paramsFrom(config), startPaused);
     }
 
     /** Injecting constructor: book, broker, price source and params supplied directly (used by tests). */

@@ -2,7 +2,6 @@ package com.finsent.trade.broker.whitebit;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.Test;
@@ -40,15 +39,21 @@ public class WhiteBitSigner_utest
     }
 
     @Test
-    public void buildsDeterministicCollateralMarketOrderBody()
+    public void marketOrderOmitsPositionSideInOneWayMode()
     {
-        Map<String, String> params = new LinkedHashMap<>();
-        params.put("market", "BTC_USDT");
-        params.put("side", "buy");
-        params.put("amount", "0.0001");
         assertEquals("{\"request\":\"/api/v4/order/collateral/market\",\"nonce\":1,"
                         + "\"market\":\"BTC_USDT\",\"side\":\"buy\",\"amount\":\"0.0001\"}",
-                WhiteBitClient.requestBody("/api/v4/order/collateral/market", 1L, params));
+                WhiteBitClient.requestBody("/api/v4/order/collateral/market", 1L,
+                        WhiteBitClient.marketOrderParams("BTC_USDT", "buy", "0.0001", "")));
+    }
+
+    @Test
+    public void marketOrderAppendsPositionSideForHedgeMode()
+    {
+        assertEquals("{\"request\":\"/api/v4/order/collateral/market\",\"nonce\":1,"
+                        + "\"market\":\"BTC_USDT\",\"side\":\"sell\",\"amount\":\"0.0001\",\"positionSide\":\"SHORT\"}",
+                WhiteBitClient.requestBody("/api/v4/order/collateral/market", 1L,
+                        WhiteBitClient.marketOrderParams("BTC_USDT", "sell", "0.0001", "SHORT")));
     }
 
     @Test

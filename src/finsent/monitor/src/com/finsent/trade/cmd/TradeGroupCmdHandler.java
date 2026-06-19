@@ -27,8 +27,9 @@ import com.finsent.util.UtilityFunctions;
  *   <li>{@code flatten} &mdash; close the open position now at the current price;</li>
  *   <li>{@code wbcheck [all]} &mdash; read-only WhiteBIT account snapshot (balances, futures summary,
  *       open positions; non-zero assets only unless {@code all}; no orders);</li>
- *   <li>{@code wborder <buy|sell> <amount> [send]} &mdash; place a WhiteBIT futures MARKET order; a
- *       dry-run preview unless the literal {@code send} is appended (the only path that sends a real order).</li>
+ *   <li>{@code wborder <buy|sell> <amount> [LONG|SHORT] [send]} &mdash; place a WhiteBIT futures MARKET
+ *       order; a dry-run preview unless the literal {@code send} is appended (the only path that sends a
+ *       real order). {@code LONG}/{@code SHORT} sets {@code positionSide} for hedge-mode accounts.</li>
  * </ul>
  * Registered against the running interpreter once the trader exists (see {@code FSApp}).
  */
@@ -37,7 +38,7 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
     public static final String COMMAND = "trade";
     public static final String[] COMMAND_ALIASES = null;
     public static final String DESCRIPTION = "Trader control,\nusage: " + COMMAND
-            + " <on|off|status|flatten|wbcheck [all]|wborder <buy|sell> <amount> [send]>";
+            + " <on|off|status|flatten|wbcheck [all]|wborder <buy|sell> <amount> [LONG|SHORT] [send]>";
 
     public TradeGroupCmdHandler(FSTrader trader, WhiteBitClient whitebit)
     {
@@ -49,8 +50,8 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
                 "Read-only WhiteBIT account snapshot: balances, futures summary, open positions; non-zero only "
                         + "unless 'all' (no orders).", null);
         registerCmdHandler("wborder", new WbOrderCmdHandler(whitebit),
-                "Place a WhiteBIT futures MARKET order: wborder <buy|sell|long|short> <amount> [send]. "
-                        + "Previews (no order) unless 'send' is appended.", null);
+                "Place a WhiteBIT futures MARKET order: wborder <buy|sell|long|short> <amount> [LONG|SHORT] [send]. "
+                        + "Previews (no order) unless 'send' is appended; LONG/SHORT only for hedge mode.", null);
     }
 
     private static final class OnCmdHandler implements ICmdHandler
@@ -263,8 +264,8 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
      */
     private static final class WbOrderCmdHandler implements ICmdHandler
     {
-        private static final String USAGE =
-                "Usage: trade wborder <buy|sell|long|short> <amount> [send]  (omit 'send' to preview only)";
+        private static final String USAGE = "Usage: trade wborder <buy|sell|long|short> <amount> [LONG|SHORT] "
+                + "[send]  (LONG/SHORT only for hedge mode; omit 'send' to preview only)";
         private final WhiteBitClient whitebit_;
 
         private WbOrderCmdHandler(WhiteBitClient whitebit)
@@ -275,7 +276,7 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
         @Override
         public int commandEntered(Writer writer, String command, String[] args)
         {
-            int code = 0;
+            int code;
             String side = args.length > 0 ? mapSide(args[0]) : null;
             if (!whitebit_.configured())
             {
@@ -289,27 +290,61 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
             }
             else
             {
-                boolean send = args.length > 2 && args[2].equalsIgnoreCase("send");
-                code = send ? place(writer, side, args[1]) : preview(writer, side, args[1]);
+                code = run(writer, side, args[1], args);
             }
             return code;
         }
 
-        private int preview(Writer writer, String side, String amount)
+        /** Parse the optional trailing tokens ({@code LONG}/{@code SHORT} and {@code send}) and act. */
+        private int run(Writer writer, String side, String amount, String[] args)
         {
-            WhiteBitSigner.Signed signed = whitebit_.previewMarketOrder(side, amount);
+            boolean send = false;
+            String positionSide = "";
+            boolean valid = true;
+            for (int i = 2; i < args.length; i++)
+            {
+                String token = args[i];
+                if (token.equalsIgnoreCase("send"))
+                {
+                    send = true;
+                }
+                else if (token.equalsIgnoreCase("LONG") || token.equalsIgnoreCase("SHORT"))
+                {
+                    positionSide = token.toUpperCase();
+                }
+                else
+                {
+                    valid = false;
+                }
+            }
+            int code;
+            if (!valid)
+            {
+                UtilityFunctions.writeln(writer, USAGE);
+                code = 1;
+            }
+            else
+            {
+                code = send ? place(writer, side, amount, positionSide) : preview(writer, side, amount, positionSide);
+            }
+            return code;
+        }
+
+        private int preview(Writer writer, String side, String amount, String positionSide)
+        {
+            WhiteBitSigner.Signed signed = whitebit_.previewMarketOrder(side, amount, positionSide);
             UtilityFunctions.writeln(writer, "PREVIEW (no order sent) -- POST " + whitebit_.orderUrl());
             UtilityFunctions.writeln(writer, "  body: " + signed.body());
             UtilityFunctions.writeln(writer, "  Append 'send' to place this as a REAL market order.");
             return 0;
         }
 
-        private int place(Writer writer, String side, String amount)
+        private int place(Writer writer, String side, String amount, String positionSide)
         {
             int code = 0;
             try
             {
-                JsonNode response = whitebit_.placeCollateralMarketOrder(side, amount);
+                JsonNode response = whitebit_.placeCollateralMarketOrder(side, amount, positionSide);
                 UtilityFunctions.writeln(writer, "ORDER PLACED: status=" + response.path("status").asText("?")
                         + " filled=" + response.path("dealStock").asText("?") + " cost=" + response.path("dealMoney").asText("?")
                         + " id=" + response.path("orderId").asText("?"));

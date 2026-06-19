@@ -87,30 +87,41 @@ public final class WhiteBitClient
     /**
      * Sign &mdash; but do NOT send &mdash; a collateral market order, for the dry-run preview. Lets the
      * exact order body be inspected before any real order is placed (consumes a nonce, harmless).
+     * {@code positionSide} is {@code ""} in one-way mode (omitted) or {@code "LONG"}/{@code "SHORT"} in hedge mode.
      */
-    public WhiteBitSigner.Signed previewMarketOrder(String side, String amount)
+    public WhiteBitSigner.Signed previewMarketOrder(String side, String amount, String positionSide)
     {
-        String body = requestBody(ORDER_COLLATERAL_MARKET, nextNonce(), marketOrderParams(side, amount));
+        String body = requestBody(ORDER_COLLATERAL_MARKET, nextNonce(),
+                marketOrderParams(market_, side, amount, positionSide));
         return WhiteBitSigner.sign(body, apiSecret_);
     }
 
     /**
      * Place a collateral (futures) MARKET order &mdash; <b>this sends a real order</b>. {@code side} is
-     * {@code "buy"}/{@code "sell"}, {@code amount} the base (BTC) quantity. Returns the exchange response
-     * (carries {@code status}, {@code dealStock} filled base, {@code dealMoney} filled quote, {@code orderId}).
+     * {@code "buy"}/{@code "sell"}, {@code amount} the base (BTC) quantity, {@code positionSide} empty for
+     * one-way mode or {@code "LONG"}/{@code "SHORT"} for hedge mode. Returns the exchange response (carries
+     * {@code status}, {@code dealStock} filled base, {@code dealMoney} filled quote, {@code orderId}).
      */
-    public JsonNode placeCollateralMarketOrder(String side, String amount) throws IOException, InterruptedException
+    public JsonNode placeCollateralMarketOrder(String side, String amount, String positionSide)
+            throws IOException, InterruptedException
     {
-        return post(ORDER_COLLATERAL_MARKET, marketOrderParams(side, amount));
+        return post(ORDER_COLLATERAL_MARKET, marketOrderParams(market_, side, amount, positionSide));
     }
 
-    /** Ordered market-order params (insertion order kept so the signed body is deterministic/testable). */
-    private Map<String, String> marketOrderParams(String side, String amount)
+    /**
+     * Ordered market-order params (insertion order kept so the signed body is deterministic/testable);
+     * {@code positionSide} is appended only when non-empty (hedge mode), omitted in one-way mode.
+     */
+    static Map<String, String> marketOrderParams(String market, String side, String amount, String positionSide)
     {
         Map<String, String> params = new LinkedHashMap<>();
-        params.put("market", market_);
+        params.put("market", market);
         params.put("side", side);
         params.put("amount", amount);
+        if (positionSide != null && !positionSide.isEmpty())
+        {
+            params.put("positionSide", positionSide);
+        }
         return params;
     }
 

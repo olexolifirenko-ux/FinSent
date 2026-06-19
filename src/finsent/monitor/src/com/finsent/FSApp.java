@@ -86,9 +86,10 @@ public class FSApp extends AbstractAppInitializer
         // analyser's AnalysisReady signals over the same bus. Paper broker by default -- no live orders.
         trader_ = new FSTrader(collector_, config, !Boolean.getBoolean("runTrader"));
         collector_.subscribe(AnalysisReady.class, trader_);
-        // Read-only WhiteBIT client for the `trade wbcheck` connectivity test (step 1); no orders.
+        // WhiteBIT client for the `trade wbcheck` read-only snapshot and the guarded `trade wborder`
+        // (preview unless 'send' is appended). The auto-trader still uses the paper broker.
         WhiteBitClient whitebit = new WhiteBitClient(config.whitebitApiKey(), config.whitebitApiSecret(),
-                config.whitebitBaseUrl());
+                config.whitebitBaseUrl(), config.whitebitMarket());
         GlobalSystem.getCmdInterpreter().registerCmdHandler(TradeGroupCmdHandler.COMMAND,
                 new TradeGroupCmdHandler(trader_, whitebit), TradeGroupCmdHandler.DESCRIPTION,
                 TradeGroupCmdHandler.COMMAND_ALIASES);

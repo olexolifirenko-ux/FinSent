@@ -2,6 +2,7 @@ package com.finsent.trade.broker.whitebit;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.Test;
@@ -36,6 +37,18 @@ public class WhiteBitSigner_utest
     {
         assertEquals("{\"request\":\"/api/v4/trade-account/balance\",\"nonce\":1594297865000,\"ticker\":\"BTC\"}",
                 WhiteBitClient.requestBody(PATH, NONCE, Map.of("ticker", "BTC")));
+    }
+
+    @Test
+    public void buildsDeterministicCollateralMarketOrderBody()
+    {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("market", "BTC_USDT");
+        params.put("side", "buy");
+        params.put("amount", "0.0001");
+        assertEquals("{\"request\":\"/api/v4/order/collateral/market\",\"nonce\":1,"
+                        + "\"market\":\"BTC_USDT\",\"side\":\"buy\",\"amount\":\"0.0001\"}",
+                WhiteBitClient.requestBody("/api/v4/order/collateral/market", 1L, params));
     }
 
     @Test

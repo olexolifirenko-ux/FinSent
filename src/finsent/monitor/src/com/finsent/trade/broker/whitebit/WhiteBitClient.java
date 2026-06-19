@@ -2,6 +2,7 @@ package com.finsent.trade.broker.whitebit;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -30,17 +31,20 @@ public final class WhiteBitClient
     private static final String COLLATERAL_BALANCE = "/api/v4/collateral-account/balance";
     private static final String COLLATERAL_SUMMARY = "/api/v4/collateral-account/balance-summary";
     private static final String OPEN_POSITIONS = "/api/v4/collateral-account/positions/open";
+    private static final String ORDER_COLLATERAL_MARKET = "/api/v4/order/collateral/market";
 
     private final String apiKey_;
     private final String apiSecret_;
     private final String baseUrl_;
+    private final String market_;
     private final AtomicLong lastNonce_ = new AtomicLong(0);
 
-    public WhiteBitClient(String apiKey, String apiSecret, String baseUrl)
+    public WhiteBitClient(String apiKey, String apiSecret, String baseUrl, String market)
     {
         apiKey_ = apiKey;
         apiSecret_ = apiSecret;
         baseUrl_ = baseUrl;
+        market_ = market;
     }
 
     /** Whether both API credentials are present (else calls would 401; used to skip the live check). */
@@ -72,6 +76,42 @@ public final class WhiteBitClient
     public JsonNode openPositions() throws IOException, InterruptedException
     {
         return post(OPEN_POSITIONS, Map.of());
+    }
+
+    /** The endpoint a collateral market order posts to (for the dry-run preview display). */
+    public String orderUrl()
+    {
+        return baseUrl_ + ORDER_COLLATERAL_MARKET;
+    }
+
+    /**
+     * Sign &mdash; but do NOT send &mdash; a collateral market order, for the dry-run preview. Lets the
+     * exact order body be inspected before any real order is placed (consumes a nonce, harmless).
+     */
+    public WhiteBitSigner.Signed previewMarketOrder(String side, String amount)
+    {
+        String body = requestBody(ORDER_COLLATERAL_MARKET, nextNonce(), marketOrderParams(side, amount));
+        return WhiteBitSigner.sign(body, apiSecret_);
+    }
+
+    /**
+     * Place a collateral (futures) MARKET order &mdash; <b>this sends a real order</b>. {@code side} is
+     * {@code "buy"}/{@code "sell"}, {@code amount} the base (BTC) quantity. Returns the exchange response
+     * (carries {@code status}, {@code dealStock} filled base, {@code dealMoney} filled quote, {@code orderId}).
+     */
+    public JsonNode placeCollateralMarketOrder(String side, String amount) throws IOException, InterruptedException
+    {
+        return post(ORDER_COLLATERAL_MARKET, marketOrderParams(side, amount));
+    }
+
+    /** Ordered market-order params (insertion order kept so the signed body is deterministic/testable). */
+    private Map<String, String> marketOrderParams(String side, String amount)
+    {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("market", market_);
+        params.put("side", side);
+        params.put("amount", amount);
+        return params;
     }
 
     /** Build, sign and POST a private read request to {@code path}; returns the parsed JSON response. */

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.finsent.core.Json;
 import com.finsent.trade.FSTrader;
 import com.finsent.trade.broker.whitebit.WhiteBitClient;
+import com.finsent.trade.broker.whitebit.WhiteBitSigner;
 import com.finsent.util.CmdGroupHandler;
 import com.finsent.util.ICmdHandler;
 import com.finsent.util.UtilityFunctions;
@@ -25,7 +26,9 @@ import com.finsent.util.UtilityFunctions;
  *       ({@code start} / {@code pause} are accepted as aliases);</li>
  *   <li>{@code flatten} &mdash; close the open position now at the current price;</li>
  *   <li>{@code wbcheck [all]} &mdash; read-only WhiteBIT account snapshot (balances, futures summary,
- *       open positions; non-zero assets only unless {@code all}; no orders).</li>
+ *       open positions; non-zero assets only unless {@code all}; no orders);</li>
+ *   <li>{@code wborder <buy|sell> <amount> [send]} &mdash; place a WhiteBIT futures MARKET order; a
+ *       dry-run preview unless the literal {@code send} is appended (the only path that sends a real order).</li>
  * </ul>
  * Registered against the running interpreter once the trader exists (see {@code FSApp}).
  */
@@ -34,7 +37,7 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
     public static final String COMMAND = "trade";
     public static final String[] COMMAND_ALIASES = null;
     public static final String DESCRIPTION = "Trader control,\nusage: " + COMMAND
-            + " <on|off|status|flatten|wbcheck [all]>";
+            + " <on|off|status|flatten|wbcheck [all]|wborder <buy|sell> <amount> [send]>";
 
     public TradeGroupCmdHandler(FSTrader trader, WhiteBitClient whitebit)
     {
@@ -45,6 +48,9 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
         registerCmdHandler("wbcheck", new WbCheckCmdHandler(whitebit),
                 "Read-only WhiteBIT account snapshot: balances, futures summary, open positions; non-zero only "
                         + "unless 'all' (no orders).", null);
+        registerCmdHandler("wborder", new WbOrderCmdHandler(whitebit),
+                "Place a WhiteBIT futures MARKET order: wborder <buy|sell|long|short> <amount> [send]. "
+                        + "Previews (no order) unless 'send' is appended.", null);
     }
 
     private static final class OnCmdHandler implements ICmdHandler
@@ -246,6 +252,96 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
         private interface BalanceCall
         {
             JsonNode fetch() throws IOException, InterruptedException;
+        }
+    }
+
+    /**
+     * {@code trade wborder <buy|sell|long|short> <amount> [send]}: place a WhiteBIT futures MARKET order.
+     * Without the literal {@code send} it only PREVIEWS the exact signed request (no order); {@code send}
+     * is the single path that places a real order. The order is sized by the explicit {@code amount} (base
+     * BTC), never a default. Sending also requires the key to carry the Order-management permission.
+     */
+    private static final class WbOrderCmdHandler implements ICmdHandler
+    {
+        private static final String USAGE =
+                "Usage: trade wborder <buy|sell|long|short> <amount> [send]  (omit 'send' to preview only)";
+        private final WhiteBitClient whitebit_;
+
+        private WbOrderCmdHandler(WhiteBitClient whitebit)
+        {
+            whitebit_ = whitebit;
+        }
+
+        @Override
+        public int commandEntered(Writer writer, String command, String[] args)
+        {
+            int code = 0;
+            String side = args.length > 0 ? mapSide(args[0]) : null;
+            if (!whitebit_.configured())
+            {
+                UtilityFunctions.writeln(writer, "WhiteBIT keys not set (WHITEBIT_API_KEY / WHITEBIT_API_SECRET).");
+                code = 1;
+            }
+            else if (side == null || args.length < 2)
+            {
+                UtilityFunctions.writeln(writer, USAGE);
+                code = 1;
+            }
+            else
+            {
+                boolean send = args.length > 2 && args[2].equalsIgnoreCase("send");
+                code = send ? place(writer, side, args[1]) : preview(writer, side, args[1]);
+            }
+            return code;
+        }
+
+        private int preview(Writer writer, String side, String amount)
+        {
+            WhiteBitSigner.Signed signed = whitebit_.previewMarketOrder(side, amount);
+            UtilityFunctions.writeln(writer, "PREVIEW (no order sent) -- POST " + whitebit_.orderUrl());
+            UtilityFunctions.writeln(writer, "  body: " + signed.body());
+            UtilityFunctions.writeln(writer, "  Append 'send' to place this as a REAL market order.");
+            return 0;
+        }
+
+        private int place(Writer writer, String side, String amount)
+        {
+            int code = 0;
+            try
+            {
+                JsonNode response = whitebit_.placeCollateralMarketOrder(side, amount);
+                UtilityFunctions.writeln(writer, "ORDER PLACED: status=" + response.path("status").asText("?")
+                        + " filled=" + response.path("dealStock").asText("?") + " cost=" + response.path("dealMoney").asText("?")
+                        + " id=" + response.path("orderId").asText("?"));
+            }
+            catch (IOException orderFailed)
+            {
+                // Insufficient margin / wrong size / missing permission / hedge-mode positionSide all surface here.
+                UtilityFunctions.writeln(writer, "ORDER FAILED: " + orderFailed.getMessage());
+                code = 1;
+            }
+            catch (InterruptedException interrupted)
+            {
+                Thread.currentThread().interrupt();
+                UtilityFunctions.writeln(writer, "Order interrupted.");
+                code = 1;
+            }
+            return code;
+        }
+
+        /** Map a friendly side word to the WhiteBIT order side, or null when unrecognised. */
+        private static String mapSide(String word)
+        {
+            String side = null;
+            if (word.equalsIgnoreCase("buy") || word.equalsIgnoreCase("long"))
+            {
+                side = "buy";
+            }
+            else if (word.equalsIgnoreCase("sell") || word.equalsIgnoreCase("short"))
+            {
+                side = "sell";
+            }
+            return side;
         }
     }
 }

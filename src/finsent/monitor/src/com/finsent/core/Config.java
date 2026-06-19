@@ -433,6 +433,12 @@ public final class Config
         return attr(traderNode_, "whitebitBaseUrl", "https://whitebit.com");
     }
 
+    /** WhiteBIT collateral (futures) market the trader operates on, e.g. {@code BTC_USDT}. */
+    public String whitebitMarket()
+    {
+        return attr(traderNode_, "whitebitMarket", "BTC_USDT");
+    }
+
     // == Helpers ===============================================================
 
     private static XMLData subSection(XMLData parent, String tag)

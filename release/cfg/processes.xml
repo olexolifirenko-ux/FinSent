@@ -155,11 +155,11 @@
              places live WhiteBIT futures orders sized by liveNotionalInUsd. Starts paused unless
              -DrunTrader=true, toggled at runtime with `trade`. -->
         <FSTrader
-            broker="paper"
+            broker="whitebit"
             entryImpactTier="high"
             notionalInUsd="1000.0"
             liveNotionalInUsd="50.0"
-            leverage="2.0"
+            leverage="5.0"
             stopLossInPct="1.0"
             trailInPct="1.0"
             profitGraceInMin="30"

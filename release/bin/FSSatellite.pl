@@ -60,6 +60,11 @@ start(
         # Default is off when absent; set "true" to start polling X at launch. Toggle live with
         # `collect x on|off` (no restart). Requires getxapiKey + <XAccounts> to have any effect.
         "-DfetchX" => "false",
+        # Whether the trader starts running, read by FSApp via Boolean.getBoolean("runTrader"). "false"
+        # (or absent) starts it paused so the user runs `trade on` when ready; "true" starts it acting on
+        # signals at launch. Live vs paper is the separate <FSTrader broker> config -- this flag only
+        # controls running/paused. Toggle live with `trade on|off` (no restart).
+        "-DrunTrader" => "false",
     },
     _CLASS()     => "com.finsent.FSApp",
     _ARGUMENTS() => $arguments,

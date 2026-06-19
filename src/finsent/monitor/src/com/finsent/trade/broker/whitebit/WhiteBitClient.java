@@ -28,6 +28,8 @@ public final class WhiteBitClient
     private static final Duration TIMEOUT = Duration.ofSeconds(15);
     private static final String TRADE_BALANCE = "/api/v4/trade-account/balance";
     private static final String COLLATERAL_BALANCE = "/api/v4/collateral-account/balance";
+    private static final String COLLATERAL_SUMMARY = "/api/v4/collateral-account/balance-summary";
+    private static final String OPEN_POSITIONS = "/api/v4/collateral-account/positions/open";
 
     private final String apiKey_;
     private final String apiSecret_;
@@ -58,6 +60,18 @@ public final class WhiteBitClient
     public JsonNode collateralBalance() throws IOException, InterruptedException
     {
         return post(COLLATERAL_BALANCE, Map.of());
+    }
+
+    /** Collateral (futures) account balance summary: available margin with and without borrowing. */
+    public JsonNode collateralSummary() throws IOException, InterruptedException
+    {
+        return post(COLLATERAL_SUMMARY, Map.of());
+    }
+
+    /** Currently open futures positions (empty when flat) -- the broker's reconcile/state read. */
+    public JsonNode openPositions() throws IOException, InterruptedException
+    {
+        return post(OPEN_POSITIONS, Map.of());
     }
 
     /** Build, sign and POST a private read request to {@code path}; returns the parsed JSON response. */

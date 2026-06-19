@@ -19,7 +19,8 @@ import com.finsent.util.UtilityFunctions;
  *   <li>{@code on} / {@code off} / {@code status} &mdash; resume/pause acting on signals, show state
  *       ({@code start} / {@code pause} are accepted as aliases);</li>
  *   <li>{@code flatten} &mdash; close the open position now at the current price;</li>
- *   <li>{@code wbcheck} &mdash; read-only WhiteBIT connectivity test (account balances; no orders).</li>
+ *   <li>{@code wbcheck} &mdash; read-only WhiteBIT account snapshot (balances, futures summary, open
+ *       positions; no orders).</li>
  * </ul>
  * Registered against the running interpreter once the trader exists (see {@code FSApp}).
  */
@@ -37,7 +38,7 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
         registerCmdHandler("status", new StatusCmdHandler(trader), "Show trader status and open position.", null);
         registerCmdHandler("flatten", new FlattenCmdHandler(trader), "Close the open position now.", null);
         registerCmdHandler("wbcheck", new WbCheckCmdHandler(whitebit),
-                "Read-only WhiteBIT connectivity test: fetch account balances (no orders).", null);
+                "Read-only WhiteBIT account snapshot: balances, futures summary, open positions (no orders).", null);
     }
 
     private static final class OnCmdHandler implements ICmdHandler
@@ -111,9 +112,10 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
     }
 
     /**
-     * {@code trade wbcheck}: a read-only WhiteBIT connectivity test. Fetches the spot trade-account and
-     * the collateral (futures) account balances over the signed private API and prints each result or
-     * its error. Validates the API keys + HMAC signing without placing any order.
+     * {@code trade wbcheck}: a read-only WhiteBIT account snapshot over the signed private API &mdash;
+     * spot and collateral balances, the futures margin summary and any open positions &mdash; printing
+     * each result or its error. Validates the API keys + HMAC signing and surfaces the account state the
+     * live broker will reconcile against, without placing any order.
      */
     private static final class WbCheckCmdHandler implements ICmdHandler
     {
@@ -132,6 +134,8 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
             {
                 report(writer, "trade-account", () -> whitebit_.tradingBalance(""));
                 report(writer, "collateral-account", whitebit_::collateralBalance);
+                report(writer, "collateral-summary", whitebit_::collateralSummary);
+                report(writer, "open-positions", whitebit_::openPositions);
             }
             else
             {

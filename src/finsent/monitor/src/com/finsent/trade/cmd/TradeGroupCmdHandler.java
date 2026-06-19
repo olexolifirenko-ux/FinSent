@@ -2,10 +2,15 @@ package com.finsent.trade.cmd;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.function.Function;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import com.finsent.core.Json;
 import com.finsent.trade.FSTrader;
 import com.finsent.trade.broker.whitebit.WhiteBitClient;
 import com.finsent.util.CmdGroupHandler;
@@ -19,8 +24,8 @@ import com.finsent.util.UtilityFunctions;
  *   <li>{@code on} / {@code off} / {@code status} &mdash; resume/pause acting on signals, show state
  *       ({@code start} / {@code pause} are accepted as aliases);</li>
  *   <li>{@code flatten} &mdash; close the open position now at the current price;</li>
- *   <li>{@code wbcheck} &mdash; read-only WhiteBIT account snapshot (balances, futures summary, open
- *       positions; no orders).</li>
+ *   <li>{@code wbcheck [all]} &mdash; read-only WhiteBIT account snapshot (balances, futures summary,
+ *       open positions; non-zero assets only unless {@code all}; no orders).</li>
  * </ul>
  * Registered against the running interpreter once the trader exists (see {@code FSApp}).
  */
@@ -29,7 +34,7 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
     public static final String COMMAND = "trade";
     public static final String[] COMMAND_ALIASES = null;
     public static final String DESCRIPTION = "Trader control,\nusage: " + COMMAND
-            + " <on|off|status|flatten|wbcheck>";
+            + " <on|off|status|flatten|wbcheck [all]>";
 
     public TradeGroupCmdHandler(FSTrader trader, WhiteBitClient whitebit)
     {
@@ -38,7 +43,8 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
         registerCmdHandler("status", new StatusCmdHandler(trader), "Show trader status and open position.", null);
         registerCmdHandler("flatten", new FlattenCmdHandler(trader), "Close the open position now.", null);
         registerCmdHandler("wbcheck", new WbCheckCmdHandler(whitebit),
-                "Read-only WhiteBIT account snapshot: balances, futures summary, open positions (no orders).", null);
+                "Read-only WhiteBIT account snapshot: balances, futures summary, open positions; non-zero only "
+                        + "unless 'all' (no orders).", null);
     }
 
     private static final class OnCmdHandler implements ICmdHandler
@@ -132,10 +138,15 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
             int code = 0;
             if (whitebit_.configured())
             {
-                report(writer, "trade-account", () -> whitebit_.tradingBalance(""));
-                report(writer, "collateral-account", whitebit_::collateralBalance);
-                report(writer, "collateral-summary", whitebit_::collateralSummary);
-                report(writer, "open-positions", whitebit_::openPositions);
+                // Default to non-zero assets only (the full lists are mostly zero rows); `all` shows everything.
+                boolean all = args.length > 0 && args[0].equalsIgnoreCase("all");
+                report(writer, "trade-account", () -> whitebit_.tradingBalance(""),
+                        node -> nonZeroFields(node, all, value -> heldEntry(value)));
+                report(writer, "collateral-account", whitebit_::collateralBalance,
+                        node -> nonZeroFields(node, all, WbCheckCmdHandler::nonZero));
+                report(writer, "collateral-summary", whitebit_::collateralSummary,
+                        node -> nonZeroElements(node, all, value -> nonZero(value.path("balance"))));
+                report(writer, "open-positions", whitebit_::openPositions, JsonNode::toString);
             }
             else
             {
@@ -145,11 +156,11 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
             return code;
         }
 
-        private static void report(Writer writer, String label, BalanceCall call)
+        private static void report(Writer writer, String label, BalanceCall call, Function<JsonNode, String> format)
         {
             try
             {
-                UtilityFunctions.writeln(writer, label + ": " + call.fetch().toString());
+                UtilityFunctions.writeln(writer, label + ": " + format.apply(call.fetch()));
             }
             catch (IOException authOrNetworkError)
             {
@@ -161,6 +172,74 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
                 Thread.currentThread().interrupt();
                 UtilityFunctions.writeln(writer, label + " interrupted.");
             }
+        }
+
+        /** True when a trade-account entry ({@code {available,freeze}}) holds anything. */
+        private static boolean heldEntry(JsonNode entry)
+        {
+            return nonZero(entry.path("available")) || nonZero(entry.path("freeze"));
+        }
+
+        /** Keep only the fields of a {@code ticker -> value} object whose value is non-zero (unless {@code all}). */
+        private static String nonZeroFields(JsonNode node, boolean all, Function<JsonNode, Boolean> keep)
+        {
+            String result;
+            if (all || !node.isObject())
+            {
+                result = node.toString();
+            }
+            else
+            {
+                ObjectNode kept = Json.newObject();
+                node.fields().forEachRemaining(field ->
+                {
+                    if (keep.apply(field.getValue()))
+                    {
+                        kept.set(field.getKey(), field.getValue());
+                    }
+                });
+                result = kept.isEmpty() ? "(none)" : kept.toString();
+            }
+            return result;
+        }
+
+        /** Keep only the array elements that {@code keep} accepts (unless {@code all}). */
+        private static String nonZeroElements(JsonNode node, boolean all, Function<JsonNode, Boolean> keep)
+        {
+            String result;
+            if (all || !node.isArray())
+            {
+                result = node.toString();
+            }
+            else
+            {
+                ArrayNode kept = Json.newArray();
+                for (JsonNode element : node)
+                {
+                    if (keep.apply(element))
+                    {
+                        kept.add(element);
+                    }
+                }
+                result = kept.isEmpty() ? "(none)" : kept.toString();
+            }
+            return result;
+        }
+
+        /** Whether a numeric-string amount node is non-zero (tolerant of any decimal scale). */
+        private static boolean nonZero(JsonNode amount)
+        {
+            String text = amount == null ? "" : amount.asText("");
+            boolean zero;
+            try
+            {
+                zero = new BigDecimal(text.isEmpty() ? "0" : text).signum() == 0;
+            }
+            catch (NumberFormatException notNumeric)
+            {
+                zero = text.isEmpty();
+            }
+            return !zero;
         }
 
         @FunctionalInterface

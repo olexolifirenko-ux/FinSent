@@ -17,7 +17,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.finsent.analyse.AnalysisReady;
+import com.finsent.trade.broker.BrokerException;
+import com.finsent.trade.broker.Fill;
+import com.finsent.trade.broker.IBroker;
+import com.finsent.trade.broker.OrderSide;
 import com.finsent.trade.broker.PaperBroker;
+import com.finsent.trade.broker.VenueState;
 
 /**
  * Drives {@link FSTrader}'s deterministic seams ({@code onSignal} / {@code manage} / {@code flatten})
@@ -186,6 +191,41 @@ public class FSTrader_utest
         assertEquals(20.0, closed.get(0).path("pnl_usd").asDouble(), 1e-6); // (101-100)/100 * 1000 * 2
     }
 
+    @Test
+    public void reconcileAdoptsAnOpenVenuePositionWhenTheBookIsFlat()
+    {
+        FakeBroker broker = new FakeBroker();
+        broker.venue_ = VenueState.open(Side.LONG, 0.5, 200.0, PARAMS.leverage()); // leverage matches config
+        FSTrader trader = new FSTrader(book_, broker, target -> price_, PARAMS, false);
+        trader.reconcile(NOW);
+        assertTrue(trader.describe(NOW).contains("Open LONG entry 200.0"));
+    }
+
+    @Test
+    public void reconcileClearsTheBookWhenTheVenueIsFlat()
+    {
+        FakeBroker broker = new FakeBroker();
+        FSTrader trader = new FSTrader(book_, broker, target -> price_, PARAMS, false);
+        price_ = 100.0;
+        trader.onSignal(signal("bullish", "high"), NOW); // book holds an open LONG
+        broker.venue_ = VenueState.flat();
+        trader.reconcile(NOW);
+        assertTrue(trader.describe(NOW).contains("Flat"));
+        assertEquals(0, closed().size()); // cleared without a fabricated ledger entry
+    }
+
+    @Test
+    public void reconcileKeepsTheBookWhenTheVenueIsUnreachable()
+    {
+        FakeBroker broker = new FakeBroker();
+        FSTrader trader = new FSTrader(book_, broker, target -> price_, PARAMS, false);
+        price_ = 100.0;
+        trader.onSignal(signal("bullish", "high"), NOW);
+        broker.unreachable_ = true;
+        trader.reconcile(NOW);
+        assertTrue(trader.describe(NOW).contains("Open LONG")); // book left intact on a read failure
+    }
+
     private ArrayNode closed()
     {
         return book_.closedForDay(DAY);
@@ -194,6 +234,35 @@ public class FSTrader_utest
     private static AnalysisReady signal(String direction, String tier)
     {
         return new AnalysisReady(DAY, KEY, "news", direction, tier, 100.0, NOW);
+    }
+
+    /** A broker with a scriptable venue state for reconciliation tests; fills paper-style at the passed price. */
+    private static final class FakeBroker implements IBroker
+    {
+        private VenueState venue_ = VenueState.untracked();
+        private boolean unreachable_;
+
+        @Override
+        public Fill marketOrder(OrderSide side, double qty, double price)
+        {
+            return new Fill(price, qty);
+        }
+
+        @Override
+        public String name()
+        {
+            return "fake";
+        }
+
+        @Override
+        public VenueState venueState() throws BrokerException
+        {
+            if (unreachable_)
+            {
+                throw new BrokerException("venue down");
+            }
+            return venue_;
+        }
     }
 
     private static void deleteQuietly(Path path)

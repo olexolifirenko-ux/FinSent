@@ -371,10 +371,26 @@ public final class Config
         return attr(traderNode_, "entryImpactTier", "high");
     }
 
+    /** Execution venue for the auto-trader: {@code paper} (simulated, the default) or {@code whitebit} (live). */
+    public String tradeBroker()
+    {
+        return attr(traderNode_, "broker", "paper");
+    }
+
     /** Margin committed per trade in USD; exposure is this times {@link #tradeLeverage()}. */
     public double tradeNotionalInUsd()
     {
         return doubleAttr(traderNode_, "notionalInUsd", 1000.0);
+    }
+
+    /**
+     * Margin per trade in USD when the live ({@code whitebit}) broker is selected, kept separate from
+     * {@link #tradeNotionalInUsd()} so the large paper size never sizes a real order; exposure is this
+     * times {@link #tradeLeverage()}.
+     */
+    public double tradeLiveNotionalInUsd()
+    {
+        return doubleAttr(traderNode_, "liveNotionalInUsd", 50.0);
     }
 
     public double tradeLeverage()

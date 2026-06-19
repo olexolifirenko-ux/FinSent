@@ -17,10 +17,14 @@ import com.finsent.core.Num;
 import com.finsent.core.Times;
 import com.finsent.core.event.IEventListener;
 import com.finsent.directory.DirectorySystem;
+import com.finsent.trade.broker.BrokerException;
 import com.finsent.trade.broker.Fill;
 import com.finsent.trade.broker.IBroker;
 import com.finsent.trade.broker.OrderSide;
 import com.finsent.trade.broker.PaperBroker;
+import com.finsent.trade.broker.VenueState;
+import com.finsent.trade.broker.whitebit.WhiteBitBroker;
+import com.finsent.trade.broker.whitebit.WhiteBitClient;
 import com.finsent.util.GlobalSystem;
 import com.finsent.util.IUninitializer;
 
@@ -59,11 +63,12 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     // it (entry/trail/exit); the command thread reads it (status) and can flatten it.
     private Position position_;
 
-    /** Production wiring: build the recovered book and the paper broker from config. */
-    public FSTrader(FSCollector collector, Config config, boolean startPaused)
+    /** Production wiring: build the recovered book and the configured broker (paper or live WhiteBIT). */
+    public FSTrader(FSCollector collector, Config config, WhiteBitClient whitebit, boolean startPaused)
     {
         // The live ticker price is always "now", so the PriceSource timestamp is ignored.
-        this(buildBook(config), new PaperBroker(), target -> collector.currentPrice(), paramsFrom(config), startPaused);
+        this(buildBook(config), brokerFrom(config, whitebit), target -> collector.currentPrice(),
+                paramsFrom(config, whitebit), startPaused);
     }
 
     /** Injecting constructor: book, broker, price source and params supplied directly (used by tests). */
@@ -88,16 +93,39 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
         return book;
     }
 
-    private static Params paramsFrom(Config config)
+    /** Select the live WhiteBIT broker only when configured for it and keyed; otherwise the safe paper broker. */
+    private static IBroker brokerFrom(Config config, WhiteBitClient whitebit)
     {
-        return new Params(config.tradeEntryImpactTier(), config.tradeNotionalInUsd(), config.tradeLeverage(),
+        boolean live = "whitebit".equalsIgnoreCase(config.tradeBroker());
+        IBroker broker = new PaperBroker();
+        if (live && whitebit.configured())
+        {
+            broker = new WhiteBitBroker(whitebit);
+        }
+        else if (live)
+        {
+            GlobalSystem.warning().writes(NAME, "broker=whitebit but WhiteBIT keys are unset -- falling back to paper.");
+        }
+        return broker;
+    }
+
+    private static Params paramsFrom(Config config, WhiteBitClient whitebit)
+    {
+        boolean live = "whitebit".equalsIgnoreCase(config.tradeBroker()) && whitebit.configured();
+        double notionalInUsd = live ? config.tradeLiveNotionalInUsd() : config.tradeNotionalInUsd();
+        return new Params(config.tradeEntryImpactTier(), notionalInUsd, config.tradeLeverage(),
                 config.tradeStopLossInPct(), config.tradeTrailInPct(), config.tradeMaxHoldInHours() * 3_600_000L,
                 config.tradePricePollInSec() * 1000L, config.tradeProfitGraceInMin() * 60_000L);
     }
 
-    /** Start the worker thread (called by {@code FSApp} after wiring; tests drive the seams directly). */
+    /**
+     * Reconcile the recovered book against the venue, then start the worker thread (called by
+     * {@code FSApp} after wiring; tests drive the seams directly). Reconciliation is a no-op for the
+     * paper broker (no venue truth).
+     */
     public void start()
     {
+        reconcile(Instant.now());
         thread_.start();
     }
 
@@ -246,13 +274,21 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
         Side side = "bullish".equals(signal.direction()) ? Side.LONG : Side.SHORT;
         OrderSide order = side.isLong() ? OrderSide.BUY : OrderSide.SELL;
         double qty = params_.notionalInUsd() * params_.leverage() / price;
-        Fill fill = broker_.marketOrder(order, qty, price);
-        position_ = Position.open(signal.day(), signal.intervalKey(), signal.source(), side, fill.price(),
-                params_.notionalInUsd(), params_.leverage(), now, params_.stopLossInPct());
-        book_.recordPosition(position_);
-        GlobalSystem.info().writes(NAME, "OPEN " + side + " @ " + Num.round(fill.price(), 2) + " stop "
-                + Num.round(position_.currentStop(), 2) + " (" + signal.day() + " " + signal.intervalKey() + " "
-                + signal.direction() + "/" + signal.impactTier() + ")");
+        try
+        {
+            Fill fill = broker_.marketOrder(order, qty, price);
+            position_ = Position.open(signal.day(), signal.intervalKey(), signal.source(), side, fill.price(),
+                    params_.notionalInUsd(), params_.leverage(), now, params_.stopLossInPct());
+            book_.recordPosition(position_);
+            GlobalSystem.info().writes(NAME, "OPEN " + side + " @ " + Num.round(fill.price(), 2) + " stop "
+                    + Num.round(position_.currentStop(), 2) + " (" + signal.day() + " " + signal.intervalKey() + " "
+                    + signal.direction() + "/" + signal.impactTier() + ")");
+        }
+        catch (BrokerException orderRejected)
+        {
+            // Entry rejected by the venue: stay flat (the signal is dropped, no phantom position booked).
+            GlobalSystem.error().writes(NAME, "OPEN " + side + " REJECTED -- staying flat: " + orderRejected.getMessage());
+        }
     }
 
     private synchronized void evaluate(Position open, double price, Instant now)
@@ -293,17 +329,139 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
         return reason;
     }
 
-    private synchronized void close(double price, Instant now, String reason)
+    private synchronized boolean close(double price, Instant now, String reason)
     {
         Position open = position_;
         OrderSide order = open.side().isLong() ? OrderSide.SELL : OrderSide.BUY;
-        Fill fill = broker_.marketOrder(order, open.qty(), price);
-        ObjectNode closed = open.toClosedRecord(fill.price(), now, reason);
-        book_.recordClose(open, closed);
-        position_ = null;
-        GlobalSystem.info().writes(NAME, "CLOSE " + open.side() + " @ " + Num.round(fill.price(), 2) + " (" + reason
-                + ") pnl " + Num.round(open.pnlUsd(fill.price()), 2) + " USD / "
-                + Num.round(open.pnlPct(fill.price()), 2) + "%");
+        boolean closed = false;
+        try
+        {
+            Fill fill = broker_.marketOrder(order, open.qty(), price);
+            ObjectNode record = open.toClosedRecord(fill.price(), now, reason);
+            book_.recordClose(open, record);
+            position_ = null;
+            closed = true;
+            GlobalSystem.info().writes(NAME, "CLOSE " + open.side() + " @ " + Num.round(fill.price(), 2) + " (" + reason
+                    + ") pnl " + Num.round(open.pnlUsd(fill.price()), 2) + " USD / "
+                    + Num.round(open.pnlPct(fill.price()), 2) + "%");
+        }
+        catch (BrokerException orderRejected)
+        {
+            // Exit rejected: keep the position so the next poll retries -- never drop a live position we still hold.
+            GlobalSystem.error().writes(NAME, "CLOSE " + open.side() + " REJECTED (" + reason
+                    + ") -- position STILL OPEN, will retry: " + orderRejected.getMessage());
+        }
+        return closed;
+    }
+
+    // == Startup reconciliation (live broker) ==================================
+
+    /**
+     * Align the recovered book with the venue's actual open position at startup. No-op for the paper
+     * broker (no venue truth). On any mismatch the venue is treated as the source of truth and the
+     * divergence is logged loudly; if the venue cannot be read, the recovered book is kept as-is.
+     * Package-private so tests can drive it with a fake broker.
+     */
+    void reconcile(Instant now)
+    {
+        try
+        {
+            applyVenueState(broker_.venueState(), now);
+        }
+        catch (BrokerException unreachable)
+        {
+            GlobalSystem.error().writes(NAME, "Reconcile FAILED (venue unreachable): " + unreachable.getMessage()
+                    + " -- starting with the recovered book as-is.");
+        }
+    }
+
+    private synchronized void applyVenueState(VenueState venue, Instant now)
+    {
+        if (venue.kind() == VenueState.Kind.FLAT)
+        {
+            reconcileAgainstFlatVenue();
+        }
+        else if (venue.kind() == VenueState.Kind.OPEN)
+        {
+            reconcileAgainstOpenVenue(venue, now);
+        }
+        // UNTRACKED (paper): the local book is authoritative -- nothing to reconcile.
+    }
+
+    private void reconcileAgainstFlatVenue()
+    {
+        if (position_ != null)
+        {
+            GlobalSystem.error().writes(NAME, "RECONCILE MISMATCH: book shows an open " + position_.side()
+                    + " but the venue is FLAT -- clearing it (closed/liquidated outside the trader).");
+            book_.clearPosition(position_.day());
+            position_ = null;
+        }
+        else
+        {
+            GlobalSystem.debug().writes(NAME, "Reconcile: book flat, venue flat -- in sync.");
+        }
+    }
+
+    private void reconcileAgainstOpenVenue(VenueState venue, Instant now)
+    {
+        warnOnVenueLeverageMismatch(venue);
+        if (position_ == null)
+        {
+            position_ = adopt(venue, now);
+            GlobalSystem.error().writes(NAME, "RECONCILE: book was flat but the venue holds an open " + venue.side()
+                    + " " + Num.round(venue.qty(), 6) + " BTC @ " + Num.round(venue.entryPrice(), 2)
+                    + " -- ADOPTED it (managing to exit).");
+        }
+        else if (matches(position_, venue))
+        {
+            GlobalSystem.info().writes(NAME, "Reconcile: book and venue agree on the open " + venue.side()
+                    + " position -- in sync.");
+        }
+        else
+        {
+            GlobalSystem.error().writes(NAME, "RECONCILE MISMATCH: book shows " + position_.side() + " "
+                    + Num.round(position_.qty(), 6) + " but venue holds " + venue.side() + " "
+                    + Num.round(venue.qty(), 6) + " @ " + Num.round(venue.entryPrice(), 2)
+                    + " -- adopting the venue position as truth.");
+            book_.clearPosition(position_.day());
+            position_ = adopt(venue, now);
+        }
+    }
+
+    /** Build and persist a fresh position from the venue's open state (entry/side/qty), anchored at {@code now}. */
+    private Position adopt(VenueState venue, Instant now)
+    {
+        String day = Times.dayOf(Times.formatUtcIso(now));
+        double notionalInUsd = venue.qty() * venue.entryPrice() / params_.leverage();
+        Position adopted = Position.open(day, "reconciled", "reconcile", venue.side(), venue.entryPrice(),
+                notionalInUsd, params_.leverage(), now, params_.stopLossInPct());
+        book_.recordPosition(adopted);
+        return adopted;
+    }
+
+    /**
+     * Warn (once, at reconcile) when the venue position's effective leverage diverges from config by more
+     * than 10%: position sizing and {@code pnl_pct} assume the config value, and the real liquidation
+     * follows the venue's. The fix is to set {@code <FSTrader leverage>} to match the WhiteBIT UI.
+     */
+    private void warnOnVenueLeverageMismatch(VenueState venue)
+    {
+        double venueLeverage = venue.leverage();
+        if (venueLeverage > 0.0 && Math.abs(venueLeverage - params_.leverage()) > params_.leverage() * 0.1)
+        {
+            GlobalSystem.warning().writes(NAME, "LEVERAGE MISMATCH: config leverage "
+                    + Num.round(params_.leverage(), 1) + "x but the venue position is at ~"
+                    + Num.round(venueLeverage, 1) + "x -- sizing and pnl_pct assume config, liquidation follows the "
+                    + "venue; set <FSTrader leverage> to match the WhiteBIT UI.");
+        }
+    }
+
+    /** Whether the book's open position is the same side and (within tolerance) the same size as the venue's. */
+    private static boolean matches(Position book, VenueState venue)
+    {
+        double tolerance = Math.max(0.0001, venue.qty() * 0.01);
+        return book.side() == venue.side() && Math.abs(book.qty() - venue.qty()) <= tolerance;
     }
 
     // == Commands ==============================================================
@@ -338,8 +496,10 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
         {
             Position open = position_;
             double pnl = open.pnlUsd(price);
-            close(price, now, "manual_flatten");
-            message = "Flattened " + open.side() + " @ " + Num.round(price, 2) + " pnl " + Num.round(pnl, 2) + " USD.";
+            boolean closed = close(price, now, "manual_flatten");
+            message = closed
+                    ? "Flattened " + open.side() + " @ " + Num.round(price, 2) + " pnl " + Num.round(pnl, 2) + " USD."
+                    : "Flatten FAILED -- the venue rejected the close; position still open (see log).";
         }
         return message;
     }

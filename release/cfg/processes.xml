@@ -151,11 +151,14 @@
              at a time; a trailing stop (initial stopLossInPct adverse, ratcheting trailInPct behind
              the best price) manages the exit. profitGraceInMin is a time stop: if the trade is not in
              profit by then it is closed (the catalyst is not working); 0 disables it. maxHoldInHours
-             is a final chop backstop. Paper only (no broker keys); starts paused unless
+             is a final chop backstop. broker=paper simulates fills (no real orders); broker=whitebit
+             places live WhiteBIT futures orders sized by liveNotionalInUsd. Starts paused unless
              -DrunTrader=true, toggled at runtime with `trade`. -->
         <FSTrader
+            broker="paper"
             entryImpactTier="high"
             notionalInUsd="1000.0"
+            liveNotionalInUsd="50.0"
             leverage="2.0"
             stopLossInPct="1.0"
             trailInPct="1.0"
@@ -167,8 +170,9 @@
             whitebitBaseUrl="https://whitebit.com"
             whitebitMarket="BTC_USDT"
         />
-        <!-- WhiteBIT keys above are used ONLY by the read-only `trade wbcheck` connectivity test
-             (step 1 of the live integration); they place no orders. Put the real values in
-             release/.env as WHITEBIT_API_KEY / WHITEBIT_API_SECRET (gitignored). -->
+        <!-- WhiteBIT keys above back the `trade wbcheck`/`trade wborder` commands and, when
+             broker=whitebit, the auto-trader's live orders. Put the real values in release/.env as
+             WHITEBIT_API_KEY / WHITEBIT_API_SECRET (gitignored). For live trading set broker=whitebit
+             and leverage to match the leverage configured in the WhiteBIT UI for this market. -->
     </FSSatellite>
 </Bootstrap>

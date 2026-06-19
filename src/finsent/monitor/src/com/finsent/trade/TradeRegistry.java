@@ -99,6 +99,23 @@ public final class TradeRegistry
         return writes;
     }
 
+    /**
+     * Flatten the open-position snapshot <b>without</b> recording a closed trade, for venue-driven
+     * reconciliation: the venue closed/liquidated the position outside the trader, so there is no fill
+     * to ledger. {@code fallbackDay} is the day-file to clear when no open day is tracked.
+     */
+    public List<WriteUnit> clearOpen(String fallbackDay)
+    {
+        String openDay;
+        synchronized (lock_)
+        {
+            openDay = openDay_ != null ? openDay_ : fallbackDay;
+            openSnapshot_ = null;
+            openDay_ = null;
+        }
+        return List.of(new WriteUnit(DataStream.OPEN_POSITION, openDay, Json.newObject()));
+    }
+
     /** The current open-position snapshot, or null when flat (a private copy). */
     public ObjectNode openSnapshot()
     {

@@ -52,6 +52,15 @@ public final class TradeBook
         persistence_.commit(registry_.close(closedTrade, position.day()));
     }
 
+    /**
+     * Clear the open-position snapshot with no ledger entry and commit atomically &mdash; for
+     * reconciliation, when the venue has closed the position outside the trader (no fill to record).
+     */
+    public void clearPosition(String day)
+    {
+        persistence_.commit(registry_.clearOpen(day));
+    }
+
     /** The closed trades recorded for {@code day} (for the {@code trade status} P&amp;L summary). */
     public ArrayNode closedForDay(String day)
     {

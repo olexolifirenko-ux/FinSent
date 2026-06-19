@@ -82,14 +82,14 @@ public class FSApp extends AbstractAppInitializer
         GlobalSystem.getCmdInterpreter().registerCmdHandler(AnalGroupCmdHandler.COMMAND,
                 new AnalGroupCmdHandler(analyser_), AnalGroupCmdHandler.DESCRIPTION, AnalGroupCmdHandler.COMMAND_ALIASES);
 
-        // Trader: start paused unless -DrunTrader=true (default off, like the analyser); acts on the
-        // analyser's AnalysisReady signals over the same bus. Paper broker by default -- no live orders.
-        trader_ = new FSTrader(collector_, config, !Boolean.getBoolean("runTrader"));
-        collector_.subscribe(AnalysisReady.class, trader_);
-        // WhiteBIT client for the `trade wbcheck` read-only snapshot and the guarded `trade wborder`
-        // (preview unless 'send' is appended). The auto-trader still uses the paper broker.
+        // One WhiteBIT client shared by the `trade wbcheck`/`trade wborder` commands and the auto-trader's
+        // live broker. The auto-trader uses it only when broker=whitebit in config (else the paper broker).
         WhiteBitClient whitebit = new WhiteBitClient(config.whitebitApiKey(), config.whitebitApiSecret(),
                 config.whitebitBaseUrl(), config.whitebitMarket());
+        // Trader: start paused unless -DrunTrader=true (default off, like the analyser); acts on the
+        // analyser's AnalysisReady signals over the same bus.
+        trader_ = new FSTrader(collector_, config, whitebit, !Boolean.getBoolean("runTrader"));
+        collector_.subscribe(AnalysisReady.class, trader_);
         GlobalSystem.getCmdInterpreter().registerCmdHandler(TradeGroupCmdHandler.COMMAND,
                 new TradeGroupCmdHandler(trader_, whitebit), TradeGroupCmdHandler.DESCRIPTION,
                 TradeGroupCmdHandler.COMMAND_ALIASES);

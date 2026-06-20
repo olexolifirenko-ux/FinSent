@@ -160,7 +160,7 @@
             notionalInUsd="1000.0"
             liveNotionalInUsd="50.0"
             leverage="5.0"
-            stopLossInPct="1.0"
+            stopLossInPct="0.3"
             trailInPct="1.0"
             profitGraceInMin="30"
             maxHoldInHours="24"

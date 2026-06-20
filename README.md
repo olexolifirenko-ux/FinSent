@@ -252,7 +252,8 @@ until the fresh print lands → compute the surprise → article-less deep pass 
 
 ### Runtime commands
 - **`anal on | off | status`** — turn analysis on/off (resume/pause), show state (`start`/`pause` are
-  aliases). Plus `anal window <YYYYMMDD_HHMM>`, `anal windows -start .. -end .. [-missing|-force] [-run]
+  aliases). Plus `anal window <YYYYMMDD_HHMM>`, `anal windows <N>` (last N days through now) or
+  `anal windows -start .. -end .. [-missing|-force] [-run]
   [-notify]` (dry-run scan/backfill), `anal show <key>`, `anal econ [YYYYMMDD] <event> [-quiet]`,
   `anal feedback [--days N]`.
 - **`collect x on | off | status`** — turn the X (Twitter) source's polling on/off live (no restart).

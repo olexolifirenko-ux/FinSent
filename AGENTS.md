@@ -44,7 +44,8 @@ direction). `FSCollector` collects and never interprets; `FSAnalyser` subscribes
 
 ### Runtime commands
 - **`anal on | off | status`** — turn analysis on/off (resume/pause), show state. `start`/`pause` are
-  kept as aliases. Also: `anal window <YYYYMMDD_HHMM>`, `anal windows -start .. -end .. [-run] [-notify]`,
+  kept as aliases. Also: `anal window <YYYYMMDD_HHMM>`, `anal windows <N>` (last N days through now) or
+  `anal windows -start .. -end .. [-run] [-notify]`,
   `anal show <key>`, `anal econ [YYYYMMDD] <event> [-quiet]`, `anal feedback [--days N]`.
 - **`collect x on | off | status`** — turn the X source's polling on/off at runtime (no restart).
   Also: `collect econ [YYYYMMDD] <event>` (fetch-only BLS catch-up).

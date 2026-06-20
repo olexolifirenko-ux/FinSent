@@ -21,7 +21,8 @@ import com.finsent.util.UtilityFunctions;
  *   <li>{@code on} / {@code off} / {@code status} &mdash; live analysis control ({@code start} /
  *       {@code pause} are accepted as aliases);</li>
  *   <li>{@code window <YYYYMMDD_HHMM>} &mdash; re-analyse one stored window now (ports {@code --window});</li>
- *   <li>{@code windows -start .. -end ..} &mdash; scan/backfill a range of windows (dry-run by default);</li>
+ *   <li>{@code windows <N>} or {@code windows -start .. -end ..} &mdash; scan/backfill a range of windows
+ *       ({@code <N>} = the last N days through now); dry-run by default;</li>
  *   <li>{@code econ [YYYYMMDD] <event name> [-quiet]} &mdash; manually run the econ analysis for a resolved release;</li>
  *   <li>{@code show <YYYYMMDD_HHMM>} &mdash; print the stored analysis record (read-only).</li>
  * </ul>
@@ -32,7 +33,7 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
     public static final String COMMAND = "anal";
     public static final String[] COMMAND_ALIASES = null;
     public static final String DESCRIPTION = "Analyser control,\nusage: " + COMMAND
-            + " <on|off|status|window <YYYYMMDD_HHMM>|windows -start .. -end ..|show <YYYYMMDD_HHMM>"
+            + " <on|off|status|window <YYYYMMDD_HHMM>|windows <N>|windows -start .. -end ..|show <YYYYMMDD_HHMM>"
             + "|econ [YYYYMMDD] <event name> [-quiet]|feedback [--days N]>";
 
     public AnalGroupCmdHandler(FSAnalyser analyser)
@@ -166,8 +167,9 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
      */
     private static final class WindowsCmdHandler implements ICmdHandler
     {
-        static final String USAGE = "Backfill a window range: windows -start <YYYYMMDD_HHMM> -end <YYYYMMDD_HHMM>"
-                + " [-missing|-force] [-run] [-notify]";
+        static final String USAGE = "Backfill a window range: windows <N> | -start <YYYYMMDD_HHMM> -end <YYYYMMDD_HHMM>"
+                + " [-missing|-force] [-run] [-notify]; <N> = last N days (today and the N-1 prior), 00:00 of the"
+                + " first day through now";
         private static final int MAX_LISTED = 50;
         private static final Map<String, int[]> VALID_OPTIONS = new HashMap<>();
         static
@@ -190,11 +192,26 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
         @Override
         public int commandEntered(Writer writer, String command, String[] args)
         {
-            CmdArgParser parser = new CmdArgParser(args);
+            // A leading positive integer is the convenience days-form (windows <N>): the option flags
+            // still parse from the remaining tokens, but start/end come from "last N days .. now".
+            Integer days = leadingDays(args);
+            String[] flagArgs = days == null ? args : tail(args);
+            CmdArgParser parser = new CmdArgParser(flagArgs);
             parser.setValidOptionMetaData(VALID_OPTIONS);
             int code = 0;
-            String[] start = parseDayKey(parser.getOptionValue("start"));
-            String[] end = parseDayKey(parser.getOptionValue("end"));
+            String[] start;
+            String[] end;
+            if (days != null)
+            {
+                Intervals.DayKey now = analyser_.currentWindow();
+                end = new String[] {now.day(), now.key()};
+                start = new String[] {Intervals.minusDays(now.day(), days - 1), "00:00"};
+            }
+            else
+            {
+                start = parseDayKey(parser.getOptionValue("start"));
+                end = parseDayKey(parser.getOptionValue("end"));
+            }
             if (!parser.isValid() || start == null || end == null)
             {
                 if (!parser.isValid())
@@ -210,6 +227,26 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
                         parser.isOptionSet("notify"));
             }
             return code;
+        }
+
+        /** The leading {@code <N>} days token as a positive int, or null when args don't start with one. */
+        private static Integer leadingDays(String[] args)
+        {
+            Integer days = null;
+            if (args.length > 0 && args[0].matches("\\d+"))
+            {
+                int parsed = Integer.parseInt(args[0]);
+                days = parsed > 0 ? parsed : null;
+            }
+            return days;
+        }
+
+        /** {@code args} without its first element (the consumed {@code <N>} token). */
+        private static String[] tail(String[] args)
+        {
+            String[] rest = new String[args.length - 1];
+            System.arraycopy(args, 1, rest, 0, rest.length);
+            return rest;
         }
 
         private void runScan(Writer writer, String[] start, String[] end, boolean force, boolean run, boolean notify)

@@ -549,6 +549,14 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         return summary;
     }
 
+    /** The window coordinate {@code (day, key)} containing the current UTC instant. */
+    public Intervals.DayKey currentWindow()
+    {
+        Instant now = Instant.now();
+        return new Intervals.DayKey(Times.dayOf(Times.formatUtcIso(now)),
+                Times.intervalKey(now, config_.windowMinutes()));
+    }
+
     /**
      * Scan windows in {@code [start, end]} (inclusive, aligned to the window grid) and return those
      * that need analysis: with {@code force}, every window that has news; otherwise only windows that

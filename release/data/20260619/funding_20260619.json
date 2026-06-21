@@ -1,0 +1,866 @@
+{
+  "00:00" : {
+    "ts" : "2026-06-19T00:00:03Z",
+    "funding_rate" : 6.039E-5,
+    "mark_price" : 62924.0,
+    "open_interest" : 98621.47
+  },
+  "00:10" : {
+    "ts" : "2026-06-19T00:10:03Z",
+    "funding_rate" : 5.883E-5,
+    "mark_price" : 62865.66,
+    "open_interest" : 98660.17
+  },
+  "00:20" : {
+    "ts" : "2026-06-19T00:20:02Z",
+    "funding_rate" : 5.962E-5,
+    "mark_price" : 62946.34,
+    "open_interest" : 98679.36
+  },
+  "00:30" : {
+    "ts" : "2026-06-19T00:30:02Z",
+    "funding_rate" : 5.929E-5,
+    "mark_price" : 62948.1,
+    "open_interest" : 98683.96
+  },
+  "00:40" : {
+    "ts" : "2026-06-19T00:40:02Z",
+    "funding_rate" : 5.889E-5,
+    "mark_price" : 62983.4,
+    "open_interest" : 98688.81
+  },
+  "00:50" : {
+    "ts" : "2026-06-19T00:50:03Z",
+    "funding_rate" : 5.837E-5,
+    "mark_price" : 63037.01,
+    "open_interest" : 98684.82
+  },
+  "01:00" : {
+    "ts" : "2026-06-19T01:00:02Z",
+    "funding_rate" : 5.716E-5,
+    "mark_price" : 63000.0,
+    "open_interest" : 98704.33
+  },
+  "01:10" : {
+    "ts" : "2026-06-19T01:10:02Z",
+    "funding_rate" : 5.641E-5,
+    "mark_price" : 62935.18,
+    "open_interest" : 98734.27
+  },
+  "01:20" : {
+    "ts" : "2026-06-19T01:20:02Z",
+    "funding_rate" : 5.459E-5,
+    "mark_price" : 63012.07,
+    "open_interest" : 98743.86
+  },
+  "01:30" : {
+    "ts" : "2026-06-19T01:30:02Z",
+    "funding_rate" : 5.266E-5,
+    "mark_price" : 62900.0,
+    "open_interest" : 98736.05
+  },
+  "01:40" : {
+    "ts" : "2026-06-19T01:40:03Z",
+    "funding_rate" : 5.049E-5,
+    "mark_price" : 62853.1,
+    "open_interest" : 98777.82
+  },
+  "01:50" : {
+    "ts" : "2026-06-19T01:50:04Z",
+    "funding_rate" : 4.875E-5,
+    "mark_price" : 62909.9,
+    "open_interest" : 98787.72
+  },
+  "02:00" : {
+    "ts" : "2026-06-19T02:00:02Z",
+    "funding_rate" : 4.82E-5,
+    "mark_price" : 62994.5,
+    "open_interest" : 98794.84
+  },
+  "02:10" : {
+    "ts" : "2026-06-19T02:10:02Z",
+    "funding_rate" : 4.674E-5,
+    "mark_price" : 63018.9,
+    "open_interest" : 98824.26
+  },
+  "02:20" : {
+    "ts" : "2026-06-19T02:20:02Z",
+    "funding_rate" : 4.565E-5,
+    "mark_price" : 62937.33,
+    "open_interest" : 98780.24
+  },
+  "02:30" : {
+    "ts" : "2026-06-19T02:30:04Z",
+    "funding_rate" : 4.519E-5,
+    "mark_price" : 62923.4,
+    "open_interest" : 98893.66
+  },
+  "02:40" : {
+    "ts" : "2026-06-19T02:40:02Z",
+    "funding_rate" : 4.505E-5,
+    "mark_price" : 62904.0,
+    "open_interest" : 98935.45
+  },
+  "02:50" : {
+    "ts" : "2026-06-19T02:50:02Z",
+    "funding_rate" : 4.547E-5,
+    "mark_price" : 62924.29,
+    "open_interest" : 98918.9
+  },
+  "03:00" : {
+    "ts" : "2026-06-19T03:00:03Z",
+    "funding_rate" : 4.626E-5,
+    "mark_price" : 62977.06,
+    "open_interest" : 98891.08
+  },
+  "03:10" : {
+    "ts" : "2026-06-19T03:10:02Z",
+    "funding_rate" : 4.447E-5,
+    "mark_price" : 62875.0,
+    "open_interest" : 98918.48
+  },
+  "03:20" : {
+    "ts" : "2026-06-19T03:20:02Z",
+    "funding_rate" : 4.151E-5,
+    "mark_price" : 62514.7,
+    "open_interest" : 98558.34
+  },
+  "03:30" : {
+    "ts" : "2026-06-19T03:30:02Z",
+    "funding_rate" : 3.959E-5,
+    "mark_price" : 62810.81,
+    "open_interest" : 98432.17
+  },
+  "03:40" : {
+    "ts" : "2026-06-19T03:40:02Z",
+    "funding_rate" : 3.681E-5,
+    "mark_price" : 62606.2,
+    "open_interest" : 98498.72
+  },
+  "03:50" : {
+    "ts" : "2026-06-19T03:50:02Z",
+    "funding_rate" : 3.541E-5,
+    "mark_price" : 62638.2,
+    "open_interest" : 98464.41
+  },
+  "04:00" : {
+    "ts" : "2026-06-19T04:00:02Z",
+    "funding_rate" : 3.521E-5,
+    "mark_price" : 62745.1,
+    "open_interest" : 98413.7
+  },
+  "04:10" : {
+    "ts" : "2026-06-19T04:10:03Z",
+    "funding_rate" : 3.403E-5,
+    "mark_price" : 62765.0,
+    "open_interest" : 98413.18
+  },
+  "04:20" : {
+    "ts" : "2026-06-19T04:20:02Z",
+    "funding_rate" : 3.507E-5,
+    "mark_price" : 62746.07,
+    "open_interest" : 98275.82
+  },
+  "04:30" : {
+    "ts" : "2026-06-19T04:30:02Z",
+    "funding_rate" : 3.372E-5,
+    "mark_price" : 62699.31,
+    "open_interest" : 98210.12
+  },
+  "04:40" : {
+    "ts" : "2026-06-19T04:40:02Z",
+    "funding_rate" : 3.173E-5,
+    "mark_price" : 62529.1,
+    "open_interest" : 98248.05
+  },
+  "04:50" : {
+    "ts" : "2026-06-19T04:50:02Z",
+    "funding_rate" : 2.962E-5,
+    "mark_price" : 62639.43,
+    "open_interest" : 98253.37
+  },
+  "05:00" : {
+    "ts" : "2026-06-19T05:00:03Z",
+    "funding_rate" : 2.662E-5,
+    "mark_price" : 62426.9,
+    "open_interest" : 98642.68
+  },
+  "05:10" : {
+    "ts" : "2026-06-19T05:10:02Z",
+    "funding_rate" : 2.588E-5,
+    "mark_price" : 62638.1,
+    "open_interest" : 98619.0
+  },
+  "05:20" : {
+    "ts" : "2026-06-19T05:20:03Z",
+    "funding_rate" : 2.426E-5,
+    "mark_price" : 62586.9,
+    "open_interest" : 98540.83
+  },
+  "05:30" : {
+    "ts" : "2026-06-19T05:30:02Z",
+    "funding_rate" : 2.264E-5,
+    "mark_price" : 62582.48,
+    "open_interest" : 98565.08
+  },
+  "05:40" : {
+    "ts" : "2026-06-19T05:40:02Z",
+    "funding_rate" : 2.158E-5,
+    "mark_price" : 62564.1,
+    "open_interest" : 98576.37
+  },
+  "05:50" : {
+    "ts" : "2026-06-19T05:50:02Z",
+    "funding_rate" : 2.063E-5,
+    "mark_price" : 62683.08,
+    "open_interest" : 98434.61
+  },
+  "06:00" : {
+    "ts" : "2026-06-19T06:00:02Z",
+    "funding_rate" : 2.181E-5,
+    "mark_price" : 62710.56,
+    "open_interest" : 98389.79
+  },
+  "06:10" : {
+    "ts" : "2026-06-19T06:10:02Z",
+    "funding_rate" : 2.268E-5,
+    "mark_price" : 62792.7,
+    "open_interest" : 98350.19
+  },
+  "06:20" : {
+    "ts" : "2026-06-19T06:20:02Z",
+    "funding_rate" : 2.342E-5,
+    "mark_price" : 62763.0,
+    "open_interest" : 98330.46
+  },
+  "06:30" : {
+    "ts" : "2026-06-19T06:30:02Z",
+    "funding_rate" : 2.358E-5,
+    "mark_price" : 62809.76,
+    "open_interest" : 98343.53
+  },
+  "06:40" : {
+    "ts" : "2026-06-19T06:40:02Z",
+    "funding_rate" : 2.068E-5,
+    "mark_price" : 62708.3,
+    "open_interest" : 98365.15
+  },
+  "06:50" : {
+    "ts" : "2026-06-19T06:50:02Z",
+    "funding_rate" : 2.274E-5,
+    "mark_price" : 62764.44,
+    "open_interest" : 98385.74
+  },
+  "07:00" : {
+    "ts" : "2026-06-19T07:00:32Z",
+    "funding_rate" : 2.413E-5,
+    "mark_price" : 62884.1,
+    "open_interest" : 98439.04
+  },
+  "07:10" : {
+    "ts" : "2026-06-19T07:10:13Z",
+    "funding_rate" : 2.404E-5,
+    "mark_price" : 62799.77,
+    "open_interest" : 98445.44
+  },
+  "07:20" : {
+    "ts" : "2026-06-19T07:20:14Z",
+    "funding_rate" : 2.401E-5,
+    "mark_price" : 62700.0,
+    "open_interest" : 98432.33
+  },
+  "07:30" : {
+    "ts" : "2026-06-19T07:30:02Z",
+    "funding_rate" : 2.527E-5,
+    "mark_price" : 62727.8,
+    "open_interest" : 98449.67
+  },
+  "07:40" : {
+    "ts" : "2026-06-19T07:40:13Z",
+    "funding_rate" : 2.232E-5,
+    "mark_price" : 62501.7,
+    "open_interest" : 98498.08
+  },
+  "07:50" : {
+    "ts" : "2026-06-19T07:50:13Z",
+    "funding_rate" : 2.156E-5,
+    "mark_price" : 62505.3,
+    "open_interest" : 98651.01
+  },
+  "08:00" : {
+    "ts" : "2026-06-19T08:00:13Z",
+    "funding_rate" : 1.984E-5,
+    "mark_price" : 62584.55,
+    "open_interest" : 98627.64
+  },
+  "08:10" : {
+    "ts" : "2026-06-19T08:10:13Z",
+    "funding_rate" : 1.694E-5,
+    "mark_price" : 62545.8,
+    "open_interest" : 98636.01
+  },
+  "08:20" : {
+    "ts" : "2026-06-19T08:20:14Z",
+    "funding_rate" : 1.416E-5,
+    "mark_price" : 62613.7,
+    "open_interest" : 98535.37
+  },
+  "08:30" : {
+    "ts" : "2026-06-19T08:30:13Z",
+    "funding_rate" : 1.338E-5,
+    "mark_price" : 62644.37,
+    "open_interest" : 98483.58
+  },
+  "08:40" : {
+    "ts" : "2026-06-19T08:40:03Z",
+    "funding_rate" : 1.072E-5,
+    "mark_price" : 62748.32,
+    "open_interest" : 98601.04
+  },
+  "08:50" : {
+    "ts" : "2026-06-19T08:50:02Z",
+    "funding_rate" : 8.52E-6,
+    "mark_price" : 62605.67,
+    "open_interest" : 98655.19
+  },
+  "09:00" : {
+    "ts" : "2026-06-19T09:00:04Z",
+    "funding_rate" : 6.42E-6,
+    "mark_price" : 62577.9,
+    "open_interest" : 98738.94
+  },
+  "09:10" : {
+    "ts" : "2026-06-19T09:10:02Z",
+    "funding_rate" : 3.84E-6,
+    "mark_price" : 62446.27,
+    "open_interest" : 98846.14
+  },
+  "09:20" : {
+    "ts" : "2026-06-19T09:20:02Z",
+    "funding_rate" : -7.7E-7,
+    "mark_price" : 62390.3,
+    "open_interest" : 98804.95
+  },
+  "09:30" : {
+    "ts" : "2026-06-19T09:30:02Z",
+    "funding_rate" : -3.1E-6,
+    "mark_price" : 62351.9,
+    "open_interest" : 98907.72
+  },
+  "09:40" : {
+    "ts" : "2026-06-19T09:40:03Z",
+    "funding_rate" : -3.92E-6,
+    "mark_price" : 62465.3,
+    "open_interest" : 98871.4
+  },
+  "09:50" : {
+    "ts" : "2026-06-19T09:50:03Z",
+    "funding_rate" : -5.83E-6,
+    "mark_price" : 62309.1,
+    "open_interest" : 98962.62
+  },
+  "10:00" : {
+    "ts" : "2026-06-19T10:00:02Z",
+    "funding_rate" : -7.8E-6,
+    "mark_price" : 62353.32,
+    "open_interest" : 99150.86
+  },
+  "10:10" : {
+    "ts" : "2026-06-19T10:10:02Z",
+    "funding_rate" : -8.47E-6,
+    "mark_price" : 62514.64,
+    "open_interest" : 99186.79
+  },
+  "10:20" : {
+    "ts" : "2026-06-19T10:20:02Z",
+    "funding_rate" : -8.03E-6,
+    "mark_price" : 62409.21,
+    "open_interest" : 99072.65
+  },
+  "10:30" : {
+    "ts" : "2026-06-19T10:30:02Z",
+    "funding_rate" : -7.64E-6,
+    "mark_price" : 62473.5,
+    "open_interest" : 99091.0
+  },
+  "10:40" : {
+    "ts" : "2026-06-19T10:40:02Z",
+    "funding_rate" : -7.02E-6,
+    "mark_price" : 62401.1,
+    "open_interest" : 99101.5
+  },
+  "10:50" : {
+    "ts" : "2026-06-19T10:50:03Z",
+    "funding_rate" : -3.94E-6,
+    "mark_price" : 62436.78,
+    "open_interest" : 99138.51
+  },
+  "11:00" : {
+    "ts" : "2026-06-19T11:00:04Z",
+    "funding_rate" : 7.6E-7,
+    "mark_price" : 62507.28,
+    "open_interest" : 99140.97
+  },
+  "11:10" : {
+    "ts" : "2026-06-19T11:10:03Z",
+    "funding_rate" : 5.76E-6,
+    "mark_price" : 62453.79,
+    "open_interest" : 99158.17
+  },
+  "11:20" : {
+    "ts" : "2026-06-19T11:20:25Z",
+    "funding_rate" : 8.04E-6,
+    "mark_price" : 62539.2,
+    "open_interest" : 99159.8
+  },
+  "11:30" : {
+    "ts" : "2026-06-19T11:30:02Z",
+    "funding_rate" : 1.254E-5,
+    "mark_price" : 62616.3,
+    "open_interest" : 99060.8
+  },
+  "11:40" : {
+    "ts" : "2026-06-19T11:40:02Z",
+    "funding_rate" : 1.338E-5,
+    "mark_price" : 62616.87,
+    "open_interest" : 99053.71
+  },
+  "11:50" : {
+    "ts" : "2026-06-19T11:50:02Z",
+    "funding_rate" : 1.578E-5,
+    "mark_price" : 62640.17,
+    "open_interest" : 99074.76
+  },
+  "12:00" : {
+    "ts" : "2026-06-19T12:00:03Z",
+    "funding_rate" : 1.595E-5,
+    "mark_price" : 62613.9,
+    "open_interest" : 99101.12
+  },
+  "12:10" : {
+    "ts" : "2026-06-19T12:10:02Z",
+    "funding_rate" : 1.693E-5,
+    "mark_price" : 62663.47,
+    "open_interest" : 99117.53
+  },
+  "12:20" : {
+    "ts" : "2026-06-19T12:20:02Z",
+    "funding_rate" : 1.795E-5,
+    "mark_price" : 62510.8,
+    "open_interest" : 99067.59
+  },
+  "12:30" : {
+    "ts" : "2026-06-19T12:30:13Z",
+    "funding_rate" : 1.875E-5,
+    "mark_price" : 62516.24,
+    "open_interest" : 99105.4
+  },
+  "12:40" : {
+    "ts" : "2026-06-19T12:40:02Z",
+    "funding_rate" : 1.811E-5,
+    "mark_price" : 62544.4,
+    "open_interest" : 99162.86
+  },
+  "12:50" : {
+    "ts" : "2026-06-19T12:50:02Z",
+    "funding_rate" : 1.627E-5,
+    "mark_price" : 62362.5,
+    "open_interest" : 99219.3
+  },
+  "13:00" : {
+    "ts" : "2026-06-19T13:00:03Z",
+    "funding_rate" : 1.644E-5,
+    "mark_price" : 62804.0,
+    "open_interest" : 99155.09
+  },
+  "13:10" : {
+    "ts" : "2026-06-19T13:10:03Z",
+    "funding_rate" : 1.72E-5,
+    "mark_price" : 62832.65,
+    "open_interest" : 99475.42
+  },
+  "13:20" : {
+    "ts" : "2026-06-19T13:20:02Z",
+    "funding_rate" : 1.452E-5,
+    "mark_price" : 62679.5,
+    "open_interest" : 99288.26
+  },
+  "13:30" : {
+    "ts" : "2026-06-19T13:30:03Z",
+    "funding_rate" : 1.535E-5,
+    "mark_price" : 62758.5,
+    "open_interest" : 99374.54
+  },
+  "13:40" : {
+    "ts" : "2026-06-19T13:40:02Z",
+    "funding_rate" : 1.548E-5,
+    "mark_price" : 62919.04,
+    "open_interest" : 99461.51
+  },
+  "13:50" : {
+    "ts" : "2026-06-19T13:50:02Z",
+    "funding_rate" : 1.517E-5,
+    "mark_price" : 63282.11,
+    "open_interest" : 98842.6
+  },
+  "14:00" : {
+    "ts" : "2026-06-19T14:00:03Z",
+    "funding_rate" : 1.424E-5,
+    "mark_price" : 63181.0,
+    "open_interest" : 98842.75
+  },
+  "14:10" : {
+    "ts" : "2026-06-19T14:10:02Z",
+    "funding_rate" : 1.378E-5,
+    "mark_price" : 63110.9,
+    "open_interest" : 98842.98
+  },
+  "14:20" : {
+    "ts" : "2026-06-19T14:20:03Z",
+    "funding_rate" : 1.271E-5,
+    "mark_price" : 63030.4,
+    "open_interest" : 98942.44
+  },
+  "14:30" : {
+    "ts" : "2026-06-19T14:30:03Z",
+    "funding_rate" : 1.276E-5,
+    "mark_price" : 63250.7,
+    "open_interest" : 98870.81
+  },
+  "14:40" : {
+    "ts" : "2026-06-19T14:40:02Z",
+    "funding_rate" : 1.482E-5,
+    "mark_price" : 63297.2,
+    "open_interest" : 98832.67
+  },
+  "14:50" : {
+    "ts" : "2026-06-19T14:50:03Z",
+    "funding_rate" : 1.561E-5,
+    "mark_price" : 63300.0,
+    "open_interest" : 98721.26
+  },
+  "15:00" : {
+    "ts" : "2026-06-19T15:00:04Z",
+    "funding_rate" : 1.589E-5,
+    "mark_price" : 63174.8,
+    "open_interest" : 98687.53
+  },
+  "15:10" : {
+    "ts" : "2026-06-19T15:10:03Z",
+    "funding_rate" : 1.52E-5,
+    "mark_price" : 63137.8,
+    "open_interest" : 98746.67
+  },
+  "15:20" : {
+    "ts" : "2026-06-19T15:20:02Z",
+    "funding_rate" : 1.654E-5,
+    "mark_price" : 63064.2,
+    "open_interest" : 98746.93
+  },
+  "15:30" : {
+    "ts" : "2026-06-19T15:30:03Z",
+    "funding_rate" : 1.89E-5,
+    "mark_price" : 63034.5,
+    "open_interest" : 98822.83
+  },
+  "15:40" : {
+    "ts" : "2026-06-19T15:40:03Z",
+    "funding_rate" : 2.235E-5,
+    "mark_price" : 63088.08,
+    "open_interest" : 98770.58
+  },
+  "15:50" : {
+    "ts" : "2026-06-19T15:50:02Z",
+    "funding_rate" : 2.469E-5,
+    "mark_price" : 63193.0,
+    "open_interest" : 98661.0
+  },
+  "16:00" : {
+    "ts" : "2026-06-19T16:00:02Z",
+    "funding_rate" : 2.823E-5,
+    "mark_price" : 63193.1,
+    "open_interest" : 98666.02
+  },
+  "16:10" : {
+    "ts" : "2026-06-19T16:10:02Z",
+    "funding_rate" : 3.196E-5,
+    "mark_price" : 63084.0,
+    "open_interest" : 98634.94
+  },
+  "16:20" : {
+    "ts" : "2026-06-19T16:20:02Z",
+    "funding_rate" : 3.617E-5,
+    "mark_price" : 63254.8,
+    "open_interest" : 98549.16
+  },
+  "16:30" : {
+    "ts" : "2026-06-19T16:30:02Z",
+    "funding_rate" : 4.065E-5,
+    "mark_price" : 63281.2,
+    "open_interest" : 98601.85
+  },
+  "16:40" : {
+    "ts" : "2026-06-19T16:40:02Z",
+    "funding_rate" : 4.585E-5,
+    "mark_price" : 63279.2,
+    "open_interest" : 98585.78
+  },
+  "16:50" : {
+    "ts" : "2026-06-19T16:50:01Z",
+    "funding_rate" : 4.931E-5,
+    "mark_price" : 63148.74,
+    "open_interest" : 98562.2
+  },
+  "17:00" : {
+    "ts" : "2026-06-19T17:00:02Z",
+    "funding_rate" : 5.17E-5,
+    "mark_price" : 62955.6,
+    "open_interest" : 98402.58
+  },
+  "17:10" : {
+    "ts" : "2026-06-19T17:10:03Z",
+    "funding_rate" : 5.377E-5,
+    "mark_price" : 62935.23,
+    "open_interest" : 98401.54
+  },
+  "17:20" : {
+    "ts" : "2026-06-19T17:20:03Z",
+    "funding_rate" : 5.606E-5,
+    "mark_price" : 63072.2,
+    "open_interest" : 98428.74
+  },
+  "17:30" : {
+    "ts" : "2026-06-19T17:30:02Z",
+    "funding_rate" : 5.554E-5,
+    "mark_price" : 62899.9,
+    "open_interest" : 98451.64
+  },
+  "17:40" : {
+    "ts" : "2026-06-19T17:40:02Z",
+    "funding_rate" : 5.697E-5,
+    "mark_price" : 63027.54,
+    "open_interest" : 98481.81
+  },
+  "17:50" : {
+    "ts" : "2026-06-19T17:50:02Z",
+    "funding_rate" : 5.939E-5,
+    "mark_price" : 63158.86,
+    "open_interest" : 98455.5
+  },
+  "18:00" : {
+    "ts" : "2026-06-19T18:00:03Z",
+    "funding_rate" : 6.003E-5,
+    "mark_price" : 63172.05,
+    "open_interest" : 98541.97
+  },
+  "18:10" : {
+    "ts" : "2026-06-19T18:10:02Z",
+    "funding_rate" : 5.875E-5,
+    "mark_price" : 63089.82,
+    "open_interest" : 98539.72
+  },
+  "18:20" : {
+    "ts" : "2026-06-19T18:20:02Z",
+    "funding_rate" : 5.781E-5,
+    "mark_price" : 63116.0,
+    "open_interest" : 98546.0
+  },
+  "18:30" : {
+    "ts" : "2026-06-19T18:30:03Z",
+    "funding_rate" : 5.601E-5,
+    "mark_price" : 63093.1,
+    "open_interest" : 98563.47
+  },
+  "18:40" : {
+    "ts" : "2026-06-19T18:40:02Z",
+    "funding_rate" : 5.482E-5,
+    "mark_price" : 62981.1,
+    "open_interest" : 98507.24
+  },
+  "18:50" : {
+    "ts" : "2026-06-19T18:50:03Z",
+    "funding_rate" : 5.713E-5,
+    "mark_price" : 63041.6,
+    "open_interest" : 98504.57
+  },
+  "19:00" : {
+    "ts" : "2026-06-19T19:00:03Z",
+    "funding_rate" : 5.866E-5,
+    "mark_price" : 63074.5,
+    "open_interest" : 98503.15
+  },
+  "19:10" : {
+    "ts" : "2026-06-19T19:10:02Z",
+    "funding_rate" : 5.807E-5,
+    "mark_price" : 63008.52,
+    "open_interest" : 98520.88
+  },
+  "19:20" : {
+    "ts" : "2026-06-19T19:20:02Z",
+    "funding_rate" : 5.897E-5,
+    "mark_price" : 62975.6,
+    "open_interest" : 98515.2
+  },
+  "19:30" : {
+    "ts" : "2026-06-19T19:30:03Z",
+    "funding_rate" : 6.029E-5,
+    "mark_price" : 62972.96,
+    "open_interest" : 98492.39
+  },
+  "19:40" : {
+    "ts" : "2026-06-19T19:40:02Z",
+    "funding_rate" : 6.089E-5,
+    "mark_price" : 62952.2,
+    "open_interest" : 98560.3
+  },
+  "19:50" : {
+    "ts" : "2026-06-19T19:50:23Z",
+    "funding_rate" : 6.309E-5,
+    "mark_price" : 63000.0,
+    "open_interest" : 98543.63
+  },
+  "20:00" : {
+    "ts" : "2026-06-19T20:00:04Z",
+    "funding_rate" : 6.317E-5,
+    "mark_price" : 63009.5,
+    "open_interest" : 98548.33
+  },
+  "20:10" : {
+    "ts" : "2026-06-19T20:10:03Z",
+    "funding_rate" : 6.499E-5,
+    "mark_price" : 63041.8,
+    "open_interest" : 98538.99
+  },
+  "20:20" : {
+    "ts" : "2026-06-19T20:20:03Z",
+    "funding_rate" : 6.614E-5,
+    "mark_price" : 62999.0,
+    "open_interest" : 98541.35
+  },
+  "20:30" : {
+    "ts" : "2026-06-19T20:30:04Z",
+    "funding_rate" : 6.607E-5,
+    "mark_price" : 63056.27,
+    "open_interest" : 98544.07
+  },
+  "20:40" : {
+    "ts" : "2026-06-19T20:40:02Z",
+    "funding_rate" : 6.738E-5,
+    "mark_price" : 63017.36,
+    "open_interest" : 98570.55
+  },
+  "20:50" : {
+    "ts" : "2026-06-19T20:50:02Z",
+    "funding_rate" : 6.829E-5,
+    "mark_price" : 63149.5,
+    "open_interest" : 98537.67
+  },
+  "21:00" : {
+    "ts" : "2026-06-19T21:00:02Z",
+    "funding_rate" : 6.908E-5,
+    "mark_price" : 63217.3,
+    "open_interest" : 98462.97
+  },
+  "21:10" : {
+    "ts" : "2026-06-19T21:10:02Z",
+    "funding_rate" : 6.854E-5,
+    "mark_price" : 63183.6,
+    "open_interest" : 98348.82
+  },
+  "21:20" : {
+    "ts" : "2026-06-19T21:20:02Z",
+    "funding_rate" : 6.919E-5,
+    "mark_price" : 63216.8,
+    "open_interest" : 98391.48
+  },
+  "21:30" : {
+    "ts" : "2026-06-19T21:30:03Z",
+    "funding_rate" : 6.856E-5,
+    "mark_price" : 63131.66,
+    "open_interest" : 98385.56
+  },
+  "21:40" : {
+    "ts" : "2026-06-19T21:40:02Z",
+    "funding_rate" : 6.774E-5,
+    "mark_price" : 63079.49,
+    "open_interest" : 98411.17
+  },
+  "21:50" : {
+    "ts" : "2026-06-19T21:50:02Z",
+    "funding_rate" : 6.767E-5,
+    "mark_price" : 63092.7,
+    "open_interest" : 98397.78
+  },
+  "22:00" : {
+    "ts" : "2026-06-19T22:00:03Z",
+    "funding_rate" : 6.624E-5,
+    "mark_price" : 63034.73,
+    "open_interest" : 98373.69
+  },
+  "22:10" : {
+    "ts" : "2026-06-19T22:10:02Z",
+    "funding_rate" : 6.37E-5,
+    "mark_price" : 63068.27,
+    "open_interest" : 98304.22
+  },
+  "22:20" : {
+    "ts" : "2026-06-19T22:20:02Z",
+    "funding_rate" : 6.338E-5,
+    "mark_price" : 63167.9,
+    "open_interest" : 98266.19
+  },
+  "22:30" : {
+    "ts" : "2026-06-19T22:30:02Z",
+    "funding_rate" : 6.472E-5,
+    "mark_price" : 63233.6,
+    "open_interest" : 98322.55
+  },
+  "22:40" : {
+    "ts" : "2026-06-19T22:40:03Z",
+    "funding_rate" : 6.435E-5,
+    "mark_price" : 63259.3,
+    "open_interest" : 98336.66
+  },
+  "22:50" : {
+    "ts" : "2026-06-19T22:50:02Z",
+    "funding_rate" : 6.528E-5,
+    "mark_price" : 63340.8,
+    "open_interest" : 98310.48
+  },
+  "23:00" : {
+    "ts" : "2026-06-19T23:00:03Z",
+    "funding_rate" : 6.32E-5,
+    "mark_price" : 63294.6,
+    "open_interest" : 98299.45
+  },
+  "23:10" : {
+    "ts" : "2026-06-19T23:10:02Z",
+    "funding_rate" : 6.387E-5,
+    "mark_price" : 63260.26,
+    "open_interest" : 98343.58
+  },
+  "23:20" : {
+    "ts" : "2026-06-19T23:20:02Z",
+    "funding_rate" : 6.48E-5,
+    "mark_price" : 63281.09,
+    "open_interest" : 98331.56
+  },
+  "23:30" : {
+    "ts" : "2026-06-19T23:30:02Z",
+    "funding_rate" : 6.386E-5,
+    "mark_price" : 63291.47,
+    "open_interest" : 98320.3
+  },
+  "23:40" : {
+    "ts" : "2026-06-19T23:40:02Z",
+    "funding_rate" : 6.451E-5,
+    "mark_price" : 63302.3,
+    "open_interest" : 98247.41
+  },
+  "23:50" : {
+    "ts" : "2026-06-19T23:50:03Z",
+    "funding_rate" : 6.108E-5,
+    "mark_price" : 63295.73,
+    "open_interest" : 98215.08
+  }
+}

@@ -1366,17 +1366,17 @@
     "prediction_record" : null
   },
   "21:20" : {
-    "analyzed_at" : "2026-06-15T22:39:04Z",
+    "analyzed_at" : "2026-06-18T20:52:14Z",
     "model" : "claude-sonnet-4-6",
     "article_ids" : [ 3203, 3206 ],
     "screener" : [ {
       "article_id" : 3203,
       "score" : 0,
-      "reason" : "Sports/entertainment event unrelated to crypto or macro drivers."
+      "reason" : "Unrelated to crypto or macro markets; sports event coverage."
     }, {
       "article_id" : 3206,
-      "score" : 8,
-      "reason" : "Major geopolitical de-escalation: Iran nuclear deal completed, Strait of Hormuz blockade lifted immediately. Oil supply shock reversal is material macro event with urgent institutional positioning impact on risk assets including BTC."
+      "score" : 3,
+      "reason" : "Major geopolitical catalyst: announced resolution of Iran nuclear deal and immediate opening of Strait of Hormuz with removal of US naval blockade—direct oil-supply shock with immediate macro/BTC implications."
     } ],
     "prediction_record" : {
       "btc_at_prediction" : 64774.97,
@@ -1385,10 +1385,9 @@
       "claude_available" : true,
       "direction" : "bullish",
       "impact_tier" : "high",
-      "confidence" : "medium",
-      "macro_regime" : "neutral",
-      "key_events" : [ "Trump announces completed US-Iran deal, authorizes opening of Strait of Hormuz and removal of US Naval blockade" ],
-      "reasoning" : "Fact (not a threat — Trump declares the deal 'complete' and issues a direct executive authorization to remove the naval blockade, an executed decision), new (a US-Iran deal and Hormuz reopening was not a priced certainty), channel is broad macro risk-on: oil supply shock relief reduces inflation pressure, eases geopolitical tail risk, and supports risk assets including BTC; however, the 1.66% pre-trend rise suggests some market reaction may already be underway, slightly reducing marginal impact.",
+      "macro_regime" : "n/a",
+      "key_events" : [ "Trump announces completed Iran deal, authorizes toll-free opening of Strait of Hormuz and removal of US naval blockade" ],
+      "reasoning" : "Fact (deal declared complete, specific actions — blockade removal, Hormuz opening — are authorized as done, not threatened); new (a completed geopolitical de-escalation of this magnitude is not priced); strong broad risk-on channel — oil supply shock relief, geopolitical risk premium compression, and classic risk-asset tailwind for BTC. Pre-trend already +1.66% suggests early repricing underway; neutral positioning means no cascade fuel but the event itself is the driver.",
       "options_signal" : { },
       "funding_signal" : {
         "positioning" : "neutral",
@@ -1404,7 +1403,7 @@
         "id" : 3206,
         "title" : "The Deal with the Islamic Republic of Iran is now complete. Congratulations to all! I hereby fully authorize the toll free opening of the Strait of Hormuz, and, simultaneously herewith, authorize the immediate removal of the United States Naval blockade. Ships of the World, start your engines. Let the oil flow! President DONALD J. TRUMP",
         "direction" : "bullish",
-        "reasoning" : "Fact (deal declared complete, naval blockade removal authorized as an executed order), new (US-Iran resolution was unpriced), channel via macro risk-on sentiment, geopolitical de-escalation, and reduced inflation/energy tail risk supporting crypto alongside other risk assets.",
+        "reasoning" : "Completed deal announcement (fact, not posture), genuinely new geopolitical de-escalation, with a broad risk-on channel directly relevant to BTC as a risk asset.",
         "scenario" : "front_run",
         "pre_trend" : "rising",
         "published_at" : "2026-06-14T21:29:48Z",

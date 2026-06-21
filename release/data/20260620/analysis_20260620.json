@@ -1,0 +1,372 @@
+{
+  "01:50" : {
+    "analyzed_at" : "2026-06-20T02:00:19Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4047 ],
+    "screener" : [ {
+      "article_id" : 4047,
+      "score" : 0,
+      "reason" : "Unrelated to crypto or macro catalysts; domestic infrastructure/vandalism complaint with no BTC impact"
+    } ],
+    "prediction_record" : null
+  },
+  "02:00" : {
+    "analyzed_at" : "2026-06-20T02:10:34Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4048 ],
+    "screener" : [ {
+      "article_id" : 4048,
+      "score" : 0,
+      "reason" : "No content provided; cannot assess materiality without article text or claims."
+    } ],
+    "prediction_record" : null
+  },
+  "04:00" : {
+    "analyzed_at" : "2026-06-20T04:10:44Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4051 ],
+    "screener" : [ {
+      "article_id" : 4051,
+      "score" : 0,
+      "reason" : "No substantive content provided; cannot assess materiality without article text or claims."
+    } ],
+    "prediction_record" : null
+  },
+  "11:00" : {
+    "analyzed_at" : "2026-06-20T11:05:55Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4070 ],
+    "screener" : [ {
+      "article_id" : 4070,
+      "score" : 0,
+      "reason" : "Political opinion/rhetoric with no new factual catalyst; no concrete policy action, military event, or sanctions announcement disclosed."
+    } ],
+    "prediction_record" : null
+  },
+  "11:40" : {
+    "analyzed_at" : "2026-06-21T11:50:14Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4071, 4117 ],
+    "screener" : [ {
+      "article_id" : 4071,
+      "score" : 0,
+      "reason" : "Political commentary with no new crypto/macro catalyst; personal dispute unrelated to BTC market drivers."
+    }, {
+      "article_id" : 4117,
+      "score" : 0,
+      "reason" : "NFT/trading card retail expansion is niche consumer news, not a material BTC market catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "11:50" : {
+    "analyzed_at" : "2026-06-20T12:00:16Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4072 ],
+    "screener" : [ {
+      "article_id" : 4072,
+      "score" : 0,
+      "reason" : "Political opinion/commentary with no new factual development; no concrete policy action, military event, or sanctions announcement that would materially impact BTC."
+    } ],
+    "prediction_record" : null
+  },
+  "12:20" : {
+    "analyzed_at" : "2026-06-20T12:29:13Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4074, 4075, 4076 ],
+    "screener" : [ {
+      "article_id" : 4074,
+      "score" : 0,
+      "reason" : "Political commentary and personal grievance; no material catalyst for BTC markets."
+    }, {
+      "article_id" : 4075,
+      "score" : 0,
+      "reason" : "Domestic US political allegation unrelated to crypto, monetary policy, or macro catalysts."
+    }, {
+      "article_id" : 4076,
+      "score" : 0,
+      "reason" : "Duplicate of article 1; same Trump post on Meloni and Iran conflict."
+    } ],
+    "prediction_record" : null
+  },
+  "13:00" : {
+    "analyzed_at" : "2026-06-20T13:10:15Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4078 ],
+    "screener" : [ {
+      "article_id" : 4078,
+      "score" : 0,
+      "reason" : "Market recap of a past event (STRC preferred-stock decline); no new catalyst or development reported, only timeline/analysis of what already happened."
+    } ],
+    "prediction_record" : null
+  },
+  "14:10" : {
+    "analyzed_at" : "2026-06-20T14:15:49Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4082 ],
+    "screener" : [ {
+      "article_id" : 4082,
+      "score" : 0,
+      "reason" : "No substantive content provided; cannot assess materiality without article text or claims."
+    } ],
+    "prediction_record" : null
+  },
+  "14:50" : {
+    "analyzed_at" : "2026-06-21T15:00:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4083, 4124, 4125, 4126 ],
+    "screener" : [ {
+      "article_id" : 4083,
+      "score" : 0,
+      "reason" : "Political opinion/poll with no crypto or macro relevance; unrelated to BTC catalysts."
+    }, {
+      "article_id" : 4124,
+      "score" : 0,
+      "reason" : "Price recap and network activity observation; no new event or catalyst, just commentary on existing conditions."
+    }, {
+      "article_id" : 4125,
+      "score" : 1,
+      "reason" : "Regulatory review of MiCA framework is real but slow-moving and indirect; early-stage consultation, not a new enforcement action or surprise policy change."
+    }, {
+      "article_id" : 4126,
+      "score" : 0,
+      "reason" : "Airline industry analysis unrelated to crypto, macro monetary policy, geopolitics affecting BTC, or trade policy; no BTC relevance."
+    } ],
+    "prediction_record" : null
+  },
+  "15:00" : {
+    "analyzed_at" : "2026-06-21T15:00:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4088, 4123 ],
+    "screener" : [ {
+      "article_id" : 4088,
+      "score" : 0,
+      "reason" : "Speculative commentary on AI security trends; no new catalyst or concrete event affecting BTC markets."
+    }, {
+      "article_id" : 4123,
+      "score" : 0,
+      "reason" : "Pure opinion/analyst commentary with no new fact or event; a price forecast framing, not a material catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "15:50" : {
+    "analyzed_at" : "2026-06-20T16:00:17Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4089 ],
+    "screener" : [ {
+      "article_id" : 4089,
+      "score" : 0,
+      "reason" : "Political opinion/poll about immigration agency naming; no connection to crypto, markets, or BTC catalysts."
+    } ],
+    "prediction_record" : null
+  },
+  "16:00" : {
+    "analyzed_at" : "2026-06-20T16:10:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4090 ],
+    "screener" : [ {
+      "article_id" : 4090,
+      "score" : 1,
+      "reason" : "Board resignations at a mid-tier L1 project; real but indirect channel to BTC, no systemic risk or major catalyst signal."
+    } ],
+    "prediction_record" : null
+  },
+  "19:00" : {
+    "analyzed_at" : "2026-06-21T19:20:16Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4095, 4129 ],
+    "screener" : [ {
+      "article_id" : 4095,
+      "score" : 1,
+      "reason" : "Schwab/Cboe binary options launch is crypto-adjacent but not a direct BTC catalyst; prediction markets are tangential to Bitcoin fundamentals and price drivers."
+    }, {
+      "article_id" : 4129,
+      "score" : 0,
+      "reason" : "Price/market recap of existing dominance trend; no new event or catalyst, pure technical analysis commentary on what has already happened."
+    } ],
+    "prediction_record" : null
+  },
+  "19:10" : {
+    "analyzed_at" : "2026-06-20T19:20:57Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4096 ],
+    "screener" : [ {
+      "article_id" : 4096,
+      "score" : 2,
+      "reason" : "Unverified claim of major geopolitical deal (Hormuz Strait toll freeze); would be material-if-true for oil/macro, but single-source (Trump Truth Social) requires credibility verification before treating as confirmed catalyst."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 63898.01,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fails Step 1: Trump's declaration about Hormuz Strait tolls is posture -- the US does not control the Strait of Hormuz (located in Iranian/Omani territorial waters) and cannot unilaterally impose or waive tolls there; this is characteristic leverage-seeking rhetoric, not an executed policy. The implied ceasefire context is interesting but not confirmed as a new completed fact by this post alone, and the toll declaration itself is not an executable action.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0028,
+        "oi_change_pct" : -0.012,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 63909.94,
+        "change_24h_pct" : 1.396,
+        "range_pos_24h" : 0.6694
+      },
+      "articles" : [ {
+        "id" : 4096,
+        "title" : "There will be NO TOLLS in the  Hormuz Strait for 60 days during the Cease Fire Period, and there will be NO TOLLS after the 60 day period has expired, unless they are imposed by and for the United States of America, should the deal not be completed, for services rendered as the Guardian Angel to the countries of the Middle East for purposes of both past, present, and future reimbursement of costs. Thank you for your attention to this matter!!! President DJT",
+        "direction" : "neutral",
+        "reasoning" : "Posture, not fact: Trump claiming toll authority over a strait the US does not control is leverage rhetoric, not an executed policy -- fails Step 1.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-20T19:15:17Z",
+        "url" : "https://www.trumpstruth.org/statuses/39401",
+        "price_at_publish" : 63898.01
+      } ]
+    },
+    "resonant_article_ids" : [ 4096 ]
+  },
+  "20:10" : {
+    "analyzed_at" : "2026-06-20T20:15:38Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4097 ],
+    "screener" : [ {
+      "article_id" : 4097,
+      "score" : 0,
+      "reason" : "Unrelated to crypto or macro markets; local crime story with no BTC catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "21:00" : {
+    "analyzed_at" : "2026-06-20T21:05:45Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4100 ],
+    "screener" : [ {
+      "article_id" : 4100,
+      "score" : 0,
+      "reason" : "Domestic US vandalism arrest; no connection to crypto, markets, monetary policy, geopolitics affecting BTC, or trade policy."
+    } ],
+    "prediction_record" : null
+  },
+  "21:50" : {
+    "analyzed_at" : "2026-06-20T22:00:05Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4103, 4104 ],
+    "screener" : [ {
+      "article_id" : 4103,
+      "score" : 0,
+      "reason" : "Duplicate of already-covered Trump Hormuz Strait toll announcement from 19:15 same day; no new material development."
+    }, {
+      "article_id" : 4104,
+      "score" : 2,
+      "reason" : "Real bridge exploit ($4.67M drained via infinite-mint bug, undetected 7 days) on cross-chain infrastructure; material crypto-structural event warranting closer look on scope and systemic risk, though isolated to one bridge."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 64004.89,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact (exploit occurred, funds drained) and new (just disclosed), but fails Step 3: a $4.67M infinite-mint exploit on a niche bridge (Secret Network/Axelar) has no meaningful transmission channel to BTC -- it is a small-protocol DeFi security incident, not a systemic exchange/ETF/liquidity event, and positioning is neutral with no leverage fuel to amplify even a real catalyst.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : -4.0E-4,
+        "oi_change_pct" : -0.34,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 64053.0,
+        "change_24h_pct" : 1.465,
+        "range_pos_24h" : 0.75
+      },
+      "articles" : [ {
+        "id" : 4104,
+        "title" : "Secret Network’s Axelar bridge drained for $4.67 million in infinite-mint exploit that went unnoticed for seven days",
+        "direction" : "neutral",
+        "reasoning" : "Confirmed exploit on a minor bridge protocol -- fact and new, but the channel to BTC is negligible given the small scale and niche protocols involved",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-20T21:57:05Z",
+        "url" : "https://www.theblock.co/post/405459/secret-networks-axelar-bridge-drained-for-4-67-million-in-infinite-mint-exploit-that-went-unnoticed-for-seven-days?utm_source=rss&utm_medium=rss",
+        "price_at_publish" : 64004.89
+      } ]
+    },
+    "resonant_article_ids" : [ 4104 ]
+  },
+  "22:10" : {
+    "analyzed_at" : "2026-06-20T22:20:10Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4105 ],
+    "screener" : [ {
+      "article_id" : 4105,
+      "score" : 0,
+      "reason" : "Unrelated to crypto or macro markets; domestic law enforcement matter with no predictive value for BTC."
+    } ],
+    "prediction_record" : null
+  },
+  "05:10" : {
+    "analyzed_at" : "2026-06-21T05:20:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4110 ],
+    "screener" : [ {
+      "article_id" : 4110,
+      "score" : 0,
+      "reason" : "Criminal case outcome; no new catalyst for BTC markets or crypto infrastructure. Enforcement of existing law, not a policy change or systemic event."
+    } ],
+    "prediction_record" : null
+  },
+  "07:00" : {
+    "analyzed_at" : "2026-06-21T07:30:18Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4113 ],
+    "screener" : [ {
+      "article_id" : 4113,
+      "score" : 1,
+      "reason" : "Regulatory signal of openness to RWA tokenization in Philippines; real but indirect channel to BTC, no new concrete action or major market catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "08:50" : {
+    "analyzed_at" : "2026-06-21T09:40:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4114 ],
+    "screener" : [ {
+      "article_id" : 4114,
+      "score" : 1,
+      "reason" : "Indirect macro signal: South Korean wage/inflation pressure is a slow, regional channel to BTC; not an immediate catalyst or policy decision yet."
+    } ],
+    "prediction_record" : null
+  },
+  "09:50" : {
+    "analyzed_at" : "2026-06-21T10:50:18Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4115 ],
+    "screener" : [ {
+      "article_id" : 4115,
+      "score" : 1,
+      "reason" : "Geopolitical escalation in Middle East is macro-relevant but indirect to BTC; ceasefire threat is ongoing regional tension rather than a new shock or policy catalyst with immediate market repricing power."
+    } ],
+    "prediction_record" : null
+  },
+  "12:00" : {
+    "analyzed_at" : "2026-06-21T12:50:15Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4118 ],
+    "screener" : [ {
+      "article_id" : 4118,
+      "score" : 1,
+      "reason" : "Indirect macro signal: tech debt issuance could affect rates, but no new catalyst or concrete event; speculative on BTC impact."
+    } ],
+    "prediction_record" : null
+  }
+}

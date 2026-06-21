@@ -152,13 +152,12 @@
              the best price) manages the exit. profitGraceInMin is a time stop: if the trade is not in
              profit by then it is closed (the catalyst is not working); 0 disables it. maxHoldInHours
              is a final chop backstop. broker=paper simulates fills (no real orders); broker=whitebit
-             places live WhiteBIT futures orders sized by liveNotionalInUsd. Starts paused unless
+             places live WhiteBIT futures orders sized by notionalInUsd. Starts paused unless
              -DrunTrader=true, toggled at runtime with `trade`. -->
         <FSTrader
             broker="whitebit"
             entryImpactTier="high"
-            notionalInUsd="1000.0"
-            liveNotionalInUsd="50.0"
+            notionalInUsd="300.0"
             leverage="5.0"
             stopLossInPct="0.3"
             trailInPct="1.0"

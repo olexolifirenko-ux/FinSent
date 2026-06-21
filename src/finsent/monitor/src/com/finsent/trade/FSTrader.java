@@ -68,7 +68,7 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     {
         // The live ticker price is always "now", so the PriceSource timestamp is ignored.
         this(buildBook(config), brokerFrom(config, whitebit), target -> collector.currentPrice(),
-                paramsFrom(config, whitebit), startPaused);
+                paramsFrom(config), startPaused);
     }
 
     /** Injecting constructor: book, broker, price source and params supplied directly (used by tests). */
@@ -109,11 +109,9 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
         return broker;
     }
 
-    private static Params paramsFrom(Config config, WhiteBitClient whitebit)
+    private static Params paramsFrom(Config config)
     {
-        boolean live = "whitebit".equalsIgnoreCase(config.tradeBroker()) && whitebit.configured();
-        double notionalInUsd = live ? config.tradeLiveNotionalInUsd() : config.tradeNotionalInUsd();
-        return new Params(config.tradeEntryImpactTier(), notionalInUsd, config.tradeLeverage(),
+        return new Params(config.tradeEntryImpactTier(), config.tradeNotionalInUsd(), config.tradeLeverage(),
                 config.tradeStopLossInPct(), config.tradeTrailInPct(), config.tradeMaxHoldInHours() * 3_600_000L,
                 config.tradePricePollInSec() * 1000L, config.tradeProfitGraceInMin() * 60_000L);
     }

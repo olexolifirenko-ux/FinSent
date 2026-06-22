@@ -252,6 +252,17 @@ public final class Config
         return attr(analyserNode_, "claudeDeepAnalModel", "claude-sonnet-4-6");
     }
 
+    /**
+     * Reasoning effort for the deep pass's adaptive thinking ({@code output_config.effort}): caps how
+     * much the model deliberates before answering. {@code medium} is the quality/latency sweet spot for
+     * the bounded 3-step test; {@code high} (the API default) is the slower fallback. Sonnet 4.6 accepts
+     * low|medium|high (not max). Applied only to the thinking deep pass, never the Haiku screener.
+     */
+    public String claudeDeepEffort()
+    {
+        return attr(analyserNode_, "claudeDeepEffort", "medium");
+    }
+
     public String claudeScreenerModel()
     {
         return attr(analyserNode_, "claudeScreenerModel", "claude-haiku-4-5-20251001");

@@ -21,6 +21,7 @@ import com.finsent.analyse.claude.IClaudeClient;
 public class DeepAnalysisPass_utest
 {
     private static final String MODEL = "claude-sonnet-test";
+    private static final String EFFORT = "medium";
 
     @Test
     public void parsesPredictionAndSplitsArticles()
@@ -29,7 +30,7 @@ public class DeepAnalysisPass_utest
                 "{\"direction\":\"bearish\",\"impact_tier\":\"high\",\"key_events\":[\"e1\"],"
                         + "\"reasoning\":\"r\",\"articles\":[{\"i\":1,\"direction\":\"bearish\",\"reasoning\":\"x\"}]}");
 
-        DeepResult result = new DeepAnalysisPass(client, MODEL).analyse("PROMPT");
+        DeepResult result = new DeepAnalysisPass(client, MODEL, EFFORT).analyse("PROMPT");
 
         assertEquals("bearish", result.prediction().path("direction").asText());
         assertEquals("high", result.prediction().path("impact_tier").asText());
@@ -45,7 +46,7 @@ public class DeepAnalysisPass_utest
         StubClaudeClient client = new StubClaudeClient().enqueue(
                 "```json\n{\"direction\":\"bullish\",\"impact_tier\":\"low\"}\n```");
 
-        DeepResult result = new DeepAnalysisPass(client, MODEL).analyse("PROMPT");
+        DeepResult result = new DeepAnalysisPass(client, MODEL, EFFORT).analyse("PROMPT");
 
         assertEquals("bullish", result.prediction().path("direction").asText());
     }
@@ -56,7 +57,7 @@ public class DeepAnalysisPass_utest
         StubClaudeClient client = new StubClaudeClient().enqueue(
                 "{\"direction\":\"neutral\",\"impact_tier\":\"extreme\",\"articles\":[]}");
 
-        DeepResult result = new DeepAnalysisPass(client, MODEL).analyse("PROMPT");
+        DeepResult result = new DeepAnalysisPass(client, MODEL, EFFORT).analyse("PROMPT");
 
         assertEquals("noise", result.prediction().path("impact_tier").asText());
     }
@@ -67,7 +68,7 @@ public class DeepAnalysisPass_utest
         StubClaudeClient client = new StubClaudeClient().enqueue(
                 "{\"direction\":\"bullish\",\"impact_tier\":\"low\",\"macro_regime\":\"risk_on\"}");
 
-        DeepResult result = new DeepAnalysisPass(client, MODEL).analyse("PROMPT");
+        DeepResult result = new DeepAnalysisPass(client, MODEL, EFFORT).analyse("PROMPT");
 
         assertFalse("macro_regime is computed mechanically, not taken from Claude",
                 result.prediction().has("macro_regime"));
@@ -78,7 +79,7 @@ public class DeepAnalysisPass_utest
     {
         StubClaudeClient client = new StubClaudeClient().enqueue("{\"impact_tier\":\"high\"}");
 
-        DeepResult result = new DeepAnalysisPass(client, MODEL).analyse("PROMPT");
+        DeepResult result = new DeepAnalysisPass(client, MODEL, EFFORT).analyse("PROMPT");
 
         assertNull(result.prediction());
         assertEquals(0, result.articles().size());
@@ -89,7 +90,7 @@ public class DeepAnalysisPass_utest
     {
         StubClaudeClient client = new StubClaudeClient(); // empty queue -> complete throws
 
-        DeepResult result = new DeepAnalysisPass(client, MODEL).analyse("PROMPT");
+        DeepResult result = new DeepAnalysisPass(client, MODEL, EFFORT).analyse("PROMPT");
 
         assertNull(result.prediction());
         assertEquals(0, result.articles().size());

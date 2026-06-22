@@ -117,7 +117,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         collector_ = collector;
         store_ = store;
         screener_ = new ScreenerPass(claudeClient, config.claudeScreenerModel(), config.screenerThreshold());
-        deep_ = new DeepAnalysisPass(claudeClient, config.claudeDeepAnalModel());
+        deep_ = new DeepAnalysisPass(claudeClient, config.claudeDeepAnalModel(), config.claudeDeepEffort());
         notifier_ = notifier;
         config_ = config;
         promptsDir_ = promptsDir;
@@ -737,9 +737,13 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
 
         Map<Integer, Integer> deepIdMap = new HashMap<>();
         String articlesBlock = PromptBuilder.deepArticles(resonant, ohlc, deepIdMap);
-        String prompt = PromptTemplates.fillDeep(loadTemplate("deep_analysis"), resonant.size(), market.block(), articlesBlock);
+        // The static instructions/examples are the cached system block; only the volatile market_signals +
+        // articles go in the user message (see deep_analysis.txt vs deep_analysis_user.txt).
+        String system = loadTemplate("deep_analysis");
+        String userContent = PromptTemplates.fillDeepUser(loadTemplate("deep_analysis_user"),
+                resonant.size(), market.block(), articlesBlock);
 
-        DeepResult deep = deep_.analyse(prompt, ClaudeSchemas.NEWS_DEEP);
+        DeepResult deep = deep_.analyse(system, userContent, ClaudeSchemas.NEWS_DEEP);
         ArrayNode articlePredictions = buildArticlePredictions(resonant, ohlc, deep.articles(), deepIdMap);
         ObjectNode prediction = buildPredictionRecord(WindowContext.btcPrice(ohlc), unique.size(), resonant.size(),
                 deep.prediction(), regimeLabel(market.regime()), market.options(), market.funding(),

@@ -1,0 +1,6 @@
+market_signals:
+{market_signals}
+
+-- NEWS ITEMS ({article_count}) --
+
+{articles}

@@ -33,4 +33,19 @@ public interface IClaudeClient
     {
         return complete(model, prompt, maxTokens);
     }
+
+    /**
+     * As {@link #complete(String, String, int, boolean, JsonNode)} but with a cacheable static
+     * {@code system} block (sent as a {@code system} content block with {@code cache_control} so the
+     * high-frequency deep pass reuses the prefill instead of re-sending it every call; {@code null} for
+     * no system block) and an {@code effort} string ({@code low|medium|high}) that caps the adaptive
+     * thinking depth via {@code output_config.effort} when {@code thinking} is on ({@code null} to omit,
+     * leaving the API default). Default: ignore the extras and delegate, so test stubs need not
+     * implement it; {@link ClaudeClient} overrides this with the real request.
+     */
+    default String complete(String model, String system, String prompt, int maxTokens, boolean thinking,
+                            String effort, JsonNode schema) throws IOException, InterruptedException
+    {
+        return complete(model, prompt, maxTokens, thinking, schema);
+    }
 }

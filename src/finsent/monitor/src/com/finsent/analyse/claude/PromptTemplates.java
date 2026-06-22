@@ -33,8 +33,12 @@ public final class PromptTemplates
         return template.replace("{covered}", coveredBlock).replace("{articles}", articlesBlock);
     }
 
-    /** Fill the deep-analysis template's {@code {article_count}}, {@code {market_signals}}, {@code {articles}}. */
-    public static String fillDeep(String template, int articleCount, String marketSignals, String articlesBlock)
+    /**
+     * Fill the deep-analysis <b>user</b> block's {@code {article_count}}, {@code {market_signals}},
+     * {@code {articles}} placeholders. The static instructions/examples live in a separate cached system
+     * block ({@code deep_analysis.txt}), loaded as-is; only this volatile data goes in the user message.
+     */
+    public static String fillDeepUser(String template, int articleCount, String marketSignals, String articlesBlock)
     {
         return template.replace("{article_count}", Integer.toString(articleCount))
                 .replace("{market_signals}", marketSignals)

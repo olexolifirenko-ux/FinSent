@@ -93,6 +93,16 @@ stored records; recaps/follow-ups scored 0 with a materially-new exception). **O
 `screenerDedupLookback` via the feedback loop; (b) watch the make-or-break "materially-new vs rehash"
 wording for over-suppression (missing a real new development) vs under (residual dups).
 
+### 37. Opus 4.8 deep-pass quality A/B **[idea — data-gated on #6]**
+The deep pass runs `claude-sonnet-4-6` (the right speed/cost tier for a bounded, high-frequency detection
+task; the latency work — `claudeDeepEffort` + prompt caching — keeps it there). A more capable model could
+improve the *materiality judgment* (fact-vs-posture, channel), but it's slower + 1.7× cost (Opus 4.8) to 3.3×
+(Fable 5) and **unprovable until the feedback loop (#6) has weeks of live data**. *When to revisit:* if #6
+shows the deep pass systematically *misjudging* materiality (not merely being slow), A/B
+`claudeDeepAnalModel=claude-opus-4-8` vs Sonnet on stored windows (`anal window`, compare
+`direction`/`impact_tier`/`key_events`); adopt only if the calls measurably improve enough to justify the
+cost/latency. Model is a one-line config swap — no code change. Quality lever, not a speed change.
+
 ---
 
 ## Signal quality (positioning inputs)

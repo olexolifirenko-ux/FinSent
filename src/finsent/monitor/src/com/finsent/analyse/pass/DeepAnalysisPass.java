@@ -31,11 +31,13 @@ public final class DeepAnalysisPass
 
     private final IClaudeClient client_;
     private final String model_;
+    private final String effort_;
 
-    public DeepAnalysisPass(IClaudeClient client, String model)
+    public DeepAnalysisPass(IClaudeClient client, String model, String effort)
     {
         client_ = client;
         model_ = model;
+        effort_ = effort;
     }
 
     /** Run deep analysis on the assembled {@code prompt} (free-form output) and parse the result. */
@@ -45,12 +47,21 @@ public final class DeepAnalysisPass
     }
 
     /**
-     * Run deep analysis, constraining the output to {@code schema} (structured outputs) when non-null:
-     * the news pass passes the per-article schema, the econ/macro passes the article-less one.
+     * Run deep analysis with no cached system block (the econ pass), constraining the output to
+     * {@code schema} when non-null.
      */
     public DeepResult analyse(String prompt, JsonNode schema)
     {
-        String text = callQuietly(prompt, schema);
+        return analyse(null, prompt, schema);
+    }
+
+    /**
+     * Run deep analysis with a cacheable static {@code system} block (the news pass) plus the volatile
+     * {@code userContent}, constraining the output to {@code schema} (structured outputs) when non-null.
+     */
+    public DeepResult analyse(String system, String userContent, JsonNode schema)
+    {
+        String text = callQuietly(system, userContent, schema);
         ObjectNode prediction = text == null ? null : ClaudeJson.extractObject(text);
         DeepResult result;
         if (prediction == null || !prediction.has("direction"))
@@ -67,12 +78,14 @@ public final class DeepAnalysisPass
         return result;
     }
 
-    private String callQuietly(String prompt, JsonNode schema)
+    private String callQuietly(String system, String prompt, JsonNode schema)
     {
         String text = null;
         try
         {
-            text = client_.complete(model_, prompt, MAX_TOKENS, true, schema); // adaptive thinking on the decisive pass
+            // Adaptive thinking on the decisive pass, capped at the configured effort; the static
+            // instructions ride in the cacheable system block (null for the econ pass).
+            text = client_.complete(model_, system, prompt, MAX_TOKENS, true, effort_, schema);
         }
         catch (IOException callFailed)
         {

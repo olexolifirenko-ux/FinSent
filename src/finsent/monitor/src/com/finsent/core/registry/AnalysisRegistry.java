@@ -13,9 +13,9 @@ import com.finsent.core.io.WriteUnit;
  * Registry for the analyser's per-interval output, stored one JSON object per day keyed by
  * {@code HH:MM} ({@code analysis_*.json}). Unlike the context registries an interval is
  * <b>overwritten</b> on each analysis (the latest call for a window supersedes), matching the
- * Python analyser which rewrites {@code day_analysis[interval_key]} wholesale. A standalone
- * macro-alert is merged into the interval as a {@code macro_alert} sub-key (creating a skeleton
- * interval when none exists yet), mirroring Python {@code macro_only_assessment}.
+ * Python analyser which rewrites {@code day_analysis[interval_key]} wholesale. A scheduled-release
+ * econ alert is merged into the interval as an {@code econ_alert} sub-key (creating a skeleton
+ * interval when none exists yet).
  */
 public final class AnalysisRegistry extends AbstractDayFileRegistry
 {
@@ -28,15 +28,6 @@ public final class AnalysisRegistry extends AbstractDayFileRegistry
     public List<WriteUnit> putInterval(String day, String intervalKey, ObjectNode record)
     {
         return setInterval(day, intervalKey, record, false);
-    }
-
-    /**
-     * Merge a macro-alert into the interval under the {@code macro_alert} sub-key, creating a
-     * skeleton interval (matching Python's) when the window has no analysis entry yet.
-     */
-    public List<WriteUnit> putMacroAlert(String day, String intervalKey, ObjectNode macroAlert)
-    {
-        return attach(day, intervalKey, "macro_alert", macroAlert);
     }
 
     /**

@@ -47,6 +47,13 @@ trigger; up_squeeze_fuel = crowded shorts exposed to a bullish one): lean toward
 impact and a firmer directional call. Into unwinding/exhausting or opposite positioning
 there is little fuel -- lean low or neutral. Positioning never turns a non-event into a
 catalyst; it only scales a real one.
+Use the options line the same way, for HOW MUCH IS ALREADY PRICED -- it can only SCALE a
+catalyst that already passed all three steps, never discount one. complacent (option vol asleep)
+under a real, new fact means the move is unhedged and the surprise large -> lean higher impact /
+a firmer call. braced means the market already expects a big move (fragile), NOT that this news
+is priced -- a real catalyst into braced vol can land just as hard, so never read braced as
+"already priced". Options never turn a fact into noise on their own, and never turn posture into
+a catalyst.
 
 RESPOND WITH EXACTLY ONE JSON OBJECT. No other text before or after it.
 

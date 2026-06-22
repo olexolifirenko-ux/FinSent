@@ -342,27 +342,6 @@ public final class Config
         return Secrets.resolve(attr(analyserNode_, "smtpPassword", ""));
     }
 
-    /** Macro-alert breach thresholds. */
-    public MacroThresholds macroAlertThresholds()
-    {
-        XMLData node = analyserNode_ == null ? null : analyserNode_.getDocumentPart("MacroAlertThresholds", false);
-        MacroThresholds thresholds;
-        if (node == null)
-        {
-            thresholds = new MacroThresholds(10.0, 0.5, 1.0, 3.0, 1.0);
-        }
-        else
-        {
-            thresholds = new MacroThresholds(
-                    node.getAttributeDoubleValue("vixInPct", 10.0),
-                    node.getAttributeDoubleValue("dxyInPct", 0.5),
-                    node.getAttributeDoubleValue("sp500InPct", 1.0),
-                    node.getAttributeDoubleValue("us10yInPct", 3.0),
-                    node.getAttributeDoubleValue("goldInPct", 1.0));
-        }
-        return thresholds;
-    }
-
     // == Trader-owned: paper trading strategy (FSTrader) =======================
 
     /** Minimum impact tier a directional call must reach to open a position ({@code high} by default). */
@@ -507,9 +486,4 @@ public final class Config
     {
     }
 
-    /** Macro indicator breach thresholds (percent). */
-    public record MacroThresholds(double vixInPct, double dxyInPct, double sp500InPct,
-                                  double us10yInPct, double goldInPct)
-    {
-    }
 }

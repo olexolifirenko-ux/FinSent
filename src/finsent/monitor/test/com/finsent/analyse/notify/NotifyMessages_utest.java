@@ -121,28 +121,6 @@ public class NotifyMessages_utest
     }
 
     @Test
-    public void macroTelegramSubjectAndBody()
-    {
-        ObjectNode alert = macroAlert("bearish", "high", "risk_off", "Macro: VIX +12.0% (risk_off)");
-
-        assertEquals(""
-                + "MACRO ALERT (no resonant news)\n"
-                + "BEARISH | high impact | macro: risk_off\n"
-                + "Triggers: VIX +12.0%\n"
-                + "Macro: VIX +12.0% (risk_off)", NotifyMessages.macroTelegram(alert));
-        assertEquals("BTC Macro Alert: BEARISH", NotifyMessages.macroEmailSubject(alert));
-        assertEquals(""
-                + "MACRO-ONLY BTC ALERT\n"
-                + "Direction: BEARISH\n"
-                + "Impact: high\n"
-                + "Macro regime: risk_off\n"
-                + "Reasoning: Macro: VIX +12.0% (risk_off)\n"
-                + "\n"
-                + "Triggered indicators: VIX +12.0%\n"
-                + "No resonant news articles in this monitoring window.\n", NotifyMessages.macroEmailBody(alert));
-    }
-
-    @Test
     public void econTelegramSubjectAndBody()
     {
         ObjectNode alert = econAlert("bearish", "high", "risk_off",
@@ -198,22 +176,6 @@ public class NotifyMessages_utest
         article.put("scenario", scenario);
         article.put("reasoning", reasoning);
         return article;
-    }
-
-    private static ObjectNode macroAlert(String direction, String tier, String regime, String reasoning)
-    {
-        ObjectNode trigger = Json.newObject();
-        trigger.put("name", "VIX");
-        trigger.put("delta_pct", 12.0);
-        ArrayNode triggers = Json.newArray();
-        triggers.add(trigger);
-        ObjectNode alert = Json.newObject();
-        alert.put("direction", direction);
-        alert.put("impact_tier", tier);
-        alert.put("macro_regime", regime);
-        alert.put("reasoning", reasoning);
-        alert.set("triggers", triggers);
-        return alert;
     }
 
     private static ArrayNode events(String... values)

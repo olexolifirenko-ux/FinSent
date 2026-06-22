@@ -53,10 +53,9 @@ import com.finsent.util.MailSender;
 /**
  * The analyser: it subscribes to the collector and, for each window, runs the two-pass Claude
  * pipeline (de-duplicate &rarr; screen &rarr; threshold &rarr; read mechanical context &rarr; deep
- * analysis &rarr; build record &rarr; persist &rarr; notify) and then asks the
- * {@link MacroAlertChecker} whether a standalone macro alert is due. It both <i>does</i> the
- * analysis and owns the runtime concerns &mdash; mirroring {@link FSCollector}, which fetches and
- * stores rather than delegating to a separate cycle object.
+ * analysis &rarr; build record &rarr; persist &rarr; notify). It both <i>does</i> the analysis and
+ * owns the runtime concerns &mdash; mirroring {@link FSCollector}, which fetches and stores rather
+ * than delegating to a separate cycle object.
  *
  * <p>Because the collector's event-bus dispatch is single-threaded, {@link #onEvent} must never
  * block: it applies the pause gate and the urgent-poll cooldown, then hands the window to a
@@ -68,7 +67,7 @@ import com.finsent.util.MailSender;
  *
  * <p>Like {@link FSCollector} (which builds its sources/fetchers from config), the production
  * constructor builds everything the analyser drives &mdash; its own {@link AnalysisStore}, the
- * Claude client/passes, the notification channels and the {@link MacroAlertChecker} &mdash; from
+ * Claude client/passes and the notification channels &mdash; from
  * {@link Config}; the package-private injecting constructor takes the store, a {@link IClaudeClient}
  * and the {@link Notifier} directly for tests. It owns those resources, so {@link #uninitialize}
  * stops the worker and then shuts the notifier and store down.
@@ -85,7 +84,6 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     private final ScreenerPass screener_;
     private final DeepAnalysisPass deep_;
     private final Notifier notifier_;
-    private final MacroAlertChecker macroAlertChecker_;
     private final Config config_;
     private final File promptsDir_;
 
@@ -105,7 +103,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     });
     private volatile boolean running_ = true;
 
-    /** Production wiring: build the store, Claude client/passes, notifier and macro-alert check from config. */
+    /** Production wiring: build the store, Claude client/passes and notifier from config. */
     public FSAnalyser(FSCollector collector, Config config, boolean startPaused)
     {
         this(collector, buildStore(config), buildClaudeClient(config),
@@ -121,7 +119,6 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         screener_ = new ScreenerPass(claudeClient, config.claudeScreenerModel(), config.screenerThreshold());
         deep_ = new DeepAnalysisPass(claudeClient, config.claudeDeepAnalModel());
         notifier_ = notifier;
-        macroAlertChecker_ = new MacroAlertChecker(collector, store, notifier, config, deep_, promptsDir);
         config_ = config;
         promptsDir_ = promptsDir;
         paused_ = new AtomicBoolean(startPaused);
@@ -329,31 +326,12 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     // == Analysis (the per-window pipeline) ====================================
 
     /**
-     * Analyse the window carried by {@code result} (live path): run the window, then &mdash; for a
-     * regular boundary cycle only &mdash; the macro-alert check. The macro tape refreshes at window
-     * cadence (the snapshot is stored once per window), so re-checking it on every urgent poll would
-     * be redundant; macro alert is a per-window signal, news urgency is a separate clock (this also
-     * matches Python, which runs the macro check only in the scheduled analysis loop). {@code now}
-     * stamps the record and gates notifications. The synchronous, deterministic entry point the
-     * worker drives and tests call.
+     * Analyse the window carried by {@code result} (live path): run the window. {@code now} stamps the
+     * record and gates notifications. The synchronous, deterministic entry point the worker drives and
+     * tests call.
      */
     void analyse(CollectionResult result, Instant now) throws IOException {
         runWindow(result, now, false, true);
-        if (!result.urgent() && isCurrentWindow(result, now))
-        {
-            macroAlertChecker_.check(result.day(), result.intervalKey(), now);
-        }
-    }
-
-    /**
-     * True when {@code result} is the window containing {@code now} (the regular boundary heartbeat),
-     * not a re-analysis of a past window. The macro-alert check fires only there &mdash; running it on
-     * a late-article re-analysis of an old window could otherwise emit a stale macro alert.
-     */
-    private boolean isCurrentWindow(CollectionResult result, Instant now)
-    {
-        return result.intervalKey().equals(Times.intervalKey(now, config_.windowMinutes()))
-                && result.day().equals(Times.dayOf(Times.formatUtcIso(now)));
     }
 
     /**
@@ -657,13 +635,6 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         else
         {
             out.append("\n  prediction: (screener-only)");
-        }
-        JsonNode macroAlert = interval.path("macro_alert");
-        if (macroAlert.isObject())
-        {
-            out.append("\n  macro_alert: ").append(macroAlert.path("direction").asText()).append(" / ")
-                    .append(macroAlert.path("impact_tier").asText()).append(" -- ")
-                    .append(macroAlert.path("reasoning").asText());
         }
         return out.toString();
     }

@@ -9,8 +9,8 @@ import java.util.function.Supplier;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
- * Coordinates the notification channels (ports Python {@code _maybe_notify} /
- * {@code _maybe_notify_macro_alert}). It applies the gate, formats the messages on the calling
+ * Coordinates the notification channels (ports Python {@code _maybe_notify}). It applies the gate,
+ * formats the messages on the calling
  * thread, and dispatches the actual sends to a single daemon worker so analysis never blocks on the
  * network. The two channels ({@link TelegramNotifier}, {@link EmailNotifier}) self-skip when not
  * configured.
@@ -60,21 +60,9 @@ public final class Notifier
         return notify;
     }
 
-    /** Fire macro-only-alert notifications if it passes the macro gate (non-neutral, tier &ge; min). */
-    public void notifyMacroAlert(ObjectNode macroAlert, String intervalKey)
-    {
-        if (passesAlertGate(macroAlert))
-        {
-            sendTelegram(NotifyMessages.macroTelegram(macroAlert), intervalKey);
-            sendEmail(NotifyMessages.macroEmailSubject(macroAlert),
-                    NotifyMessages.macroEmailBody(macroAlert), intervalKey);
-        }
-    }
-
     /**
-     * Fire scheduled-data-release alert notifications (#21) if it passes the same news-free gate as the
-     * macro path (non-neutral, tier &ge; min); the release carries no resonant article, so there is no
-     * age check.
+     * Fire scheduled-data-release alert notifications (#21) if it passes the news-free gate (non-neutral,
+     * tier &ge; min); the release carries no resonant article, so there is no age check.
      */
     public void notifyEconAlert(ObjectNode econAlert, String intervalKey)
     {
@@ -86,7 +74,7 @@ public final class Notifier
         }
     }
 
-    /** The news-free alert gate shared by the macro and econ paths: non-neutral and tier &ge; the minimum. */
+    /** The news-free alert gate for the econ path: non-neutral and tier &ge; the minimum. */
     private boolean passesAlertGate(ObjectNode alert)
     {
         int minTierVal = ImpactTier.order(minImpactTier_, 2);

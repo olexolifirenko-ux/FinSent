@@ -9,9 +9,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Pure text formatting for the alert channels (ports Python {@code _format_telegram_message},
- * {@code _format_email_body}, and the message bodies built inside {@code _maybe_notify} /
- * {@code _maybe_notify_macro_alert}). The Stage-7 notifiers call these to render the payload; the
- * gate decision lives in {@link NotifyGate}.
+ * {@code _format_email_body}, and the message bodies built inside {@code _maybe_notify}). The Stage-7
+ * notifiers call these to render the payload; the gate decision lives in {@link NotifyGate}.
  */
 public final class NotifyMessages
 {
@@ -75,35 +74,6 @@ public final class NotifyMessages
         lines.add("");
         appendArticleBreakdown(lines, articlePreds);
         return String.join("\n", lines);
-    }
-
-    /** Telegram message for a macro-only alert. */
-    public static String macroTelegram(ObjectNode macroAlert)
-    {
-        return "MACRO ALERT (no resonant news)\n"
-                + upper(macroAlert.path("direction").asText("neutral")) + " | "
-                + macroAlert.path("impact_tier").asText("noise") + " impact | macro: "
-                + macroAlert.path("macro_regime").asText("?") + "\n"
-                + "Triggers: " + triggerString(macroAlert.path("triggers")) + "\n"
-                + macroAlert.path("reasoning").asText("");
-    }
-
-    /** Email subject for a macro-only alert: {@code BTC Macro Alert: <DIRECTION>}. */
-    public static String macroEmailSubject(ObjectNode macroAlert)
-    {
-        return "BTC Macro Alert: " + upper(macroAlert.path("direction").asText("neutral"));
-    }
-
-    /** Email body for a macro-only alert. */
-    public static String macroEmailBody(ObjectNode macroAlert)
-    {
-        return "MACRO-ONLY BTC ALERT\n"
-                + "Direction: " + upper(macroAlert.path("direction").asText("neutral")) + "\n"
-                + "Impact: " + macroAlert.path("impact_tier").asText("noise") + "\n"
-                + "Macro regime: " + macroAlert.path("macro_regime").asText("?") + "\n"
-                + "Reasoning: " + macroAlert.path("reasoning").asText("") + "\n\n"
-                + "Triggered indicators: " + triggerString(macroAlert.path("triggers")) + "\n"
-                + "No resonant news articles in this monitoring window.\n";
     }
 
     /** Telegram message for a scheduled-data-release alert (no resonant news). */
@@ -257,17 +227,6 @@ public final class NotifyMessages
             bullets.add("• " + keyEvents.get(i).asText());
         }
         return String.join("\n", bullets);
-    }
-
-    private static String triggerString(JsonNode triggers)
-    {
-        List<String> parts = new ArrayList<>();
-        for (JsonNode trigger : triggers)
-        {
-            parts.add(trigger.path("name").asText() + " "
-                    + String.format(Locale.ROOT, "%+.1f%%", trigger.path("delta_pct").asDouble()));
-        }
-        return String.join(", ", parts);
     }
 
     private static String text(ObjectNode node, String field, String defaultValue)

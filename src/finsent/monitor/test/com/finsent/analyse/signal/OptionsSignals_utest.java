@@ -87,6 +87,25 @@ public class OptionsSignals_utest
         assertEquals("none", signal.path("signal_strength").asText());
         assertTrue(signal.path("near_pc_ratio").isNull());
         assertTrue(signal.path("dvol_trend").isNull());
+        assertTrue(signal.path("near_atm_iv").isNull());
+        assertEquals("unknown", signal.path("priced_in").asText());
+    }
+
+    @Test
+    public void pricedInClassifiesComplacencyFromIvLevelAndTrend()
+    {
+        // Low IV (40 < 50), flat DVOL -> complacent (a real catalyst would land unhedged).
+        assertEquals("complacent", OptionsSignals.signal(snapshot(0.8, 100.0, 0.8, 40.0, 30.0, 30.0),
+                noDelta()).path("priced_in").asText());
+        // Elevated IV (85 > 80) -> braced regardless of trend.
+        assertEquals("braced", OptionsSignals.signal(snapshot(0.8, 100.0, 0.8, 85.0, 30.0, 30.0),
+                noDelta()).path("priced_in").asText());
+        // Mid IV (60), DVOL bid up (+10%) -> braced (market bracing for a move).
+        assertEquals("braced", OptionsSignals.signal(snapshot(0.8, 100.0, 0.8, 60.0, 42.0, 38.0),
+                noDelta()).path("priced_in").asText());
+        // Mid IV (60), flat DVOL -> normal (neither complacent nor braced).
+        assertEquals("normal", OptionsSignals.signal(snapshot(0.8, 100.0, 0.8, 60.0, 40.0, 40.0),
+                noDelta()).path("priced_in").asText());
     }
 
     @Test
@@ -119,6 +138,9 @@ public class OptionsSignals_utest
         assertTrue(signal.path("oi_surge").asBoolean());
         assertEquals("strong", signal.path("signal_strength").asText());
         assertEquals(1.2, signal.path("near_pc_ratio").asDouble(), EPS);
+        // IV 85 is elevated -> the priced-in view reads braced.
+        assertEquals(85.0, signal.path("near_atm_iv").asDouble(), EPS);
+        assertEquals("braced", signal.path("priced_in").asText());
     }
 
     @Test

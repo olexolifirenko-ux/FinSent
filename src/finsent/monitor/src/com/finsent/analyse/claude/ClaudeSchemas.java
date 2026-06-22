@@ -10,8 +10,8 @@ import com.finsent.core.Json;
  * output_config.format} (structured outputs): the API guarantees the response is schema-valid JSON,
  * so a malformed answer can no longer slip through to the tolerant parser as a null/noise result.
  * Per pass, because the shapes differ: the screener returns an array of relevance scores; the news
- * deep pass returns an aggregate call <b>plus</b> a per-article array; the econ/macro deep variants
- * return the aggregate call only (no per-article block). {@code additionalProperties:false} keeps the
+ * deep pass returns an aggregate call <b>plus</b> a per-article array; the econ deep variant
+ * returns the aggregate call only (no per-article block). {@code additionalProperties:false} keeps the
  * model from adding stray fields (e.g. a {@code macro_regime} the analyser computes itself).
  */
 public final class ClaudeSchemas
@@ -34,7 +34,7 @@ public final class ClaudeSchemas
             + "\"required\":[\"i\",\"direction\",\"reasoning\"],\"properties\":{\"i\":{\"type\":\"integer\"},"
             + "\"direction\":" + DIRECTION + ",\"reasoning\":{\"type\":\"string\"}}}}}}");
 
-    /** Econ/macro deep pass: the aggregate call only (no per-article block). */
+    /** Econ deep pass: the aggregate call only (no per-article block). */
     public static final JsonNode ALERT_DEEP = parse("{\"type\":\"object\",\"additionalProperties\":false,"
             + "\"required\":[\"direction\",\"impact_tier\",\"key_events\",\"reasoning\"],\"properties\":{"
             + "\"direction\":" + DIRECTION + ",\"impact_tier\":" + IMPACT_TIER + ","

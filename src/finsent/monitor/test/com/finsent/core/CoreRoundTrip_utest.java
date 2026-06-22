@@ -269,15 +269,13 @@ public class CoreRoundTrip_utest
     public void configParsesCollectorAndAnalyserSections()
     {
         // The collector section owns the source/feed lists and the shared window param;
-        // the analyser section owns screening, delivery and the macro thresholds.
+        // the analyser section owns screening and delivery.
         String xml = "<FSSatellite>"
                 + "<FSCollector analysisNewsWindow=\"10m\" dataDir=\"custom_data\">"
                 + "<Sources><Source name=\"newsapi\" apiKey=\"ENV:NOPE\"/><Source name=\"rss\"/></Sources>"
                 + "<RssFeeds><Feed name=\"CoinDesk\" url=\"http://cd\"/></RssFeeds>"
                 + "</FSCollector>"
-                + "<FSAnalyser screenerThreshold=\"6\" telegramChatId=\"645133217\">"
-                + "<MacroAlertThresholds vixInPct=\"10.0\"/>"
-                + "</FSAnalyser>"
+                + "<FSAnalyser screenerThreshold=\"6\" telegramChatId=\"645133217\"/>"
                 + "</FSSatellite>";
         Config config = new Config(XMLData.valueOf(xml));
 
@@ -290,10 +288,9 @@ public class CoreRoundTrip_utest
         assertEquals(2, config.sources().size());
         assertEquals("newsapi", config.sources().get(0).name());
         assertEquals(1, config.rssFeeds().size());
-        // Analyser-owned scalars and child element.
+        // Analyser-owned scalars.
         assertEquals(6, config.screenerThreshold());
         assertEquals("645133217", config.telegramChatId());
-        assertEquals(10.0, config.macroAlertThresholds().vixInPct(), 0.0001);
     }
 
     private static ObjectNode article(String title, String url, String publishedAt)

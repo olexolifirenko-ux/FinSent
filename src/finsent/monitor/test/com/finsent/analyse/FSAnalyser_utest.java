@@ -190,59 +190,6 @@ public class FSAnalyser_utest
     }
 
     @Test
-    public void regularEventRunsMacroAlertCheck() throws IOException
-    {
-        seedMacroBreach();
-        analyser(new StubClaudeClient()).analyse(new CollectionResult(DAY, KEY, 0, List.of(), false), NOW);
-
-        ObjectNode macroAlert = (ObjectNode) store_.get(DAY, KEY).path("macro_alert");
-        assertEquals("bearish", macroAlert.path("direction").asText());
-        assertEquals("high", macroAlert.path("impact_tier").asText()); // extreme VIX move
-    }
-
-    @Test
-    public void urgentEventSkipsMacroAlertCheck() throws IOException
-    {
-        seedMacroBreach();
-        analyser(new StubClaudeClient()).analyse(new CollectionResult(DAY, KEY, 0, List.of(), true), NOW);
-
-        assertTrue("urgent polls do not run the macro-alert check",
-                store_.get(DAY, KEY).path("macro_alert").isMissingNode());
-    }
-
-    @Test
-    public void macroAlertEscalatesToClaudeJudgment() throws IOException
-    {
-        seedMacroBreach(); // mechanical detector fires bearish/high (extreme VIX move)
-        seedPrice(60500.0);
-        StubClaudeClient client = new StubClaudeClient().enqueue(
-                "{\"direction\":\"neutral\",\"impact_tier\":\"noise\","
-                        + "\"key_events\":[],\"reasoning\":\"Isolated VIX spike, no risk-off follow-through.\"}");
-        analyser(client).analyse(new CollectionResult(DAY, KEY, 0, List.of(), false), NOW);
-
-        ObjectNode macroAlert = (ObjectNode) store_.get(DAY, KEY).path("macro_alert");
-        assertEquals("neutral", macroAlert.path("direction").asText()); // Claude vetoed the mechanical call
-        assertEquals("noise", macroAlert.path("impact_tier").asText());
-        assertTrue(macroAlert.path("claude_available").asBoolean());
-        assertEquals("bearish", macroAlert.path("mechanical_direction").asText()); // mechanical prior preserved
-        assertEquals(60500.0, macroAlert.path("btc_at_prediction").asDouble(), 1e-9); // #6 scoring anchor
-        assertEquals("the macro alert runs a single deep call", 1, client.callCount());
-    }
-
-    @Test
-    public void macroAlertFallsBackToMechanicalWhenClaudeUnavailable() throws IOException
-    {
-        seedMacroBreach();
-        StubClaudeClient client = new StubClaudeClient(); // empty queue -> deep returns null -> mechanical fallback
-        analyser(client).analyse(new CollectionResult(DAY, KEY, 0, List.of(), false), NOW);
-
-        ObjectNode macroAlert = (ObjectNode) store_.get(DAY, KEY).path("macro_alert");
-        assertEquals("bearish", macroAlert.path("direction").asText()); // mechanical assessment stands
-        assertEquals("high", macroAlert.path("impact_tier").asText());
-        assertFalse("no Claude judgment recorded on fallback", macroAlert.path("claude_available").asBoolean());
-    }
-
-    @Test
     public void econSurpriseRunsDeepAndRecordsEconAlert() throws IOException
     {
         seedEcon("CPI MoM", 0.3, 0.6); // surprise +0.3 > high_band -> high bearish prior
@@ -291,30 +238,12 @@ public class FSAnalyser_utest
         collector_.econ().store(DAY, name, resolved);
     }
 
-    /** Seed an extreme VIX move (current window vs the previous) that would fire a macro alert. */
-    private void seedMacroBreach()
-    {
-        collector_.macro().putIfAbsent(DAY, "07:50", vixSnapshot(0.0));
-        collector_.macro().putIfAbsent(DAY, KEY, vixSnapshot(25.0)); // delta 25 >= 2x threshold -> extreme
-    }
-
     /** Seed the window's price-context snapshot (the btc_at_prediction anchor source for #6 scoring). */
     private void seedPrice(double btcPrice)
     {
         ObjectNode snap = Json.newObject();
         snap.put("btc_price", btcPrice);
         collector_.price().putIfAbsent(DAY, KEY, snap);
-    }
-
-    private static ObjectNode vixSnapshot(double changePct)
-    {
-        ObjectNode indicator = Json.newObject();
-        indicator.put("change_pct", changePct);
-        ObjectNode yahoo = Json.newObject();
-        yahoo.set("VIX", indicator);
-        ObjectNode snapshot = Json.newObject();
-        snapshot.set("yahoo", yahoo);
-        return snapshot;
     }
 
     @Test
@@ -377,7 +306,6 @@ public class FSAnalyser_utest
         Files.writeString(prompts.resolve("deep_analysis.txt"), "{article_count}|{market_signals}|{articles}",
                 StandardCharsets.UTF_8);
         Files.writeString(prompts.resolve("econ_analysis.txt"), "{catalyst}|{market_signals}", StandardCharsets.UTF_8);
-        Files.writeString(prompts.resolve("macro_analysis.txt"), "{catalyst}|{market_signals}", StandardCharsets.UTF_8);
         return prompts.toFile();
     }
 

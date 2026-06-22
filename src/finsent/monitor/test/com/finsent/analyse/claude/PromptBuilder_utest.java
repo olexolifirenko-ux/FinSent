@@ -80,24 +80,6 @@ public class PromptBuilder_utest
     }
 
     @Test
-    public void macroAlertRendersTriggersAndMechanicalPrior()
-    {
-        ObjectNode trigger = Json.newObject();
-        trigger.put("name", "VIX");
-        trigger.put("delta_pct", 12.0);
-        ArrayNode triggers = Json.newArray();
-        triggers.add(trigger);
-        ObjectNode mechanical = Json.newObject();
-        mechanical.set("triggers", triggers);
-        mechanical.put("direction", "bearish");
-        mechanical.put("impact_tier", "high");
-
-        assertEquals(""
-                + "macro tape breach: VIX +12.0%\n"
-                + "mechanical_prior: bearish / high", PromptBuilder.macroAlert(mechanical));
-    }
-
-    @Test
     public void deepArticleLayoutWithPreTrendAndBlankSeparators()
     {
         List<ObjectNode> articles = List.of(
@@ -177,7 +159,7 @@ public class PromptBuilder_utest
         assertEquals(""
                 + "macro_regime: risk_off\n"
                 + "macro_detail: 3/5 indicators (VIX↑, DXY↑, SP500↓)\n"
-                + "options_signal: strong (bearish, P/C=1.25, IV elevated, DVOL rising)\n"
+                + "options: braced (IV 88%, rising)\n"
                 + "macro_trend: risk_off sustained (VIX rising 4w +4.0%)", block);
     }
 
@@ -225,6 +207,8 @@ public class PromptBuilder_utest
         options.put("iv_elevated", true);
         options.put("oi_surge", false);
         options.put("dvol_trend", "rising");
+        options.put("near_atm_iv", 88.0);
+        options.put("priced_in", "braced");
         return options;
     }
 

@@ -20,6 +20,8 @@ public final class OptionsSignals
     private static final double PC_RATIO_BULLISH_BELOW = 0.5;
     /** ATM IV above this (percent) suggests the market is bracing for a move. */
     private static final double IV_ELEVATED_ABOVE_PCT = 80.0;
+    /** Near-term ATM IV below this (percent) reads the tape as complacent (option vol asleep). */
+    private static final double IV_COMPLACENT_BELOW_PCT = 50.0;
     /** Open-interest change (percent) beyond this magnitude in the delta window counts as a surge. */
     private static final double OI_SURGE_ABS_PCT = 5.0;
     /** DVOL move (percent) beyond this magnitude over the last hour is "rising"/"falling", else "flat". */
@@ -55,9 +57,12 @@ public final class OptionsSignals
     }
 
     /**
-     * Derive the mechanical priced-in signal from a snapshot and its delta. Returns
-     * {@code {positioning, iv_elevated, oi_surge, signal_strength, near_pc_ratio, dvol_trend}};
-     * a missing snapshot yields the neutral default. Ports {@code options.compute_options_signal}.
+     * Derive the mechanical options signal from a snapshot and its delta. Returns
+     * {@code {positioning, iv_elevated, oi_surge, signal_strength, near_pc_ratio, dvol_trend,
+     * near_atm_iv, priced_in}}; a missing snapshot yields the neutral default. The direction view
+     * ({@code positioning} / {@code signal_strength}) feeds the mechanical macro-alert confluence; the
+     * {@code priced_in} view (complacent/braced) feeds the deep prompt as an amplifier-only context.
+     * Ports {@code options.compute_options_signal}, extended with the priced-in read.
      */
     public static ObjectNode signal(ObjectNode snapshot, ObjectNode delta)
     {
@@ -70,8 +75,10 @@ public final class OptionsSignals
         {
             Double nearPc = optDouble(snapshot, "near_pc_ratio");
             String positioning = positioning(nearPc, optDouble(snapshot, "pc_ratio"));
-            boolean ivElevated = ivElevated(optDouble(snapshot, "near_atm_iv"));
+            Double atmIv = optDouble(snapshot, "near_atm_iv");
+            boolean ivElevated = ivElevated(atmIv);
             boolean oiSurge = oiSurge(delta);
+            String dvolTrend = dvolTrend(optDouble(snapshot, "dvol"), optDouble(snapshot, "dvol_1h_ago"));
             int signals = (positioning.equals("neutral") ? 0 : 1) + (ivElevated ? 1 : 0) + (oiSurge ? 1 : 0);
 
             result.put("positioning", positioning);
@@ -79,7 +86,9 @@ public final class OptionsSignals
             result.put("oi_surge", oiSurge);
             result.put("signal_strength", strength(signals));
             putNullable(result, "near_pc_ratio", nearPc);
-            result.put("dvol_trend", dvolTrend(optDouble(snapshot, "dvol"), optDouble(snapshot, "dvol_1h_ago")));
+            result.put("dvol_trend", dvolTrend);
+            putNullable(result, "near_atm_iv", atmIv);
+            result.put("priced_in", pricedIn(atmIv, dvolTrend));
         }
         return result;
     }
@@ -92,6 +101,29 @@ public final class OptionsSignals
         result.put("signal_strength", "none");
         result.putNull("near_pc_ratio");
         result.putNull("dvol_trend");
+        result.putNull("near_atm_iv");
+        result.put("priced_in", "unknown");
+    }
+
+    /**
+     * Priced-in / complacency read for the deep prompt: {@code braced} when option vol is elevated or
+     * rising (the market expects a big move -- fragile, NOT "already priced"); {@code complacent} when
+     * vol is low and not rising (a real catalyst would land unhedged, the surprise larger); else
+     * {@code normal}. Amplifier-only by design -- the prompt may scale a confirmed catalyst with it but
+     * never discount one.
+     */
+    private static String pricedIn(Double atmIv, String dvolTrend)
+    {
+        String verdict = "normal";
+        if (ivElevated(atmIv) || "rising".equals(dvolTrend))
+        {
+            verdict = "braced";
+        }
+        else if (atmIv != null && atmIv < IV_COMPLACENT_BELOW_PCT)
+        {
+            verdict = "complacent";
+        }
+        return verdict;
     }
 
     /**

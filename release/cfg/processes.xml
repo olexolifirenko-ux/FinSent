@@ -136,15 +136,7 @@
             smtpPort="587"
             smtpUser="olex.olifirenko@gmail.com"
             smtpPassword="ENV:SMTP_PASSWORD"
-        >
-            <MacroAlertThresholds
-                vixInPct="10.0"
-                dxyInPct="0.5"
-                sp500InPct="1.0"
-                us10yInPct="3.0"
-                goldInPct="1.0"
-            />
-        </FSAnalyser>
+        />
 
         <!-- What the trader owns: a paper long/short BTC strategy off the analyser's signals.
              Opens long on bullish / short on bearish at entryImpactTier or higher, one net position

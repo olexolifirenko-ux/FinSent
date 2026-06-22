@@ -192,17 +192,17 @@ public class AnalysisStore_utest
     }
 
     @Test
-    public void macroAlertCreatesSkeletonThenSurvivesRecovery() throws Exception
+    public void econAlertCreatesSkeletonThenSurvivesRecovery() throws Exception
     {
         AnalysisStore store = new AnalysisStore(dir_);
         try
         {
-            store.recordMacroAlert(DAY, KEY, macroAlert("bearish"));
+            store.recordEconAlert(DAY, KEY, econAlert("bearish"));
             store.flush();
             ObjectNode interval = store.get(DAY, KEY);
             assertEquals(0, interval.path("article_ids").size());
             assertTrue("skeleton prediction_record is null", interval.path("prediction_record").isNull());
-            assertEquals("bearish", interval.path("macro_alert").path("direction").asText());
+            assertEquals("bearish", interval.path("econ_alert").path("direction").asText());
             assertEquals(AT, interval.path("analyzed_at").asText());
         }
         finally
@@ -214,7 +214,7 @@ public class AnalysisStore_utest
         try
         {
             recovered.recover(3);
-            assertEquals("bearish", recovered.get(DAY, KEY).path("macro_alert").path("direction").asText());
+            assertEquals("bearish", recovered.get(DAY, KEY).path("econ_alert").path("direction").asText());
         }
         finally
         {
@@ -223,18 +223,18 @@ public class AnalysisStore_utest
     }
 
     @Test
-    public void macroAlertMergesIntoExistingInterval()
+    public void econAlertMergesIntoExistingInterval()
     {
         AnalysisStore store = new AnalysisStore(dir_);
         try
         {
             store.record(DAY, KEY, record("bullish", "high", 7));
-            store.recordMacroAlert(DAY, KEY, macroAlert("bearish"));
+            store.recordEconAlert(DAY, KEY, econAlert("bearish"));
             ObjectNode interval = store.get(DAY, KEY);
             assertEquals("prediction preserved", "bullish",
                     interval.path("prediction_record").path("direction").asText());
-            assertEquals("macro alert attached", "bearish",
-                    interval.path("macro_alert").path("direction").asText());
+            assertEquals("econ alert attached", "bearish",
+                    interval.path("econ_alert").path("direction").asText());
         }
         finally
         {
@@ -265,11 +265,11 @@ public class AnalysisStore_utest
         return interval;
     }
 
-    private static ObjectNode macroAlert(String direction)
+    private static ObjectNode econAlert(String direction)
     {
         ObjectNode alert = Json.newObject();
         alert.put("analyzed_at", AT);
-        alert.put("source", "macro_mechanical");
+        alert.put("source", "econ_mechanical");
         alert.put("direction", direction);
         alert.put("impact_tier", "high");
         return alert;

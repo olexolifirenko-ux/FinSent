@@ -27,11 +27,11 @@ import com.finsent.util.GlobalSystem;
  * Drives the BL#6 feedback loop: reads the stored {@code <day>/analysis_<day>.json} records, scores the
  * matured ones against realized BTC moves (via the injected {@link PriceSource}), writes the scored
  * outcomes to {@code <day>/outcomes_<day>.jsonl} (+ {@code article_outcomes_<day>.jsonl}), and returns
- * the {@link FeedbackReport} text. It scores all three non-mechanical lanes -- the news
- * {@code prediction_record}, the {@code econ_alert} and the {@code macro_alert} -- and, for the latter
- * two, also their mechanical prior (a {@code *_mechanical} source) so the report can measure Claude's
- * lift over the bare prior. Scoring/report logic is pure ({@link OutcomeScorer}/{@link FeedbackReport});
- * this class is just the file I/O and assembly.
+ * the {@link FeedbackReport} text. It scores both Claude lanes -- the news {@code prediction_record}
+ * and the {@code econ_alert} -- and, for the econ alert, also its mechanical prior (a
+ * {@code *_mechanical} source) so the report can measure Claude's lift over the bare prior.
+ * Scoring/report logic is pure ({@link OutcomeScorer}/{@link FeedbackReport}); this class is just the
+ * file I/O and assembly.
  */
 public final class FeedbackRunner
 {
@@ -97,7 +97,6 @@ public final class FeedbackRunner
                 JsonNode interval = entry.getValue();
                 addWindowPrediction(windowPreds, day, key, interval.path("prediction_record"), "news");
                 addArticlePredictions(articlePreds, interval.path("prediction_record"), day);
-                addAlertPrediction(windowPreds, day, key, interval.path("macro_alert"), "macro");
                 addAlertPrediction(windowPreds, day, key, interval.path("econ_alert"), "econ");
             }
         }

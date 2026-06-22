@@ -91,30 +91,6 @@ public final class PromptBuilder
     }
 
     /**
-     * The {@code {catalyst}} block for the article-less macro-alert prompt (#21): the breaching indicators
-     * (name + delta%) plus the mechanical direction/tier as a labelled prior the deep pass weighs against
-     * the market context. {@code mechanical} is the {@code MacroAlert.assess} object for a tape breach.
-     */
-    public static String macroAlert(ObjectNode mechanical)
-    {
-        return "macro tape breach: " + macroTriggers(mechanical.path("triggers")) + "\n"
-                + "mechanical_prior: " + mechanical.path("direction").asText("neutral")
-                + " / " + mechanical.path("impact_tier").asText("noise");
-    }
-
-    /** The breaching indicators as {@code "VIX +12.0%, DXY +0.6%"} for the macro catalyst block. */
-    private static String macroTriggers(JsonNode triggers)
-    {
-        List<String> parts = new ArrayList<>();
-        for (JsonNode trigger : triggers)
-        {
-            parts.add(trigger.path("name").asText() + " "
-                    + String.format(Locale.ROOT, "%+.1f%%", trigger.path("delta_pct").asDouble()));
-        }
-        return String.join(", ", parts);
-    }
-
-    /**
      * Deep-analysis (Pass 2) article block: {@code [i] source | pub}, an indented title and
      * description, and a {@code pre_trend} label when {@code ohlcByArticleId} carries bars for the
      * article. A blank line separates entries (and trails the block), matching Python. {@code idMap}
@@ -178,8 +154,8 @@ public final class PromptBuilder
     /**
      * The {@code {market_signals}} block: a leading BTC price-context line (when the window's price
      * snapshot is available), the macro regime (with the breaching-indicator detail), an
-     * options-positioning line, a funding-positioning line, and a macro-trend line &mdash; each
-     * emitted only when its signal is present. {@code optionsSignal} / {@code fundingSignal} /
+     * options priced-in (complacency) line, a funding-positioning line, and a macro-trend line &mdash;
+     * each emitted only when its signal is present. {@code optionsSignal} / {@code fundingSignal} /
      * {@code macroTrend} / {@code priceContext} may be null.
      */
     public static String marketSignals(ObjectNode regime, ObjectNode optionsSignal, ObjectNode fundingSignal,
@@ -287,37 +263,30 @@ public final class PromptBuilder
 
     private static void appendOptionsLine(List<String> lines, ObjectNode options)
     {
-        boolean present = options != null && !options.path("signal_strength").asText("none").equals("none");
-        if (present)
+        String pricedIn = options == null ? "" : options.path("priced_in").asText("");
+        // Only the actionable states render -- complacent (amplify a real catalyst) or braced (fragility
+        // note); normal/unknown add nothing and are omitted, like the other signals' neutral states.
+        if (pricedIn.equals("complacent") || pricedIn.equals("braced"))
         {
-            lines.add("options_signal: " + options.path("signal_strength").asText()
-                    + " (" + String.join(", ", optionsParts(options)) + ")");
+            lines.add("options: " + pricedIn + optionsDetail(options));
         }
     }
 
-    private static List<String> optionsParts(ObjectNode options)
+    /** The IV level and trend behind the priced-in verdict, e.g. {@code " (IV 88%, rising)"}; empty when absent. */
+    private static String optionsDetail(ObjectNode options)
     {
         List<String> parts = new ArrayList<>();
-        parts.add(options.path("positioning").asText());
-        JsonNode pc = options.path("near_pc_ratio");
-        if (pc.isNumber())
+        JsonNode iv = options.path("near_atm_iv");
+        if (iv.isNumber())
         {
-            parts.add(String.format(Locale.ROOT, "P/C=%.2f", pc.asDouble()));
+            parts.add(String.format(Locale.ROOT, "IV %.0f%%", iv.asDouble()));
         }
-        if (options.path("iv_elevated").asBoolean())
+        JsonNode trend = options.path("dvol_trend");
+        if (trend.isTextual() && !trend.asText().equals("flat"))
         {
-            parts.add("IV elevated");
+            parts.add(trend.asText());
         }
-        if (options.path("oi_surge").asBoolean())
-        {
-            parts.add("OI surge");
-        }
-        JsonNode dvol = options.path("dvol_trend");
-        if (dvol.isTextual() && !dvol.asText().equals("flat"))
-        {
-            parts.add("DVOL " + dvol.asText());
-        }
-        return parts;
+        return parts.isEmpty() ? "" : " (" + String.join(", ", parts) + ")";
     }
 
     private static void appendMacroTrendLine(List<String> lines, ObjectNode macroTrend)

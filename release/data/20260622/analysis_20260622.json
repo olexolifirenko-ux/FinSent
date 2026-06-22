@@ -1,0 +1,1399 @@
+{
+  "00:30" : {
+    "analyzed_at" : "2026-06-22T00:41:17Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4145 ],
+    "screener" : [ {
+      "article_id" : 4145,
+      "score" : 0,
+      "reason" : "Pure opinion/speculation with no new fact or material event; unrelated to crypto or macro catalysts affecting BTC."
+    } ],
+    "prediction_record" : null
+  },
+  "01:00" : {
+    "analyzed_at" : "2026-06-22T01:05:49Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4146 ],
+    "screener" : [ {
+      "article_id" : 4146,
+      "score" : 0,
+      "reason" : "Political commentary on a non-US election with no direct crypto/macro catalyst; no new material fact relevant to BTC markets."
+    } ],
+    "prediction_record" : null
+  },
+  "03:30" : {
+    "analyzed_at" : "2026-06-22T03:40:15Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4147 ],
+    "screener" : [ {
+      "article_id" : 4147,
+      "score" : 2,
+      "reason" : "Stablecoin vault wind-down amid withdrawal surge and depegging contagion risk—material structural event in crypto money markets warranting closer look at systemic stability implications."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 64293.99,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Step 1: Fact — Altura did wind down its vault. Step 2: Fails — the article explicitly attributes it to contagion from the already-known msUSD depegging; the underlying stressor is not new information. Step 3: Channel weak — Altura is a small, obscure protocol and this is a secondary downstream consequence of a known stress event, not a fresh trigger. BTC is essentially flat, confirming no market reaction.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0041,
+        "oi_change_pct" : -0.711,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 64293.99,
+        "change_24h_pct" : -0.131,
+        "range_pos_24h" : 0.6591
+      },
+      "articles" : [ {
+        "id" : 4147,
+        "title" : "Altura winds down stablecoin vault after ‘unprecedented level’ of withdrawal requests",
+        "direction" : "neutral",
+        "reasoning" : "A fact, but the causative event (msUSD depeg/contagion fears) is already known and circulating; Altura's vault wind-down is a minor secondary effect of an existing stress, not a fresh catalyst for BTC.",
+        "scenario" : "noise",
+        "pre_trend" : "rising",
+        "published_at" : "2026-06-22T03:30:51Z",
+        "url" : "https://www.theblock.co/post/405477/altura-winds-down-stablecoin-vault?utm_source=rss&utm_medium=rss",
+        "price_at_publish" : 64293.99
+      } ]
+    },
+    "resonant_article_ids" : [ 4147 ]
+  },
+  "05:00" : {
+    "analyzed_at" : "2026-06-22T05:10:19Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4148, 4151 ],
+    "screener" : [ {
+      "article_id" : 4148,
+      "score" : 1,
+      "reason" : "BoJ semiannual report is routine monetary policy communication; only material if it contains surprise policy shift or hawkish/dovish pivot not yet priced in—summary alone insufficient to judge."
+    }, {
+      "article_id" : 4151,
+      "score" : 2,
+      "reason" : "Layer 2 exploit and halt is a real security event affecting Ethereum ecosystem; material for crypto-structural risk, though impact on BTC indirect unless contagion spreads to major bridges or staking."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 64094.36,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Step 1: Fact — the halt and exploit are real, executed events. Step 2: New — not previously reported. Step 3: Fails channel — Taiko is a small Ethereum L2; exploits on minor L2 bridges have no concrete transmission to BTC (no monetary/liquidity, no USD, no BTC-structural link), and positioning is neutral with no cascade fuel even if a weak channel existed.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0022,
+        "oi_change_pct" : -0.147,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 64100.01,
+        "change_24h_pct" : -0.274,
+        "range_pos_24h" : 0.5343
+      },
+      "articles" : [ {
+        "id" : 4151,
+        "title" : "Ethereum Layer 2 Taiko halts block production following exploit; urges users to withdraw funds",
+        "direction" : "neutral",
+        "reasoning" : "Real and new exploit, but Taiko L2 is a small Ethereum ecosystem protocol with no meaningful BTC channel — noise for BTC traders.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-22T05:02:27Z",
+        "url" : "https://www.theblock.co/post/405486/taiko-confirms-exploit?utm_source=rss&utm_medium=rss",
+        "price_at_publish" : 64094.36
+      } ]
+    },
+    "resonant_article_ids" : [ 4151 ]
+  },
+  "04:50" : {
+    "analyzed_at" : "2026-06-22T05:10:18Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4150 ],
+    "screener" : [ {
+      "article_id" : 4150,
+      "score" : 0,
+      "reason" : "Price recap of existing market action; US-Iran peace talks already priced in; no new catalyst reported"
+    } ],
+    "prediction_record" : null
+  },
+  "05:10" : {
+    "analyzed_at" : "2026-06-22T05:20:15Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4152, 4153 ],
+    "screener" : [ {
+      "article_id" : 4152,
+      "score" : 0,
+      "reason" : "Price recap of intraday trading action already occurred; no new catalyst."
+    }, {
+      "article_id" : 4153,
+      "score" : 2,
+      "reason" : "Major institutional allocation signal from Japan's largest pension fund; material if confirmed, warrants credibility check on single-source report."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 64248.01,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bullish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "Japan's National Business Corporate Pension Fund announces plan to allocate ~1% of assets to crypto" ],
+      "reasoning" : "Step 1: Borderline fact — it is a reported institutional decision/plan, not a completed purchase; the qualifier 'reports' and 'plans' make it an announced intention rather than an executed allocation. Step 2: New — Japanese pension fund crypto entry is not a known or widely-expected development. Step 3: Direct crypto-structural channel (institutional inflows), but the actual buying has not happened, limiting immediacy. BTC already has a mild pre-trend rise and neutral positioning, so the incremental impact is modest — bullish but low.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.002,
+        "oi_change_pct" : -0.207,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 64234.0,
+        "change_24h_pct" : -0.06,
+        "range_pos_24h" : 0.6205
+      },
+      "articles" : [ {
+        "id" : 4153,
+        "title" : "Japan’s corporate pension fund plans to allocate 1% of assets to crypto: reports",
+        "direction" : "bullish",
+        "reasoning" : "A newly reported institutional decision with a direct crypto channel (pension fund allocation), but it is an announced plan not an executed purchase, limiting it to a low-impact bullish signal.",
+        "scenario" : "front_run",
+        "pre_trend" : "rising",
+        "published_at" : "2026-06-22T05:15:08Z",
+        "url" : "https://www.theblock.co/post/405489/japan-pension-fund-crypto-allocation?utm_source=rss&utm_medium=rss",
+        "price_at_publish" : 64248.01
+      } ]
+    },
+    "resonant_article_ids" : [ 4153 ]
+  },
+  "06:10" : {
+    "analyzed_at" : "2026-06-22T06:20:03Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4154 ],
+    "screener" : [ {
+      "article_id" : 4154,
+      "score" : 1,
+      "reason" : "Technical protocol improvement discussion; real but minor and indirect channel to BTC price/market impact."
+    } ],
+    "prediction_record" : null
+  },
+  "06:30" : {
+    "analyzed_at" : "2026-06-22T06:40:14Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4155 ],
+    "screener" : [ {
+      "article_id" : 4155,
+      "score" : 1,
+      "reason" : "Real but indirect: a PoC for remittances on Solana is a use-case exploration, not a material catalyst for BTC; slow-moving, unconfirmed execution risk, and no immediate market-moving event."
+    } ],
+    "prediction_record" : null
+  },
+  "07:00" : {
+    "analyzed_at" : "2026-06-22T07:10:20Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4156, 4157 ],
+    "screener" : [ {
+      "article_id" : 4156,
+      "score" : 1,
+      "reason" : "New product feature at a major exchange, but incremental service expansion with no direct BTC catalyst or market-moving implication."
+    }, {
+      "article_id" : 4157,
+      "score" : 0,
+      "reason" : "Explanatory recap of Tether's known business model; no new event, policy change, or material development reported."
+    } ],
+    "prediction_record" : null
+  },
+  "07:30" : {
+    "analyzed_at" : "2026-06-22T07:40:04Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4158, 4159 ],
+    "screener" : [ {
+      "article_id" : 4158,
+      "score" : 0,
+      "reason" : "Price recap of existing market condition; no new catalyst"
+    }, {
+      "article_id" : 4159,
+      "score" : 2,
+      "reason" : "New regulatory framework for systemic stablecoins from major central bank; material structural development for crypto ecosystem"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 64262.56,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "Bank of England publishes policy statement and draft Code of Practice for systemic stablecoin issuers" ],
+      "reasoning" : "Fact (official documents actually published, not threatened) and somewhat new as a concrete regulatory step, but the BoE stablecoin consultation has been telegraphed for years making this largely expected; the channel to BTC is weak and indirect -- UK-specific stablecoin issuer rules are a slow-moving compliance matter with no immediate BTC structural impact, and flat positioning/OI offers no amplification.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 6.0E-4,
+        "oi_change_pct" : -0.013,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 64262.57,
+        "change_24h_pct" : 0.13,
+        "range_pos_24h" : 0.6389
+      },
+      "articles" : [ {
+        "id" : 4159,
+        "title" : "Bank of England launches policy statement and draft rules on regulating systemic stablecoins",
+        "direction" : "neutral",
+        "reasoning" : "A real regulatory publication (fact), but largely anticipated from years of BoE consultation, and the channel to BTC is too indirect and slow-moving to constitute a fresh trading catalyst.",
+        "scenario" : "noise",
+        "pre_trend" : "rising",
+        "published_at" : "2026-06-22T07:30:00Z",
+        "url" : "https://www.bankofengland.co.uk/news/2026/june/boe-launches-policy-statement-and-draft-rules-on-regulating-systemic-stablecoins",
+        "price_at_publish" : 64262.56
+      } ]
+    },
+    "resonant_article_ids" : [ 4159 ]
+  },
+  "09:20" : {
+    "analyzed_at" : "2026-06-22T09:30:18Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4161 ],
+    "screener" : [ {
+      "article_id" : 4161,
+      "score" : 0,
+      "reason" : "Duplicate of already-covered Taiko exploit (2026-06-22 05:02); this is market reaction recap ('token dives 10%') to the same event, not a new development."
+    } ],
+    "prediction_record" : null
+  },
+  "09:10" : {
+    "analyzed_at" : "2026-06-22T09:30:20Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4162 ],
+    "screener" : [ {
+      "article_id" : 4162,
+      "score" : 0,
+      "reason" : "Pure price speculation and technical analysis opinion with no new factual catalyst; analyst prediction without material event."
+    } ],
+    "prediction_record" : null
+  },
+  "09:40" : {
+    "analyzed_at" : "2026-06-22T10:00:03Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4163 ],
+    "screener" : [ {
+      "article_id" : 4163,
+      "score" : 1,
+      "reason" : "Speculative governance proposal at early forum stage; no confirmed mechanism, vote, or implementation timeline; indirect impact on BTC even if adopted."
+    } ],
+    "prediction_record" : null
+  },
+  "10:00" : {
+    "analyzed_at" : "2026-06-22T10:10:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4164 ],
+    "screener" : [ {
+      "article_id" : 4164,
+      "score" : 1,
+      "reason" : "CBDC pilot advancement is real but slow-moving, indirect channel to BTC; testing phase is incremental, not a sudden policy shock or regulatory action."
+    } ],
+    "prediction_record" : null
+  },
+  "10:20" : {
+    "analyzed_at" : "2026-06-22T10:30:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4165, 4166 ],
+    "screener" : [ {
+      "article_id" : 4165,
+      "score" : 0,
+      "reason" : "Opinion/speculation piece on upcoming week; no new confirmed catalyst reported."
+    }, {
+      "article_id" : 4166,
+      "score" : 0,
+      "reason" : "Market recap of ETF flows already happening; analyst commentary on trend exhaustion is speculation, not a new material event."
+    } ],
+    "prediction_record" : null
+  },
+  "10:40" : {
+    "analyzed_at" : "2026-06-22T11:00:04Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4169, 4170 ],
+    "screener" : [ {
+      "article_id" : 4169,
+      "score" : 1,
+      "reason" : "Regulatory refinement on stablecoin rules (BoE drops holding caps, sets issuance guardrail); material for UK stablecoin ecosystem but indirect/slow channel to BTC price; already covered in ALREADY COVERED section (BoE stablecoin policy 2026-06-22 07:30)."
+    }, {
+      "article_id" : 4170,
+      "score" : 0,
+      "reason" : "Duplicate of article [1] and ALREADY COVERED (BoE stablecoin policy 2026-06-22 07:30); same event, same day, minor wording differences; no new catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "11:00" : {
+    "analyzed_at" : "2026-06-22T11:10:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4171 ],
+    "screener" : [ {
+      "article_id" : 4171,
+      "score" : 0,
+      "reason" : "Price recap and analyst speculation on chart patterns; no new catalyst or event reported."
+    } ],
+    "prediction_record" : null
+  },
+  "11:20" : {
+    "analyzed_at" : "2026-06-22T11:30:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4172 ],
+    "screener" : [ {
+      "article_id" : 4172,
+      "score" : 0,
+      "reason" : "Price recap and market reaction summary; no new catalyst reported—ETF outflows and Fed stance already known, Iran ceasefire covered separately."
+    } ],
+    "prediction_record" : null
+  },
+  "11:30" : {
+    "analyzed_at" : "2026-06-22T11:40:25Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4175 ],
+    "screener" : [ {
+      "article_id" : 4175,
+      "score" : 0,
+      "reason" : "Market recap and forward-looking commentary on ETF flows; no new confirmed catalyst or material event reported, only analysis of existing trends."
+    } ],
+    "prediction_record" : null
+  },
+  "12:00" : {
+    "analyzed_at" : "2026-06-22T12:10:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4176, 4177 ],
+    "screener" : [ {
+      "article_id" : 4176,
+      "score" : 1,
+      "reason" : "New TradFi fund product offering tokenized exposure to bonds via Solana/Ethereum; real but indirect channel to BTC, no direct catalyst."
+    }, {
+      "article_id" : 4177,
+      "score" : 0,
+      "reason" : "Corporate treasury purchase recap of existing strategy; price movement commentary ('despite STRC slide') is market reaction, not new catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "12:30" : {
+    "analyzed_at" : "2026-06-22T12:40:09Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4179, 4180 ],
+    "screener" : [ {
+      "article_id" : 4179,
+      "score" : 0,
+      "reason" : "Corporate treasury/cash-reserve move by a single company; no systemic market catalyst or BTC-specific impact."
+    }, {
+      "article_id" : 4180,
+      "score" : 1,
+      "reason" : "MoneyGram validator expansion is a real adoption signal but incremental; Solana-specific, not a material BTC catalyst or market-moving event."
+    } ],
+    "prediction_record" : null
+  },
+  "12:40" : {
+    "analyzed_at" : "2026-06-22T12:50:04Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4181, 4182 ],
+    "screener" : [ {
+      "article_id" : 4181,
+      "score" : 0,
+      "reason" : "Obituary of former Fed chair; no new policy or market catalyst."
+    }, {
+      "article_id" : 4182,
+      "score" : 0,
+      "reason" : "Venture funding round for a trading app; no material catalyst for BTC markets."
+    } ],
+    "prediction_record" : null
+  },
+  "12:50" : {
+    "analyzed_at" : "2026-06-22T13:00:10Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4183 ],
+    "screener" : [ {
+      "article_id" : 4183,
+      "score" : 1,
+      "reason" : "Observation of miner behavior and sensitivity to price swings; no new catalyst or event, just analysis of existing market dynamics."
+    } ],
+    "prediction_record" : null
+  },
+  "13:00" : {
+    "analyzed_at" : "2026-06-22T13:10:05Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4184, 4186 ],
+    "screener" : [ {
+      "article_id" : 4184,
+      "score" : 0,
+      "reason" : "Market recap of existing position; analyst opinion ('crypto spring') is speculation without new catalyst."
+    }, {
+      "article_id" : 4186,
+      "score" : 2,
+      "reason" : "ECB President hearing on monetary/economic affairs could signal policy shifts relevant to macro conditions affecting BTC; unverified content but potential material development if new guidance emerges."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 65138.42,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fails Step 2: a routine, scheduled parliamentary hearing for the ECB President is a known, recurring institutional event with no specific new policy content provided -- there is no surprise or unpriced fact, and without substantive new statements it has no concrete monetary/rates or crypto channel.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0072,
+        "oi_change_pct" : 0.644,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 65149.57,
+        "change_24h_pct" : 1.479,
+        "range_pos_24h" : 0.9627
+      },
+      "articles" : [ {
+        "id" : 4186,
+        "title" : "Christine Lagarde: Hearing of the Committee on Economic and Monetary Affairs of the European Parliament",
+        "direction" : "neutral",
+        "reasoning" : "A scheduled, routine parliamentary hearing with no reported new content -- not a fresh trigger and no identifiable crypto channel",
+        "scenario" : "noise",
+        "pre_trend" : "rising",
+        "published_at" : "2026-06-22T13:00:00Z",
+        "url" : "https://www.ecb.europa.eu//press/key/date/2026/html/ecb.sp260622~b060a27b78.en.html",
+        "price_at_publish" : 65138.42
+      } ]
+    },
+    "resonant_article_ids" : [ 4186 ]
+  },
+  "12:20" : {
+    "analyzed_at" : "2026-06-22T13:10:19Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4185 ],
+    "screener" : [ {
+      "article_id" : 4185,
+      "score" : 0,
+      "reason" : "Corporate treasury purchase by a known BTC accumulator; routine capital allocation, not a new market catalyst or policy shift"
+    } ],
+    "prediction_record" : null
+  },
+  "13:10" : {
+    "analyzed_at" : "2026-06-22T13:20:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4187 ],
+    "screener" : [ {
+      "article_id" : 4187,
+      "score" : 0,
+      "reason" : "Price target commentary on a single token; no new catalyst or material event, just analyst opinion on an existing price move."
+    } ],
+    "prediction_record" : null
+  },
+  "13:20" : {
+    "analyzed_at" : "2026-06-22T13:30:29Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4188, 4189 ],
+    "screener" : [ {
+      "article_id" : 4188,
+      "score" : 0,
+      "reason" : "Market recap of RWA tokenization growth; no new catalyst or policy change that would move BTC"
+    }, {
+      "article_id" : 4189,
+      "score" : 0,
+      "reason" : "Unrelated to crypto or BTC; domestic vandalism incident with no market relevance"
+    } ],
+    "prediction_record" : null
+  },
+  "13:30" : {
+    "analyzed_at" : "2026-06-22T13:40:04Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4190 ],
+    "screener" : [ {
+      "article_id" : 4190,
+      "score" : 0,
+      "reason" : "Pure opinion/speculation from analyst plus a corporate purchase recap; no new material catalyst or policy event that would move BTC markets."
+    } ],
+    "prediction_record" : null
+  },
+  "13:40" : {
+    "analyzed_at" : "2026-06-22T13:50:25Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4192 ],
+    "screener" : [ {
+      "article_id" : 4192,
+      "score" : 2,
+      "reason" : "Material new partnership between major exchange (OKX, 120M users) and NYSE/ICE to bridge TradFi-crypto markets; concrete institutional development with direct BTC ecosystem implications, though execution details and timeline unclear."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 65298.0,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bullish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "OKX and NYSE (ICE) announce joint venture to give 120M crypto users access to ICE futures and NYSE tokenized equities" ],
+      "reasoning" : "Fact (officially announced partnership, not a plan or promise), new (no prior public telegraphing of this specific tie-up), and there is a crypto-structural channel -- a top-3 exchange gaining NYSE/ICE legitimacy and TradFi access is a tangible adoption signal; however, the transmission to BTC spot price is indirect and slow-moving, making this a sentiment positive rather than an immediate repositioning trigger.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.007,
+        "oi_change_pct" : 0.707,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 65281.98,
+        "change_24h_pct" : 1.946,
+        "range_pos_24h" : 0.9633
+      },
+      "articles" : [ {
+        "id" : 4192,
+        "title" : "OKX and NYSE partner to bridge tradfi and crypto markets in joint venture led by Andrew Cuomo",
+        "direction" : "bullish",
+        "reasoning" : "Confirmed, announced joint venture between OKX and NYSE/ICE is a new, crypto-structural legitimacy event, but the channel to BTC is indirect and gradual -- low impact rather than high.",
+        "scenario" : "fresh_bullish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-22T13:40:27Z",
+        "url" : "https://www.coindesk.com/markets/2026/06/22/okx-and-nyse-partner-to-bridge-tradfi-and-crypto-markets-in-joint-venture-led-by-andrew-cuomo",
+        "price_at_publish" : 65298.0
+      } ]
+    },
+    "resonant_article_ids" : [ 4192 ]
+  },
+  "13:50" : {
+    "analyzed_at" : "2026-06-22T14:00:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4193 ],
+    "screener" : [ {
+      "article_id" : 4193,
+      "score" : 1,
+      "reason" : "Real but minor: a single remittance firm joining Solana as validator is incremental infrastructure news, not a material catalyst for BTC price or systemic crypto risk/opportunity."
+    } ],
+    "prediction_record" : null
+  },
+  "15:00" : {
+    "analyzed_at" : "2026-06-22T16:10:59Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4198, 4199, 4217, 4218, 4219, 4220, 4221, 4222 ],
+    "screener" : [ {
+      "article_id" : 4198,
+      "score" : 1,
+      "reason" : "Tokenized deposits expand crypto infrastructure but indirect BTC impact."
+    }, {
+      "article_id" : 4199,
+      "score" : 1,
+      "reason" : "Corporate BTC treasury accumulation; minor price-support signal."
+    }, {
+      "article_id" : 4217,
+      "score" : 0,
+      "reason" : "Energy policy commentary; no new catalyst or direct BTC channel."
+    }, {
+      "article_id" : 4218,
+      "score" : 0,
+      "reason" : "AI compute deal; no BTC relevance."
+    }, {
+      "article_id" : 4219,
+      "score" : 0,
+      "reason" : "Duplicate of article 6; SpaceX compute deal unrelated to BTC."
+    }, {
+      "article_id" : 4220,
+      "score" : 0,
+      "reason" : "AI compute deal; no BTC relevance."
+    }, {
+      "article_id" : 4221,
+      "score" : 0,
+      "reason" : "Diplomatic travel; no new catalyst or BTC impact."
+    }, {
+      "article_id" : 4222,
+      "score" : 0,
+      "reason" : "Duplicate of articles 4, 5, 6; SpaceX compute deal unrelated to BTC."
+    } ],
+    "prediction_record" : null
+  },
+  "15:10" : {
+    "analyzed_at" : "2026-06-22T16:10:39Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4200, 4215, 4216 ],
+    "screener" : [ {
+      "article_id" : 4200,
+      "score" : 2,
+      "reason" : "Tax clarity on staking/mining affects crypto economics and adoption"
+    }, {
+      "article_id" : 4215,
+      "score" : 0,
+      "reason" : "Meta leadership change unrelated to BTC"
+    }, {
+      "article_id" : 4216,
+      "score" : 2,
+      "reason" : "Oil supply signal via Hormuz; indirect but material macro channel"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 65008.0,
+      "article_count" : 3,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Item 1 is a vague White House status comment about tanker traffic — even if taken as fact, the channel to BTC is too indirect (oil/geopolitics -> risk sentiment) to constitute a concrete crypto trigger, and the flat pre-trend confirms no market reaction. Item 2 fails Step 1: industry groups urging Congress is lobbying posture, not a legislative fact — no bill has passed, so there is no new crypto-structural event.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0058,
+        "oi_change_pct" : -0.123,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 65029.14,
+        "change_24h_pct" : 1.228,
+        "range_pos_24h" : 0.7477
+      },
+      "articles" : [ {
+        "id" : 4200,
+        "title" : "Crypto industry groups urge Congress to pass tax staking and mining bill unchanged",
+        "direction" : "neutral",
+        "reasoning" : "Advocacy groups urging Congress is posture, not a fact — no bill has been enacted, so there is no concrete regulatory change to price in.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-22T15:14:13Z",
+        "url" : "https://www.theblock.co/post/405603/crypto-industry-groups-urge-congress-pass-tax-staking-mining-bill-unchanged?utm_source=rss&utm_medium=rss",
+        "price_at_publish" : 65084.71
+      }, {
+        "id" : 4216,
+        "title" : "The White House has said that \"really big tankers\" are coming through the Strait of Hormuz.",
+        "direction" : "neutral",
+        "reasoning" : "A vague geopolitical statement about tanker traffic — even if factual, the channel to BTC is too remote and indirect to be a fresh crypto catalyst.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-22T15:17:00Z",
+        "url" : "https://x.com/unusual_whales/status/2069077197680501111",
+        "price_at_publish" : 65008.0
+      } ]
+    },
+    "resonant_article_ids" : [ 4200, 4216 ]
+  },
+  "15:50" : {
+    "analyzed_at" : "2026-06-22T16:09:51Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4201, 4202, 4204, 4205, 4206 ],
+    "screener" : [ {
+      "article_id" : 4201,
+      "score" : 2,
+      "reason" : "Tax policy on mining/staking affects BTC economics and adoption"
+    }, {
+      "article_id" : 4202,
+      "score" : 0,
+      "reason" : "OKX-NYSE partnership already covered 2026-06-22 13:40"
+    }, {
+      "article_id" : 4204,
+      "score" : 2,
+      "reason" : "Fed rate hike expectations material for macro/BTC correlation"
+    }, {
+      "article_id" : 4205,
+      "score" : 1,
+      "reason" : "Iran strait management talks; indirect geopolitical/oil risk to BTC"
+    }, {
+      "article_id" : 4206,
+      "score" : 0,
+      "reason" : "Duplicate of article 4; no new fact"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 64757.12,
+      "article_count" : 5,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Item 1 is a lobbying request to a committee — a real but slow-channel, widely-known ongoing effort that fails Step 2 (not new) and has no immediate legislative outcome. Item 2 is a Bank of America forecast of future Fed hikes — a prediction/opinion, not an executed Fed action, failing Step 1; no rate hike has actually occurred, so there is no fresh causative fact, only analyst posturing about a future that has not happened.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0052,
+        "oi_change_pct" : -0.115,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 64911.62,
+        "change_24h_pct" : 1.024,
+        "range_pos_24h" : 0.6977
+      },
+      "articles" : [ {
+        "id" : 4201,
+        "title" : "Crypto's second U.S. lobbying front — tax policy — sees industry push on mining, staking",
+        "direction" : "neutral",
+        "reasoning" : "A real advocacy action but not new (industry lobbying on mining/staking tax treatment is long-established), no immediate legislative outcome, and the channel is slow and weak.",
+        "scenario" : "noise",
+        "pre_trend" : "falling",
+        "published_at" : "2026-06-22T15:56:13Z",
+        "url" : "https://www.coindesk.com/policy/2026/06/22/crypto-s-second-u-s-lobbying-front-tax-policy-sees-industry-push-on-mining-staking",
+        "price_at_publish" : 64757.12
+      }, {
+        "id" : 4204,
+        "title" : "BREAKING: Bank of America says it now expects the Federal Reserve to hike rates three times this year",
+        "direction" : "bearish",
+        "reasoning" : "Fails Step 1 — BofA's rate-hike expectation is a forecast/prediction, not an executed Fed decision; the monetary-policy channel exists but the action has not happened, making this analyst posture rather than a causative fact.",
+        "scenario" : "front_run",
+        "pre_trend" : "falling",
+        "published_at" : "2026-06-22T15:56:00Z",
+        "url" : "https://x.com/unusual_whales/status/2069087012401844711",
+        "price_at_publish" : 64757.12
+      } ]
+    },
+    "resonant_article_ids" : [ 4201, 4204 ]
+  },
+  "16:00" : {
+    "analyzed_at" : "2026-06-22T16:09:48Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4203 ],
+    "screener" : [ {
+      "article_id" : 4203,
+      "score" : 0,
+      "reason" : "Marketing content about business analytics tool; no BTC catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "15:40" : {
+    "analyzed_at" : "2026-06-22T16:10:18Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4207 ],
+    "screener" : [ {
+      "article_id" : 4207,
+      "score" : 1,
+      "reason" : "Fed remarks on dollar role; indirect macro signal, not new policy decision."
+    } ],
+    "prediction_record" : null
+  },
+  "15:30" : {
+    "analyzed_at" : "2026-06-22T16:10:19Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4208, 4209, 4210 ],
+    "screener" : [ {
+      "article_id" : 4208,
+      "score" : 0,
+      "reason" : "AMC earnings update; no direct BTC catalyst."
+    }, {
+      "article_id" : 4209,
+      "score" : 0,
+      "reason" : "Market recap; no new event or BTC channel."
+    }, {
+      "article_id" : 4210,
+      "score" : 0,
+      "reason" : "Index price movements; no new catalyst or event."
+    } ],
+    "prediction_record" : null
+  },
+  "15:20" : {
+    "analyzed_at" : "2026-06-22T16:10:22Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4211, 4212, 4213, 4214 ],
+    "screener" : [ {
+      "article_id" : 4211,
+      "score" : 2,
+      "reason" : "Iran nuclear talks breakdown; geopolitical escalation risk affects oil/macro."
+    }, {
+      "article_id" : 4212,
+      "score" : 0,
+      "reason" : "Duplicate of article 1; same event, same source time."
+    }, {
+      "article_id" : 4213,
+      "score" : 1,
+      "reason" : "Iran nuclear procedural detail; indirect macro channel."
+    }, {
+      "article_id" : 4214,
+      "score" : 1,
+      "reason" : "Iran-IAEA procedural statement; minor geopolitical signal."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 65068.0,
+      "article_count" : 4,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact (a spokesperson's official statement about what did NOT happen in talks), but fails Step 3: Iran's denial of nuclear commitments in one round of Switzerland talks has no concrete transmission channel to BTC -- no monetary/liquidity impact, no USD shock, no crypto-structural link, and the pre_trend is flat confirming no market reaction.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0056,
+        "oi_change_pct" : -0.181,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 64974.93,
+        "change_24h_pct" : 1.172,
+        "range_pos_24h" : 0.7246
+      },
+      "articles" : [ {
+        "id" : 4211,
+        "title" : "IRAN'S FOREIGN MINISTRY SPOKESPERSON SAYS TEHRAN DID NOT NEGOTIATE THE NUCLEAR ISSUE AND DID NOT ACCEPT ANY NEW COMMITMENTS IN SUNDAY'S TALKS IN SWITZERLAND",
+        "direction" : "neutral",
+        "reasoning" : "A real statement but no crypto channel -- geopolitical diplomatic noise with no direct path to BTC pricing",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-22T15:27:07Z",
+        "url" : "https://x.com/FirstSquawk/status/2069079745674022914",
+        "price_at_publish" : 65068.0
+      } ]
+    },
+    "resonant_article_ids" : [ 4211 ]
+  },
+  "16:30" : {
+    "analyzed_at" : "2026-06-22T16:50:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4223, 4224 ],
+    "screener" : [ {
+      "article_id" : 4223,
+      "score" : 1,
+      "reason" : "HIVE stock move tied to AI/GPU ops, indirect BTC relevance"
+    }, {
+      "article_id" : 4224,
+      "score" : 0,
+      "reason" : "Ethereum internal governance; no new BTC catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "16:50" : {
+    "analyzed_at" : "2026-06-22T17:00:22Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4225 ],
+    "screener" : [ {
+      "article_id" : 4225,
+      "score" : 2,
+      "reason" : "Trump Iran nuclear statement; geopolitical escalation risk affects macro/BTC"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 64750.0,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Posture, not fact: Trump is stating a future expectation/prediction ('Iran will agree') -- the agreement has not actually happened. This is a prediction/assertion about a future event, not a completed or officially decided action. Fails Step 1.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0046,
+        "oi_change_pct" : -0.382,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 64598.0,
+        "change_24h_pct" : 0.689,
+        "range_pos_24h" : 0.5644
+      },
+      "articles" : [ {
+        "id" : 4225,
+        "title" : "Everybody is fully aware that Iran will agree to have Major Weapons Inspections in order to ensure “Nuclear Honesty” long into the future. President DONALD J. TRUMP",
+        "direction" : "neutral",
+        "reasoning" : "A presidential assertion about a future outcome ('will agree') -- unexecuted, no completed deal, pure posture",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-22T16:58:08Z",
+        "url" : "https://www.trumpstruth.org/statuses/39423",
+        "price_at_publish" : 64750.0
+      } ]
+    },
+    "resonant_article_ids" : [ 4225 ]
+  },
+  "17:10" : {
+    "analyzed_at" : "2026-06-22T17:20:16Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4226, 4227, 4228, 4229, 4230, 4231, 4232, 4233 ],
+    "screener" : [ {
+      "article_id" : 4226,
+      "score" : 0,
+      "reason" : "Political endorsement, no BTC catalyst"
+    }, {
+      "article_id" : 4227,
+      "score" : 0,
+      "reason" : "Political endorsement, no BTC catalyst"
+    }, {
+      "article_id" : 4228,
+      "score" : 0,
+      "reason" : "Political endorsement, no BTC catalyst"
+    }, {
+      "article_id" : 4229,
+      "score" : 0,
+      "reason" : "Political endorsement, no BTC catalyst"
+    }, {
+      "article_id" : 4230,
+      "score" : 0,
+      "reason" : "Political endorsement, no BTC catalyst"
+    }, {
+      "article_id" : 4231,
+      "score" : 0,
+      "reason" : "Political endorsement, no BTC catalyst"
+    }, {
+      "article_id" : 4232,
+      "score" : 0,
+      "reason" : "Political endorsement, no BTC catalyst"
+    }, {
+      "article_id" : 4233,
+      "score" : 0,
+      "reason" : "Political endorsement, no BTC catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "17:20" : {
+    "analyzed_at" : "2026-06-22T17:30:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4234 ],
+    "screener" : [ {
+      "article_id" : 4234,
+      "score" : 1,
+      "reason" : "Exchange infrastructure improvement; indirect and slow channel to BTC."
+    } ],
+    "prediction_record" : null
+  },
+  "18:10" : {
+    "analyzed_at" : "2026-06-22T18:15:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4235, 4236 ],
+    "screener" : [ {
+      "article_id" : 4235,
+      "score" : 0,
+      "reason" : "Duplicate of already-covered Iran nuclear statement from 16:58"
+    }, {
+      "article_id" : 4236,
+      "score" : 0,
+      "reason" : "Vandalism incident; no BTC relevance or macro catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "18:20" : {
+    "analyzed_at" : "2026-06-22T18:30:10Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4238 ],
+    "screener" : [ {
+      "article_id" : 4238,
+      "score" : 1,
+      "reason" : "Patent dispute between crypto firms; indirect regulatory/legal precedent channel."
+    } ],
+    "prediction_record" : null
+  },
+  "18:50" : {
+    "analyzed_at" : "2026-06-22T18:55:32Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4239, 4242 ],
+    "screener" : [ {
+      "article_id" : 4239,
+      "score" : 0,
+      "reason" : "Political endorsement, no BTC catalyst"
+    }, {
+      "article_id" : 4242,
+      "score" : 0,
+      "reason" : "Political endorsement, no BTC catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "18:40" : {
+    "analyzed_at" : "2026-06-22T18:50:56Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4240, 4241 ],
+    "screener" : [ {
+      "article_id" : 4240,
+      "score" : 0,
+      "reason" : "Political endorsement; no BTC-relevant catalyst."
+    }, {
+      "article_id" : 4241,
+      "score" : 0,
+      "reason" : "Political endorsement; no BTC-relevant catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "19:00" : {
+    "analyzed_at" : "2026-06-22T19:11:18Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4243, 4244 ],
+    "screener" : [ {
+      "article_id" : 4243,
+      "score" : 0,
+      "reason" : "Political endorsement, no BTC catalyst"
+    }, {
+      "article_id" : 4244,
+      "score" : 0,
+      "reason" : "Political endorsement, no BTC catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "19:10" : {
+    "analyzed_at" : "2026-06-22T19:21:25Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4245, 4246 ],
+    "screener" : [ {
+      "article_id" : 4245,
+      "score" : 0,
+      "reason" : "Political endorsement; no BTC catalyst"
+    }, {
+      "article_id" : 4246,
+      "score" : 0,
+      "reason" : "Political endorsement; no BTC catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "19:20" : {
+    "analyzed_at" : "2026-06-22T19:30:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4247, 4248, 4249 ],
+    "screener" : [ {
+      "article_id" : 4247,
+      "score" : 0,
+      "reason" : "Political endorsement; no direct BTC catalyst."
+    }, {
+      "article_id" : 4248,
+      "score" : 1,
+      "reason" : "Ethereum research hub; minor indirect crypto infrastructure."
+    }, {
+      "article_id" : 4249,
+      "score" : 1,
+      "reason" : "Crypto fintech M&A; operational expansion, not market catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "19:30" : {
+    "analyzed_at" : "2026-06-22T19:40:29Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4250 ],
+    "screener" : [ {
+      "article_id" : 4250,
+      "score" : 1,
+      "reason" : "Ethereum development funding; indirect macro relevance to BTC ecosystem."
+    } ],
+    "prediction_record" : null
+  },
+  "20:10" : {
+    "analyzed_at" : "2026-06-22T20:20:10Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4251, 4252, 4253, 4271, 4272, 4273, 4274, 4275, 4276, 4277 ],
+    "screener" : [ {
+      "article_id" : 4251,
+      "score" : 2,
+      "reason" : "Iran escalation threat; geopolitical risk to oil/Strait"
+    }, {
+      "article_id" : 4252,
+      "score" : 0,
+      "reason" : "Opinion on personnel; no new fact"
+    }, {
+      "article_id" : 4253,
+      "score" : 0,
+      "reason" : "Steel capacity data; no BTC channel"
+    }, {
+      "article_id" : 4271,
+      "score" : 0,
+      "reason" : "Diplomatic pleasantry; no new fact"
+    }, {
+      "article_id" : 4272,
+      "score" : 1,
+      "reason" : "Israel-Lebanon review; geopolitical but indirect"
+    }, {
+      "article_id" : 4273,
+      "score" : 1,
+      "reason" : "Defense buyback ban; fiscal/market signal but indirect"
+    }, {
+      "article_id" : 4274,
+      "score" : 0,
+      "reason" : "Iran respect statement; duplicates already-covered tone"
+    }, {
+      "article_id" : 4275,
+      "score" : 0,
+      "reason" : "Utility merger; no macro or BTC relevance"
+    }, {
+      "article_id" : 4276,
+      "score" : 1,
+      "reason" : "Digital credit selloff; crypto market stress but contained"
+    }, {
+      "article_id" : 4277,
+      "score" : 0,
+      "reason" : "Solana governance dispute; no systemic BTC impact"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 64495.28,
+      "article_count" : 10,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fails Step 1: this is posture, not fact. Trump's statement is a conditional threat ('if Iran does not stick to the agreement') -- no action has been taken, it is a warning about a hypothetical future. Classic leverage-seeking rhetoric from a figure known for inflammatory statements.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0064,
+        "oi_change_pct" : -0.267,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 64539.71,
+        "change_24h_pct" : 0.491,
+        "range_pos_24h" : 0.5397
+      },
+      "articles" : [ {
+        "id" : 4251,
+        "title" : "BREAKING: United States President Donald Trump has said that if Iran does not stick to the agreement, he will “do what I have to do.”\n\n\uD83D\uDD34 More on https://t.co/OCIH7J4Zwl https://t.co/tCCcveaGoc",
+        "direction" : "neutral",
+        "reasoning" : "Conditional threat from Trump about Iran -- an unexecuted posture, not a causative fact; fails Step 1",
+        "scenario" : "noise",
+        "pre_trend" : "rising",
+        "published_at" : "2026-06-22T20:11:49Z",
+        "url" : "https://x.com/AJEnglish/status/2069151390153236609",
+        "price_at_publish" : 64495.28
+      } ]
+    },
+    "resonant_article_ids" : [ 4251 ]
+  },
+  "20:00" : {
+    "analyzed_at" : "2026-06-22T20:12:43Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4254, 4255, 4256, 4257, 4258, 4259, 4260, 4261, 4262, 4263, 4264, 4265, 4266, 4267 ],
+    "screener" : [ {
+      "article_id" : 4254,
+      "score" : 2,
+      "reason" : "Oil price impact on macro conditions; indirect BTC relevance"
+    }, {
+      "article_id" : 4255,
+      "score" : 0,
+      "reason" : "Corporate compensation announcement; no BTC relevance"
+    }, {
+      "article_id" : 4256,
+      "score" : 1,
+      "reason" : "Iran threat escalation; geopolitical but already covered substance"
+    }, {
+      "article_id" : 4257,
+      "score" : 1,
+      "reason" : "Duplicate of [3]; Iran threat already in coverage"
+    }, {
+      "article_id" : 4258,
+      "score" : 0,
+      "reason" : "Iran fund use statement; no new catalyst"
+    }, {
+      "article_id" : 4259,
+      "score" : 0,
+      "reason" : "Corporate leadership change; no BTC relevance"
+    }, {
+      "article_id" : 4260,
+      "score" : 0,
+      "reason" : "July 4th event announcement; no BTC relevance"
+    }, {
+      "article_id" : 4261,
+      "score" : 1,
+      "reason" : "Lebanon territorial integrity agreement; geopolitical but indirect"
+    }, {
+      "article_id" : 4262,
+      "score" : 0,
+      "reason" : "Oil flow confirmation; already covered Strait of Hormuz topic"
+    }, {
+      "article_id" : 4263,
+      "score" : 2,
+      "reason" : "New communication channel on Strait shipping; reduces conflict risk"
+    }, {
+      "article_id" : 4264,
+      "score" : 0,
+      "reason" : "Market close recap; no new catalyst"
+    }, {
+      "article_id" : 4265,
+      "score" : 0,
+      "reason" : "Market close recap; no new catalyst"
+    }, {
+      "article_id" : 4266,
+      "score" : 0,
+      "reason" : "Market close recap; no new catalyst"
+    }, {
+      "article_id" : 4267,
+      "score" : 0,
+      "reason" : "Market close summary; no new catalyst"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 64532.46,
+      "article_count" : 14,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "bullish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "Iran's top negotiator confirms agreement reached to establish communication channel on Strait of Hormuz shipping to prevent conflicts" ],
+      "reasoning" : "Item 2 passes Step 1 (an agreement was reportedly 'reached', not threatened -- a stated completed fact), Step 2 (a new, concrete diplomatic de-escalation step in a live geopolitical flashpoint), and Step 3 (risk-on channel via oil/energy stability and broad risk sentiment, mildly bullish for BTC); however the scope is limited -- a communication channel, not a peace deal -- so impact is low rather than high. Item 1 fails Step 1 and 2: Trump verbally asserting the economy is not in a depression is opinion/posture, not an executed action, and the notion of lower oil prices as a positive is already known -- noise.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0065,
+        "oi_change_pct" : -0.018,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 64475.92,
+        "change_24h_pct" : 0.419,
+        "range_pos_24h" : 0.5125
+      },
+      "articles" : [ {
+        "id" : 4254,
+        "title" : "TRUMP: U.S. ECONOMY IS FAR FROM A DEPRESSION, CITING SHARPLY LOWER OIL PRICES AS A KEY POSITIVE.",
+        "direction" : "neutral",
+        "reasoning" : "Trump's verbal commentary on the economy's health is posture/opinion, not a new executed action, and lower oil prices are already known -- fails Steps 1 and 2, noise.",
+        "scenario" : "noise",
+        "pre_trend" : "rising",
+        "published_at" : "2026-06-22T20:09:36Z",
+        "url" : "https://x.com/FirstSquawk/status/2069150835330961549",
+        "price_at_publish" : 64532.46
+      }, {
+        "id" : 4263,
+        "title" : "IRAN'S TOP NEGOTIATOR SAYS AGREEMENT REACHED TO ESTABLISH A COMMUNICATION CHANNEL ON STRAIT OF HORMUZ SHIPPING TRAFFIC TO PREVENT CONFLICTS.",
+        "direction" : "bullish",
+        "reasoning" : "A confirmed agreement (fact, not threat) to establish a Hormuz shipping communication channel is new and represents incremental de-escalation with a weak but real risk-on channel to BTC.",
+        "scenario" : "fresh_bullish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-22T20:04:26Z",
+        "url" : "https://x.com/FirstSquawk/status/2069149535415517206",
+        "price_at_publish" : 64625.12
+      } ]
+    },
+    "resonant_article_ids" : [ 4254, 4263 ]
+  },
+  "19:50" : {
+    "analyzed_at" : "2026-06-22T20:13:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4268, 4269 ],
+    "screener" : [ {
+      "article_id" : 4268,
+      "score" : 1,
+      "reason" : "Iran escalation commentary; indirect oil/geopolitical channel to BTC."
+    }, {
+      "article_id" : 4269,
+      "score" : 1,
+      "reason" : "Strait of Hormuz status update; potential oil-supply relevance but no new catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "19:40" : {
+    "analyzed_at" : "2026-06-22T20:13:11Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4270 ],
+    "screener" : [ {
+      "article_id" : 4270,
+      "score" : 0,
+      "reason" : "Corporate share buyback; no BTC catalyst or macro impact."
+    } ],
+    "prediction_record" : null
+  },
+  "20:20" : {
+    "analyzed_at" : "2026-06-22T20:21:58Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4278, 4279 ],
+    "screener" : [ {
+      "article_id" : 4278,
+      "score" : 1,
+      "reason" : "Oil price reaction to already-covered Iran talks; indirect BTC channel."
+    }, {
+      "article_id" : 4279,
+      "score" : 0,
+      "reason" : "Market reaction recap to covered events; no new catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "20:30" : {
+    "analyzed_at" : "2026-06-22T20:38:37Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4280, 4281, 4282, 4283, 4284, 4285 ],
+    "screener" : [ {
+      "article_id" : 4280,
+      "score" : 0,
+      "reason" : "IBM security service launch, no BTC impact"
+    }, {
+      "article_id" : 4281,
+      "score" : 0,
+      "reason" : "IBM-OpenAI cybersecurity partnership, no BTC impact"
+    }, {
+      "article_id" : 4282,
+      "score" : 0,
+      "reason" : "Micron-Anthropic AI infrastructure deal, no BTC impact"
+    }, {
+      "article_id" : 4283,
+      "score" : 0,
+      "reason" : "Meta AI training suspension, no BTC impact"
+    }, {
+      "article_id" : 4284,
+      "score" : 2,
+      "reason" : "Quantum computing threat to cryptography, potential BTC relevance"
+    }, {
+      "article_id" : 4285,
+      "score" : 1,
+      "reason" : "Quantum innovation policy, indirect crypto implications"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 64410.44,
+      "article_count" : 6,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Step 1: Fact — an actual Executive Order was issued. Step 2: The quantum-computing threat to current cryptographic systems is a long-known, extensively discussed topic (NIST post-quantum standards work has been underway for years), so no new surprise. Step 3: The EO targets federal/national-security infrastructure cryptography, not crypto assets directly; any channel to BTC (via ECDSA quantum-vulnerability concern) is slow-moving, indirect, and already well-priced into long-run risk discourse — no fresh trading catalyst.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0057,
+        "oi_change_pct" : -0.372,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 64410.45,
+        "change_24h_pct" : 0.469,
+        "range_pos_24h" : 0.4847
+      },
+      "articles" : [ {
+        "id" : 4284,
+        "title" : "Securing the Nation Against Advanced Cryptographic Attacks",
+        "direction" : "neutral",
+        "reasoning" : "Fact (real EO), but quantum cryptography risk is a well-known, long-debated topic; EO targets government infrastructure rather than crypto assets, giving no concrete near-term channel to BTC.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-22T20:37:30Z",
+        "url" : "https://www.whitehouse.gov/presidential-actions/2026/06/securing-the-nation-against-advanced-cryptographic-attacks/",
+        "price_at_publish" : 64410.44
+      } ]
+    },
+    "resonant_article_ids" : [ 4284 ]
+  },
+  "20:50" : {
+    "analyzed_at" : "2026-06-22T21:00:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4286, 4287 ],
+    "screener" : [ {
+      "article_id" : 4286,
+      "score" : 0,
+      "reason" : "Opinion on adoption trends; no new catalyst or event."
+    }, {
+      "article_id" : 4287,
+      "score" : 1,
+      "reason" : "Infrastructure readiness concern; indirect, slow-burn channel to BTC."
+    } ],
+    "prediction_record" : null
+  }
+}

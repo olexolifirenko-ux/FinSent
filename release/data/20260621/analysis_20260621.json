@@ -1,12 +1,44 @@
 {
   "00:00" : {
-    "analyzed_at" : "2026-06-21T00:10:33Z",
+    "analyzed_at" : "2026-06-22T00:40:16Z",
     "model" : "claude-haiku-4-5-20251001",
-    "article_ids" : [ 4107 ],
+    "article_ids" : [ 4107, 4135, 4136, 4137, 4138, 4139, 4140, 4141, 4144 ],
     "screener" : [ {
       "article_id" : 4107,
       "score" : 0,
-      "reason" : "No substantive content provided; cannot assess material catalyst without article text or claim details."
+      "reason" : "No title or content provided; cannot assess materiality."
+    }, {
+      "article_id" : 4135,
+      "score" : 0,
+      "reason" : "BoE technical facility pricing update; indirect and minor macro channel, not a new catalyst."
+    }, {
+      "article_id" : 4136,
+      "score" : 0,
+      "reason" : "BoE regulatory streamlining; procedural change with no direct BTC impact."
+    }, {
+      "article_id" : 4137,
+      "score" : 0,
+      "reason" : "BoE enforcement action against a small UK bank; no systemic or BTC-relevant catalyst."
+    }, {
+      "article_id" : 4138,
+      "score" : 0,
+      "reason" : "BoE gilt sales schedule; routine monetary operations, not a new policy decision or catalyst."
+    }, {
+      "article_id" : 4139,
+      "score" : 0,
+      "reason" : "BoE holds Bank Rate at 3.75%; no change, no new catalyst (rate decision already priced/known)."
+    }, {
+      "article_id" : 4140,
+      "score" : 1,
+      "reason" : "BoE liquidity reform proposals post-SVB; real but slow regulatory channel, indirect macro signal."
+    }, {
+      "article_id" : 4141,
+      "score" : 0,
+      "reason" : "BoE fine on insurance firm for accounting error; no systemic or BTC relevance."
+    }, {
+      "article_id" : 4144,
+      "score" : 1,
+      "reason" : "MEV bot exploit for $7.5M; real crypto-native event but limited systemic impact, no major exchange/protocol failure."
     } ],
     "prediction_record" : null
   },
@@ -123,24 +155,28 @@
     "prediction_record" : null
   },
   "13:30" : {
-    "analyzed_at" : "2026-06-21T13:32:07Z",
+    "analyzed_at" : "2026-06-22T13:50:06Z",
     "model" : "claude-sonnet-4-6",
-    "article_ids" : [ 4121 ],
+    "article_ids" : [ 4121, 4191 ],
     "screener" : [ {
       "article_id" : 4121,
       "score" : 2,
-      "reason" : "Unverified threat of military escalation against Iran; major-if-true geopolitical catalyst that could trigger oil-supply shock and risk-asset repricing, but single-source (social media statement) requires credibility verification in next pass."
+      "reason" : "Unverified threat of military escalation against Iran; major-if-true geopolitical catalyst that could spike oil/risk assets and move BTC, but single-source (Trump social post) requires credibility check in next pass."
+    }, {
+      "article_id" : 4191,
+      "score" : 0,
+      "reason" : "Political/demographic analysis of crypto adoption; no new market event, policy change, or catalyst—pure commentary on existing trend with no direct BTC price/flow impact."
     } ],
     "prediction_record" : {
       "btc_at_prediction" : 64163.99,
-      "article_count" : 1,
+      "article_count" : 2,
       "resonant_count" : 1,
       "claude_available" : true,
       "direction" : "neutral",
       "impact_tier" : "noise",
       "macro_regime" : "n/a",
       "key_events" : [ ],
-      "reasoning" : "Fails Step 1: this is a conditional threat ('if they don't... we'll hit'), not an executed action. Trump is a figure known for inflammatory leverage-seeking statements; the threat has not been carried out. No causative fact, just posture.",
+      "reasoning" : "Fails Step 1: this is a conditional threat ('if they don't... we'll hit'), not an executed action. Trump is a figure known for inflammatory leverage-seeking statements; the action has not occurred, making this posture rather than fact. No causative event to act on.",
       "options_signal" : { },
       "funding_signal" : {
         "positioning" : "neutral",
@@ -158,7 +194,7 @@
         "id" : 4121,
         "title" : "Iran must immediately stop their highly paid PROXIES in Lebanon from causing trouble. If they don’t, we’ll hit Iran very hard again, just like we did last week, only harder!!! President  DONALD J. TRUMP",
         "direction" : "neutral",
-        "reasoning" : "Unexecuted conditional threat from a figure known for inflammatory leverage-seeking statements -- posture, not a fact, fails Step 1",
+        "reasoning" : "Unexecuted conditional threat from a figure known for inflammatory leverage statements -- posture, not a fact, fails Step 1",
         "scenario" : "noise",
         "pre_trend" : "flat",
         "published_at" : "2026-06-21T13:30:14Z",
@@ -246,6 +282,220 @@
       "article_id" : 4134,
       "score" : 0,
       "reason" : "Political opinion/commentary with no new factual catalyst; references unspecified war without concrete new developments; no actionable market event."
+    } ],
+    "prediction_record" : null
+  },
+  "22:20" : {
+    "analyzed_at" : "2026-06-21T22:30:35Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4142 ],
+    "screener" : [ {
+      "article_id" : 4142,
+      "score" : 0,
+      "reason" : "Political opinion/complaint with no new factual catalyst; no material event, policy change, or geopolitical development affecting BTC"
+    } ],
+    "prediction_record" : null
+  },
+  "22:40" : {
+    "analyzed_at" : "2026-06-21T22:50:16Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4143 ],
+    "screener" : [ {
+      "article_id" : 4143,
+      "score" : 2,
+      "reason" : "Unverified but material claim: if true, represents fraud/market manipulation in a major prediction-market platform with crypto ties; credibility check needed but potential regulatory/reputational catalyst."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 63682.0,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact (WSJ investigation is real and reported), and likely new, but fails Step 3: Polymarket is a crypto-adjacent prediction market with no meaningful transmission to BTC via liquidity, rates, regulation, or large flows -- this is reputational damage to one niche platform, not a fresh reason to buy or sell BTC.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0068
+      },
+      "price_context" : {
+        "btc_price" : 63604.01,
+        "change_24h_pct" : -1.012,
+        "range_pos_24h" : 0.0872
+      },
+      "articles" : [ {
+        "id" : 4143,
+        "title" : "Polymarket paid creators to stage fake winning bets on dummy sites: WSJ",
+        "direction" : "neutral",
+        "reasoning" : "Real investigative finding about Polymarket's fake-bet marketing, but no concrete channel to BTC price, structure, or flows -- noise for BTC traders.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-21T22:42:56Z",
+        "url" : "https://www.theblock.co/post/405471/polymarket-paid-creators-to-stage-fake-winning-bets-on-dummy-sites-wsj?utm_source=rss&utm_medium=rss",
+        "price_at_publish" : 63682.0
+      } ]
+    },
+    "resonant_article_ids" : [ 4143 ]
+  },
+  "04:30" : {
+    "analyzed_at" : "2026-06-22T05:10:15Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4149 ],
+    "screener" : [ {
+      "article_id" : 4149,
+      "score" : 0,
+      "reason" : "Price recap and market reaction to already-occurred BTC decline; no new catalyst or event driving the outflows"
+    } ],
+    "prediction_record" : null
+  },
+  "08:50" : {
+    "analyzed_at" : "2026-06-22T09:30:16Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4160 ],
+    "screener" : [ {
+      "article_id" : 4160,
+      "score" : 1,
+      "reason" : "Real but minor institutional adoption signal; indirect and slow channel to BTC price; single fund with modest allocation size."
+    } ],
+    "prediction_record" : null
+  },
+  "10:10" : {
+    "analyzed_at" : "2026-06-22T10:40:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4167 ],
+    "screener" : [ {
+      "article_id" : 4167,
+      "score" : 0,
+      "reason" : "Price recap and commentary on an existing product's performance; no new catalyst or material event reported."
+    } ],
+    "prediction_record" : null
+  },
+  "09:40" : {
+    "analyzed_at" : "2026-06-22T10:40:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4168 ],
+    "screener" : [ {
+      "article_id" : 4168,
+      "score" : 1,
+      "reason" : "Regional conflict escalation with indirect macro impact; energy supply shock is material but Crimea gas sales are minor/localized vs. global oil markets; no direct BTC catalyst unless broader energy crisis emerges."
+    } ],
+    "prediction_record" : null
+  },
+  "11:10" : {
+    "analyzed_at" : "2026-06-22T11:40:06Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4173, 4174 ],
+    "screener" : [ {
+      "article_id" : 4173,
+      "score" : 0,
+      "reason" : "Unrelated to crypto or macro catalysts; pure equity stock-picking commentary."
+    }, {
+      "article_id" : 4174,
+      "score" : 2,
+      "reason" : "New Fed leadership direction under Warsh could signal major monetary-policy shifts (QT/QE, rates, inflation stance); material if confirmed and implemented, warranting closer look on macro impact to BTC."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 64422.0,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fails Step 1 and Step 2: the article describes organizational task forces and stated intentions to rethink Fed operations — no concrete policy decision has been taken. Even if treated as a fact, this is a slow-moving, vague institutional process already telegraphed by Warsh's appointment, not a new monetary or liquidity shock, so it gives traders no fresh reason to reposition BTC now.",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0053,
+        "oi_change_pct" : -0.129,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 64429.99,
+        "change_24h_pct" : 1.203,
+        "range_pos_24h" : 0.8874
+      },
+      "articles" : [ {
+        "id" : 4174,
+        "title" : "'Regime change but in a velvet glove': How Kevin Warsh has set out to remake the Fed",
+        "direction" : "neutral",
+        "reasoning" : "Describes planning-stage task forces and future intent to restructure the Fed — no executed policy change, channel to crypto is vague and distant, and the reform narrative is already known from Warsh's role.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-21T11:14:02Z",
+        "url" : "https://www.cnbc.com/2026/06/21/how-kevin-warsh-has-set-out-to-remake-the-fed.html",
+        "price_at_publish" : 64422.0
+      } ]
+    },
+    "resonant_article_ids" : [ 4174 ]
+  },
+  "12:20" : {
+    "analyzed_at" : "2026-06-22T12:40:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4178 ],
+    "screener" : [ {
+      "article_id" : 4178,
+      "score" : 0,
+      "reason" : "Speculative business development plan with no confirmed catalyst; slow/indirect channel to BTC; no new regulatory or market-moving event."
+    } ],
+    "prediction_record" : null
+  },
+  "14:50" : {
+    "analyzed_at" : "2026-06-22T15:00:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4194 ],
+    "screener" : [ {
+      "article_id" : 4194,
+      "score" : 0,
+      "reason" : "Price recap and analyst speculation with no new catalyst; US-Iran situation already covered in ALREADY COVERED section."
+    } ],
+    "prediction_record" : null
+  },
+  "14:20" : {
+    "analyzed_at" : "2026-06-22T15:00:09Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4195 ],
+    "screener" : [ {
+      "article_id" : 4195,
+      "score" : 0,
+      "reason" : "Price speculation and conditional analyst opinion ('may hit' if market crashes 50%) with no new catalyst; recap of existing price levels and known ETF flow weakness."
+    } ],
+    "prediction_record" : null
+  },
+  "14:30" : {
+    "analyzed_at" : "2026-06-22T15:00:12Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4196 ],
+    "screener" : [ {
+      "article_id" : 4196,
+      "score" : 0,
+      "reason" : "Unrelated to crypto, macro, geopolitics, or trade policy; no predictive value for BTC."
+    } ],
+    "prediction_record" : null
+  },
+  "14:00" : {
+    "analyzed_at" : "2026-06-22T15:00:14Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4197 ],
+    "screener" : [ {
+      "article_id" : 4197,
+      "score" : 0,
+      "reason" : "Domestic labor policy with no direct crypto or macro monetary catalyst; no new BTC-relevant development."
+    } ],
+    "prediction_record" : null
+  },
+  "17:50" : {
+    "analyzed_at" : "2026-06-22T18:20:04Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4237 ],
+    "screener" : [ {
+      "article_id" : 4237,
+      "score" : 0,
+      "reason" : "Entertainment box office; no BTC relevance."
     } ],
     "prediction_record" : null
   }

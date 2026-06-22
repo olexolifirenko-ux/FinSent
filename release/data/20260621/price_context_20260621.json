@@ -633,5 +633,65 @@
     "btc_price" : 63847.99,
     "change_24h_pct" : -0.122,
     "range_pos_24h" : 0.1667
+  },
+  "22:00" : {
+    "btc_price" : 63594.56,
+    "change_24h_pct" : -0.68,
+    "range_pos_24h" : 0.0784
+  },
+  "22:10" : {
+    "btc_price" : 63606.0,
+    "change_24h_pct" : -0.662,
+    "range_pos_24h" : 0.0891
+  },
+  "22:20" : {
+    "btc_price" : 63662.16,
+    "change_24h_pct" : -0.658,
+    "range_pos_24h" : 0.1412
+  },
+  "22:30" : {
+    "btc_price" : 63720.01,
+    "change_24h_pct" : -0.896,
+    "range_pos_24h" : 0.1948
+  },
+  "22:40" : {
+    "btc_price" : 63604.01,
+    "change_24h_pct" : -1.012,
+    "range_pos_24h" : 0.0872
+  },
+  "22:50" : {
+    "btc_price" : 63705.4,
+    "change_24h_pct" : -0.891,
+    "range_pos_24h" : 0.1813
+  },
+  "23:00" : {
+    "btc_price" : 63792.01,
+    "change_24h_pct" : -0.747,
+    "range_pos_24h" : 0.2616
+  },
+  "23:10" : {
+    "btc_price" : 63765.37,
+    "change_24h_pct" : -0.836,
+    "range_pos_24h" : 0.2369
+  },
+  "23:20" : {
+    "btc_price" : 63729.99,
+    "change_24h_pct" : -0.857,
+    "range_pos_24h" : 0.2041
+  },
+  "23:30" : {
+    "btc_price" : 63636.99,
+    "change_24h_pct" : -0.995,
+    "range_pos_24h" : 0.1178
+  },
+  "23:40" : {
+    "btc_price" : 63342.0,
+    "change_24h_pct" : -1.481,
+    "range_pos_24h" : 0.0282
+  },
+  "23:50" : {
+    "btc_price" : 63345.02,
+    "change_24h_pct" : -1.478,
+    "range_pos_24h" : 0.0569
   }
 }

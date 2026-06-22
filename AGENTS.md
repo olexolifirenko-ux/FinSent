@@ -2,7 +2,9 @@
 
 Orientation for AI agents (and humans) making changes here. Read this first, then `README.md` for
 the full architecture and financial rationale, and `BACKLOG.md` for open work. The coding standard
-is `.claude/rules/coding-guidelines.md` — follow it.
+is `.claude/rules/coding-guidelines.md` — follow it. Judge every change and effectiveness assessment
+through the dual expert lens (market strategist + electronic-trading-systems engineer) defined in
+`.claude/rules/claude-role.md`.
 
 ## What this is (one paragraph)
 FinSent is an event-driven backend that is, today, a **fast BTC news-event monitor**: it collects

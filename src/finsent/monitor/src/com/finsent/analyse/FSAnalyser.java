@@ -738,9 +738,9 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         Map<Integer, Integer> deepIdMap = new HashMap<>();
         String articlesBlock = PromptBuilder.deepArticles(resonant, ohlc, deepIdMap);
         // The static instructions/examples are the cached system block; only the volatile market_signals +
-        // articles go in the user message (see deep_analysis.txt vs deep_analysis_user.txt).
+        // articles go in the user message (see deep_analysis.txt vs deep_analysis_dynamic.txt).
         String system = loadTemplate("deep_analysis");
-        String userContent = PromptTemplates.fillDeepUser(loadTemplate("deep_analysis_user"),
+        String userContent = PromptTemplates.fillDeepDynamic(loadTemplate("deep_analysis_dynamic"),
                 resonant.size(), market.block(), articlesBlock);
 
         DeepResult deep = deep_.analyse(system, userContent, ClaudeSchemas.NEWS_DEEP);

@@ -331,7 +331,7 @@ public class FSAnalyser_utest
         Files.createDirectories(prompts);
         Files.writeString(prompts.resolve("screener.txt"), "{articles}", StandardCharsets.UTF_8);
         Files.writeString(prompts.resolve("deep_analysis.txt"), "STATIC DEEP INSTRUCTIONS", StandardCharsets.UTF_8);
-        Files.writeString(prompts.resolve("deep_analysis_user.txt"), "{article_count}|{market_signals}|{articles}",
+        Files.writeString(prompts.resolve("deep_analysis_dynamic.txt"), "{article_count}|{market_signals}|{articles}",
                 StandardCharsets.UTF_8);
         Files.writeString(prompts.resolve("econ_analysis.txt"), "{catalyst}|{market_signals}", StandardCharsets.UTF_8);
         return prompts.toFile();

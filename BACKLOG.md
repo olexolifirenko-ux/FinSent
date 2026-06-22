@@ -21,10 +21,12 @@ module is deferred** — the future direction the positioning signals (funding +
 market fully reacts). So weight detection (faster/broader sourcing) over chasing oracle accuracy, and
 treat every prediction-quality change as unprovable until the feedback loop has weeks of *live* data.
 
-**Deprioritize:** more macro-indicator sophistication (VIX/DXY/SP500/Gold → `macro_regime`/`macro_trend`/
-macro-only alerts). Macro collection is **off by default** now; keep it as optional environment framing,
-but it doesn't drive the call. The **perp-positioning signals (funding + OI)** are the higher-value
-context for both the monitor's materiality read and the future trading module.
+**Deprioritize:** more macro-indicator sophistication (VIX/DXY/SP500/Gold). The standalone **macro-only
+alert path was removed** (2026-06-22, see archive) — it fired on macro moves BTC had already made
+(lagging confirmation, no detection edge). Macro collection stays **off by default** and only as optional
+`macro_regime`/`macro_trend` *context* for the deep pass; it doesn't drive the call. The **perp-positioning
+signals (funding + OI)** are the higher-value context for both the monitor's materiality read and the
+future trading module.
 
 ---
 

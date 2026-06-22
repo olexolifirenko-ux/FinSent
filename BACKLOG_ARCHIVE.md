@@ -8,6 +8,25 @@ including the remaining follow-ons of partly-done items — lives in `BACKLOG.md
 
 ## Shipped
 
+### 2026-06-22 — Options priced-in reframe + macro-alert removal
+- **Options signal reframed to a priced-in gauge.** `OptionsSignals` now emits a `priced_in` verdict
+  (`complacent` / `normal` / `braced`) + `near_atm_iv`, derived from IV level + DVOL trend; the deep
+  prompt renders an `options: <verdict> (IV.., trend)` line in place of the old direction-led
+  `options_signal: …` line, with **asymmetric** guidance: options may only **scale** a catalyst that
+  already passed all three steps, never discount one — `braced` means the market expects a big move
+  (fragile), NOT that the news is already priced. The direction fields
+  (`positioning`/`signal_strength`/…) are retained for the econ-alert mechanical view; only the deep
+  render changed. Still off by default (`optionsEnabled=false`). **Open follow-on:** true IV **skew**
+  (per-strike put/call mark-IV) needs an `OptionsFetcher` change — deferred.
+- **Standalone macro-only alert path removed** (net −989 lines). Deleted `MacroAlert`(+`Checker`), the
+  `macro_analysis` prompt, and the notify/format/schema-config/storage/feedback plumbing + `FSAnalyser`
+  wiring. **Why:** it fired on macro tape moves BTC had already made — a *lagging confirmation* with no
+  leading edge, brittle (unofficial Yahoo feed; market-hours vs BTC's 24/7 clock), and redundant with
+  the news lanes (a real macro shock arrives as a *news* headline first). Macro *collection* and the
+  `macro_regime`/`macro_trend` deep-prompt **context** are kept (genuine conditioning); the econ-alert
+  path is untouched. **Lesson:** a signal built from the market's own realized reaction can confirm but
+  never *lead* — keep those as context, never as the trigger.
+
 ### 2026-06-16/17 — Monitor reframe + analysis overhaul
 - **Monitor reframe** — `deep_analysis.txt` is a 3-step fact-vs-posture / new-vs-priced / channel test
   (event detection, not forecasting); output = materiality tier + directional *lean*; notifications

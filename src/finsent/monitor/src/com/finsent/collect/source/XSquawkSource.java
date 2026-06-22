@@ -147,7 +147,11 @@ public final class XSquawkSource implements IArticleSource
         }
         catch (IOException | RuntimeException fetchFailed)
         {
-            GlobalSystem.warning().writes(NAME, "X squawk fetch failed: " + fetchFailed);
+            // Log the deepest cause: an HTTP status error already carries "HTTP <code>" in its message,
+            // but a timeout/connection failure is wrapped as "... failed after retries" with the real
+            // cause nested -- surfacing the root makes a rate-limit (HTTP 429) distinguishable from a
+            // timeout (e.g. HttpTimeoutException) at a glance.
+            GlobalSystem.warning().writes(NAME, "X squawk fetch failed: " + rootCause(fetchFailed));
         }
         catch (InterruptedException interrupted)
         {
@@ -155,6 +159,17 @@ public final class XSquawkSource implements IArticleSource
             GlobalSystem.error().writes(NAME, "Interrupted fetching X squawk", interrupted);
         }
         return articles;
+    }
+
+    /** The deepest cause of a failure, so a wrapped timeout/connection error is visible (not just "failed after retries"). */
+    private static Throwable rootCause(Throwable error)
+    {
+        Throwable root = error;
+        while (root.getCause() != null && root.getCause() != root)
+        {
+            root = root.getCause();
+        }
+        return root;
     }
 
     /** Map the response's {@code tweets[]} to articles, keeping only those past the source watermark. */

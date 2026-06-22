@@ -115,6 +115,8 @@
                 <!--Account handle="CMShehbaz"/-->   <!-- Pakistan PM; broke the deal announcement. But - commented since he was relevant for exactly one event (Iran mediation) -->
                 <Account handle="SecRubio"/>         <!-- US Secretary of State; deal/sanctions -->
                 <Account handle="Netanyahu"/>        <!-- Israel; Iran/Israel axis -->
+                <Account handle="TankerTrackers"/>   <!-- Hormuz/oil-supply OSINT via AIS satellite data; leads wires on tanker transits/blockades. PRUNE once the oil-supply-shock situation resolves -->
+                <Account handle="AJEnglish"/>        <!-- Cautious trial: fastest English source for ME military escalation (geographic proximity). This is the LOW-VOLUME X handle, NOT the AlJazeera RSS firehose that was pruned for mis-calls. Watch screener/deep noise; PRUNE once ME escalation resolves -->
             </XSituationalAccounts>
         </FSCollector>
 

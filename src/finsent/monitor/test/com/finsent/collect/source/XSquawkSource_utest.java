@@ -109,4 +109,46 @@ public class XSquawkSource_utest
         assertEquals("the watermark drops the at-or-below tweet", 1, fresh.size());
         assertTrue("only the newer tweet survives", fresh.get(0).path("title").asText().equals("newer"));
     }
+
+    @Test
+    public void reachedWatermarkStopsWhenOldestTweetIsAtOrBelow() throws Exception
+    {
+        // tweets are newest-first, so the last element is the oldest -- the boundary the walk tests.
+        JsonNode page = Json.parse("{\"tweets\":["
+                + "{\"createdAt\":\"Mon Jun 08 23:58:00 +0000 2026\",\"author\":{}},"
+                + "{\"createdAt\":\"Mon Jun 08 23:50:00 +0000 2026\",\"author\":{}}"
+                + "]}");
+        assertTrue("oldest (23:50) at/below the watermark -> reached, stop paging",
+                XSquawkSource.reachedWatermark(page, "2026-06-08T23:55:00Z"));
+        assertFalse("oldest (23:50) above the watermark -> more new may remain, keep paging",
+                XSquawkSource.reachedWatermark(page, "2026-06-08T23:40:00Z"));
+    }
+
+    @Test
+    public void reachedWatermarkColdStartAndEmptyPage() throws Exception
+    {
+        JsonNode page = Json.parse("{\"tweets\":[{\"createdAt\":\"Mon Jun 08 23:58:00 +0000 2026\",\"author\":{}}]}");
+        assertFalse("no watermark (cold start) never reports reached -- the page cap bounds it instead",
+                XSquawkSource.reachedWatermark(page, ""));
+        assertTrue("an empty page stops the walk",
+                XSquawkSource.reachedWatermark(Json.parse("{\"tweets\":[]}"), "2026-06-08T23:55:00Z"));
+    }
+
+    @Test
+    public void morePagesRequiresHasMoreCursorAndUnreachedWatermark() throws Exception
+    {
+        String tweets = "\"tweets\":[{\"createdAt\":\"Mon Jun 08 23:58:00 +0000 2026\",\"author\":{}}]";
+        assertTrue("has_more + cursor + above watermark -> page on",
+                XSquawkSource.morePages(Json.parse("{\"has_more\":true,\"next_cursor\":\"c\"," + tweets + "}"),
+                        "2026-06-08T23:00:00Z"));
+        assertFalse("has_more false stops",
+                XSquawkSource.morePages(Json.parse("{\"has_more\":false,\"next_cursor\":\"c\"," + tweets + "}"),
+                        "2026-06-08T23:00:00Z"));
+        assertFalse("an empty cursor stops",
+                XSquawkSource.morePages(Json.parse("{\"has_more\":true,\"next_cursor\":\"\"," + tweets + "}"),
+                        "2026-06-08T23:00:00Z"));
+        assertFalse("reaching the watermark stops even with has_more",
+                XSquawkSource.morePages(Json.parse("{\"has_more\":true,\"next_cursor\":\"c\"," + tweets + "}"),
+                        "2026-06-08T23:58:00Z"));
+    }
 }

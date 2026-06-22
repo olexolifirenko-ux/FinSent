@@ -20,8 +20,10 @@ import com.finsent.util.GlobalSystem;
 /**
  * Fast X (Twitter) amplifier source: polls a curated set of breaking-news accounts (e.g. {@code
  * @DeItaone}, {@code @FirstSquawk}) through the GetXAPI advanced-search endpoint and normalizes each
- * tweet into the common article shape. All accounts are fetched in a single call by OR-ing them into
- * one {@code from:a OR from:b ...} query (newest-first), so one urgent poll covers the whole list.
+ * tweet into the common article shape. All accounts are fetched together by OR-ing them into one
+ * {@code from:a OR from:b ...} query (newest-first); each poll then pages backward through the
+ * {@code next_cursor} until it reaches the last-seen watermark (or the {@link #MAX_PAGES} guard), so a
+ * burst larger than one 20-tweet page is not silently truncated.
  *
  * <p>Runs on the urgent {@link Http.Channel} with the urgent lane's fail-fast timeout/no-retry policy
  * (the next poll, seconds away, retries). A tweet's own {@code text} becomes the title; a quote- or
@@ -42,6 +44,10 @@ public final class XSquawkSource implements IArticleSource
     // GetXAPI advanced_search silently returns ZERO tweets once a query carries more than this many
     // from: clauses (no error -- a total blackout), so the merged account list is capped here.
     static final int MAX_ACCOUNTS = 25;
+    // advanced_search returns 20 tweets/page; a burst can exceed one page, so each poll follows
+    // next_cursor backward until it reaches the watermark. This bounds that walk as a cold-start /
+    // runaway guard (5 pages = ~100 tweets/poll, far above any realistic 15-30s burst).
+    private static final int MAX_PAGES = 5;
 
     private final String searchUrl_;
     private final String apiKey_;
@@ -135,15 +141,48 @@ public final class XSquawkSource implements IArticleSource
         return articles;
     }
 
+    /**
+     * Page the merged-account query backward (newest-first), accumulating every tweet past the source
+     * watermark: follow {@code next_cursor} until the API has no more, a page reaches the watermark, or
+     * the {@link #MAX_PAGES} guard trips -- so a burst larger than one 20-tweet page is not truncated.
+     */
     private List<ObjectNode> fetchArticles(String fromTs)
     {
         List<ObjectNode> articles = new ArrayList<>();
+        boolean more = true;
+        String cursor = "";
+        int page = 0;
+        while (more && page < MAX_PAGES)
+        {
+            JsonNode response = fetchPage(cursor);
+            if (response == null)
+            {
+                more = false;
+            }
+            else
+            {
+                articles.addAll(articlesFrom(response, fromTs));
+                cursor = response.path("next_cursor").asText("");
+                more = morePages(response, fromTs);
+            }
+            page++;
+        }
+        warnIfTruncated(more);
+        return articles;
+    }
+
+    /** One advanced_search page (the first when {@code cursor} is empty), or null when the call fails. */
+    private JsonNode fetchPage(String cursor)
+    {
+        JsonNode response = null;
         try
         {
-            String body = Http.get(Http.Channel.URGENT, searchUrl_,
-                    Map.of("q", query_, "product", PRODUCT),
+            Map<String, String> params = cursor.isEmpty()
+                    ? Map.of("q", query_, "product", PRODUCT)
+                    : Map.of("q", query_, "product", PRODUCT, "cursor", cursor);
+            String body = Http.get(Http.Channel.URGENT, searchUrl_, params,
                     Map.of("Authorization", "Bearer " + apiKey_), timeout_, maxRetries_);
-            articles = articlesFrom(Json.parse(body), fromTs);
+            response = Json.parse(body);
         }
         catch (IOException | RuntimeException fetchFailed)
         {
@@ -158,7 +197,42 @@ public final class XSquawkSource implements IArticleSource
             Thread.currentThread().interrupt();
             GlobalSystem.error().writes(NAME, "Interrupted fetching X squawk", interrupted);
         }
-        return articles;
+        return response;
+    }
+
+    /** Continue paging only while the API has more, hands back a cursor, and we haven't hit the watermark. */
+    static boolean morePages(JsonNode response, String fromTs)
+    {
+        return response.path("has_more").asBoolean(false)
+                && !response.path("next_cursor").asText("").isEmpty()
+                && !reachedWatermark(response, fromTs);
+    }
+
+    /**
+     * Whether this page has reached already-seen territory: its oldest (last, newest-first) tweet is at
+     * or below the watermark, so the next page would be all duplicates. With no watermark (cold start)
+     * this stays false and the {@link #MAX_PAGES} cap bounds the backward walk instead.
+     */
+    static boolean reachedWatermark(JsonNode response, String fromTs)
+    {
+        JsonNode tweets = response.path("tweets");
+        boolean reached = tweets.size() == 0;
+        if (!reached && !fromTs.isEmpty())
+        {
+            String oldest = parseCreatedAt(tweets.path(tweets.size() - 1).path("createdAt").asText(""));
+            reached = !oldest.isEmpty() && oldest.compareTo(fromTs) <= 0;
+        }
+        return reached;
+    }
+
+    /** Warn when the page cap stopped a still-growing sweep -- a sign the poll interval is too long. */
+    private static void warnIfTruncated(boolean more)
+    {
+        if (more)
+        {
+            GlobalSystem.warning().writes(NAME, "X squawk hit the " + MAX_PAGES + "-page cap with more "
+                    + "results pending; the oldest tweets this poll may be truncated -- shorten urgentPollInSec");
+        }
     }
 
     /** The deepest cause of a failure, so a wrapped timeout/connection error is visible (not just "failed after retries"). */

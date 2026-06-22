@@ -149,6 +149,33 @@ public class FSAnalyser_utest
     }
 
     @Test
+    public void livePathSkipsDeepReRunUntilTheResonantSetChanges() throws IOException
+    {
+        String deepOne = "{\"direction\":\"bearish\",\"impact_tier\":\"high\",\"key_events\":[\"war\"],"
+                + "\"reasoning\":\"r\",\"articles\":[{\"i\":1,\"direction\":\"bearish\",\"reasoning\":\"x\"}]}";
+        StubClaudeClient client = new StubClaudeClient().enqueue("[{\"i\":1,\"score\":8,\"reason\":\"a\"}]", deepOne);
+        FSAnalyser analyser = analyser(client);
+        analyser.analyse(result(article(1, "War breaks out")), NOW);
+        assertEquals("first pass: screener + deep", 2, client.callCount());
+
+        // A non-resonant article trickles into the window; the resonant set {1} is unchanged, so the
+        // live path skips the deep re-run and only the screener runs.
+        client.enqueue("[{\"i\":1,\"score\":8,\"reason\":\"a\"},{\"i\":2,\"score\":0,\"reason\":\"noise\"}]");
+        analyser.analyse(result(article(1, "War breaks out"), article(2, "Market recap")), NOW);
+        assertEquals("unchanged resonant set: screener only, deep skipped", 3, client.callCount());
+
+        // A genuinely new resonant article appears; the resonant set changes ({1} -> {1,3}) so deep re-runs.
+        client.enqueue("[{\"i\":1,\"score\":8,\"reason\":\"a\"},{\"i\":2,\"score\":0,\"reason\":\"noise\"},"
+                        + "{\"i\":3,\"score\":8,\"reason\":\"c\"}]",
+                "{\"direction\":\"bearish\",\"impact_tier\":\"high\",\"key_events\":[\"war\"],\"reasoning\":\"r\","
+                        + "\"articles\":[{\"i\":1,\"direction\":\"bearish\",\"reasoning\":\"x\"},"
+                        + "{\"i\":2,\"direction\":\"bearish\",\"reasoning\":\"z\"}]}");
+        analyser.analyse(result(article(1, "War breaks out"), article(2, "Market recap"),
+                article(3, "Sanctions imposed")), NOW);
+        assertEquals("changed resonant set: screener + deep re-ran", 5, client.callCount());
+    }
+
+    @Test
     public void screenerFailureAbortsWithoutDeepOrRecord() throws IOException
     {
         StubClaudeClient client = new StubClaudeClient(); // empty queue -> every screener call throws

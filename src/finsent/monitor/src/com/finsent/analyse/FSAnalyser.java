@@ -658,6 +658,14 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
                 GlobalSystem.info().writes(NAME, "Analysed " + day + " " + key
                         + " -- screener-only, 0/" + unique.size() + " resonant (no deep analysis)");
             }
+            else if (!skipAgeCheck && resonantUnchanged(day, key, resonant))
+            {
+                // Live path only: new non-resonant articles keep landing in the current window, but the
+                // resonant set (and so the deep verdict) is unchanged -- skip the redundant Sonnet re-run.
+                // Manual re-analysis / backfill (skipAgeCheck) always re-runs.
+                GlobalSystem.info().writes(NAME, "Analysed " + day + " " + key + " -- resonant set unchanged ("
+                        + resonant.size() + "/" + unique.size() + "), skipping deep re-run");
+            }
             else
             {
                 runDeepAnalysis(day, key, now, skipAgeCheck, notify, analyzedAt, unique, resonant, screened.screenerOut());
@@ -690,6 +698,34 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
             }
         }
         return covered;
+    }
+
+    /**
+     * Whether the resonant set for {@code (day, key)} is identical to the one already deep-analysed for
+     * this window (a stored {@code prediction_record} with the same {@code resonant_article_ids}). On the
+     * live path this is the common case when only non-resonant articles trickle into the current window:
+     * the deep pass would re-judge the same set against barely-moved context for the same verdict, so it
+     * is skipped. The notify side is already change-gated; this saves the redundant Sonnet call too.
+     */
+    private boolean resonantUnchanged(String day, String key, List<ObjectNode> resonant)
+    {
+        ObjectNode stored = store_.get(day, key);
+        boolean unchanged = false;
+        if (stored.path("prediction_record").isObject())
+        {
+            Set<Integer> current = new HashSet<>();
+            for (ObjectNode article : resonant)
+            {
+                current.add(article.path("id").asInt());
+            }
+            Set<Integer> previous = new HashSet<>();
+            for (JsonNode id : stored.path("resonant_article_ids"))
+            {
+                previous.add(id.asInt());
+            }
+            unchanged = current.equals(previous);
+        }
+        return unchanged;
     }
 
     private void runDeepAnalysis(String day, String key, Instant now, boolean skipAgeCheck, boolean notify,

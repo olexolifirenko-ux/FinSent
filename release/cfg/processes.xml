@@ -47,7 +47,7 @@
             analysisNewsWindow="10m"
             ohlcImpactWindow="30m"
             macroEnabled="false"
-            optionsEnabled="false"
+            optionsEnabled="true"
             fundingEnabled="true"
             econEnabled="false"
             ohlcBarSize="1m"
@@ -143,15 +143,18 @@
 
         <!-- What the trader owns: a paper long/short BTC strategy off the analyser's signals.
              Opens long on bullish / short on bearish at entryImpactTier or higher, one net position
-             at a time; a trailing stop (initial stopLossInPct adverse, ratcheting trailInPct behind
-             the best price) manages the exit. profitGraceInMin is a time stop: if the trade is not in
-             profit by then it is closed (the catalyst is not working); 0 disables it. maxHoldInHours
+             at a time; only on a FRESH catalyst (the newest resonant article no older than
+             entryMaxNewsAgeInMin, so it never opens on a stale re-analysis/backfill/late-article call;
+             0 disables that gate). A trailing stop (initial stopLossInPct adverse, ratcheting trailInPct
+             behind the best price) manages the exit. profitGraceInMin is a time stop: if the trade is not
+             in profit by then it is closed (the catalyst is not working); 0 disables it. maxHoldInHours
              is a final chop backstop. broker=paper simulates fills (no real orders); broker=whitebit
              places live WhiteBIT futures orders sized by notionalInUsd. Starts paused unless
              -DrunTrader=true, toggled at runtime with `trade`. -->
         <FSTrader
             broker="whitebit"
             entryImpactTier="high"
+            entryMaxNewsAgeInMin="5"
             notionalInUsd="300.0"
             leverage="5.0"
             stopLossInPct="0.3"

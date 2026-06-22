@@ -752,7 +752,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         store_.record(day, key, interval(analyzedAt, config_.claudeDeepAnalModel(), unique, screenerOut, prediction, resonant));
         logAnalysis(day, key, prediction);
         logResonant(resonant);
-        publishAnalysisReady(day, key, prediction, now);
+        publishAnalysisReady(day, key, prediction, resonant, now);
         if (notify)
         {
             maybeNotifyOnChange(day, key, prediction, asList(articlePredictions), resonant, now, skipAgeCheck);
@@ -766,12 +766,49 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
      * (direction, impact tier, BTC anchor); gating is the consumer's job. Fires on every recorded
      * deep prediction, live or re-analysis (mirroring the existing notify path).
      */
-    private void publishAnalysisReady(String day, String key, ObjectNode prediction, Instant now)
+    private void publishAnalysisReady(String day, String key, ObjectNode prediction, List<ObjectNode> resonant,
+                                      Instant now)
     {
         JsonNode anchor = prediction.path("btc_at_prediction");
         Double anchorPrice = anchor.isNumber() ? anchor.asDouble() : null;
         collector_.publish(new AnalysisReady(day, key, "news", prediction.path("direction").asText(""),
-                prediction.path("impact_tier").asText(""), anchorPrice, now));
+                prediction.path("impact_tier").asText(""), anchorPrice, newestResonantAt(resonant), now));
+    }
+
+    /**
+     * The newest resonant article's {@code publishedAt} -- the catalyst time the verdict is keyed to (the
+     * deep pass weights freshest-first, and {@code btc_at_prediction} anchors to it). The trader gates entry
+     * on its age. Null when no resonant article carried a parseable timestamp.
+     */
+    private static Instant newestResonantAt(List<ObjectNode> resonant)
+    {
+        Instant newest = null;
+        for (ObjectNode article : resonant)
+        {
+            Instant at = parseInstantQuietly(article.path("publishedAt").asText(""));
+            if (at != null && (newest == null || at.isAfter(newest)))
+            {
+                newest = at;
+            }
+        }
+        return newest;
+    }
+
+    private static Instant parseInstantQuietly(String iso)
+    {
+        Instant result = null;
+        if (!iso.isEmpty())
+        {
+            try
+            {
+                result = Times.parseIso(iso);
+            }
+            catch (java.time.format.DateTimeParseException unparseable)
+            {
+                result = null; // an unparseable publish time just doesn't count toward the catalyst age
+            }
+        }
+        return result;
     }
 
     /**

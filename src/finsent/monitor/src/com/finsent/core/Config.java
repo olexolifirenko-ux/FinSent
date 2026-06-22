@@ -361,6 +361,17 @@ public final class Config
         return attr(traderNode_, "entryImpactTier", "high");
     }
 
+    /**
+     * Max age of the catalyst (newest resonant article) for the trader to open on it, in minutes: real-money
+     * entry must be on a FRESH event, so a stale call (re-analysis, backfill, late-arriving article) is
+     * skipped. Tight by default ({@code 5}, half a news window) since committing capital is more
+     * time-sensitive than an alert; {@code 0} disables the freshness gate.
+     */
+    public int tradeEntryMaxNewsAgeInMin()
+    {
+        return intAttr(traderNode_, "entryMaxNewsAgeInMin", 5);
+    }
+
     /** Execution venue for the auto-trader: {@code paper} (simulated, the default) or {@code whitebit} (live). */
     public String tradeBroker()
     {

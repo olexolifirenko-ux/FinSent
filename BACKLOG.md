@@ -135,6 +135,22 @@ trend + price into one `setup`, and the alert groups positioning + 24h-range.)
 
 ---
 
+## Trading module (entry/exit)
+
+### 38. Don't-chase entry filter: price-moved-since-catalyst guard **[idea]**
+The trader already refuses **stale** catalysts (the `entryMaxNewsAgeInMin` freshness gate). The stronger,
+execution-time version: at entry, re-check how far BTC has **already moved since the catalyst's
+`publishedAt`** — if it has run more than ~X% in the signalled direction, the move is underway / largely
+priced, so **skip even within the age window**. This is the realtime analogue of the deep pass's `pre_trend`
+("is the move already underway → likely already priced"), but evaluated at the moment capital is committed
+rather than at analysis time — the strongest "don't chase a move that already happened" guard. **Scope:**
+compare `priceAt(now)` vs the catalyst-time price (the `btc_at_prediction` anchor already on `AnalysisReady`)
+against a config threshold (e.g. `entryMaxRunPct`); skip the entry when exceeded. Richer than the age gate
+(needs a tuned threshold per direction); the age gate stays step one. **Effort:** small, the anchor + live
+price are both already available at `FSTrader.onSignal`.
+
+---
+
 ## Urgent lane / latency
 
 ### 8. Tighter urgent cadence **[idea]**

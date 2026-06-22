@@ -35,11 +35,12 @@ public class FSTrader_utest
     private static final String DAY = "20260604";
     private static final String KEY = "08:00";
     private static final Instant NOW = Instant.parse("2026-06-04T08:00:00Z");
+    private static final long FRESH_5MIN = 300_000L; // entryMaxNewsAgeMillis for the tests
     private static final FSTrader.Params PARAMS =
-            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L); // time stop off
+            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L, FRESH_5MIN); // time stop off
     // Same, but with a 10-minute profit-grace time stop enabled and a long max-hold (so only the time stop fires).
     private static final FSTrader.Params GRACE_PARAMS =
-            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 86_400_000L, 20_000L, 600_000L);
+            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 86_400_000L, 20_000L, 600_000L, FRESH_5MIN);
 
     private Path dir_;
     private TradeBook book_;
@@ -79,6 +80,24 @@ public class FSTrader_utest
         price_ = 100.0;
         trader_.onSignal(signal("bullish", "high"), NOW);
         assertTrue(trader_.describe(NOW).contains("Open LONG entry 100.0"));
+    }
+
+    @Test
+    public void staleCatalystDoesNotOpen()
+    {
+        price_ = 100.0;
+        // Directional + high, but the catalyst is 10 minutes old -- past the 5-minute entry freshness window.
+        trader_.onSignal(signal("bullish", "high", NOW.minusSeconds(600)), NOW);
+        assertTrue(trader_.describe(NOW).contains("Flat"));
+    }
+
+    @Test
+    public void unknownCatalystTimeDoesNotOpen()
+    {
+        price_ = 100.0;
+        // No catalyst time -> freshness cannot be verified -> fail-safe: do not open on real money.
+        trader_.onSignal(signal("bullish", "high", null), NOW);
+        assertTrue(trader_.describe(NOW).contains("Flat"));
     }
 
     @Test
@@ -233,7 +252,12 @@ public class FSTrader_utest
 
     private static AnalysisReady signal(String direction, String tier)
     {
-        return new AnalysisReady(DAY, KEY, "news", direction, tier, 100.0, NOW);
+        return signal(direction, tier, NOW); // catalyst == NOW -> fresh
+    }
+
+    private static AnalysisReady signal(String direction, String tier, Instant catalystAt)
+    {
+        return new AnalysisReady(DAY, KEY, "news", direction, tier, 100.0, catalystAt, NOW);
     }
 
     /** A broker with a scriptable venue state for reconciliation tests; fills paper-style at the passed price. */

@@ -113,7 +113,8 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     {
         return new Params(config.tradeEntryImpactTier(), config.tradeNotionalInUsd(), config.tradeLeverage(),
                 config.tradeStopLossInPct(), config.tradeTrailInPct(), config.tradeMaxHoldInHours() * 3_600_000L,
-                config.tradePricePollInSec() * 1000L, config.tradeProfitGraceInMin() * 60_000L);
+                config.tradePricePollInSec() * 1000L, config.tradeProfitGraceInMin() * 60_000L,
+                config.tradeEntryMaxNewsAgeInMin() * 60_000L);
     }
 
     /**
@@ -220,7 +221,7 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     /** Act on one signal: open a position when it qualifies and we are flat. Worker-thread / test entry point. */
     void onSignal(AnalysisReady signal, Instant now)
     {
-        if (qualifies(signal) && isFlat())
+        if (isFlat() && qualifies(signal, now))
         {
             Double price = priceSource_.priceAt(now);
             if (price == null)
@@ -249,12 +250,36 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
         }
     }
 
-    private boolean qualifies(AnalysisReady signal)
+    private boolean qualifies(AnalysisReady signal, Instant now)
     {
         boolean directional = "bullish".equals(signal.direction()) || "bearish".equals(signal.direction());
         int rank = ImpactTier.order(signal.impactTier(), -1);
         int minimum = ImpactTier.order(params_.entryImpactTier(), 2);
-        return directional && rank >= minimum;
+        return directional && rank >= minimum && fresh(signal, now);
+    }
+
+    /**
+     * Whether the catalyst is recent enough to open on -- real-money entry must be on a FRESH event, so a
+     * stale call (re-analysis, backfill, a late-arriving article) is rejected. Measured against the newest
+     * resonant article's publish time ({@code catalystAt}); a missing catalyst time is treated as not fresh
+     * (fail-safe). The gate is disabled when {@code entryMaxNewsAgeMillis <= 0}.
+     */
+    private boolean fresh(AnalysisReady signal, Instant now)
+    {
+        boolean fresh = true;
+        if (params_.entryMaxNewsAgeMillis() > 0)
+        {
+            Instant catalystAt = signal.catalystAt();
+            fresh = catalystAt != null
+                    && now.toEpochMilli() - catalystAt.toEpochMilli() <= params_.entryMaxNewsAgeMillis();
+            if (!fresh)
+            {
+                GlobalSystem.info().writes(NAME, "Entry skipped (stale catalyst) " + signal.day() + " "
+                        + signal.intervalKey() + " -- catalyst=" + (catalystAt == null ? "unknown" : catalystAt)
+                        + " now=" + now + " max=" + (params_.entryMaxNewsAgeMillis() / 60_000L) + "m");
+            }
+        }
+        return fresh;
     }
 
     private synchronized boolean isFlat()
@@ -550,7 +575,8 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
 
     /** The numeric strategy parameters, built from {@link Config} in production and directly in tests. */
     public record Params(String entryImpactTier, double notionalInUsd, double leverage, double stopLossInPct,
-            double trailInPct, long maxHoldMillis, long pricePollMillis, long profitGraceMillis)
+            double trailInPct, long maxHoldMillis, long pricePollMillis, long profitGraceMillis,
+            long entryMaxNewsAgeMillis)
     {
     }
 }

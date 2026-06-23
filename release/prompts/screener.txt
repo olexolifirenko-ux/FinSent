@@ -5,7 +5,8 @@ When unsure, lean UP (2 not 1): a missed catalyst is unrecoverable.
 3 URGENT  Confirmed major NEW catalyst with direct BTC channel: policy
   surprise, rate decision, war/peace escalation step, sanctions on a
   major economy, oil-supply shock, exchange collapse/hack, large
-  ETF-flow reversal, major regulatory action.
+  ETF-flow reversal, major regulatory action, a major market crash or
+  volatility spike (an equity index down/up several percent in a session).
 2 MATERIAL  New event that matters but is smaller/less direct than 3.
   Also 2 for unverified-but-major claims so the next pass can judge
   credibility.
@@ -14,6 +15,12 @@ When unsure, lean UP (2 not 1): a missed catalyst is unrecoverable.
   coverage of an event in ALREADY COVERED, or market-reaction articles
   ("oil rose after X"). Score 0 if the same EVENT is in ALREADY COVERED
   even if the article adds minor details.
+  EXCEPTION: an EXTREME move is itself a catalyst, not a recap -- a crash
+  or spike in a major market/index (an equity index down/up several
+  percent in a session, a circuit-breaker move, a volatility blowout) is
+  a broad risk shock; score it 2-3 on magnitude even if the headline is
+  just a price or number. A routine daily move (a percent or two) is
+  still a recap (0-1).
 
 Any domain qualifies (crypto, macro, geopolitics, trade). Judge by
 likely BTC impact, not topic.

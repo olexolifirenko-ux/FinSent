@@ -48,7 +48,10 @@ CONTEXT: a market_signals block is provided with the items in the user message. 
 as follows.
 Use the current BTC price only to judge whether a move is already underway. If an item
 shows a pre_trend, a large pre-move means the market is already reacting (more likely
-already priced).
+already priced). Judge already-priced from THIS item's immediate pre_trend, not a slow
+multi-hour drift or a same-batch market-reaction recap: a FLAT pre_trend means the move
+has NOT started, so a fresh shock is unpriced even if BTC already sits near a 24h low for
+other reasons.
 Use the positioning line (funding + open interest) to judge how VIOLENTLY a confirmed
 catalyst will land -- not its direction. A catalyst that pushes the crowded, leverage-
 building side offside cascades (down_cascade_fuel = crowded longs exposed to a bearish
@@ -116,4 +119,18 @@ RULES:
   report counts, never the follow-up coverage or the market-reaction recaps. This applies
   ACROSS windows too: an event already in the ALREADY COVERED block was the first report;
   a later item on it is follow-up unless it adds a materially-new step (see STEP 2).
+- A FRESH extreme market shock -- a major equity-index crash / circuit-breaker move NOT yet
+  in ALREADY COVERED -- with a flat immediate pre_trend is impact HIGH: do not demote the
+  first report on a slow prior drift, a same-batch reaction recap, or neutral positioning
+  (positioning scales how violently it lands, not whether it is material). This HIGH floor
+  is ONLY for an acute major-index crash / circuit-breaker move; a slow or indirect-channel
+  item (private-credit stress, macro data, a sentiment read, a corporate event) keeps the
+  usual dampers -- an indirect/slow channel and neutral positioning hold it to LOW even into
+  complacent options vol.
+- Once that crash is in ALREADY COVERED (even a milder earlier print of it), a later report
+  -- INCLUDING a worse magnitude or a final/closing number -- is a PARTLY-EXPECTED follow-up:
+  KEEP its directional lean (e.g. bearish) but rate it LOW -- never high, and never noise.
+  A bigger number on a move already covered is NOT a materially-new step (that exception is
+  for a new KIND of development -- a new actor, a new executed action, a distinct fact --
+  not a larger figure on the same already-covered move).
 - Do not invent events not present in the items.

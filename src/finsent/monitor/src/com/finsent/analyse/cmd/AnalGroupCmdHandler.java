@@ -50,8 +50,9 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
         registerCmdHandler("show", new ShowCmdHandler(analyser),
                 "Show a stored analysis record (read-only): show <YYYYMMDD_HHMM>.", null);
         registerCmdHandler("feedback", new FeedbackCmdHandler(analyser),
-                "Score stored predictions vs realized BTC moves and print the accuracy report (BL#6); "
-                        + "feedback [--days N] bounds the scan to the last N days.", null);
+                "Score stored predictions vs realized BTC moves (BL#6); runs in the background, logging "
+                        + "per-day progress + the accuracy report. feedback [--days N] bounds the scan to the "
+                        + "last N days.", null);
     }
 
     /** Parse {@code YYYYMMDD_HHMM} into {@code {day, "HH:MM"}}, or null when malformed/absent. */
@@ -301,9 +302,15 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
         {
             int days = parseDays(args);
             String scope = days > 0 ? "last " + days + " day(s)" : "all history";
-            UtilityFunctions.writeln(writer, "Scoring predictions (" + scope
-                    + ") against realized BTC prices (fetches Binance klines)...");
-            UtilityFunctions.writeln(writer, analyser_.runFeedback(days));
+            if (analyser_.runFeedback(days))
+            {
+                UtilityFunctions.writeln(writer, "Feedback scan started (" + scope + ") -- runs in the background "
+                        + "(fetches Binance klines); see the log for per-day progress and the report.");
+            }
+            else
+            {
+                UtilityFunctions.writeln(writer, "Feedback scan already running -- wait for it to finish.");
+            }
             return 0;
         }
 

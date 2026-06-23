@@ -44,7 +44,9 @@ import com.finsent.core.Json;
 import com.finsent.core.Times;
 import com.finsent.core.event.IEventListener;
 import com.finsent.directory.DirectorySystem;
+import com.finsent.feedback.FeedbackPriceCache;
 import com.finsent.feedback.FeedbackRunner;
+import com.finsent.feedback.OutcomeScorer;
 import com.finsent.util.GlobalSystem;
 import com.finsent.util.IMailSender;
 import com.finsent.util.IUninitializer;
@@ -102,6 +104,8 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         return thread;
     });
     private volatile boolean running_ = true;
+    // Guards against two concurrent `anal feedback` runs clobbering each other's outcome files.
+    private final AtomicBoolean feedbackRunning_ = new AtomicBoolean(false);
 
     /** Production wiring: build the store, Claude client/passes and notifier from config. */
     public FSAnalyser(FSCollector collector, Config config, boolean startPaused)
@@ -343,14 +347,42 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     }
 
     /**
-     * Run the BL#6 feedback loop on the command thread: score the stored predictions against realized
-     * BTC moves (one Binance kline per matured horizon, via the collector), persist outcomes.jsonl, and
-     * return the accuracy report. Read-only and keyless &mdash; no Claude, no alerts.
+     * Run the BL#6 feedback scan on a dedicated daemon thread, so the command interpreter is not blocked
+     * for the minutes the kline-fetching scan can take. Per-day progress and the final accuracy report go
+     * to the log. Read-only and keyless &mdash; no Claude, no alerts. Returns {@code false} (and starts
+     * nothing) when a scan is already in flight, so two concurrent runs cannot clobber the outcome files.
      */
-    public String runFeedback(int days)
+    public boolean runFeedback(int days)
     {
-        File dataDir = DirectorySystem.resolveToFile(config_.dataDir());
-        return FeedbackRunner.run(dataDir, Instant.now(), collector_::fetchClosePriceAt, days);
+        boolean started = feedbackRunning_.compareAndSet(false, true);
+        if (started)
+        {
+            Thread thread = new Thread(() -> feedbackRun(days), "FS-Feedback");
+            thread.setDaemon(true);
+            thread.start();
+        }
+        return started;
+    }
+
+    private void feedbackRun(int days)
+    {
+        try
+        {
+            File dataDir = DirectorySystem.resolveToFile(config_.dataDir());
+            // Day-batching price cache: one Binance fetch per target-day instead of one per prediction.
+            OutcomeScorer.PriceSource prices =
+                    new FeedbackPriceCache(collector_::fetchDayCloses, collector_::fetchClosePriceAt);
+            GlobalSystem.info().writes(NAME, "Feedback report:\n"
+                    + FeedbackRunner.run(dataDir, Instant.now(), prices, days));
+        }
+        catch (RuntimeException feedbackFailed)
+        {
+            GlobalSystem.error().writes(NAME, "Feedback scan failed", feedbackFailed);
+        }
+        finally
+        {
+            feedbackRunning_.set(false);
+        }
     }
 
     /**

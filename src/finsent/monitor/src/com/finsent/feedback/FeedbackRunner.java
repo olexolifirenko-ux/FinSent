@@ -9,7 +9,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,18 +43,38 @@ public final class FeedbackRunner
     /**
      * Score all matured window + article predictions in {@code dataDir}, persist outcomes, return the
      * report. {@code days} bounds the scan to the last N days of analysis files ({@code <= 0} = all).
+     * Processes one day at a time, writing that day's outcomes and logging progress as it goes (the scan
+     * fetches Binance klines and can run for minutes), so the caller can run it on a background thread.
      */
     public static String run(File dataDir, Instant now, PriceSource prices, int days)
     {
-        List<Prediction> windowPreds = new ArrayList<>();
-        List<ArticlePrediction> articlePreds = new ArrayList<>();
-        load(dataDir, windowPreds, articlePreds, cutoffDay(now, days));
-        List<ObjectNode> windowOutcomes = OutcomeScorer.score(windowPreds, now, prices);
-        List<ObjectNode> articleOutcomes = OutcomeScorer.scoreArticles(articlePreds, now, prices);
-        writeOutcomes(dataDir, "outcomes_", windowOutcomes);
-        writeOutcomes(dataDir, "article_outcomes_", articleOutcomes);
-        GlobalSystem.info().writes(NAME, "Scored " + windowOutcomes.size() + "/" + windowPreds.size()
-                + " window(s), " + articleOutcomes.size() + "/" + articlePreds.size() + " article(s).");
+        List<String> dayList = qualifyingDays(dataDir, cutoffDay(now, days));
+        List<ObjectNode> windowOutcomes = new ArrayList<>();
+        List<ObjectNode> articleOutcomes = new ArrayList<>();
+        int processed = 0;
+        for (String day : dayList)
+        {
+            List<Prediction> windowPreds = new ArrayList<>();
+            List<ArticlePrediction> articlePreds = new ArrayList<>();
+            loadFile(new File(new File(dataDir, day), "analysis_" + day + ".json"), day, windowPreds, articlePreds);
+            List<ObjectNode> wo = OutcomeScorer.score(windowPreds, now, prices);
+            List<ObjectNode> ao = OutcomeScorer.scoreArticles(articlePreds, now, prices);
+            if (!wo.isEmpty())
+            {
+                writeDayOutcomes(dataDir, "outcomes_", day, wo);
+            }
+            if (!ao.isEmpty())
+            {
+                writeDayOutcomes(dataDir, "article_outcomes_", day, ao);
+            }
+            windowOutcomes.addAll(wo);
+            articleOutcomes.addAll(ao);
+            GlobalSystem.info().writes(NAME, "Feedback " + (++processed) + "/" + dayList.size() + " " + day
+                    + " -- scored " + wo.size() + "/" + windowPreds.size() + " window, "
+                    + ao.size() + "/" + articlePreds.size() + " article");
+        }
+        GlobalSystem.info().writes(NAME, "Feedback scored " + windowOutcomes.size() + " window(s), "
+                + articleOutcomes.size() + " article(s) across " + dayList.size() + " day(s).");
         return FeedbackReport.generate(windowOutcomes, articleOutcomes);
     }
 
@@ -65,9 +84,10 @@ public final class FeedbackRunner
         return days <= 0 ? null : Times.dayOf(Times.formatUtcIso(now.minus(Duration.ofDays(days))));
     }
 
-    private static void load(File dataDir, List<Prediction> windowPreds, List<ArticlePrediction> articlePreds,
-            String cutoffDay)
+    /** The sorted {@code YYYYMMDD} day names that have an analysis file and fall within the cutoff (oldest first). */
+    private static List<String> qualifyingDays(File dataDir, String cutoffDay)
     {
+        List<String> days = new ArrayList<>();
         File[] dayDirs = dataDir.listFiles(File::isDirectory);
         if (dayDirs != null)
         {
@@ -78,10 +98,11 @@ public final class FeedbackRunner
                 File analysis = new File(dayDir, "analysis_" + day + ".json");
                 if (day.matches("\\d{8}") && analysis.isFile() && (cutoffDay == null || day.compareTo(cutoffDay) >= 0))
                 {
-                    loadFile(analysis, day, windowPreds, articlePreds);
+                    days.add(day);
                 }
             }
         }
+        return days;
     }
 
     private static void loadFile(File file, String day, List<Prediction> windowPreds, List<ArticlePrediction> articlePreds)
@@ -196,20 +217,6 @@ public final class FeedbackRunner
             }
         }
         return instant;
-    }
-
-    /** Group outcomes by their {@code day} and write one {@code <day>/<prefix><day>.jsonl} per day. */
-    private static void writeOutcomes(File dataDir, String prefix, List<ObjectNode> outcomes)
-    {
-        Map<String, List<ObjectNode>> byDay = new LinkedHashMap<>();
-        for (ObjectNode outcome : outcomes)
-        {
-            byDay.computeIfAbsent(outcome.path("day").asText("unknown"), d -> new ArrayList<>()).add(outcome);
-        }
-        for (Map.Entry<String, List<ObjectNode>> entry : byDay.entrySet())
-        {
-            writeDayOutcomes(dataDir, prefix, entry.getKey(), entry.getValue());
-        }
     }
 
     private static void writeDayOutcomes(File dataDir, String prefix, String day, List<ObjectNode> outcomes)

@@ -6,6 +6,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -51,6 +52,10 @@ import com.finsent.util.GlobalSystem;
 public final class FSCollector
 {
     private static final String NAME = "FSCollector";
+    private static final long DAY_MS = 86_400_000L;
+    // A UTC day is 1440 one-minute bars, above the kline page cap (1000), so a day's closes are fetched
+    // in chunks of this many minutes (under the cap with the fetcher's small margin).
+    private static final long KLINE_CHUNK_MS = 900L * 60_000L;
 
     private final Config config_;
     private final PersistenceService persistence_;
@@ -793,6 +798,31 @@ public final class FSCollector
             }
         }
         return price;
+    }
+
+    /**
+     * All 1-minute closes for the UTC day containing {@code anchor}, keyed by the bar's open-time epoch
+     * millis. One batched (chunked, since a day exceeds the kline page cap) fetch per day, so the
+     * feedback scan resolves a day's many horizon lookups without a Binance call per prediction. Empty
+     * when OHLC is disabled or the fetch fails (the caller then falls back to {@link #fetchClosePriceAt}).
+     */
+    public Map<Long, Double> fetchDayCloses(Instant anchor)
+    {
+        Map<Long, Double> closes = new HashMap<>();
+        if (ohlcFetcher_ != null)
+        {
+            long dayStart = anchor.toEpochMilli() / DAY_MS * DAY_MS;
+            long dayEnd = dayStart + DAY_MS;
+            for (long start = dayStart; start < dayEnd; start += KLINE_CHUNK_MS)
+            {
+                long end = Math.min(start + KLINE_CHUNK_MS, dayEnd);
+                for (JsonNode bar : ohlcFetcher_.fetchCandles(start, end, "1m"))
+                {
+                    closes.put(Times.parseIso(bar.path("ts").asText()).toEpochMilli(), bar.path("c").asDouble());
+                }
+            }
+        }
+        return closes;
     }
 
     /**

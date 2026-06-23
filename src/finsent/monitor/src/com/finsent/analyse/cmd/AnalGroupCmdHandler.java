@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.finsent.analyse.FSAnalyser;
 import com.finsent.analyse.Intervals;
+import com.finsent.core.Times;
 import com.finsent.util.CmdArgParser;
 import com.finsent.util.CmdGroupHandler;
 import com.finsent.util.ICmdHandler;
@@ -20,11 +21,12 @@ import com.finsent.util.UtilityFunctions;
  * <ul>
  *   <li>{@code on} / {@code off} / {@code status} &mdash; live analysis control ({@code start} /
  *       {@code pause} are accepted as aliases);</li>
- *   <li>{@code window <YYYYMMDD_HHMM>} &mdash; re-analyse one stored window now (ports {@code --window});</li>
+ *   <li>{@code window <YYYYMMDD_HHMM|HHMM>} &mdash; re-analyse one stored window now ({@code HHMM} = today
+ *       UTC); ports {@code --window};</li>
  *   <li>{@code windows <N>} or {@code windows -start .. -end ..} &mdash; scan/backfill a range of windows
  *       ({@code <N>} = the last N days through now); dry-run by default;</li>
  *   <li>{@code econ [YYYYMMDD] <event name> [-quiet]} &mdash; manually run the econ analysis for a resolved release;</li>
- *   <li>{@code show <YYYYMMDD_HHMM>} &mdash; print the stored analysis record (read-only).</li>
+ *   <li>{@code show <YYYYMMDD_HHMM|HHMM>} &mdash; print the stored analysis record (read-only).</li>
  * </ul>
  * Registered against the running interpreter once the analyser exists (see {@code FSApp}).
  */
@@ -33,7 +35,7 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
     public static final String COMMAND = "anal";
     public static final String[] COMMAND_ALIASES = null;
     public static final String DESCRIPTION = "Analyser control,\nusage: " + COMMAND
-            + " <on|off|status|window <YYYYMMDD_HHMM>|windows <N>|windows -start .. -end ..|show <YYYYMMDD_HHMM>"
+            + " <on|off|status|window <YYYYMMDD_HHMM|HHMM>|windows <N>|windows -start .. -end ..|show <YYYYMMDD_HHMM|HHMM>"
             + "|econ [YYYYMMDD] <event name> [-quiet]|feedback [--days N]>";
 
     public AnalGroupCmdHandler(FSAnalyser analyser)
@@ -42,20 +44,25 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
         registerCmdHandler("off", new OffCmdHandler(analyser), "Turn analysis off (pause).", new String[] {"pause"});
         registerCmdHandler("status", new StatusCmdHandler(analyser), "Show analyser status.", null);
         registerCmdHandler("window", new WindowCmdHandler(analyser),
-                "Re-analyse a stored window now: window <YYYYMMDD_HHMM> (e.g. 20260517_2210).", null);
+                "Re-analyse a stored window now: window <YYYYMMDD_HHMM|HHMM> (e.g. 20260517_2210, or 0530 "
+                        + "for today 05:30 UTC).", null);
         registerCmdHandler("windows", new WindowsCmdHandler(analyser), WindowsCmdHandler.USAGE, null);
         registerCmdHandler("econ", new EconCmdHandler(analyser),
                 "Manually run the econ analysis for a resolved scheduled release: econ [YYYYMMDD] <event name> "
                         + "[-quiet] (e.g. econ CPI MoM; day defaults to today). -quiet records without notifying.", null);
         registerCmdHandler("show", new ShowCmdHandler(analyser),
-                "Show a stored analysis record (read-only): show <YYYYMMDD_HHMM>.", null);
+                "Show a stored analysis record (read-only): show <YYYYMMDD_HHMM|HHMM> (HHMM = today UTC).", null);
         registerCmdHandler("feedback", new FeedbackCmdHandler(analyser),
                 "Score stored predictions vs realized BTC moves (BL#6); runs in the background, logging "
                         + "per-day progress + the accuracy report. feedback [--days N] bounds the scan to the "
                         + "last N days.", null);
     }
 
-    /** Parse {@code YYYYMMDD_HHMM} into {@code {day, "HH:MM"}}, or null when malformed/absent. */
+    /**
+     * Parse a window token into {@code {day, "HH:MM"}}: the full {@code YYYYMMDD_HHMM}, or the short
+     * time-only {@code HHMM} form with today's UTC day implied (window keys + data files are UTC).
+     * Null when malformed/absent.
+     */
     static String[] parseDayKey(String token)
     {
         String[] result = null;
@@ -63,6 +70,10 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
         {
             String hhmm = token.substring(9);
             result = new String[] { token.substring(0, 8), hhmm.substring(0, 2) + ":" + hhmm.substring(2, 4) };
+        }
+        else if (token != null && token.matches("\\d{4}"))
+        {
+            result = new String[] { Times.todayUtc(), token.substring(0, 2) + ":" + token.substring(2, 4) };
         }
         return result;
     }
@@ -124,7 +135,8 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
     /** {@code anal window <YYYYMMDD_HHMM>}: re-analyse one stored window synchronously, on demand. */
     private static final class WindowCmdHandler implements ICmdHandler
     {
-        private static final String USAGE = "Usage: anal window <YYYYMMDD_HHMM> (e.g. 20260517_2210)";
+        private static final String USAGE =
+                "Usage: anal window <YYYYMMDD_HHMM|HHMM> (e.g. 20260517_2210, or 0530 for today 05:30 UTC)";
         private final FSAnalyser analyser_;
 
         private WindowCmdHandler(FSAnalyser analyser)
@@ -413,7 +425,7 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
     /** {@code anal show <YYYYMMDD_HHMM>}: print the stored analysis record for a window (read-only). */
     private static final class ShowCmdHandler implements ICmdHandler
     {
-        private static final String USAGE = "Usage: anal show <YYYYMMDD_HHMM>";
+        private static final String USAGE = "Usage: anal show <YYYYMMDD_HHMM|HHMM> (HHMM = today UTC)";
         private final FSAnalyser analyser_;
 
         private ShowCmdHandler(FSAnalyser analyser)

@@ -27,6 +27,15 @@ NOT already know or expect? The SURPRISE is the signal, not the event.
   ("BTC fell after X") is NOT a fresh trigger.
 - An expected rate hike is already priced and moves little; only an UNEXPECTED one, or
   a genuinely new development, gives traders a fresh reason to act.
+- An ALREADY COVERED block may be listed with the items (recent stories already flagged
+  in prior windows). An item that merely confirms, recaps, reacts to, or restates -- in
+  other words, or with a later timestamp -- an event already in that block is NOT new:
+  it is a description of the known (noise, or at most low), even if it reads as a fresh
+  fact or carries a new number/detail. EXCEPTION: a materially-new development of a
+  covered story -- a new executed action, a new actor, a concrete new fact, or a discrete
+  further escalation/de-escalation STEP beyond what was covered -- still counts as new.
+  When unsure, ask what concrete fact this item adds that the covered item did not
+  already establish; if none, it is a recap.
 
 STEP 3 -- CHANNEL to crypto? Is there a concrete transmission to BTC -- monetary /
 rates / liquidity, the USD, regulation, crypto structure (exchanges, ETFs, large
@@ -94,9 +103,17 @@ Described / expected -> noise (fails Step 2):
 Recap / opinion -> noise:
 {"direction":"neutral","impact_tier":"noise","key_events":[],"reasoning":"Commentary recapping an already-reported story -- no new executed fact and no fresh trigger.","articles":[{"i":1,"direction":"neutral","reasoning":"Editorial recap, no new action"}]}
 
+Already covered -> noise (fails Step 2; the event is in ALREADY COVERED):
+{"direction":"neutral","impact_tier":"noise","key_events":[],"reasoning":"The de-escalation it reports is already in ALREADY COVERED from earlier windows -- this item only restates it with a new detail, adding no concrete fact the market did not already have, and the flat reaction confirms it is priced.","articles":[{"i":1,"direction":"neutral","reasoning":"Restates an already-covered de-escalation -- not new"}]}
+
+New STEP of a covered story -> still counts (do NOT auto-suppress):
+{"direction":"bearish","impact_tier":"high","key_events":["Fresh airstrike on the capital -- a new escalation step beyond the covered ceasefire talks"],"reasoning":"The conflict is in ALREADY COVERED, but this is a new executed action (a strike that had not happened), not a recap -- a concrete new escalation step with a broad risk-off channel.","articles":[{"i":1,"direction":"bearish","reasoning":"A newly-executed strike beyond the covered backdrop -- genuinely new"}]}
+
 RULES:
 - Flag only items that pass ALL three steps; mark everything else noise, however
   dramatic or high-profile.
 - If multiple items cover the same event, assess it once -- only the FIRST, causative
-  report counts, never the follow-up coverage or the market-reaction recaps.
+  report counts, never the follow-up coverage or the market-reaction recaps. This applies
+  ACROSS windows too: an event already in the ALREADY COVERED block was the first report;
+  a later item on it is follow-up unless it adds a materially-new step (see STEP 2).
 - Do not invent events not present in the items.

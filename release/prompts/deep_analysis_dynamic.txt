@@ -1,3 +1,4 @@
+{covered}
 market_signals:
 {market_signals}
 

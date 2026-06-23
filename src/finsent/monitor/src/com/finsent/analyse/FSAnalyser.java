@@ -706,16 +706,23 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     }
 
     /**
-     * Recently-covered resonant articles for the screener's cross-window dedup: the resonant set (title +
-     * publish time) recorded in the windows within {@code screenerDedupLookback} before {@code (day, key)},
-     * read from the stored analysis records. Record-sourced (not a volatile in-memory ring), so it survives
-     * a restart and applies to live, on-demand re-analysis and backfill alike &mdash; keyed by the window's
-     * own time, not wall-clock. The current window is excluded (its own duplicates are caught in-batch).
+     * Recently-covered resonant articles for cross-window dedup: the resonant set (title + publish time)
+     * recorded in the windows within the given lookback before {@code (day, key)}, read from the stored
+     * analysis records. Record-sourced (not a volatile in-memory ring), so it survives a restart and
+     * applies to live, on-demand re-analysis and backfill alike &mdash; keyed by the window's own time,
+     * not wall-clock. The current window is excluded (its own duplicates are caught in-batch). The no-arg
+     * overload uses {@code screenerDedupLookback} (the screener); the deep pass passes its own
+     * {@code deepDedupLookback}, which is typically longer (multi-day running themes).
      */
     private List<ObjectNode> recentlyCovered(String day, String key)
     {
+        return recentlyCovered(day, key, config_.screenerDedupLookbackMinutes());
+    }
+
+    private List<ObjectNode> recentlyCovered(String day, String key, int lookbackMinutes)
+    {
         int windowMinutes = config_.windowMinutes();
-        int lookbackWindows = Math.max(0, config_.screenerDedupLookbackMinutes() / windowMinutes);
+        int lookbackWindows = Math.max(0, lookbackMinutes / windowMinutes);
         List<ObjectNode> covered = new ArrayList<>();
         for (int back = 1; back <= lookbackWindows; back++)
         {
@@ -769,11 +776,15 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
 
         Map<Integer, Integer> deepIdMap = new HashMap<>();
         String articlesBlock = PromptBuilder.deepArticles(resonant, ohlc, deepIdMap);
-        // The static instructions/examples are the cached system block; only the volatile market_signals +
-        // articles go in the user message (see deep_analysis.txt vs deep_analysis_dynamic.txt).
+        // The static instructions/examples are the cached system block; only the volatile covered ref +
+        // market_signals + articles go in the user message (see deep_analysis.txt vs deep_analysis_dynamic.txt).
+        // The deep pass gets a cross-window ALREADY COVERED block (like the screener) so its STEP 2
+        // (new vs already-known) can demote follow-ups/recaps of an already-flagged story. It uses its
+        // own deepDedupLookback -- typically longer than the screener's, to catch multi-day themes.
+        String coveredBlock = PromptBuilder.coveredBlock(recentlyCovered(day, key, config_.deepDedupLookbackMinutes()));
         String system = loadTemplate("deep_analysis");
         String userContent = PromptTemplates.fillDeepDynamic(loadTemplate("deep_analysis_dynamic"),
-                resonant.size(), market.block(), articlesBlock);
+                resonant.size(), market.block(), articlesBlock, coveredBlock);
 
         DeepResult deep = deep_.analyse(system, userContent, ClaudeSchemas.NEWS_DEEP);
         ArrayNode articlePredictions = buildArticlePredictions(resonant, ohlc, deep.articles(), deepIdMap);

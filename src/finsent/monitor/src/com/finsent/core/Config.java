@@ -286,6 +286,16 @@ public final class Config
     }
 
     /**
+     * Lookback for the DEEP pass's cross-window dedup memory (default 6h). Set higher than the screener's
+     * to catch multi-day running themes -- the deep pass runs on far fewer items (only the resonant set),
+     * so a longer covered block is affordable; the recall-biased screener stays at its shorter window.
+     */
+    public int deepDedupLookbackMinutes()
+    {
+        return Times.intervalMinutes(attr(analyserNode_, "deepDedupLookback", "6h"));
+    }
+
+    /**
      * Directory the Claude prompt templates ({@code screener.txt}, {@code deep_analysis.txt}) live
      * in. Analyser-owned. Relative values resolve against the release home via the directory
      * subsystem; an absolute path is honoured as-is.

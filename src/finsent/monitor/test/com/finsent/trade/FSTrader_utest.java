@@ -36,11 +36,12 @@ public class FSTrader_utest
     private static final String KEY = "08:00";
     private static final Instant NOW = Instant.parse("2026-06-04T08:00:00Z");
     private static final long FRESH_5MIN = 300_000L; // entryMaxNewsAgeMillis for the tests
+    private static final double DIV_1PCT = 1.0;       // entryMaxPriceDivergencePct for the tests
     private static final FSTrader.Params PARAMS =
-            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L, FRESH_5MIN); // time stop off
+            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L, FRESH_5MIN, DIV_1PCT); // time stop off
     // Same, but with a 10-minute profit-grace time stop enabled and a long max-hold (so only the time stop fires).
     private static final FSTrader.Params GRACE_PARAMS =
-            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 86_400_000L, 20_000L, 600_000L, FRESH_5MIN);
+            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 86_400_000L, 20_000L, 600_000L, FRESH_5MIN, DIV_1PCT);
 
     private Path dir_;
     private TradeBook book_;
@@ -98,6 +99,24 @@ public class FSTrader_utest
         // No catalyst time -> freshness cannot be verified -> fail-safe: do not open on real money.
         trader_.onSignal(signal("bullish", "high", null), NOW);
         assertTrue(trader_.describe(NOW).contains("Flat"));
+    }
+
+    @Test
+    public void priceDivergedFromAnalysisDoesNotOpen()
+    {
+        // Live price is 10% off the signal's analysis-time anchor (100) -- past the 1% divergence guard.
+        price_ = 110.0;
+        trader_.onSignal(signal("bullish", "high"), NOW);
+        assertTrue(trader_.describe(NOW).contains("Flat"));
+    }
+
+    @Test
+    public void smallDivergenceWithinGuardStillOpens()
+    {
+        // 0.5% from the anchor (100) -- within the 1% divergence guard, so the entry proceeds.
+        price_ = 100.5;
+        trader_.onSignal(signal("bullish", "high"), NOW);
+        assertTrue(trader_.describe(NOW).contains("Open LONG entry 100.5"));
     }
 
     @Test

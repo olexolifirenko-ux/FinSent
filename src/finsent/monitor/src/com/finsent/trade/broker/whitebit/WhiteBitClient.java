@@ -27,6 +27,7 @@ import com.finsent.core.Json;
 public final class WhiteBitClient
 {
     private static final Duration TIMEOUT = Duration.ofSeconds(15);
+    private static final String PUBLIC_TICKER = "/api/v4/public/ticker";
     private static final String TRADE_BALANCE = "/api/v4/trade-account/balance";
     private static final String COLLATERAL_BALANCE = "/api/v4/collateral-account/balance";
     private static final String COLLATERAL_SUMMARY = "/api/v4/collateral-account/balance-summary";
@@ -51,6 +52,48 @@ public final class WhiteBitClient
     public boolean configured()
     {
         return !apiKey_.isEmpty() && !apiSecret_.isEmpty();
+    }
+
+    /**
+     * The venue's current last price for the configured market, from the public ticker (no auth). Used as
+     * the trader's price feed when executing live on WhiteBIT, so the stop math and the fills read the
+     * same venue. Best-effort: returns null on failure so the caller can fall back to another feed.
+     */
+    public Double lastPrice()
+    {
+        Double price = null;
+        try
+        {
+            price = parseLastPrice(Http.get(baseUrl_ + PUBLIC_TICKER, Map.of(), Map.of(), TIMEOUT), market_);
+        }
+        catch (IOException | RuntimeException fetchFailed)
+        {
+            // Best-effort venue price; the caller falls back to the other feed (the Binance ticker).
+        }
+        catch (InterruptedException interrupted)
+        {
+            Thread.currentThread().interrupt();
+        }
+        return price;
+    }
+
+    /** Extract the {@code market}'s {@code last_price} from a WhiteBIT public-ticker body, or null when absent/unparseable. */
+    static Double parseLastPrice(String body, String market)
+    {
+        Double price = null;
+        try
+        {
+            JsonNode last = Json.parse(body).path(market).path("last_price");
+            if (last.isValueNode() && !last.asText("").isEmpty())
+            {
+                price = Double.parseDouble(last.asText());
+            }
+        }
+        catch (JsonProcessingException | NumberFormatException badBody)
+        {
+            price = null;
+        }
+        return price;
     }
 
     /** Spot/main trading-account balances (all tickers when {@code ticker} is empty). */

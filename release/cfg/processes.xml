@@ -146,7 +146,9 @@
              Opens long on bullish / short on bearish at entryImpactTier or higher, one net position
              at a time; only on a FRESH catalyst (the newest resonant article no older than
              entryMaxNewsAgeInMin, so it never opens on a stale re-analysis/backfill/late-article call;
-             0 disables that gate). A trailing stop (initial stopLossInPct adverse, ratcheting trailInPct
+             0 disables that gate) AND only when the live price has not diverged more than
+             entryMaxPriceDivergencePct from the analysis-time price (a sharp move since the verdict means
+             the market repriced; 0 disables). A trailing stop (initial stopLossInPct adverse, ratcheting trailInPct
              behind the best price) manages the exit. profitGraceInMin is a time stop: if the trade is not
              in profit by then it is closed (the catalyst is not working); 0 disables it. maxHoldInHours
              is a final chop backstop. broker=paper simulates fills (no real orders); broker=whitebit
@@ -156,6 +158,7 @@
             broker="whitebit"
             entryImpactTier="high"
             entryMaxNewsAgeInMin="5"
+            entryMaxPriceDivergencePct="1.0"
             notionalInUsd="300.0"
             leverage="5.0"
             stopLossInPct="0.3"

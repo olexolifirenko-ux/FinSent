@@ -67,7 +67,7 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     public FSTrader(FSCollector collector, Config config, WhiteBitClient whitebit, boolean startPaused)
     {
         // The live ticker price is always "now", so the PriceSource timestamp is ignored.
-        this(buildBook(config), brokerFrom(config, whitebit), target -> collector.currentPrice(),
+        this(buildBook(config), brokerFrom(config, whitebit), priceSourceFrom(config, whitebit, collector),
                 paramsFrom(config), startPaused);
     }
 
@@ -96,17 +96,41 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     /** Select the live WhiteBIT broker only when configured for it and keyed; otherwise the safe paper broker. */
     private static IBroker brokerFrom(Config config, WhiteBitClient whitebit)
     {
-        boolean live = "whitebit".equalsIgnoreCase(config.tradeBroker());
         IBroker broker = new PaperBroker();
-        if (live && whitebit.configured())
+        if (liveWhiteBit(config, whitebit))
         {
             broker = new WhiteBitBroker(whitebit);
         }
-        else if (live)
+        else if ("whitebit".equalsIgnoreCase(config.tradeBroker()))
         {
             GlobalSystem.warning().writes(NAME, "broker=whitebit but WhiteBIT keys are unset -- falling back to paper.");
         }
         return broker;
+    }
+
+    /**
+     * The price feed. Live WhiteBIT trades read the price from the execution <b>venue</b> (its last price)
+     * so the stop math and the fills share one feed; the Binance ticker is the fallback (and the source
+     * for paper). The {@code PriceSource} timestamp is ignored -- both feeds are live "now" prices.
+     */
+    private static PriceSource priceSourceFrom(Config config, WhiteBitClient whitebit, FSCollector collector)
+    {
+        PriceSource source = target -> collector.currentPrice();
+        if (liveWhiteBit(config, whitebit))
+        {
+            source = target ->
+            {
+                Double venue = whitebit.lastPrice();
+                return venue != null ? venue : collector.currentPrice();
+            };
+        }
+        return source;
+    }
+
+    /** Whether the trader is configured for live WhiteBIT execution (broker=whitebit and the keys are present). */
+    private static boolean liveWhiteBit(Config config, WhiteBitClient whitebit)
+    {
+        return "whitebit".equalsIgnoreCase(config.tradeBroker()) && whitebit.configured();
     }
 
     private static Params paramsFrom(Config config)
@@ -114,7 +138,7 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
         return new Params(config.tradeEntryImpactTier(), config.tradeNotionalInUsd(), config.tradeLeverage(),
                 config.tradeStopLossInPct(), config.tradeTrailInPct(), config.tradeMaxHoldInHours() * 3_600_000L,
                 config.tradePricePollInSec() * 1000L, config.tradeProfitGraceInMin() * 60_000L,
-                config.tradeEntryMaxNewsAgeInMin() * 60_000L);
+                config.tradeEntryMaxNewsAgeInMin() * 60_000L, config.tradeEntryMaxPriceDivergencePct());
     }
 
     /**
@@ -229,11 +253,36 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
                 GlobalSystem.warning().writes(NAME, "No price for entry on " + signal.day() + " "
                         + signal.intervalKey() + " -- signal skipped");
             }
-            else
+            else if (!priceDiverged(signal, price))
             {
                 open(signal, price, now);
             }
         }
+    }
+
+    /**
+     * Whether the live entry price has moved more than the configured percent from the analysis-time price
+     * ({@code btc_at_prediction}) -- a real-money safety rail: a sharp move between the deep analysis and the
+     * order means the market has repriced since the verdict, so the entry is skipped (logged). Disabled at
+     * {@code <= 0}; not triggered when no anchor price is available (cannot compute, so it does not block).
+     */
+    private boolean priceDiverged(AnalysisReady signal, double price)
+    {
+        boolean diverged = false;
+        double maxPct = params_.entryMaxPriceDivergencePct();
+        Double anchor = signal.anchorPrice();
+        if (maxPct > 0 && anchor != null && anchor != 0.0)
+        {
+            double divergencePct = Math.abs(price - anchor) / anchor * 100.0;
+            diverged = divergencePct > maxPct;
+            if (diverged)
+            {
+                GlobalSystem.warning().writes(NAME, "Entry skipped (price diverged " + Num.round(divergencePct, 2)
+                        + "% > " + maxPct + "% since analysis: $" + anchor + " -> $" + price + ") "
+                        + signal.day() + " " + signal.intervalKey());
+            }
+        }
+        return diverged;
     }
 
     /** Re-evaluate the open position against the current price: trail the stop, exit on breach/max-hold. */
@@ -274,7 +323,7 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
                     && now.toEpochMilli() - catalystAt.toEpochMilli() <= params_.entryMaxNewsAgeMillis();
             if (!fresh)
             {
-                GlobalSystem.info().writes(NAME, "Entry skipped (stale catalyst) " + signal.day() + " "
+                GlobalSystem.warning().writes(NAME, "Entry skipped (stale catalyst) " + signal.day() + " "
                         + signal.intervalKey() + " -- catalyst=" + (catalystAt == null ? "unknown" : catalystAt)
                         + " now=" + now + " max=" + (params_.entryMaxNewsAgeMillis() / 60_000L) + "m");
             }
@@ -576,7 +625,7 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     /** The numeric strategy parameters, built from {@link Config} in production and directly in tests. */
     public record Params(String entryImpactTier, double notionalInUsd, double leverage, double stopLossInPct,
             double trailInPct, long maxHoldMillis, long pricePollMillis, long profitGraceMillis,
-            long entryMaxNewsAgeMillis)
+            long entryMaxNewsAgeMillis, double entryMaxPriceDivergencePct)
     {
     }
 }

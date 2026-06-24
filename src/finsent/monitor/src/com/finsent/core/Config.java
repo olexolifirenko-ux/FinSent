@@ -382,6 +382,17 @@ public final class Config
         return intAttr(traderNode_, "entryMaxNewsAgeInMin", 5);
     }
 
+    /**
+     * Max price divergence (percent) between the analysis-time BTC price ({@code btc_at_prediction}) and
+     * the live entry price for the trader to still open: a sharp move in the gap between the deep analysis
+     * and the order means the market has repriced since the verdict, so the entry is skipped (real-money
+     * safety rail). Set above the Binance/WhiteBIT basis to avoid false trips; {@code 0} disables it.
+     */
+    public double tradeEntryMaxPriceDivergencePct()
+    {
+        return doubleAttr(traderNode_, "entryMaxPriceDivergencePct", 1.0);
+    }
+
     /** Execution venue for the auto-trader: {@code paper} (simulated, the default) or {@code whitebit} (live). */
     public String tradeBroker()
     {

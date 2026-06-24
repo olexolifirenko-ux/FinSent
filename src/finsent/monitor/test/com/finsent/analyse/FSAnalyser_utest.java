@@ -207,13 +207,40 @@ public class FSAnalyser_utest
                         + "\"articles\":[{\"i\":1,\"direction\":\"bearish\",\"reasoning\":\"x\"},"
                         + "{\"i\":2,\"direction\":\"neutral\",\"reasoning\":\"y\"}]}");
 
-        String summary = analyser(client).reanalyse(DAY, KEY);
+        String summary = analyser(client).reanalyse(DAY, KEY, false);
 
         assertTrue("day lazily recovered from disk", collector_.articles().isResident(DAY));
         assertEquals("bearish / high, 2 resonant.", summary);
         ObjectNode interval = store_.get(DAY, KEY);
         assertEquals("bearish", interval.path("prediction_record").path("direction").asText());
         assertEquals(2, interval.path("resonant_article_ids").size());
+    }
+
+    @Test
+    public void recordOnlyReanalyseDoesNotFeedTheTrader() throws IOException, InterruptedException
+    {
+        // notify=false (anal window / backfill default) -> record-only: no AnalysisReady, so no trade entry.
+        seedDayWithOneArticle();
+        CountDownLatch delivered = new CountDownLatch(1);
+        collector_.subscribe(AnalysisReady.class, signal -> delivered.countDown());
+
+        analyser(resonantClient()).reanalyse(DAY, KEY, false);
+
+        assertFalse("record-only re-analysis must not publish AnalysisReady",
+                delivered.await(500, TimeUnit.MILLISECONDS));
+    }
+
+    @Test
+    public void notifyingReanalyseFeedsTheTrader() throws IOException, InterruptedException
+    {
+        // notify=true (anal window -notify) -> the trader is fed, same as the live path.
+        seedDayWithOneArticle();
+        CountDownLatch delivered = new CountDownLatch(1);
+        collector_.subscribe(AnalysisReady.class, signal -> delivered.countDown());
+
+        analyser(resonantClient()).reanalyse(DAY, KEY, true);
+
+        assertTrue("a -notify re-analysis publishes AnalysisReady", delivered.await(2, TimeUnit.SECONDS));
     }
 
     @Test
@@ -368,6 +395,24 @@ public class FSAnalyser_utest
         article.put("title", title);
         article.put("description", "");
         return article;
+    }
+
+    /** Persist one article for {@code DAY}/{@code KEY} on disk only, so a re-analysis recovers + scores it. */
+    private void seedDayWithOneArticle() throws IOException
+    {
+        PersistenceService seed = new PersistenceService(dir_);
+        seed.commit(new ArticleRegistry().store(List.of(article(1, "War breaks out"))));
+        seed.flush();
+        seed.shutdown();
+    }
+
+    /** A stub that screens the one article as resonant (score 8) then returns a bearish/high deep verdict. */
+    private static StubClaudeClient resonantClient()
+    {
+        return new StubClaudeClient().enqueue(
+                "[{\"i\":1,\"score\":8,\"reason\":\"a\"}]",
+                "{\"direction\":\"bearish\",\"impact_tier\":\"high\",\"key_events\":[\"war\"],\"reasoning\":\"r\","
+                        + "\"articles\":[{\"i\":1,\"direction\":\"bearish\",\"reasoning\":\"x\"}]}");
     }
 
     private static void deleteQuietly(Path path)

@@ -338,13 +338,6 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         runWindow(result, now, false, true);
     }
 
-    /**
-     * Manually re-analyse a stored window on demand (the {@code anal window} command); notifies
-     * (subject to the gate, with the age check bypassed). Runs on the caller's thread.
-     */
-    public String reanalyse(String day, String key) throws IOException {
-        return reanalyse(day, key, true);
-    }
 
     /**
      * Run the BL#6 feedback scan on a dedicated daemon thread, so the command interpreter is not blocked
@@ -389,8 +382,9 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
      * Re-analyse one stored window. Lazily recovers the day's data from disk if it is no longer
      * resident, optionally notifies ({@code notify}; the news-age check is bypassed since the window
      * may be old), and &mdash; unlike the live path &mdash; does not run the macro-alert check (a
-     * live-loop concern). Returns a one-line summary. Backfill passes {@code notify=false} so it
-     * records history without firing stale alerts.
+     * live-loop concern). Returns a one-line summary. Driven by {@link #backfillLoop} for both the
+     * range backfill and the single-window {@code anal window}; {@code notify} defaults off, so a manual
+     * re-run records without firing alerts unless {@code -notify}.
      */
     String reanalyse(String day, String key, boolean notify) throws IOException
     {
@@ -795,9 +789,12 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         store_.record(day, key, interval(analyzedAt, config_.claudeDeepAnalModel(), unique, screenerOut, prediction, resonant));
         logAnalysis(day, key, prediction);
         logResonant(resonant);
-        publishAnalysisReady(day, key, prediction, resonant, now);
+        // notify gates BOTH actions: deliver alerts AND feed the trader. The live path always passes
+        // notify=true; a record-only re-run (anal window / backfill, no -notify) neither alerts nor opens
+        // a position -- it just recomputes and stores.
         if (notify)
         {
+            publishAnalysisReady(day, key, prediction, resonant, now);
             maybeNotifyOnChange(day, key, prediction, asList(articlePredictions), resonant, now, skipAgeCheck);
         }
     }
@@ -806,8 +803,8 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
      * Publish the recorded news prediction as an {@link AnalysisReady} on the collector-owned bus so a
      * downstream consumer (the trading module) can act on it &mdash; the same way the analyser itself
      * subscribes to the collector's {@code CollectionResult}. Carries only the decision inputs
-     * (direction, impact tier, BTC anchor); gating is the consumer's job. Fires on every recorded
-     * deep prediction, live or re-analysis (mirroring the existing notify path).
+     * (direction, impact tier, BTC anchor); gating is the consumer's job. Fires only when {@code notify}
+     * is set: the live path always notifies, but a record-only re-run must not feed the trader.
      */
     private void publishAnalysisReady(String day, String key, ObjectNode prediction, List<ObjectNode> resonant,
                                       Instant now)

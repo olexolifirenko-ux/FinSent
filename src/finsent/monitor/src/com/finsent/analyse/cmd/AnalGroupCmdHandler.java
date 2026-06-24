@@ -21,8 +21,8 @@ import com.finsent.util.UtilityFunctions;
  * <ul>
  *   <li>{@code on} / {@code off} / {@code status} &mdash; live analysis control ({@code start} /
  *       {@code pause} are accepted as aliases);</li>
- *   <li>{@code window <YYYYMMDD_HHMM|HHMM>} &mdash; re-analyse one stored window now ({@code HHMM} = today
- *       UTC); ports {@code --window};</li>
+ *   <li>{@code window <YYYYMMDD_HHMM|HHMM> [-notify]} &mdash; re-analyse one stored window now ({@code HHMM}
+ *       = today UTC); record-only unless {@code -notify}; ports {@code --window};</li>
  *   <li>{@code windows <N>} or {@code windows -start .. -end ..} &mdash; scan/backfill a range of windows
  *       ({@code <N>} = the last N days through now); dry-run by default;</li>
  *   <li>{@code econ [YYYYMMDD] <event name> [-quiet]} &mdash; manually run the econ analysis for a resolved release;</li>
@@ -35,7 +35,7 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
     public static final String COMMAND = "anal";
     public static final String[] COMMAND_ALIASES = null;
     public static final String DESCRIPTION = "Analyser control,\nusage: " + COMMAND
-            + " <on|off|status|window <YYYYMMDD_HHMM|HHMM>|windows <N>|windows -start .. -end ..|show <YYYYMMDD_HHMM|HHMM>"
+            + " <on|off|status|window <YYYYMMDD_HHMM|HHMM> [-notify]|windows <N>|windows -start .. -end ..|show <YYYYMMDD_HHMM|HHMM>"
             + "|econ [YYYYMMDD] <event name> [-quiet]|feedback [--days N]>";
 
     public AnalGroupCmdHandler(FSAnalyser analyser)
@@ -44,8 +44,8 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
         registerCmdHandler("off", new OffCmdHandler(analyser), "Turn analysis off (pause).", new String[] {"pause"});
         registerCmdHandler("status", new StatusCmdHandler(analyser), "Show analyser status.", null);
         registerCmdHandler("window", new WindowCmdHandler(analyser),
-                "Re-analyse a stored window now: window <YYYYMMDD_HHMM|HHMM> (e.g. 20260517_2210, or 0530 "
-                        + "for today 05:30 UTC).", null);
+                "Re-analyse a stored window now: window <YYYYMMDD_HHMM|HHMM> [-notify] (e.g. 20260517_2210, or "
+                        + "0530 for today 05:30 UTC). Record-only unless -notify.", null);
         registerCmdHandler("windows", new WindowsCmdHandler(analyser), WindowsCmdHandler.USAGE, null);
         registerCmdHandler("econ", new EconCmdHandler(analyser),
                 "Manually run the econ analysis for a resolved scheduled release: econ [YYYYMMDD] <event name> "
@@ -76,6 +76,34 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
             result = new String[] { Times.todayUtc(), token.substring(0, 2) + ":" + token.substring(2, 4) };
         }
         return result;
+    }
+
+    /** Whether {@code flag} (e.g. {@code -notify}) is present anywhere in {@code args}. */
+    static boolean hasFlag(String[] args, String flag)
+    {
+        boolean present = false;
+        for (String arg : args)
+        {
+            if (arg.equals(flag))
+            {
+                present = true;
+            }
+        }
+        return present;
+    }
+
+    /** The first token that is not a {@code -flag} (the positional argument), or null when there is none. */
+    static String firstNonFlag(String[] args)
+    {
+        String token = null;
+        for (String arg : args)
+        {
+            if (token == null && !arg.startsWith("-"))
+            {
+                token = arg;
+            }
+        }
+        return token;
     }
 
     private static final class OnCmdHandler implements ICmdHandler
@@ -132,11 +160,17 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
         }
     }
 
-    /** {@code anal window <YYYYMMDD_HHMM>}: re-analyse one stored window synchronously, on demand. */
+    /**
+     * {@code anal window <YYYYMMDD_HHMM|HHMM> [-notify]}: re-analyse one stored window on demand. Runs on
+     * the shared backfill daemon thread (the same path as {@code anal windows}), so the command interpreter
+     * is not blocked while the deep Claude call runs; the verdict and per-window timing go to the log.
+     * Record-only by default (a manual re-run should not fire Telegram/email); {@code -notify} opts into
+     * delivery (subject to the gate, with the age check bypassed since the window may be old).
+     */
     private static final class WindowCmdHandler implements ICmdHandler
     {
-        private static final String USAGE =
-                "Usage: anal window <YYYYMMDD_HHMM|HHMM> (e.g. 20260517_2210, or 0530 for today 05:30 UTC)";
+        private static final String USAGE = "Usage: anal window <YYYYMMDD_HHMM|HHMM> [-notify] "
+                + "(e.g. 20260517_2210, or 0530 for today 05:30 UTC; record-only unless -notify)";
         private final FSAnalyser analyser_;
 
         private WindowCmdHandler(FSAnalyser analyser)
@@ -148,7 +182,8 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
         public int commandEntered(Writer writer, String command, String[] args)
         {
             int code = 0;
-            String[] dayKey = parseDayKey(args.length > 0 ? args[0] : null);
+            boolean notify = hasFlag(args, "-notify");
+            String[] dayKey = parseDayKey(firstNonFlag(args));
             if (dayKey == null)
             {
                 UtilityFunctions.writeln(writer, USAGE);
@@ -157,17 +192,9 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
             else
             {
                 UtilityFunctions.writeln(writer, "Re-analysing " + dayKey[0] + " " + dayKey[1]
-                        + " (runs Claude synchronously)...");
-                try
-                {
-                    UtilityFunctions.writeln(writer, "Done: " + analyser_.reanalyse(dayKey[0], dayKey[1]));
-                }
-                catch (Exception reanalyseFailed)
-                {
-                    // Abort just this command; the interpreter thread stays alive for the next command.
-                    UtilityFunctions.writeln(writer, "Re-analysis failed (aborted): " + reanalyseFailed);
-                    code = 1;
-                }
+                        + " in the background (" + (notify ? "notifying" : "record-only")
+                        + ")");
+                analyser_.runBackfill(List.of(new Intervals.DayKey(dayKey[0], dayKey[1])), notify);
             }
             return code;
         }
@@ -359,7 +386,7 @@ public final class AnalGroupCmdHandler extends CmdGroupHandler
      * {@code anal econ [YYYYMMDD] <event name> [-quiet]}: manually run the econ analysis for a resolved
      * scheduled release. An optional leading {@code YYYYMMDD} pins the release day (defaults to today); the
      * event name may contain spaces (the remaining tokens joined); {@code -quiet} records without notifying
-     * (notify is on by default, like {@code anal window}).
+     * (econ notifies by default -- unlike {@code anal window}, which is record-only unless {@code -notify}).
      */
     private static final class EconCmdHandler implements ICmdHandler
     {

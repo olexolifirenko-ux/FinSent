@@ -1,7 +1,10 @@
 package com.finsent.analyse.cmd;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -33,5 +36,22 @@ public class AnalGroupCmdHandler_utest
         assertNull(AnalGroupCmdHandler.parseDayKey("530"));        // not 4 digits
         assertNull(AnalGroupCmdHandler.parseDayKey("0530pm"));     // trailing junk
         assertNull(AnalGroupCmdHandler.parseDayKey("20260517"));   // day only, no time
+    }
+
+    @Test
+    public void hasFlagDetectsAnExactToken()
+    {
+        assertTrue(AnalGroupCmdHandler.hasFlag(new String[] {"0530", "-notify"}, "-notify"));
+        assertFalse(AnalGroupCmdHandler.hasFlag(new String[] {"0530"}, "-notify"));
+        assertFalse(AnalGroupCmdHandler.hasFlag(new String[] {}, "-notify"));
+    }
+
+    @Test
+    public void firstNonFlagFindsThePositionalRegardlessOfFlagOrder()
+    {
+        assertEquals("0530", AnalGroupCmdHandler.firstNonFlag(new String[] {"0530", "-notify"}));
+        assertEquals("0530", AnalGroupCmdHandler.firstNonFlag(new String[] {"-notify", "0530"}));
+        assertNull(AnalGroupCmdHandler.firstNonFlag(new String[] {"-notify"}));
+        assertNull(AnalGroupCmdHandler.firstNonFlag(new String[] {}));
     }
 }

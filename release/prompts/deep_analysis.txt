@@ -40,6 +40,14 @@ NOT already know or expect? The SURPRISE is the signal, not the event.
 STEP 3 -- CHANNEL to crypto? Is there a concrete transmission to BTC -- monetary /
 rates / liquidity, the USD, regulation, crypto structure (exchanges, ETFs, large
 flows), or a genuine broad risk shock? No channel -> noise.
+- Channel STRENGTH gates the tier, not just its presence: HIGH needs a STRONG, direct
+  channel (a major-index crash / circuit-breaker, a monetary / rates shock, a crypto-
+  structural event, or a genuine broad risk-off cascade). A real but WEAK or INDIRECT
+  channel -- a single military strike or localized geopolitical incident, a slow macro
+  item -- is at most LOW even when the fact is fresh and unpriced: unpriced removes the
+  priced-in discount, it does NOT by itself make a weak channel strong. A lone strike
+  reaches HIGH only as a STRATEGIC shock -- a war declaration, an attack on a major
+  economy, an oil-supply hit, or a broad risk cascade -- not a single localized strike.
 
 Only an item that is a FACT and is NEW and has a CHANNEL is a causative event worth a
 directional, material call. Everything else is noise (or at most low).

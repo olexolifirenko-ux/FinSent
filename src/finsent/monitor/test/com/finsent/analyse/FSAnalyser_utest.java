@@ -341,7 +341,9 @@ public class FSAnalyser_utest
     {
         return new Config(XMLData.valueOf("<FSSatellite>"
                 + "<FSCollector analysisNewsWindow=\"10m\" ohlcImpactWindow=\"30m\" optionsEnabled=\"false\"/>"
-                + "<FSAnalyser screenerThreshold=\"6\" notifyMinImpactTier=\"high\" newsAgeToNotify=\"1h\"/>"
+                + "<FSAnalyser screenerThreshold=\"6\">"
+                + "<Notifications notifyMinImpactTier=\"high\" newsAgeToNotify=\"1h\"/>"
+                + "</FSAnalyser>"
                 + "</FSSatellite>"));
     }
 

@@ -120,7 +120,8 @@
             </XSituationalAccounts>
         </FSCollector>
 
-        <!-- What the analyser owns: interpretation & notification. -->
+        <!-- What the analyser owns: interpretation (Claude models/screening) plus, in the <Notifications>
+             child, the notify gate + delivery channels. -->
         <FSAnalyser
             anthropicApiKey="ENV:ANTHROPIC_API_KEY"
             claudeDeepAnalModel="claude-sonnet-4-6"
@@ -130,17 +131,22 @@
             screenerThreshold="2"
             deepDedupLookback="24h"
             promptsDir="prompts"
-            notifyMinImpactTier="high"
-            newsAgeToNotify="1h"
-            telegramToken="ENV:TELEGRAM_TOKEN"
-            telegramChatId="645133217"
-            telegramApiBaseUrl="https://api.telegram.org"
-            emailTo="olex.olifirenko@gmail.com"
-            smtpHost="smtp.gmail.com"
-            smtpPort="587"
-            smtpUser="olex.olifirenko@gmail.com"
-            smtpPassword="ENV:SMTP_PASSWORD"
-        />
+        >
+            <!-- Delivery channels (Telegram + email/SMTP) and the notify gate (notifyMinImpactTier =
+                 minimum materiality to alert; newsAgeToNotify = a resonant article must be this fresh). -->
+            <Notifications
+                notifyMinImpactTier="high"
+                newsAgeToNotify="1h"
+                telegramToken="ENV:TELEGRAM_TOKEN"
+                telegramChatId="645133217"
+                telegramApiBaseUrl="https://api.telegram.org"
+                emailTo="olex.olifirenko@gmail.com"
+                smtpHost="smtp.gmail.com"
+                smtpPort="587"
+                smtpUser="olex.olifirenko@gmail.com"
+                smtpPassword="ENV:SMTP_PASSWORD"
+            />
+        </FSAnalyser>
 
         <!-- What the trader owns: a paper long/short BTC strategy off the analyser's signals.
              Opens long on bullish / short on bearish at entryImpactTier or higher, one net position

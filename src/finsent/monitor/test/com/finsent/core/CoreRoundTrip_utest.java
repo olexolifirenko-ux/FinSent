@@ -275,7 +275,9 @@ public class CoreRoundTrip_utest
                 + "<Sources><Source name=\"newsapi\" apiKey=\"ENV:NOPE\"/><Source name=\"rss\"/></Sources>"
                 + "<RssFeeds><Feed name=\"CoinDesk\" url=\"http://cd\"/></RssFeeds>"
                 + "</FSCollector>"
-                + "<FSAnalyser screenerThreshold=\"6\" telegramChatId=\"645133217\"/>"
+                + "<FSAnalyser screenerThreshold=\"6\">"
+                + "<Notifications telegramChatId=\"645133217\"/>"
+                + "</FSAnalyser>"
                 + "</FSSatellite>";
         Config config = new Config(XMLData.valueOf(xml));
 

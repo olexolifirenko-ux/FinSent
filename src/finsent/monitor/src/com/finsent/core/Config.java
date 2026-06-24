@@ -28,16 +28,20 @@ public final class Config
 {
     private final XMLData collectorNode_;
     private final XMLData analyserNode_;
+    private final XMLData notifyNode_;
     private final XMLData traderNode_;
 
     /**
      * Wrap the process bootstrap node (the {@code <FSSatellite>} section) that carries the
-     * {@code <FSCollector>} and {@code <FSAnalyser>} configuration sections as direct children.
+     * {@code <FSCollector>} and {@code <FSAnalyser>} configuration sections as direct children. The
+     * notification settings (delivery channels + the notify gate) live in a {@code <Notifications>}
+     * child of {@code <FSAnalyser>}, read here as a sub-section.
      */
     public Config(XMLData processNode)
     {
         collectorNode_ = subSection(processNode, "FSCollector");
         analyserNode_ = subSection(processNode, "FSAnalyser");
+        notifyNode_ = subSection(analyserNode_, "Notifications");
         traderNode_ = subSection(processNode, "FSTrader");
     }
 
@@ -305,16 +309,16 @@ public final class Config
         return attr(analyserNode_, "promptsDir", "prompts");
     }
 
-    // == Analyser-owned: notification gate & delivery ==========================
+    // == Analyser-owned: notification gate & delivery (the <Notifications> child of <FSAnalyser>) ====
 
     public String notifyMinImpactTier()
     {
-        return attr(analyserNode_, "notifyMinImpactTier", "high");
+        return attr(notifyNode_, "notifyMinImpactTier", "high");
     }
 
     public String newsAgeToNotify()
     {
-        return attr(analyserNode_, "newsAgeToNotify", "1h");
+        return attr(notifyNode_, "newsAgeToNotify", "1h");
     }
 
     public int newsAgeToNotifyMinutes()
@@ -324,43 +328,43 @@ public final class Config
 
     public String telegramToken()
     {
-        return Secrets.resolve(attr(analyserNode_, "telegramToken", ""));
+        return Secrets.resolve(attr(notifyNode_, "telegramToken", ""));
     }
 
     public String telegramChatId()
     {
-        return attr(analyserNode_, "telegramChatId", "");
+        return attr(notifyNode_, "telegramChatId", "");
     }
 
     /** Base URL of the Telegram Bot API the notifier POSTs {@code sendMessage} to. */
     public String telegramApiBaseUrl()
     {
-        return attr(analyserNode_, "telegramApiBaseUrl", "https://api.telegram.org");
+        return attr(notifyNode_, "telegramApiBaseUrl", "https://api.telegram.org");
     }
 
     public String emailTo()
     {
-        return attr(analyserNode_, "emailTo", "");
+        return attr(notifyNode_, "emailTo", "");
     }
 
     public String smtpHost()
     {
-        return attr(analyserNode_, "smtpHost", "");
+        return attr(notifyNode_, "smtpHost", "");
     }
 
     public int smtpPort()
     {
-        return intAttr(analyserNode_, "smtpPort", 587);
+        return intAttr(notifyNode_, "smtpPort", 587);
     }
 
     public String smtpUser()
     {
-        return attr(analyserNode_, "smtpUser", "");
+        return attr(notifyNode_, "smtpUser", "");
     }
 
     public String smtpPassword()
     {
-        return Secrets.resolve(attr(analyserNode_, "smtpPassword", ""));
+        return Secrets.resolve(attr(notifyNode_, "smtpPassword", ""));
     }
 
     // == Trader-owned: paper trading strategy (FSTrader) =======================

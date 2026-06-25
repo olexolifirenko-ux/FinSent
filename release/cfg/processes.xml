@@ -151,7 +151,7 @@
         <!-- What the trader owns: long/short BTC execution off TWO signal lanes, each with its own entry
              rules + size + initial stop in a sub-element: <NewsLane> off the analyser's AnalysisReady signals,
              <FastMoveLane> off the mechanical FastMove fires. The SHARED execution + exit-management settings
-             stay as <FSTrader> attributes -- broker, price poll, the trailing-stop trail, the profit-grace
+             stay as <FSTrader> attributes - broker, price poll, the trailing-stop trail, the profit-grace
              time stop, the max-hold backstop, the price-divergence entry rail, and the WhiteBIT keys. One net
              position at a time across BOTH lanes. broker=paper simulates fills (no real orders); broker=whitebit
              places live WhiteBIT futures orders. Starts paused unless -DrunTrader=true, toggled with `trade`. -->
@@ -177,7 +177,7 @@
                 leverage="5.0"
                 stopLossInPct="0.3"
             />
-            <!-- FastMove (momentum) lane: trade=false is ALERT-ONLY (publish/log, never open) -- the safe
+            <!-- FastMove (momentum) lane: trade=false is ALERT-ONLY (publish/log, never open); the safe
                  default while tuning. minConviction=full opens only on full-conviction (OI-building) fires;
                  reduced fires still publish/log as telemetry but do not trade (the backtest showed reduced
                  net-loses). reversalExit=true closes the position on a confirmed opposite fire. Own (smaller)
@@ -201,12 +201,13 @@
              graded by a funding/OI structural gate (OI building = full conviction = real trend; OI unwinding =
              skip = likely transient wick). News-independent; catches flow-led moves the news lane lags. This
              element holds ONLY the DETECTION settings; the momentum lane's TRADING settings live in
-             <FSTrader><FastMoveLane>. enabled=false keeps the detector off (the safe default). Each <Window>
+             <FSTrader><FastMoveLane>. The poller thread always runs; it starts paused unless -DrunFastMove
+             (default off, the safe default, like the analyser/trader), and is toggled live via
+             `fastmove on|off|status`. Each <Window>
              carries its own span + the endpoint move (%) that fires it + the regression r2 floor that rejects
              choppy drift; a short span catches flash crashes, a long one catches slow grinds; the once-per-move
              latch means extra windows make detection earlier, not more frequent. -->
         <FSFastMove
-            enabled="false"
             pollInSec="15"
             cooldownInMin="30"
             oiBuildingPct="0.5"

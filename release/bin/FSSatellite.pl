@@ -65,6 +65,11 @@ start(
         # signals at launch. Live vs paper is the separate <FSTrader broker> config -- this flag only
         # controls running/paused. Toggle live with `trade on|off` (no restart).
         "-DrunTrader" => "false",
+        # Whether the FastMove momentum poller starts detecting, read by FSApp via
+        # Boolean.getBoolean("runFastMove"). "false" (or absent) starts it paused; "true" starts it
+        # sampling/firing at launch. Toggle live with `fastmove on|off` (no restart). Whether a fire may
+        # actually trade is the separate <FSTrader><FastMoveLane trade> config.
+        "-DrunFastMove" => "false",
     },
     _CLASS()     => "com.finsent.FSApp",
     _ARGUMENTS() => $arguments,

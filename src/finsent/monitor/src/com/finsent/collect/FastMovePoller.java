@@ -2,6 +2,7 @@ package com.finsent.collect;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -31,6 +32,10 @@ import com.finsent.util.IUninitializer;
  * tape goes flat, re-armed after the cooldown). A separate soft {@link FundingCompression} early-warning
  * is logged, not traded. Models the {@link UrgentPoller} thread pattern; decoupled from the boundary
  * collect loop and the news pipeline -- it joins the rest only at the trader's single-position gate.
+ *
+ * <p>The thread always runs and is gated by a {@code paused_} flag (mirroring the analyser/trader): it
+ * starts paused unless {@code -DrunFastMove}, and is toggled live via the {@code fastmove on|off|status}
+ * command.
  */
 public final class FastMovePoller implements IUninitializer
 {
@@ -52,6 +57,9 @@ public final class FastMovePoller implements IUninitializer
     private final PriceTapeBuffer buffer_;
     private final Object lock_ = new Object();
     private final Thread thread_;
+    // Runtime on/off (the `fastmove on|off` command). The thread always runs; when paused it idles --
+    // no price sampling and no fires -- so detection can be toggled live without a restart.
+    private final AtomicBoolean paused_;
     private volatile boolean running_ = true;
 
     // Poller-thread-only state (no synchronization needed -- a single producer thread).
@@ -59,10 +67,11 @@ public final class FastMovePoller implements IUninitializer
     private long lastFireMillis_;
     private boolean compressionFlagged_;
 
-    public FastMovePoller(FSCollector collector, IEventPublisher publisher)
+    public FastMovePoller(FSCollector collector, IEventPublisher publisher, boolean startPaused)
     {
         collector_ = collector;
         publisher_ = publisher;
+        paused_ = new AtomicBoolean(startPaused);
         Config config = collector.config();
         pollMillis_ = config.fastMovePollInSec() * 1000L;
         windowMinutes_ = config.windowMinutes();
@@ -88,12 +97,37 @@ public final class FastMovePoller implements IUninitializer
         return longest;
     }
 
-    /** Start the polling thread. */
+    /** Start the polling thread; it idles while paused, so it is always started and toggled via {@code fastmove}. */
     public void start()
     {
-        GlobalSystem.info().writes(NAME, "FastMove poller started (" + windows_.size() + " window(s), poll "
-                + (pollMillis_ / 1000L) + "s); warming up to " + longestSpanMinutes_ + "m of tape.");
+        GlobalSystem.info().writes(NAME, "FastMove poller started -- " + status() + " (" + windows_.size()
+                + " window(s), poll " + (pollMillis_ / 1000L) + "s, warmup " + longestSpanMinutes_ + "m)"
+                + (paused_.get() ? "; `fastmove on` to enable" : "") + ".");
         thread_.start();
+    }
+
+    /** Resume momentum detection (the {@code fastmove on} command). */
+    public void resume()
+    {
+        if (paused_.compareAndSet(true, false))
+        {
+            GlobalSystem.info().writes(NAME, "FastMove started.");
+        }
+    }
+
+    /** Pause momentum detection (the {@code fastmove off} command); the thread idles -- no sampling/firing. */
+    public void pause()
+    {
+        if (paused_.compareAndSet(false, true))
+        {
+            GlobalSystem.info().writes(NAME, "FastMove paused.");
+        }
+    }
+
+    /** One-word state for the {@code fastmove status} command. */
+    public String status()
+    {
+        return paused_.get() ? "paused" : "running";
     }
 
     @Override
@@ -118,7 +152,10 @@ public final class FastMovePoller implements IUninitializer
     {
         while (running_)
         {
-            pollOnce();
+            if (!paused_.get())
+            {
+                pollOnce();
+            }
             awaitNextPoll();
         }
     }

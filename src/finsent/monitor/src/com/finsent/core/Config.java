@@ -481,12 +481,6 @@ public final class Config
 
     // == FastMove-owned: mechanical price-tape trigger (FSFastMove) =============
 
-    /** Master switch for the FastMove poller; when false the detector thread is not started. */
-    public boolean fastMoveEnabled()
-    {
-        return boolAttr(fastMoveNode_, "enabled", false);
-    }
-
     /**
      * Whether a FastMove fire may open a position. When false the detector still publishes/logs its
      * signals (alert-only telemetry) but the trader never opens on them -- the safe default while the

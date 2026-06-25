@@ -15,6 +15,7 @@ import com.finsent.collect.FSCollector;
 import com.finsent.collect.FastMovePoller;
 import com.finsent.collect.UrgentPoller;
 import com.finsent.collect.cmd.CollectGroupCmdHandler;
+import com.finsent.collect.cmd.FastMoveCmdHandler;
 import com.finsent.core.Config;
 import com.finsent.core.event.EventBus;
 import com.finsent.directory.DirectorySystem;
@@ -110,10 +111,15 @@ public class FSApp extends AbstractAppInitializer
         collectorRunner_ = new CollectorRunner(collector_);
         urgentPoller_ = new UrgentPoller(collector_);
         econScheduler_ = new EconScheduler(collector_, dataDir);
-        fastMovePoller_ = new FastMovePoller(collector_, eventBus_);
+        // The poller thread always runs; it starts paused unless -DrunFastMove (like the analyser/trader),
+        // and is toggled live via the `fastmove` command.
+        fastMovePoller_ = new FastMovePoller(collector_, eventBus_, !Boolean.getBoolean("runFastMove"));
         GlobalSystem.getCmdInterpreter().registerCmdHandler(CollectGroupCmdHandler.COMMAND,
                 new CollectGroupCmdHandler(econScheduler_, collector_), CollectGroupCmdHandler.DESCRIPTION,
                 CollectGroupCmdHandler.COMMAND_ALIASES);
+        GlobalSystem.getCmdInterpreter().registerCmdHandler(FastMoveCmdHandler.COMMAND,
+                new FastMoveCmdHandler(fastMovePoller_), FastMoveCmdHandler.DESCRIPTION,
+                FastMoveCmdHandler.COMMAND_ALIASES);
 
         // Registration order matters: uninitializers run last-registered-first, so the schedulers
         // (registered last) stop first -- the econ scheduler before the others, so no econ resolution
@@ -140,10 +146,8 @@ public class FSApp extends AbstractAppInitializer
             econScheduler_.start();
         }
         trader_.start();
-        // Off by default; starts only when <FSFastMove enabled="true">. Alert-only unless trade="true".
-        if (config.fastMoveEnabled())
-        {
-            fastMovePoller_.start();
-        }
+        // The poller thread always starts (so `fastmove on/off` works at runtime); it idles while paused.
+        // Alert-only unless <FSTrader><FastMoveLane trade="true">.
+        fastMovePoller_.start();
     }
 }

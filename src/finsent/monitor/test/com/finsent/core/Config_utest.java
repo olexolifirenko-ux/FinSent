@@ -30,7 +30,7 @@ public class Config_utest
             + "    <FastMoveLane trade=\"true\" reversalExit=\"false\" minConviction=\"reduced\""
             + "                  notionalInUsd=\"111.0\" leverage=\"6.0\" stopLossInPct=\"1.3\"/>"
             + "  </FSTrader>"
-            + "  <FSFastMove enabled=\"true\" pollInSec=\"9\" cooldownInMin=\"12\" oiBuildingPct=\"0.7\""
+            + "  <FSFastMove pollInSec=\"9\" cooldownInMin=\"12\" oiBuildingPct=\"0.7\""
             + "              oiLookbackInMin=\"33\" fundingCompressionDropPct=\"55\" fundingCompressionWindow=\"45m\">"
             + "    <Windows><Window span=\"20m\" thresholdPct=\"1.1\" r2Floor=\"0.6\"/></Windows>"
             + "  </FSFastMove>"
@@ -71,7 +71,6 @@ public class Config_utest
     @Test
     public void fastMoveDetectionKnobsComeFromTheFastMoveElement()
     {
-        assertTrue(CONFIG.fastMoveEnabled());
         assertEquals(9, CONFIG.fastMovePollInSec());
         assertEquals(12, CONFIG.fastMoveCooldownInMin());
         assertEquals(0.7, CONFIG.fastMoveOiBuildingPct(), EPS);

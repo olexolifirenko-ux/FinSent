@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,6 +40,7 @@ public final class ArticleRegistry implements IRegistry
     private static final String F_HASH = "hash";
     private static final String F_COLLECTED_AT = "collected_at";
     private static final String F_PUBLISHED_AT = "publishedAt";
+    private static final String F_SOURCE_OBJECT = "source"; // the {id?, name} provenance object
     private static final String F_URL = "url";
     private static final String F_TITLE = "title";
     private static final String F_RSS_FEED = "_rss_feed";
@@ -163,15 +165,65 @@ public final class ArticleRegistry implements IRegistry
         String hash = articleHash(article);
         if (!hashes_.contains(hash))
         {
-            article.put(F_ID, nextId_++);
-            article.put(F_HASH, hash);
-            article.put(F_COLLECTED_AT, collectedAt);
+            int id = nextId_++;
+            // Stamp the id on the input node too: the collector tells genuinely-new (non-duplicate)
+            // articles apart by whether store() assigned them an id (FSCollector.newlyStored).
+            article.put(F_ID, id);
+            ObjectNode stored = canonicalize(article, id, hash, collectedAt);
             hashes_.add(hash);
-            String day = Times.dayOf(article.path(F_PUBLISHED_AT).asText(""));
-            byDay_.computeIfAbsent(day, d -> new ArrayList<>()).add(article);
-            updateWatermark(article);
+            String day = Times.dayOf(stored.path(F_PUBLISHED_AT).asText(""));
+            byDay_.computeIfAbsent(day, d -> new ArrayList<>()).add(stored);
+            updateWatermark(stored);
             affectedDays.add(day);
         }
+    }
+
+    /**
+     * Build the canonical persisted article: the identity/timing fields ({@code id}, {@code publishedAt},
+     * {@code collected_at}) lead so a day-file scans easily, then the source-built fields in their original
+     * order, then the dedup {@code hash}. Drops the always-null {@code source.id} (every source nulls it);
+     * everything else &mdash; including {@code author}, which the X squawk feed populates &mdash; is kept.
+     */
+    private static ObjectNode canonicalize(ObjectNode article, int id, String hash, String collectedAt)
+    {
+        ObjectNode stored = Json.newObject();
+        stored.put(F_ID, id);
+        stored.put(F_PUBLISHED_AT, article.path(F_PUBLISHED_AT).asText(""));
+        stored.put(F_COLLECTED_AT, collectedAt);
+        Iterator<Map.Entry<String, JsonNode>> fields = article.fields();
+        while (fields.hasNext())
+        {
+            Map.Entry<String, JsonNode> field = fields.next();
+            String name = field.getKey();
+            if (!isLeadOrHashField(name)) // these are placed explicitly (front/back), not copied in place
+            {
+                stored.set(name, name.equals(F_SOURCE_OBJECT) ? sourceWithoutId(field.getValue()) : field.getValue());
+            }
+        }
+        stored.put(F_HASH, hash);
+        return stored;
+    }
+
+    /** The fields {@link #canonicalize} positions itself (lead trio + trailing hash), excluded from the copy loop. */
+    private static boolean isLeadOrHashField(String name)
+    {
+        return name.equals(F_ID) || name.equals(F_PUBLISHED_AT) || name.equals(F_COLLECTED_AT) || name.equals(F_HASH);
+    }
+
+    /** Copy the {@code source} provenance object without its always-null {@code id} field. */
+    private static ObjectNode sourceWithoutId(JsonNode source)
+    {
+        ObjectNode stored = Json.newObject();
+        Iterator<Map.Entry<String, JsonNode>> fields = source.fields();
+        while (fields.hasNext())
+        {
+            Map.Entry<String, JsonNode> field = fields.next();
+            if (!field.getKey().equals(F_ID))
+            {
+                stored.set(field.getKey(), field.getValue());
+            }
+        }
+        return stored;
     }
 
     /** A copy of the per-source publication-time watermarks (source key &rarr; max publishedAt). */

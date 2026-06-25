@@ -112,6 +112,42 @@ public class CoreRoundTrip_utest
     }
 
     @Test
+    public void persistedArticleLeadsWithIdAndDropsSourceId() throws Exception
+    {
+        PersistenceService persistence = new PersistenceService(dir_);
+        try
+        {
+            ObjectNode source = Json.newObject();
+            source.putNull("id");          // every source nulls this -> dropped on store
+            source.put("name", "BoE");
+            ObjectNode raw = Json.newObject();
+            raw.set("source", source);
+            raw.put("author", "@DeItaone"); // populated for X squawk -> must be kept
+            raw.put("title", "Rate decision");
+            raw.put("url", "http://x/9");
+            raw.put("publishedAt", "2026-05-31T12:31:00Z");
+            raw.put("_source", "x");
+
+            persistence.commit(new ArticleRegistry().store(List.of(raw)));
+            persistence.flush();
+            String line = Files.readAllLines(dir_.resolve(DAY).resolve("articles_" + DAY + ".jsonl")).get(0);
+            ObjectNode stored = (ObjectNode) Json.parse(line);
+
+            assertFalse("always-null source.id dropped", stored.path("source").has("id"));
+            assertEquals("source.name kept", "BoE", stored.path("source").path("name").asText());
+            assertEquals("author kept (X provenance)", "@DeItaone", stored.path("author").asText());
+            // identity/timing lead the persisted object for readability when scanning the day-file
+            assertTrue("id before the source/content fields", line.indexOf("\"id\"") < line.indexOf("\"source\""));
+            assertTrue("publishedAt before content", line.indexOf("\"publishedAt\"") < line.indexOf("\"title\""));
+            assertTrue("collected_at before content", line.indexOf("\"collected_at\"") < line.indexOf("\"title\""));
+        }
+        finally
+        {
+            persistence.shutdown();
+        }
+    }
+
+    @Test
     public void ensureDayResidentLoadsForReadWithoutRegressingIds() throws Exception
     {
         PersistenceService persistence = new PersistenceService(dir_);

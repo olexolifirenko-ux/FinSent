@@ -1,0 +1,269 @@
+package com.finsent.collect;
+
+import java.time.Instant;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import com.finsent.analyse.FastMoveReady;
+import com.finsent.analyse.signal.FastMoveSignal;
+import com.finsent.analyse.signal.FundingCompression;
+import com.finsent.analyse.signal.FundingSignals;
+import com.finsent.analyse.signal.PreTrend;
+import com.finsent.core.Config;
+import com.finsent.core.FastMoveWindow;
+import com.finsent.core.Num;
+import com.finsent.core.Times;
+import com.finsent.util.GlobalSystem;
+import com.finsent.util.IUninitializer;
+
+/**
+ * The FastMove detector: a self-clocked daemon thread that samples the live BTC price into a rolling
+ * {@link PriceTapeBuffer} every {@code pollInSec} and fires a mechanical, news-independent momentum
+ * signal when the tape moves far and cleanly enough on any configured {@link FastMoveWindow} (see
+ * {@link FastMoveSignal}). Each fire is graded by a funding/OI structural gate -- OI <b>building</b> into
+ * the move = {@code full} conviction (fresh positioning, a real trend), OI <b>unwinding</b> = {@code skip}
+ * (positions closing, a likely transient wick), otherwise {@code reduced} -- and published as a
+ * {@link FastMoveReady} the trader consumes. A per-direction latch fires once per move (cleared when the
+ * tape goes flat, re-armed after the cooldown). A separate soft {@link FundingCompression} early-warning
+ * is logged, not traded. Models the {@link UrgentPoller} thread pattern; decoupled from the boundary
+ * collect loop and the news pipeline -- it joins the rest only at the trader's single-position gate.
+ */
+public final class FastMovePoller implements IUninitializer
+{
+    private static final String NAME = "FastMove";
+    private static final long SHUTDOWN_WAIT_MS = 10_000;
+    private static final int RETENTION_MARGIN_MIN = 5;
+
+    private final FSCollector collector_;
+    private final long pollMillis_;
+    private final int windowMinutes_;
+    private final List<FastMoveWindow> windows_;
+    private final int longestSpanMinutes_;
+    private final long cooldownMillis_;
+    private final double oiBuildingPct_;
+    private final int oiLookbackMinutes_;
+    private final double compressionDropPct_;
+    private final int compressionWindowMinutes_;
+    private final PriceTapeBuffer buffer_;
+    private final Object lock_ = new Object();
+    private final Thread thread_;
+    private volatile boolean running_ = true;
+
+    // Poller-thread-only state (no synchronization needed -- a single producer thread).
+    private String latchedDirection_;
+    private long lastFireMillis_;
+    private boolean compressionFlagged_;
+
+    public FastMovePoller(FSCollector collector)
+    {
+        collector_ = collector;
+        Config config = collector.config();
+        pollMillis_ = config.fastMovePollInSec() * 1000L;
+        windowMinutes_ = config.windowMinutes();
+        windows_ = config.fastMoveWindows();
+        longestSpanMinutes_ = longestSpan(windows_);
+        cooldownMillis_ = config.fastMoveCooldownInMin() * 60_000L;
+        oiBuildingPct_ = config.fastMoveOiBuildingPct();
+        oiLookbackMinutes_ = config.fastMoveOiLookbackInMin();
+        compressionDropPct_ = config.fastMoveFundingCompressionDropPct();
+        compressionWindowMinutes_ = config.fastMoveFundingCompressionWindowMinutes();
+        buffer_ = new PriceTapeBuffer(longestSpanMinutes_ + RETENTION_MARGIN_MIN);
+        thread_ = new Thread(this::loop, "FS-FastMove");
+        thread_.setDaemon(true);
+    }
+
+    private static int longestSpan(List<FastMoveWindow> windows)
+    {
+        int longest = 1;
+        for (FastMoveWindow window : windows)
+        {
+            longest = Math.max(longest, window.spanMinutes());
+        }
+        return longest;
+    }
+
+    /** Start the polling thread. */
+    public void start()
+    {
+        GlobalSystem.info().writes(NAME, "FastMove poller started (" + windows_.size() + " window(s), poll "
+                + (pollMillis_ / 1000L) + "s); warming up to " + longestSpanMinutes_ + "m of tape.");
+        thread_.start();
+    }
+
+    @Override
+    public void uninitialize()
+    {
+        running_ = false;
+        synchronized (lock_)
+        {
+            lock_.notifyAll();
+        }
+        try
+        {
+            thread_.join(SHUTDOWN_WAIT_MS);
+        }
+        catch (InterruptedException interrupted)
+        {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private void loop()
+    {
+        while (running_)
+        {
+            pollOnce();
+            awaitNextPoll();
+        }
+    }
+
+    private void pollOnce()
+    {
+        try
+        {
+            evaluate(Instant.now());
+        }
+        catch (Exception pollFailed)
+        {
+            // Abort this poll only; the polling thread stays alive for the next poll.
+            GlobalSystem.error().writes(NAME, "FastMove poll failed -- aborted, poller continues", pollFailed);
+        }
+    }
+
+    private void evaluate(Instant now)
+    {
+        Double price = collector_.currentPrice();
+        if (price == null)
+        {
+            GlobalSystem.debug().writes(NAME, "No live price -- skipping this poll.");
+        }
+        else
+        {
+            buffer_.add(now, price);
+            ArrayNode bars = buffer_.barsLastMinutes(longestSpanMinutes_);
+            boolean flat = "flat".equals(PreTrend.of(bars).path("label").asText(""));
+            act(now, price, FastMoveSignal.evaluate(bars, windows_), flat);
+            checkCompression(now, flat);
+        }
+    }
+
+    private void act(Instant now, double price, FastMoveSignal.Fire fire, boolean flat)
+    {
+        if (fire.fired())
+        {
+            fire(now, price, fire);
+        }
+        else if (flat)
+        {
+            latchedDirection_ = null; // the move is over -- re-arm for the next one
+        }
+    }
+
+    private void fire(Instant now, double price, FastMoveSignal.Fire fire)
+    {
+        String direction = fire.direction();
+        boolean reArmed = !direction.equals(latchedDirection_)
+                || now.toEpochMilli() - lastFireMillis_ >= cooldownMillis_;
+        if (reArmed)
+        {
+            publish(now, price, fire);
+            latchedDirection_ = direction;
+            lastFireMillis_ = now.toEpochMilli();
+        }
+        else
+        {
+            GlobalSystem.debug().writes(NAME, "Latched " + direction + " -- not re-firing this move.");
+        }
+    }
+
+    private void publish(Instant now, double price, FastMoveSignal.Fire fire)
+    {
+        String day = Times.dayOf(Times.formatUtcIso(now));
+        String key = Times.intervalKey(now, windowMinutes_);
+        ObjectNode positioning = positioningAt(day, now, fire.magnitudePct());
+        String conviction = conviction(positioning);
+        String setup = positioning == null ? "" : positioning.path("setup").asText("");
+        collector_.publish(new FastMoveReady(day, key, fire.direction(), conviction, price, fire.magnitudePct(),
+                fire.r2(), fire.spanMinutes(), setup, now));
+        GlobalSystem.info().writes(NAME, "FASTMOVE " + fire.direction() + " " + Num.round(fire.magnitudePct(), 2)
+                + "% (" + fire.spanMinutes() + "m, r2=" + Num.round(fire.r2(), 2) + ") conviction=" + conviction
+                + (setup.isEmpty() ? "" : " setup=" + setup) + " @ " + Num.round(price, 2));
+    }
+
+    /** The funding/OI snapshot fused with the price move, or null when no funding rate is available. */
+    private ObjectNode positioningAt(String day, Instant now, double magnitudePct)
+    {
+        ObjectNode current = collector_.funding().get(day, Times.intervalKey(now, windowMinutes_));
+        Instant before = now.minusSeconds(oiLookbackMinutes_ * 60L);
+        ObjectNode prior = collector_.funding().get(Times.dayOf(Times.formatUtcIso(before)),
+                Times.intervalKey(before, windowMinutes_));
+        return FundingSignals.signal(current, prior, magnitudePct);
+    }
+
+    /**
+     * Grade the fire from open interest: OI building past the threshold is fresh positioning into the move
+     * ({@code full} -- a real trend); OI unwinding is positions closing ({@code skip} -- a likely transient
+     * wick); anything else (including no funding data) is {@code reduced} -- traded smaller, never trusted
+     * as fully confirmed.
+     */
+    private String conviction(ObjectNode positioning)
+    {
+        String conviction = "reduced";
+        if (positioning != null && positioning.path("oi_change_pct").isNumber())
+        {
+            double oiPct = positioning.path("oi_change_pct").asDouble();
+            if (oiPct >= oiBuildingPct_)
+            {
+                conviction = "full";
+            }
+            else if (oiPct <= -oiBuildingPct_)
+            {
+                conviction = "skip";
+            }
+        }
+        return conviction;
+    }
+
+    /** Log (once per episode) the soft early-warning: positive funding draining into a still-flat tape. */
+    private void checkCompression(Instant now, boolean flat)
+    {
+        String day = Times.dayOf(Times.formatUtcIso(now));
+        ObjectNode current = collector_.funding().get(day, Times.intervalKey(now, windowMinutes_));
+        Instant before = now.minusSeconds(compressionWindowMinutes_ * 60L);
+        ObjectNode prior = collector_.funding().get(Times.dayOf(Times.formatUtcIso(before)),
+                Times.intervalKey(before, windowMinutes_));
+        FundingCompression.Compression compression =
+                FundingCompression.of(current, prior, flat, compressionDropPct_);
+        if (compression.compressing() && !compressionFlagged_)
+        {
+            GlobalSystem.info().writes(NAME, "EARLY-WARNING: funding compressing " + compression.fundingDropPct()
+                    + "% over " + compressionWindowMinutes_ + "m into a flat tape -- long conviction draining.");
+            compressionFlagged_ = true;
+        }
+        else if (!compression.compressing())
+        {
+            compressionFlagged_ = false;
+        }
+    }
+
+    private void awaitNextPoll()
+    {
+        synchronized (lock_)
+        {
+            if (running_)
+            {
+                try
+                {
+                    lock_.wait(pollMillis_);
+                }
+                catch (InterruptedException interrupted)
+                {
+                    Thread.currentThread().interrupt();
+                    running_ = false;
+                }
+            }
+        }
+    }
+}

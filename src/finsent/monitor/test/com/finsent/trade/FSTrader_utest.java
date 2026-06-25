@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.finsent.analyse.AnalysisReady;
+import com.finsent.analyse.FastMoveReady;
 import com.finsent.trade.broker.BrokerException;
 import com.finsent.trade.broker.Fill;
 import com.finsent.trade.broker.IBroker;
@@ -262,6 +263,55 @@ public class FSTrader_utest
         broker.unreachable_ = true;
         trader.reconcile(NOW);
         assertTrue(trader.describe(NOW).contains("Open LONG")); // book left intact on a read failure
+    }
+
+    @Test
+    public void confirmedReversalClosesAMomentumPosition()
+    {
+        FSTrader trader = momentumTrader();
+        price_ = 100.0;
+        trader.onFastSignal(fast("bearish", "full"), NOW); // opens a momentum SHORT
+        assertTrue(trader.describe(NOW).contains("Open SHORT"));
+        price_ = 99.0; // short in profit
+        trader.onFastSignal(fast("bullish", "full"), NOW); // confirmed opposite fire -> reversal exit
+
+        ArrayNode closed = closed();
+        assertEquals(1, closed.size());
+        assertEquals("fastmove_reversal", closed.get(0).path("close_reason").asText());
+    }
+
+    @Test
+    public void skipConvictionOppositeDoesNotReverse()
+    {
+        FSTrader trader = momentumTrader();
+        price_ = 100.0;
+        trader.onFastSignal(fast("bearish", "full"), NOW);
+        price_ = 99.0;
+        trader.onFastSignal(fast("bullish", "skip"), NOW); // a weak (unwinding) opposite wick -> hold
+        assertTrue(trader.describe(NOW).contains("Open SHORT"));
+        assertEquals(0, closed().size());
+    }
+
+    @Test
+    public void fastMoveReversalLeavesANewsPositionAlone()
+    {
+        FSTrader trader = momentumTrader();
+        price_ = 100.0;
+        trader.onSignal(signal("bearish", "high"), NOW); // a NEWS short
+        trader.onFastSignal(fast("bullish", "full"), NOW); // momentum reversal must not touch the news thesis
+        assertTrue(trader.describe(NOW).contains("Open SHORT"));
+        assertEquals(0, closed().size());
+    }
+
+    /** A trader with the momentum lane armed (trade on, reversal-exit on), news+fast params identical. */
+    private FSTrader momentumTrader()
+    {
+        return new FSTrader(book_, new PaperBroker(), target -> price_, PARAMS, PARAMS, true, true, false);
+    }
+
+    private static FastMoveReady fast(String direction, String conviction)
+    {
+        return new FastMoveReady(DAY, KEY, direction, conviction, 100.0, -1.5, 0.85, 30, "", NOW);
     }
 
     private ArrayNode closed()

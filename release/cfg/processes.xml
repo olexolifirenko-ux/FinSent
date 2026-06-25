@@ -181,5 +181,39 @@
              broker=whitebit, the auto-trader's live orders. Put the real values in release/.env as
              WHITEBIT_API_KEY / WHITEBIT_API_SECRET (gitignored). For live trading set broker=whitebit
              and leverage to match the leverage configured in the WhiteBIT UI for this market. -->
+
+        <!-- The mechanical FastMove price-tape trigger: a separate daemon that samples the live BTC price
+             and fires a directional momentum signal when the tape moves far+cleanly on any <Window>, graded
+             by a funding/OI structural gate (OI building = full conviction = a real trend; OI unwinding =
+             skip = a likely transient wick). News-independent; catches flow-led moves the news lane lags.
+             SAFE DEFAULTS: enabled=false (detector off) and trade=false (alert-only: publishes/logs fires
+             but never opens). Only the entry-side knobs that genuinely differ are FastMove-owned -- its own
+             (smaller) size and its own (wider) initial stop, since a momentum entry fires mid-move; exit
+             management (trail / max-hold / profit-grace) and the divergence rail are SHARED with <FSTrader>,
+             so they are not repeated here. reversalExit=true closes an open momentum position when a confirmed
+             opposite fire occurs. Rollout: backtest -> enabled=true,trade=false (observe) -> paper -> live
+             small. Each <Window> carries its own span + the endpoint move (%) that fires it + the regression
+             r2 floor that rejects choppy drift; a short span catches flash crashes, a long one catches slow
+             grinds; the once-per-move latch means extra windows make detection earlier, not more frequent. -->
+        <FSFastMove
+            enabled="false"
+            trade="false"
+            pollInSec="15"
+            reversalExit="true"
+            cooldownInMin="30"
+            oiBuildingPct="0.5"
+            oiLookbackInMin="40"
+            fundingCompressionDropPct="40"
+            fundingCompressionWindow="60m"
+            notionalInUsd="150.0"
+            leverage="3.0"
+            stopLossInPct="1.0"
+        >
+            <Windows>
+                <Window span="5m"  thresholdPct="0.8" r2Floor="0.45"/>   <!-- flash crash / cascade -->
+                <Window span="15m" thresholdPct="1.0" r2Floor="0.55"/>   <!-- spike -->
+                <Window span="30m" thresholdPct="1.5" r2Floor="0.55"/>   <!-- grind (the 06-24 unwind) -->
+            </Windows>
+        </FSFastMove>
     </FSSatellite>
 </Bootstrap>

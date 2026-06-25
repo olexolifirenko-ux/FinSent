@@ -25,7 +25,11 @@ public final class MacroSignals
             new Indicator("DXY", 0.3, -0.3, true),
             new Indicator("SP500", -0.5, 0.5, false),
             new Indicator("US10Y", 2.0, -2.0, true),
-            new Indicator("Gold", 0.5, -0.5, true),
+            // Gold is treated as BTC-CORRELATED (a debasement/liquidity asset), not a safe haven: gold and
+            // BTC fall together when the inflation-hedge trade unwinds and rise together in risk-on, so gold
+            // DOWN is risk-off for crypto and gold UP is risk-on. (The acute flight-to-gold case where gold
+            // rises as BTC sells is the exception, not the base rate for BTC.)
+            new Indicator("Gold", -0.5, 0.5, false),
     };
 
     private MacroSignals()

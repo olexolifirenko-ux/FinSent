@@ -4,11 +4,13 @@ import java.nio.file.Path;
 
 import com.finsent.analyse.AnalysisReady;
 import com.finsent.analyse.FSAnalyser;
+import com.finsent.analyse.FastMoveReady;
 import com.finsent.analyse.cmd.AnalGroupCmdHandler;
 import com.finsent.app.AbstractAppInitializer;
 import com.finsent.collect.CollectorRunner;
 import com.finsent.collect.EconScheduler;
 import com.finsent.collect.FSCollector;
+import com.finsent.collect.FastMovePoller;
 import com.finsent.collect.UrgentPoller;
 import com.finsent.collect.cmd.CollectGroupCmdHandler;
 import com.finsent.core.Config;
@@ -42,6 +44,7 @@ public class FSApp extends AbstractAppInitializer
     private CollectorRunner collectorRunner_;
     private UrgentPoller urgentPoller_;
     private EconScheduler econScheduler_;
+    private FastMovePoller fastMovePoller_;
 
     public FSApp(String[] args) throws Exception
     {
@@ -89,7 +92,10 @@ public class FSApp extends AbstractAppInitializer
         // Trader: start paused unless -DrunTrader=true (default off, like the analyser); acts on the
         // analyser's AnalysisReady signals over the same bus.
         trader_ = new FSTrader(collector_, config, whitebit, !Boolean.getBoolean("runTrader"));
-        collector_.subscribe(AnalysisReady.class, trader_);
+        collector_.subscribe(AnalysisReady.class, trader_::onAnalysisReadyEvent);
+        // The mechanical FastMove (momentum) lane: a separate event the trader consumes via a method
+        // reference (it already implements IEventListener for AnalysisReady, so it cannot also for FastMoveReady).
+        collector_.subscribe(FastMoveReady.class, trader_::onFastEvent);
         GlobalSystem.getCmdInterpreter().registerCmdHandler(TradeGroupCmdHandler.COMMAND,
                 new TradeGroupCmdHandler(trader_, whitebit), TradeGroupCmdHandler.DESCRIPTION,
                 TradeGroupCmdHandler.COMMAND_ALIASES);
@@ -97,6 +103,7 @@ public class FSApp extends AbstractAppInitializer
         collectorRunner_ = new CollectorRunner(collector_);
         urgentPoller_ = new UrgentPoller(collector_);
         econScheduler_ = new EconScheduler(collector_, dataDir);
+        fastMovePoller_ = new FastMovePoller(collector_);
         GlobalSystem.getCmdInterpreter().registerCmdHandler(CollectGroupCmdHandler.COMMAND,
                 new CollectGroupCmdHandler(econScheduler_, collector_), CollectGroupCmdHandler.DESCRIPTION,
                 CollectGroupCmdHandler.COMMAND_ALIASES);
@@ -113,6 +120,9 @@ public class FSApp extends AbstractAppInitializer
         // Registered last so it stops first: the trader stops acting and flushes its book before the
         // analyser/collector tear down, so no entry/exit fires while the rest is shutting down.
         GlobalSystem.registerUninitializer(trader_);
+        // Registered after the trader so it stops even sooner: the FastMove poller stops producing fires
+        // before the trader stops consuming them.
+        GlobalSystem.registerUninitializer(fastMovePoller_);
 
         collectorRunner_.start();
         urgentPoller_.start();
@@ -121,5 +131,10 @@ public class FSApp extends AbstractAppInitializer
             econScheduler_.start();
         }
         trader_.start();
+        // Off by default; starts only when <FSFastMove enabled="true">. Alert-only unless trade="true".
+        if (config.fastMoveEnabled())
+        {
+            fastMovePoller_.start();
+        }
     }
 }

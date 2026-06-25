@@ -30,6 +30,7 @@ public final class Config
     private final XMLData analyserNode_;
     private final XMLData notifyNode_;
     private final XMLData traderNode_;
+    private final XMLData fastMoveNode_;
 
     /**
      * Wrap the process bootstrap node (the {@code <FSSatellite>} section) that carries the
@@ -43,6 +44,7 @@ public final class Config
         analyserNode_ = subSection(processNode, "FSAnalyser");
         notifyNode_ = subSection(analyserNode_, "Notifications");
         traderNode_ = subSection(processNode, "FSTrader");
+        fastMoveNode_ = subSection(processNode, "FSFastMove");
     }
 
     /** Build from this process's bootstrap section ({@link GlobalSystem#getBootstrapConfigData()}). */
@@ -469,6 +471,105 @@ public final class Config
     public String whitebitMarket()
     {
         return attr(traderNode_, "whitebitMarket", "BTC_USDT");
+    }
+
+    // == FastMove-owned: mechanical price-tape trigger (FSFastMove) =============
+
+    /** Master switch for the FastMove poller; when false the detector thread is not started. */
+    public boolean fastMoveEnabled()
+    {
+        return boolAttr(fastMoveNode_, "enabled", false);
+    }
+
+    /**
+     * Whether a FastMove fire may open a position. When false the detector still publishes/logs its
+     * signals (alert-only telemetry) but the trader never opens on them -- the safe default while the
+     * windows/thresholds are still being tuned against a live tape.
+     */
+    public boolean fastMoveTrade()
+    {
+        return boolAttr(fastMoveNode_, "trade", false);
+    }
+
+    /** How often the detector samples the live price into its rolling buffer. */
+    public int fastMovePollInSec()
+    {
+        return intAttr(fastMoveNode_, "pollInSec", 15);
+    }
+
+    /** Whether a confirmed opposite-direction fire closes an open momentum position at market (reversal exit). */
+    public boolean fastMoveReversalExit()
+    {
+        return boolAttr(fastMoveNode_, "reversalExit", true);
+    }
+
+    /**
+     * The detection windows ({@code <Windows><Window span=.. thresholdPct=.. r2Floor=../></Windows>}):
+     * each a lookback span (e.g. {@code "30m"}), the endpoint move (percent) that fires it, and the
+     * regression-fit floor that keeps choppy drift from firing. Multiple spans cover spikes through grinds.
+     */
+    public List<FastMoveWindow> fastMoveWindows()
+    {
+        List<FastMoveWindow> result = new ArrayList<>();
+        for (XMLData window : children(fastMoveNode_, "Windows", "Window"))
+        {
+            result.add(new FastMoveWindow(Times.intervalMinutes(window.getAttributeStringValue("span", "30m")),
+                    window.getAttributeDoubleValue("thresholdPct", 1.5),
+                    window.getAttributeDoubleValue("r2Floor", 0.5)));
+        }
+        return result;
+    }
+
+    /** Minimum gap before the same-direction move may re-fire (the once-per-move debounce). */
+    public int fastMoveCooldownInMin()
+    {
+        return intAttr(fastMoveNode_, "cooldownInMin", 30);
+    }
+
+    /** Open-interest change over the lookback that grades a fire as fresh positioning ({@code full}); +/- threshold. */
+    public double fastMoveOiBuildingPct()
+    {
+        return doubleAttr(fastMoveNode_, "oiBuildingPct", 0.5);
+    }
+
+    /** How far back the funding/OI structural gate compares open interest from. */
+    public int fastMoveOiLookbackInMin()
+    {
+        return intAttr(fastMoveNode_, "oiLookbackInMin", 40);
+    }
+
+    /** Relative fall in funding (percent) over its window that counts as the compressing early-warning. */
+    public double fastMoveFundingCompressionDropPct()
+    {
+        return doubleAttr(fastMoveNode_, "fundingCompressionDropPct", 40.0);
+    }
+
+    /** Lookback for the funding-compression early-warning. */
+    public int fastMoveFundingCompressionWindowMinutes()
+    {
+        return Times.intervalMinutes(attr(fastMoveNode_, "fundingCompressionWindow", "60m"));
+    }
+
+    /** Margin per FastMove trade in USD (deliberately smaller than the news trader's by default). */
+    public double fastMoveNotionalInUsd()
+    {
+        return doubleAttr(fastMoveNode_, "notionalInUsd", 150.0);
+    }
+
+    public double fastMoveLeverage()
+    {
+        return doubleAttr(fastMoveNode_, "leverage", 3.0);
+    }
+
+    /**
+     * Initial stop for a FastMove entry, in percent. FastMove-owned (not shared with {@code <FSTrader>}):
+     * a momentum entry fires mid-move and needs a wider stop than a news entry to survive the normal
+     * counter-retrace -- the backtest showed the tight news stop whipsaws it. Trail / max-hold / profit-grace
+     * are shared with the news trader.
+     */
+    public double fastMoveStopLossInPct()
+    {
+        return doubleAttr(fastMoveNode_, "stopLossInPct", 1.0);
     }
 
     // == Helpers ===============================================================

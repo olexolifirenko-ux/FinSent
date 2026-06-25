@@ -84,6 +84,12 @@ public final class Position
         return side_;
     }
 
+    /** The lane that opened it ({@code "news"}/an analyser source, or {@code "momentum"} for a FastMove entry). */
+    public String source()
+    {
+        return source_;
+    }
+
     public String day()
     {
         return day_;

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.finsent.analyse.AnalysisReady;
+import com.finsent.analyse.FastMoveReady;
 import com.finsent.analyse.notify.ImpactTier;
 import com.finsent.collect.FSCollector;
 import com.finsent.core.Config;
@@ -43,10 +44,10 @@ import com.finsent.util.IUninitializer;
  * package-private injecting constructor takes the book, broker, {@link PriceSource} and {@link Params}
  * directly (tests drive {@link #onSignal} / {@link #manage} synchronously). Started paused or running
  * from the {@code -DrunTrader} launcher property and toggled at runtime via the {@code trade} command
- * group. {@link #onEvent} must never block (it runs on the single-threaded event bus), so it only
+ * group. {@link #onAnalysisReadyEvent} must never block (it runs on the single-threaded event bus), so it only
  * enqueues; the worker owns the price fetches and order placement.
  */
-public final class FSTrader implements IEventListener<AnalysisReady>, IUninitializer
+public final class FSTrader implements IUninitializer
 {
     private static final String NAME = "FSTrader";
     private static final long SHUTDOWN_JOIN_MILLIS = 10_000;
@@ -55,8 +56,15 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     private final IBroker broker_;
     private final PriceSource priceSource_;
     private final Params params_;
+    // Entry/exit params for the FastMove (momentum) lane -- own sizing/stops, plus whether it may trade.
+    private final Params fastParams_;
+    private final boolean fastTrade_;
+    // Whether a confirmed opposite-direction FastMove fire closes an open momentum position at market.
+    private final boolean reversalExit_;
     private final AtomicBoolean paused_;
-    private final BlockingQueue<AnalysisReady> queue_ = new LinkedBlockingQueue<>();
+    // Both lanes (news AnalysisReady + momentum FastMoveReady) feed this one queue; the worker dispatches
+    // by type and routes both through the single synchronized open()/position_ gate.
+    private final BlockingQueue<Object> queue_ = new LinkedBlockingQueue<>();
     private final Thread thread_;
     private volatile boolean running_ = true;
     // The single open position, or null when flat. Guarded by this monitor: the worker thread mutates
@@ -68,16 +76,30 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     {
         // The live ticker price is always "now", so the PriceSource timestamp is ignored.
         this(buildBook(config), brokerFrom(config, whitebit), priceSourceFrom(config, whitebit, collector),
-                paramsFrom(config), startPaused);
+                paramsFrom(config), fastParamsFrom(config), config.fastMoveTrade(), config.fastMoveReversalExit(),
+                startPaused);
     }
 
-    /** Injecting constructor: book, broker, price source and params supplied directly (used by tests). */
+    /**
+     * Injecting constructor: book, broker, price source and the news params supplied directly (used by
+     * tests). The momentum lane defaults to the same params and alert-only (it is not exercised here).
+     */
     FSTrader(TradeBook book, IBroker broker, PriceSource priceSource, Params params, boolean startPaused)
+    {
+        this(book, broker, priceSource, params, params, false, true, startPaused);
+    }
+
+    /** Canonical injecting constructor: both lanes' params and the momentum trade/reversal-exit flags. */
+    FSTrader(TradeBook book, IBroker broker, PriceSource priceSource, Params params, Params fastParams,
+            boolean fastTrade, boolean reversalExit, boolean startPaused)
     {
         book_ = book;
         broker_ = broker;
         priceSource_ = priceSource;
         params_ = params;
+        fastParams_ = fastParams;
+        fastTrade_ = fastTrade;
+        reversalExit_ = reversalExit;
         paused_ = new AtomicBoolean(startPaused);
         position_ = book.openPosition(); // adopt a recovered open position, if any
         thread_ = new Thread(this::loop, "FS-Trader");
@@ -142,6 +164,22 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     }
 
     /**
+     * Params for the momentum lane. Only the entry-side knobs that genuinely differ are FastMove-owned --
+     * its own size ({@code notionalInUsd}/{@code leverage}, deliberately smaller) and its own initial
+     * {@code stopLossInPct} (a momentum entry fires mid-move, so it needs a wider stop than a news entry;
+     * the backtest confirmed the news stop whipsaws it). Exit management (trail / profit-grace / max-hold)
+     * and the divergence rail are shared with {@code <FSTrader>}, so they are not duplicated in config. No
+     * impact tier and no news-age gate apply, so {@code entryImpactTier} is unused and the news-age is 0.
+     */
+    private static Params fastParamsFrom(Config config)
+    {
+        return new Params("", config.fastMoveNotionalInUsd(), config.fastMoveLeverage(),
+                config.fastMoveStopLossInPct(), config.tradeTrailInPct(),
+                config.tradeMaxHoldInHours() * 3_600_000L, config.tradePricePollInSec() * 1000L,
+                config.tradeProfitGraceInMin() * 60_000L, 0L, config.tradeEntryMaxPriceDivergencePct());
+    }
+
+    /**
      * Reconcile the recovered book against the venue, then start the worker thread (called by
      * {@code FSApp} after wiring; tests drive the seams directly). Reconciliation is a no-op for the
      * paper broker (no venue truth).
@@ -154,8 +192,7 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
 
     // == Event intake + worker (runtime concerns) ==============================
 
-    @Override
-    public void onEvent(AnalysisReady signal)
+    public void onAnalysisReadyEvent(AnalysisReady signal)
     {
         if (paused_.get())
         {
@@ -164,6 +201,23 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
         else
         {
             queue_.offer(signal); // non-blocking: never stall the single-threaded event bus
+        }
+    }
+
+    /**
+     * Intake for the FastMove (momentum) lane, subscribed to {@link FastMoveReady} via a method reference
+     * (the class already implements {@link IEventListener} for {@link AnalysisReady}, so it cannot also
+     * implement it for FastMoveReady). Same contract as {@link #onAnalysisReadyEvent}: never block the bus -- only enqueue.
+     */
+    public void onFastEvent(FastMoveReady signal)
+    {
+        if (paused_.get())
+        {
+            GlobalSystem.debug().writes(NAME, "Paused -- skipping FastMove " + signal.intervalKey());
+        }
+        else
+        {
+            queue_.offer(signal);
         }
     }
 
@@ -216,18 +270,27 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
     {
         while (running_)
         {
-            AnalysisReady signal = awaitSignal();
-            if (signal != null)
-            {
-                onSignal(signal, Instant.now());
-            }
+            dispatch(awaitSignal(), Instant.now());
             manage(Instant.now());
         }
     }
 
-    private AnalysisReady awaitSignal()
+    /** Route a dequeued signal to its lane; both lanes converge on the single synchronized {@link #open}. */
+    private void dispatch(Object signal, Instant now)
     {
-        AnalysisReady signal = null;
+        if (signal instanceof AnalysisReady news)
+        {
+            onSignal(news, now);
+        }
+        else if (signal instanceof FastMoveReady fast)
+        {
+            onFastSignal(fast, now);
+        }
+    }
+
+    private Object awaitSignal()
+    {
+        Object signal = null;
         try
         {
             signal = queue_.poll(params_.pricePollMillis(), TimeUnit.MILLISECONDS);
@@ -242,7 +305,7 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
 
     // == Strategy (the deterministic seams) ====================================
 
-    /** Act on one signal: open a position when it qualifies and we are flat. Worker-thread / test entry point. */
+    /** Act on one news signal: open a position when it qualifies and we are flat. Worker-thread / test entry point. */
     void onSignal(AnalysisReady signal, Instant now)
     {
         if (isFlat() && qualifies(signal, now))
@@ -253,24 +316,118 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
                 GlobalSystem.warning().writes(NAME, "No price for entry on " + signal.day() + " "
                         + signal.intervalKey() + " -- signal skipped");
             }
-            else if (!priceDiverged(signal, price))
+            else if (!priceDiverged(signal.anchorPrice(), price, params_.entryMaxPriceDivergencePct(),
+                    signal.day() + " " + signal.intervalKey()))
             {
-                open(signal, price, now);
+                open(signal.day(), signal.intervalKey(), signal.source(), signal.direction(), price, params_, now,
+                        signal.day() + " " + signal.intervalKey() + " " + signal.direction() + "/" + signal.impactTier());
             }
         }
     }
 
     /**
-     * Whether the live entry price has moved more than the configured percent from the analysis-time price
-     * ({@code btc_at_prediction}) -- a real-money safety rail: a sharp move between the deep analysis and the
-     * order means the market has repriced since the verdict, so the entry is skipped (logged). Disabled at
-     * {@code <= 0}; not triggered when no anchor price is available (cannot compute, so it does not block).
+     * Act on one FastMove (momentum) signal. Worker-thread / test entry point. No impact-tier or news-age
+     * gate (those are news concerns); it opens when directional, the conviction is not {@code skip}, and we
+     * are flat -- but only when {@code FSFastMove trade} is on. When trade is off the fire is alert-only:
+     * the poller already published/logged it; the trader just notes it without opening.
      */
-    private boolean priceDiverged(AnalysisReady signal, double price)
+    void onFastSignal(FastMoveReady signal, Instant now)
+    {
+        if (isFlat())
+        {
+            maybeOpenFastMove(signal, now);
+        }
+        else
+        {
+            maybeReversalExit(signal, now);
+        }
+    }
+
+    private void maybeOpenFastMove(FastMoveReady signal, Instant now)
+    {
+        if (fastQualifies(signal))
+        {
+            if (!fastTrade_)
+            {
+                GlobalSystem.debug().writes(NAME, "FastMove alert-only (trade=false) -- not opening "
+                        + signal.direction() + "/" + signal.conviction() + " " + signal.intervalKey());
+            }
+            else
+            {
+                openFastMove(signal, now);
+            }
+        }
+    }
+
+    private void openFastMove(FastMoveReady signal, Instant now)
+    {
+        Double price = priceSource_.priceAt(now);
+        if (price == null)
+        {
+            GlobalSystem.warning().writes(NAME, "No price for FastMove entry " + signal.intervalKey() + " -- skipped");
+        }
+        else if (!priceDiverged(signal.anchorPrice(), price, fastParams_.entryMaxPriceDivergencePct(),
+                "fastmove " + signal.intervalKey()))
+        {
+            open(signal.day(), signal.intervalKey(), "momentum", signal.direction(), price, fastParams_, now,
+                    "fastmove " + signal.direction() + "/" + signal.conviction() + " " + signal.spanMinutes() + "m");
+        }
+    }
+
+    /**
+     * Reversal exit: a confirmed opposite-direction FastMove closes an open MOMENTUM position at market --
+     * the move we rode has turned, so bank it now rather than wait for the trailing stop to give back. Scoped
+     * to momentum positions (a news position keeps its own thesis/exit) and gated on a qualifying (non-skip)
+     * opposite fire, so a weak counter-trend wick does not shake the position out. Off when {@code reversalExit}
+     * is false.
+     */
+    private void maybeReversalExit(FastMoveReady signal, Instant now)
+    {
+        Position open = current();
+        if (isReversal(signal, open))
+        {
+            Double price = priceSource_.priceAt(now);
+            if (price == null)
+            {
+                GlobalSystem.warning().writes(NAME, "No price for FastMove reversal exit " + signal.intervalKey());
+            }
+            else
+            {
+                reversalClose(open, price, now);
+            }
+        }
+    }
+
+    private boolean isReversal(FastMoveReady signal, Position open)
+    {
+        return reversalExit_ && open != null && "momentum".equals(open.source())
+                && fastQualifies(signal) && opposes(signal, open);
+    }
+
+    private synchronized void reversalClose(Position expected, double price, Instant now)
+    {
+        if (position_ == expected) // still the same live position (not closed on another thread meanwhile)
+        {
+            close(price, now, "fastmove_reversal");
+        }
+    }
+
+    /** Whether the signal's implied side is opposite the open position's side. */
+    private static boolean opposes(FastMoveReady signal, Position open)
+    {
+        Side signalSide = "bullish".equals(signal.direction()) ? Side.LONG : Side.SHORT;
+        return signalSide != open.side();
+    }
+
+    /**
+     * Whether the live entry price has moved more than {@code maxPct} from the {@code anchor} price -- a
+     * real-money safety rail: a sharp move between the verdict/fire and the order means the market repriced,
+     * so the entry is skipped (logged with {@code tag}). Disabled at {@code <= 0}; not triggered when no
+     * anchor price is available (cannot compute, so it does not block). Shared by both lanes.
+     */
+    private boolean priceDiverged(Double anchor, double price, double maxPct, String tag)
     {
         boolean diverged = false;
-        double maxPct = params_.entryMaxPriceDivergencePct();
-        Double anchor = signal.anchorPrice();
         if (maxPct > 0 && anchor != null && anchor != 0.0)
         {
             double divergencePct = Math.abs(price - anchor) / anchor * 100.0;
@@ -278,8 +435,7 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
             if (diverged)
             {
                 GlobalSystem.warning().writes(NAME, "Entry skipped (price diverged " + Num.round(divergencePct, 2)
-                        + "% > " + maxPct + "% since analysis: $" + anchor + " -> $" + price + ") "
-                        + signal.day() + " " + signal.intervalKey());
+                        + "% > " + maxPct + "% since analysis: $" + anchor + " -> $" + price + ") " + tag);
             }
         }
         return diverged;
@@ -305,6 +461,13 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
         int rank = ImpactTier.order(signal.impactTier(), -1);
         int minimum = ImpactTier.order(params_.entryImpactTier(), 2);
         return directional && rank >= minimum && fresh(signal, now);
+    }
+
+    /** A FastMove qualifies on direction and a non-{@code skip} conviction (the structural gate already ran). */
+    private boolean fastQualifies(FastMoveReady signal)
+    {
+        boolean directional = "bullish".equals(signal.direction()) || "bearish".equals(signal.direction());
+        return directional && !"skip".equals(signal.conviction());
     }
 
     /**
@@ -341,20 +504,26 @@ public final class FSTrader implements IEventListener<AnalysisReady>, IUninitial
         return position_;
     }
 
-    private synchronized void open(AnalysisReady signal, double price, Instant now)
+    /**
+     * Open a single net position from raw fields, sized and stopped by {@code params} (the news lane passes
+     * {@code params_}, the momentum lane {@code fastParams_} -- which differs only in size and initial stop;
+     * exit management is shared). The sole entry point for both lanes -- {@code synchronized} on the one
+     * {@code position_}, so the flat-check and the open are atomic and two lanes can never both open.
+     */
+    private synchronized void open(String day, String key, String source, String direction, double price,
+            Params params, Instant now, String tag)
     {
-        Side side = "bullish".equals(signal.direction()) ? Side.LONG : Side.SHORT;
+        Side side = "bullish".equals(direction) ? Side.LONG : Side.SHORT;
         OrderSide order = side.isLong() ? OrderSide.BUY : OrderSide.SELL;
-        double qty = params_.notionalInUsd() * params_.leverage() / price;
+        double qty = params.notionalInUsd() * params.leverage() / price;
         try
         {
             Fill fill = broker_.marketOrder(order, qty, price);
-            position_ = Position.open(signal.day(), signal.intervalKey(), signal.source(), side, fill.price(),
-                    params_.notionalInUsd(), params_.leverage(), now, params_.stopLossInPct());
+            position_ = Position.open(day, key, source, side, fill.price(), params.notionalInUsd(),
+                    params.leverage(), now, params.stopLossInPct());
             book_.recordPosition(position_);
             GlobalSystem.info().writes(NAME, "OPEN " + side + " @ " + Num.round(fill.price(), 2) + " stop "
-                    + Num.round(position_.currentStop(), 2) + " (" + signal.day() + " " + signal.intervalKey() + " "
-                    + signal.direction() + "/" + signal.impactTier() + ")");
+                    + Num.round(position_.currentStop(), 2) + " (" + tag + ")");
         }
         catch (BrokerException orderRejected)
         {

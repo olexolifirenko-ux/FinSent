@@ -26,14 +26,14 @@ public final class NotifyMessages
      * send time (live regular/urgent path), or null when unavailable (manual re-analysis / fetch failed);
      * when present it is shown next to the catalyst-time price with the % move since.
      */
-    public static String telegram(ObjectNode pred, int resonantCount, Double realtimePrice)
+    public static String telegram(ObjectNode pred, Double realtimePrice)
     {
         String events = bulletEvents(pred.path("key_events"));
         String reasoning = pred.path("reasoning").asText("");
         String price = priceText(pred, realtimePrice);
         // Event-first: lead with WHAT happened (the causative events + the analyst read), then the
         // materiality and a secondary directional lean.
-        String message = "CRYPTO EVENT (" + countPhrase(resonantCount) + ")\n"
+        String message = "CRYPTO EVENT\n"
                 + (events.isEmpty() ? "" : events + "\n")
                 + (reasoning.isEmpty() ? "" : reasoning + "\n")
                 + "Materiality " + upper(pred.path("impact_tier").asText("?")) + " | Lean " + lean(pred)
@@ -55,11 +55,10 @@ public final class NotifyMessages
     }
 
     /** Extended email body: the event (materiality, lean, what happened) followed by the per-item breakdown. */
-    public static String emailBody(ObjectNode pred, List<ObjectNode> articlePreds, int resonantCount,
-                                   Double realtimePrice)
+    public static String emailBody(ObjectNode pred, List<ObjectNode> articlePreds, Double realtimePrice)
     {
         List<String> lines = new ArrayList<>();
-        lines.add("CRYPTO EVENT (" + countPhrase(resonantCount) + ")");
+        lines.add("CRYPTO EVENT");
         lines.add("Materiality: " + pred.path("impact_tier").asText("?"));
         lines.add("Lean: " + lean(pred));
         String price = priceText(pred, realtimePrice);
@@ -153,12 +152,6 @@ public final class NotifyMessages
             lines.add("  " + reasoning);
         }
         lines.add("");
-    }
-
-    /** {@code "<n> article(s)"} with the Python plural rule (singular only at exactly 1). */
-    private static String countPhrase(int count)
-    {
-        return count + " article" + (count != 1 ? "s" : "");
     }
 
     /**

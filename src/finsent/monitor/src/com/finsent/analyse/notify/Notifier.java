@@ -50,12 +50,11 @@ public final class Notifier
                 newsAgeMinutes_, now, skipAgeCheck);
         if (notify)
         {
-            int count = resonant.size();
             // Fetch the live BTC price only now that an alert is firing (avoids a per-analysis call).
             Double realtime = realtimePrice == null ? null : realtimePrice.get();
-            sendTelegram(NotifyMessages.telegram(prediction, count, realtime), intervalKey);
+            sendTelegram(NotifyMessages.telegram(prediction, realtime), intervalKey);
             sendEmail(NotifyMessages.emailSubject(prediction),
-                    NotifyMessages.emailBody(prediction, articlePreds, count, realtime), intervalKey);
+                    NotifyMessages.emailBody(prediction, articlePreds, realtime), intervalKey);
         }
         return notify;
     }

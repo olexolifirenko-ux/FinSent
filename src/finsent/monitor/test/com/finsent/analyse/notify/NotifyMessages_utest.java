@@ -26,11 +26,11 @@ public class NotifyMessages_utest
         pred.set("key_events", events("ETF approval", "Whale accumulation"));
 
         assertEquals(""
-                + "CRYPTO EVENT (2 articles)\n"
+                + "CRYPTO EVENT\n"
                 + "• ETF approval\n"
                 + "• Whale accumulation\n"
                 + "ETF inflows accelerating.\n"
-                + "Materiality HIGH | Lean BULLISH | BTC: $79,000", NotifyMessages.telegram(pred, 2, null));
+                + "Materiality HIGH | Lean BULLISH | BTC: $79,000", NotifyMessages.telegram(pred, null));
     }
 
     @Test
@@ -46,21 +46,21 @@ public class NotifyMessages_utest
         pred.set("articles", articles);
 
         assertEquals(""
-                + "CRYPTO EVENT (1 article)\n"
+                + "CRYPTO EVENT\n"
                 + "• Trump vows response\n"
                 + "Geopolitical shock.\n"
                 + "Materiality HIGH | Lean BEARISH | BTC: $60,900 now | $61,362 at news (-0.8% since, 16:38)",
-                NotifyMessages.telegram(pred, 1, 60900.0));
+                NotifyMessages.telegram(pred, 60900.0));
     }
 
     @Test
-    public void telegramSingularNoPriceNoEventsStripsTrailing()
+    public void telegramNoPriceNoEventsStripsTrailing()
     {
         ObjectNode pred = pred("bearish", "low", "neutral", "Minor.");
         assertEquals(""
-                + "CRYPTO EVENT (1 article)\n"
+                + "CRYPTO EVENT\n"
                 + "Minor.\n"
-                + "Materiality LOW | Lean BEARISH", NotifyMessages.telegram(pred, 1, null));
+                + "Materiality LOW | Lean BEARISH", NotifyMessages.telegram(pred, null));
     }
 
     @Test
@@ -84,7 +84,7 @@ public class NotifyMessages_utest
                 articlePred("Minor wallet update", "neutral", "noise", ""));
 
         assertEquals(""
-                + "CRYPTO EVENT (2 articles)\n"
+                + "CRYPTO EVENT\n"
                 + "Materiality: high\n"
                 + "Lean: BULLISH\n"
                 + "BTC: $79,500 now | $79,000 at news (+0.6% since)\n"
@@ -102,7 +102,7 @@ public class NotifyMessages_utest
                 + "\n"
                 + "[NEUTRAL] Minor wallet update\n"
                 + "  Scenario: noise\n"
-                + "", NotifyMessages.emailBody(pred, articles, 2, 79500.0));
+                + "", NotifyMessages.emailBody(pred, articles, 79500.0));
     }
 
     @Test
@@ -110,14 +110,14 @@ public class NotifyMessages_utest
     {
         ObjectNode pred = pred("neutral", "noise", "neutral", "No catalysts.");
         assertEquals(""
-                + "CRYPTO EVENT (1 article)\n"
+                + "CRYPTO EVENT\n"
                 + "Materiality: noise\n"
                 + "Lean: unclear\n"
                 + "Reasoning: No catalysts.\n"
                 + "\n"
                 + "--- ITEMS ---\n"
                 + "\n"
-                + "(no per-article analysis available)", NotifyMessages.emailBody(pred, List.of(), 1, null));
+                + "(no per-article analysis available)", NotifyMessages.emailBody(pred, List.of(), null));
     }
 
     @Test

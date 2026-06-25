@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.finsent.analyse.AnalysisReady;
 import com.finsent.analyse.FastMoveReady;
+import com.finsent.analyse.signal.Conviction;
 import com.finsent.collect.FSCollector;
 import com.finsent.core.Config;
 import com.finsent.core.Num;
@@ -77,7 +78,7 @@ public final class FSTrader implements IUninitializer
         // The live ticker price is always "now", so the PriceSource timestamp is ignored.
         this(buildBook(config), brokerFrom(config, whitebit), priceSourceFrom(config, whitebit, collector),
                 paramsFrom(config), fastParamsFrom(config), config.fastMoveTrade(), config.fastMoveReversalExit(),
-                config.fastMoveMinConviction(), startPaused);
+                Conviction.of(config.fastMoveMinConviction(), Conviction.FULL), startPaused);
     }
 
     /**
@@ -86,12 +87,12 @@ public final class FSTrader implements IUninitializer
      */
     FSTrader(TradeBook book, IBroker broker, PriceSource priceSource, Params params, boolean startPaused)
     {
-        this(book, broker, priceSource, params, params, false, true, "full", startPaused);
+        this(book, broker, priceSource, params, params, false, true, Conviction.FULL, startPaused);
     }
 
     /** Canonical injecting constructor: both lanes' params and the momentum trade / reversal / min-conviction. */
     FSTrader(TradeBook book, IBroker broker, PriceSource priceSource, Params params, Params fastParams,
-            boolean fastTrade, boolean reversalExit, String fastMinConviction, boolean startPaused)
+            boolean fastTrade, boolean reversalExit, Conviction fastMinConviction, boolean startPaused)
     {
         book_ = book;
         broker_ = broker;

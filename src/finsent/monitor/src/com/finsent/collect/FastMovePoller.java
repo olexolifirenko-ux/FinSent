@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.finsent.analyse.FastMoveReady;
+import com.finsent.analyse.signal.Conviction;
 import com.finsent.analyse.signal.FastMoveSignal;
 import com.finsent.analyse.signal.FundingCompression;
 import com.finsent.analyse.signal.FundingSignals;
@@ -183,12 +184,12 @@ public final class FastMovePoller implements IUninitializer
         String day = Times.dayOf(Times.formatUtcIso(now));
         String key = Times.intervalKey(now, windowMinutes_);
         ObjectNode positioning = positioningAt(day, now, fire.magnitudePct());
-        String conviction = conviction(positioning);
+        Conviction conviction = conviction(positioning);
         String setup = positioning == null ? "" : positioning.path("setup").asText("");
         collector_.publish(new FastMoveReady(day, key, fire.direction(), conviction, price, fire.magnitudePct(),
                 fire.r2(), fire.spanMinutes(), setup, now));
         GlobalSystem.info().writes(NAME, "FASTMOVE " + fire.direction() + " " + Num.round(fire.magnitudePct(), 2)
-                + "% (" + fire.spanMinutes() + "m, r2=" + Num.round(fire.r2(), 2) + ") conviction=" + conviction
+                + "% (" + fire.spanMinutes() + "m, r2=" + Num.round(fire.r2(), 2) + ") conviction=" + conviction.label()
                 + (setup.isEmpty() ? "" : " setup=" + setup) + " @ " + Num.round(price, 2));
     }
 
@@ -208,19 +209,19 @@ public final class FastMovePoller implements IUninitializer
      * wick); anything else (including no funding data) is {@code reduced} -- traded smaller, never trusted
      * as fully confirmed.
      */
-    private String conviction(ObjectNode positioning)
+    private Conviction conviction(ObjectNode positioning)
     {
-        String conviction = "reduced";
+        Conviction conviction = Conviction.REDUCED;
         if (positioning != null && positioning.path("oi_change_pct").isNumber())
         {
             double oiPct = positioning.path("oi_change_pct").asDouble();
             if (oiPct >= oiBuildingPct_)
             {
-                conviction = "full";
+                conviction = Conviction.FULL;
             }
             else if (oiPct <= -oiBuildingPct_)
             {
-                conviction = "skip";
+                conviction = Conviction.SKIP;
             }
         }
         return conviction;

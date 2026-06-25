@@ -2,6 +2,8 @@ package com.finsent.analyse;
 
 import java.time.Instant;
 
+import com.finsent.analyse.signal.Conviction;
+
 /**
  * Published on the collector-owned event bus when the {@code FastMovePoller} detects a sharp, clean BTC
  * price move on its own tape -- the mechanical, news-independent sibling of {@link AnalysisReady}. It is
@@ -14,7 +16,7 @@ import java.time.Instant;
  * @param day          the {@code YYYYMMDD} day the move fired on.
  * @param intervalKey  the {@code HH:MM} interval key at fire time.
  * @param direction    the move's lean ({@code bullish} / {@code bearish}).
- * @param conviction   the funding/OI structural read ({@code full} / {@code reduced} / {@code skip}).
+ * @param conviction   the funding/OI structural read (the {@link Conviction} grade).
  * @param anchorPrice  the live price at fire time (the trader's divergence rail anchors on it).
  * @param magnitudePct the endpoint move of the winning window (signed percent).
  * @param r2           the regression fit of the winning window (cleanliness).
@@ -22,7 +24,7 @@ import java.time.Instant;
  * @param setup        the funding/OI setup label at fire time (e.g. {@code up_squeeze_fuel}), for logs.
  * @param firedAt      when the move fired.
  */
-public record FastMoveReady(String day, String intervalKey, String direction, String conviction,
+public record FastMoveReady(String day, String intervalKey, String direction, Conviction conviction,
         Double anchorPrice, double magnitudePct, double r2, int spanMinutes, String setup, Instant firedAt)
 {
 }

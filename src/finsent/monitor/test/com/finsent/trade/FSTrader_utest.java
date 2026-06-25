@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import com.finsent.analyse.AnalysisReady;
 import com.finsent.analyse.FastMoveReady;
+import com.finsent.analyse.signal.Conviction;
 import com.finsent.trade.broker.BrokerException;
 import com.finsent.trade.broker.Fill;
 import com.finsent.trade.broker.IBroker;
@@ -270,10 +271,10 @@ public class FSTrader_utest
     {
         FSTrader trader = momentumTrader();
         price_ = 100.0;
-        trader.onFastSignal(fast("bearish", "full"), NOW); // opens a momentum SHORT
+        trader.onFastSignal(fast("bearish", Conviction.FULL), NOW); // opens a momentum SHORT
         assertTrue(trader.describe(NOW).contains("Open SHORT"));
         price_ = 99.0; // short in profit
-        trader.onFastSignal(fast("bullish", "full"), NOW); // confirmed opposite fire -> reversal exit
+        trader.onFastSignal(fast("bullish", Conviction.FULL), NOW); // confirmed opposite fire -> reversal exit
 
         ArrayNode closed = closed();
         assertEquals(1, closed.size());
@@ -285,9 +286,9 @@ public class FSTrader_utest
     {
         FSTrader trader = momentumTrader();
         price_ = 100.0;
-        trader.onFastSignal(fast("bearish", "full"), NOW);
+        trader.onFastSignal(fast("bearish", Conviction.FULL), NOW);
         price_ = 99.0;
-        trader.onFastSignal(fast("bullish", "skip"), NOW); // a weak (unwinding) opposite wick -> hold
+        trader.onFastSignal(fast("bullish", Conviction.SKIP), NOW); // a weak (unwinding) opposite wick -> hold
         assertTrue(trader.describe(NOW).contains("Open SHORT"));
         assertEquals(0, closed().size());
     }
@@ -298,7 +299,7 @@ public class FSTrader_utest
         FSTrader trader = momentumTrader();
         price_ = 100.0;
         trader.onSignal(signal("bearish", "high"), NOW); // a NEWS short
-        trader.onFastSignal(fast("bullish", "full"), NOW); // momentum reversal must not touch the news thesis
+        trader.onFastSignal(fast("bullish", Conviction.FULL), NOW); // momentum reversal must not touch the news thesis
         assertTrue(trader.describe(NOW).contains("Open SHORT"));
         assertEquals(0, closed().size());
     }
@@ -308,7 +309,7 @@ public class FSTrader_utest
     {
         FSTrader trader = momentumTrader(); // minConviction = full (default)
         price_ = 100.0;
-        trader.onFastSignal(fast("bearish", "reduced"), NOW); // below the gate -> telemetry only, no open
+        trader.onFastSignal(fast("bearish", Conviction.REDUCED), NOW); // below the gate -> telemetry only, no open
         assertTrue(trader.describe(NOW).contains("Flat"));
     }
 
@@ -316,9 +317,9 @@ public class FSTrader_utest
     public void reducedConvictionOpensWhenTheGateIsLowered()
     {
         FSTrader trader = new FSTrader(book_, new PaperBroker(), target -> price_, PARAMS, PARAMS, true, true,
-                "reduced", false);
+                Conviction.REDUCED, false);
         price_ = 100.0;
-        trader.onFastSignal(fast("bearish", "reduced"), NOW);
+        trader.onFastSignal(fast("bearish", Conviction.REDUCED), NOW);
         assertTrue(trader.describe(NOW).contains("Open SHORT"));
     }
 
@@ -329,9 +330,9 @@ public class FSTrader_utest
         // confirmed *reduced* opposite -- exiting a turned position is the conservative action.
         FSTrader trader = momentumTrader();
         price_ = 100.0;
-        trader.onFastSignal(fast("bearish", "full"), NOW);
+        trader.onFastSignal(fast("bearish", Conviction.FULL), NOW);
         price_ = 99.0;
-        trader.onFastSignal(fast("bullish", "reduced"), NOW);
+        trader.onFastSignal(fast("bullish", Conviction.REDUCED), NOW);
 
         ArrayNode closed = closed();
         assertEquals(1, closed.size());
@@ -341,10 +342,10 @@ public class FSTrader_utest
     /** A trader with the momentum lane armed (trade on, reversal-exit on, full-only gate), news+fast params identical. */
     private FSTrader momentumTrader()
     {
-        return new FSTrader(book_, new PaperBroker(), target -> price_, PARAMS, PARAMS, true, true, "full", false);
+        return new FSTrader(book_, new PaperBroker(), target -> price_, PARAMS, PARAMS, true, true, Conviction.FULL, false);
     }
 
-    private static FastMoveReady fast(String direction, String conviction)
+    private static FastMoveReady fast(String direction, Conviction conviction)
     {
         return new FastMoveReady(DAY, KEY, direction, conviction, 100.0, -1.5, 0.85, 30, "", NOW);
     }

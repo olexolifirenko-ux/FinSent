@@ -3,6 +3,7 @@ package com.finsent.trade;
 import com.finsent.analyse.AnalysisReady;
 import com.finsent.analyse.FastMoveReady;
 import com.finsent.analyse.notify.ImpactTier;
+import com.finsent.analyse.signal.Conviction;
 
 /**
  * The trading strategy's <b>eligibility rules</b>: pure yes/no judgments about whether a signal merits an
@@ -16,10 +17,10 @@ import com.finsent.analyse.notify.ImpactTier;
 public final class EntryPolicy
 {
     private final String newsMinTier_;
-    private final String fastMinConviction_;
+    private final Conviction fastMinConviction_;
     private final boolean reversalExit_;
 
-    public EntryPolicy(String newsMinTier, String fastMinConviction, boolean reversalExit)
+    public EntryPolicy(String newsMinTier, Conviction fastMinConviction, boolean reversalExit)
     {
         newsMinTier_ = newsMinTier;
         fastMinConviction_ = fastMinConviction;
@@ -36,8 +37,7 @@ public final class EntryPolicy
     /** Whether a FastMove fire is eligible to open: directional and at or above the minimum conviction. */
     public boolean qualifiesFast(FastMoveReady signal)
     {
-        return directional(signal.direction())
-                && convictionRank(signal.conviction()) >= convictionRank(fastMinConviction_);
+        return directional(signal.direction()) && signal.conviction().meets(fastMinConviction_);
     }
 
     /**
@@ -49,7 +49,7 @@ public final class EntryPolicy
     public boolean isReversalExit(FastMoveReady signal, Position open)
     {
         return reversalExit_ && open != null && "momentum".equals(open.source())
-                && directional(signal.direction()) && !"skip".equals(signal.conviction()) && opposes(signal, open);
+                && directional(signal.direction()) && signal.conviction() != Conviction.SKIP && opposes(signal, open);
     }
 
     private static boolean directional(String direction)
@@ -62,24 +62,5 @@ public final class EntryPolicy
     {
         Side signalSide = "bullish".equals(signal.direction()) ? Side.LONG : Side.SHORT;
         return signalSide != open.side();
-    }
-
-    /** Conviction ordering for the entry gate: full > reduced > skip; an unknown label never qualifies. */
-    private static int convictionRank(String conviction)
-    {
-        int rank = -1;
-        if ("full".equals(conviction))
-        {
-            rank = 2;
-        }
-        else if ("reduced".equals(conviction))
-        {
-            rank = 1;
-        }
-        else if ("skip".equals(conviction))
-        {
-            rank = 0;
-        }
-        return rank;
     }
 }

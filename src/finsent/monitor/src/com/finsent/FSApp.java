@@ -13,6 +13,7 @@ import com.finsent.collect.EconResolved;
 import com.finsent.collect.EconScheduler;
 import com.finsent.collect.FSCollector;
 import com.finsent.collect.FastMovePoller;
+import com.finsent.collect.FastMoveRecorder;
 import com.finsent.collect.UrgentPoller;
 import com.finsent.collect.cmd.CollectGroupCmdHandler;
 import com.finsent.collect.cmd.FastMoveCmdHandler;
@@ -104,6 +105,9 @@ public class FSApp extends AbstractAppInitializer
         eventBus_.subscribe(AnalysisReady.class, trader_::onAnalysisReadyEvent);
         // The mechanical FastMove (momentum) lane: a separate event the trader consumes via a method reference.
         eventBus_.subscribe(FastMoveReady.class, trader_::onFastEvent);
+        // Alert-only telemetry: record every fire (any conviction) to fastmove_<day>.jsonl for the
+        // observation phase (subscribed after the trader so the telemetry write never delays the trade).
+        eventBus_.subscribe(FastMoveReady.class, new FastMoveRecorder(dataDir));
         GlobalSystem.getCmdInterpreter().registerCmdHandler(TradeGroupCmdHandler.COMMAND,
                 new TradeGroupCmdHandler(trader_, whitebit), TradeGroupCmdHandler.DESCRIPTION,
                 TradeGroupCmdHandler.COMMAND_ALIASES);

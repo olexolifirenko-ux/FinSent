@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.finsent.analyse.AnalysisReady;
 import com.finsent.analyse.FastMoveReady;
-import com.finsent.analyse.notify.ImpactTier;
 import com.finsent.collect.FSCollector;
 import com.finsent.core.Config;
 import com.finsent.core.Num;
@@ -59,11 +58,9 @@ public final class FSTrader implements IUninitializer
     // Entry/exit params for the FastMove (momentum) lane -- own sizing/stops, plus whether it may trade.
     private final Params fastParams_;
     private final boolean fastTrade_;
-    // Whether a confirmed opposite-direction FastMove fire closes an open momentum position at market.
-    private final boolean reversalExit_;
-    // Minimum conviction a FastMove fire must reach to OPEN ("full"/"reduced"); a lower-conviction fire
-    // still publishes/logs (telemetry) but does not trade. Reversal exits ignore this (any confirmed fire).
-    private final String fastMinConviction_;
+    // The strategy's pure eligibility rules (news min tier / momentum min conviction / reversal-exit gate).
+    // The trader consults it to DECIDE, then owns the execution guards (freshness, divergence) and acts.
+    private final EntryPolicy policy_;
     private final AtomicBoolean paused_;
     // Both lanes (news AnalysisReady + momentum FastMoveReady) feed this one queue; the worker dispatches
     // by type and routes both through the single synchronized open()/position_ gate.
@@ -102,8 +99,7 @@ public final class FSTrader implements IUninitializer
         params_ = params;
         fastParams_ = fastParams;
         fastTrade_ = fastTrade;
-        reversalExit_ = reversalExit;
-        fastMinConviction_ = fastMinConviction;
+        policy_ = new EntryPolicy(params.entryImpactTier(), fastMinConviction, reversalExit);
         paused_ = new AtomicBoolean(startPaused);
         position_ = book.openPosition(); // adopt a recovered open position, if any
         thread_ = new Thread(this::loop, "FS-Trader");
@@ -312,7 +308,8 @@ public final class FSTrader implements IUninitializer
     /** Act on one news signal: open a position when it qualifies and we are flat. Worker-thread / test entry point. */
     void onSignal(AnalysisReady signal, Instant now)
     {
-        if (isFlat() && qualifies(signal, now))
+        // Merit (tier/direction) is the policy's call; freshness is an execution-time guard the trader owns.
+        if (isFlat() && policy_.qualifiesNews(signal) && fresh(signal, now))
         {
             Double price = priceSource_.priceAt(now);
             if (price == null)
@@ -349,7 +346,7 @@ public final class FSTrader implements IUninitializer
 
     private void maybeOpenFastMove(FastMoveReady signal, Instant now)
     {
-        if (fastQualifies(signal))
+        if (policy_.qualifiesFast(signal))
         {
             if (!fastTrade_)
             {
@@ -388,7 +385,7 @@ public final class FSTrader implements IUninitializer
     private void maybeReversalExit(FastMoveReady signal, Instant now)
     {
         Position open = current();
-        if (isReversal(signal, open))
+        if (policy_.isReversalExit(signal, open))
         {
             Double price = priceSource_.priceAt(now);
             if (price == null)
@@ -402,25 +399,12 @@ public final class FSTrader implements IUninitializer
         }
     }
 
-    private boolean isReversal(FastMoveReady signal, Position open)
-    {
-        return reversalExit_ && open != null && "momentum".equals(open.source())
-                && confirmedReversal(signal) && opposes(signal, open);
-    }
-
     private synchronized void reversalClose(Position expected, double price, Instant now)
     {
         if (position_ == expected) // still the same live position (not closed on another thread meanwhile)
         {
             close(price, now, "fastmove_reversal");
         }
-    }
-
-    /** Whether the signal's implied side is opposite the open position's side. */
-    private static boolean opposes(FastMoveReady signal, Position open)
-    {
-        Side signalSide = "bullish".equals(signal.direction()) ? Side.LONG : Side.SHORT;
-        return signalSide != open.side();
     }
 
     /**
@@ -457,58 +441,6 @@ public final class FSTrader implements IUninitializer
                 evaluate(open, price, now);
             }
         }
-    }
-
-    private boolean qualifies(AnalysisReady signal, Instant now)
-    {
-        boolean directional = "bullish".equals(signal.direction()) || "bearish".equals(signal.direction());
-        int rank = ImpactTier.order(signal.impactTier(), -1);
-        int minimum = ImpactTier.order(params_.entryImpactTier(), 2);
-        return directional && rank >= minimum && fresh(signal, now);
-    }
-
-    /**
-     * Whether a FastMove fire is eligible to OPEN: directional and at least the configured minimum
-     * conviction (default {@code full} -- the backtest showed {@code reduced} fires were net losers across
-     * days). A below-minimum fire still published/logged as telemetry; it just does not trade.
-     */
-    private boolean fastQualifies(FastMoveReady signal)
-    {
-        return directional(signal) && convictionRank(signal.conviction()) >= convictionRank(fastMinConviction_);
-    }
-
-    /**
-     * Whether a fire is a confirmed (non-{@code skip}) directional move -- the bar for a reversal EXIT,
-     * independent of the entry {@code minConviction}: exiting a position the move turned against is the
-     * conservative action, so any confirmed opposite fire (even {@code reduced}) closes it.
-     */
-    private static boolean confirmedReversal(FastMoveReady signal)
-    {
-        return directional(signal) && !"skip".equals(signal.conviction());
-    }
-
-    private static boolean directional(FastMoveReady signal)
-    {
-        return "bullish".equals(signal.direction()) || "bearish".equals(signal.direction());
-    }
-
-    /** Conviction ordering for the entry gate: full > reduced > skip; an unknown label never qualifies. */
-    private static int convictionRank(String conviction)
-    {
-        int rank = -1;
-        if ("full".equals(conviction))
-        {
-            rank = 2;
-        }
-        else if ("reduced".equals(conviction))
-        {
-            rank = 1;
-        }
-        else if ("skip".equals(conviction))
-        {
-            rank = 0;
-        }
-        return rank;
     }
 
     /**

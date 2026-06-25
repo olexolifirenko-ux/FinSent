@@ -148,26 +148,16 @@
             />
         </FSAnalyser>
 
-        <!-- What the trader owns: a paper long/short BTC strategy off the analyser's signals.
-             Opens long on bullish / short on bearish at entryImpactTier or higher, one net position
-             at a time; only on a FRESH catalyst (the newest resonant article no older than
-             entryMaxNewsAgeInMin, so it never opens on a stale re-analysis/backfill/late-article call;
-             0 disables that gate) AND only when the live price has not diverged more than
-             entryMaxPriceDivergencePct from the analysis-time price (a sharp move since the verdict means
-             the market repriced; 0 disables). A trailing stop (initial stopLossInPct adverse, ratcheting trailInPct
-             behind the best price) manages the exit. profitGraceInMin is a time stop: if the trade is not
-             in profit by then it is closed (the catalyst is not working); 0 disables it. maxHoldInHours
-             is a final chop backstop. broker=paper simulates fills (no real orders); broker=whitebit
-             places live WhiteBIT futures orders sized by notionalInUsd. Starts paused unless
-             -DrunTrader=true, toggled at runtime with `trade`. -->
+        <!-- What the trader owns: long/short BTC execution off TWO signal lanes, each with its own entry
+             rules + size + initial stop in a sub-element: <NewsLane> off the analyser's AnalysisReady signals,
+             <FastMoveLane> off the mechanical FastMove fires. The SHARED execution + exit-management settings
+             stay as <FSTrader> attributes -- broker, price poll, the trailing-stop trail, the profit-grace
+             time stop, the max-hold backstop, the price-divergence entry rail, and the WhiteBIT keys. One net
+             position at a time across BOTH lanes. broker=paper simulates fills (no real orders); broker=whitebit
+             places live WhiteBIT futures orders. Starts paused unless -DrunTrader=true, toggled with `trade`. -->
         <FSTrader
             broker="whitebit"
-            entryImpactTier="high"
-            entryMaxNewsAgeInMin="5"
             entryMaxPriceDivergencePct="1.0"
-            notionalInUsd="300.0"
-            leverage="5.0"
-            stopLossInPct="0.3"
             trailInPct="1.0"
             profitGraceInMin="30"
             maxHoldInHours="24"
@@ -176,41 +166,53 @@
             whitebitApiSecret="ENV:WHITEBIT_API_SECRET"
             whitebitBaseUrl="https://whitebit.com"
             whitebitMarket="BTC_USDT"
-        />
-        <!-- WhiteBIT keys above back the `trade wbcheck`/`trade wborder` commands and, when
-             broker=whitebit, the auto-trader's live orders. Put the real values in release/.env as
-             WHITEBIT_API_KEY / WHITEBIT_API_SECRET (gitignored). For live trading set broker=whitebit
-             and leverage to match the leverage configured in the WhiteBIT UI for this market. -->
+        >
+            <!-- News lane: opens long on bullish / short on bearish at entryImpactTier or higher, and only on
+                 a FRESH catalyst (the newest resonant article no older than entryMaxNewsAgeInMin, so it never
+                 opens on a stale re-analysis/backfill/late-article call; 0 disables that gate). Own size + stop. -->
+            <NewsLane
+                entryImpactTier="high"
+                entryMaxNewsAgeInMin="5"
+                notionalInUsd="300.0"
+                leverage="5.0"
+                stopLossInPct="0.3"
+            />
+            <!-- FastMove (momentum) lane: trade=false is ALERT-ONLY (publish/log, never open) -- the safe
+                 default while tuning. minConviction=full opens only on full-conviction (OI-building) fires;
+                 reduced fires still publish/log as telemetry but do not trade (the backtest showed reduced
+                 net-loses). reversalExit=true closes the position on a confirmed opposite fire. Own (smaller)
+                 size + (wider) initial stop, since a momentum entry fires mid-move and whipsaws on a tight stop. -->
+            <FastMoveLane
+                trade="false"
+                minConviction="full"
+                reversalExit="true"
+                notionalInUsd="150.0"
+                leverage="3.0"
+                stopLossInPct="1.0"
+            />
+        </FSTrader>
+        <!-- WhiteBIT keys above back the `trade wbcheck`/`trade wborder` commands and, when broker=whitebit,
+             the auto-trader's live orders. Put the real values in release/.env as WHITEBIT_API_KEY /
+             WHITEBIT_API_SECRET (gitignored). For live trading set broker=whitebit and each lane's leverage
+             to match the leverage configured in the WhiteBIT UI for this market. -->
 
-        <!-- The mechanical FastMove price-tape trigger: a separate daemon that samples the live BTC price
-             and fires a directional momentum signal when the tape moves far+cleanly on any <Window>, graded
-             by a funding/OI structural gate (OI building = full conviction = a real trend; OI unwinding =
-             skip = a likely transient wick). News-independent; catches flow-led moves the news lane lags.
-             SAFE DEFAULTS: enabled=false (detector off) and trade=false (alert-only: publishes/logs fires
-             but never opens). Only the entry-side knobs that genuinely differ are FastMove-owned -- its own
-             (smaller) size and its own (wider) initial stop, since a momentum entry fires mid-move; exit
-             management (trail / max-hold / profit-grace) and the divergence rail are SHARED with <FSTrader>,
-             so they are not repeated here. reversalExit=true closes an open momentum position when a confirmed
-             opposite fire occurs. minConviction=full opens only on full-conviction (OI-building) fires;
-             reduced fires still publish/log as telemetry but do not trade (the backtest showed reduced fires
-             net-lose). Rollout: backtest -> enabled=true,trade=false (observe) -> paper -> live
-             small. Each <Window> carries its own span + the endpoint move (%) that fires it + the regression
-             r2 floor that rejects choppy drift; a short span catches flash crashes, a long one catches slow
-             grinds; the once-per-move latch means extra windows make detection earlier, not more frequent. -->
+        <!-- The mechanical FastMove price-tape trigger: a separate collector-side daemon that samples the live
+             BTC price and fires a directional momentum signal when the tape moves far+cleanly on any <Window>,
+             graded by a funding/OI structural gate (OI building = full conviction = real trend; OI unwinding =
+             skip = likely transient wick). News-independent; catches flow-led moves the news lane lags. This
+             element holds ONLY the DETECTION settings; the momentum lane's TRADING settings live in
+             <FSTrader><FastMoveLane>. enabled=false keeps the detector off (the safe default). Each <Window>
+             carries its own span + the endpoint move (%) that fires it + the regression r2 floor that rejects
+             choppy drift; a short span catches flash crashes, a long one catches slow grinds; the once-per-move
+             latch means extra windows make detection earlier, not more frequent. -->
         <FSFastMove
             enabled="false"
-            trade="false"
             pollInSec="15"
-            reversalExit="true"
-            minConviction="full"
             cooldownInMin="30"
             oiBuildingPct="0.5"
             oiLookbackInMin="40"
             fundingCompressionDropPct="40"
             fundingCompressionWindow="60m"
-            notionalInUsd="150.0"
-            leverage="3.0"
-            stopLossInPct="1.0"
         >
             <Windows>
                 <Window span="5m"  thresholdPct="0.8" r2Floor="0.45"/>   <!-- flash crash / cascade -->

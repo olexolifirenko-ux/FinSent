@@ -30,6 +30,8 @@ public final class Config
     private final XMLData analyserNode_;
     private final XMLData notifyNode_;
     private final XMLData traderNode_;
+    private final XMLData newsLaneNode_;
+    private final XMLData fastLaneNode_;
     private final XMLData fastMoveNode_;
 
     /**
@@ -44,6 +46,10 @@ public final class Config
         analyserNode_ = subSection(processNode, "FSAnalyser");
         notifyNode_ = subSection(analyserNode_, "Notifications");
         traderNode_ = subSection(processNode, "FSTrader");
+        // Per-lane trade settings live under <FSTrader>; the shared execution + exit-management settings stay
+        // as <FSTrader> attributes. <FSFastMove> holds only the detection settings (read by the poller).
+        newsLaneNode_ = subSection(traderNode_, "NewsLane");
+        fastLaneNode_ = subSection(traderNode_, "FastMoveLane");
         fastMoveNode_ = subSection(processNode, "FSFastMove");
     }
 
@@ -374,7 +380,7 @@ public final class Config
     /** Minimum impact tier a directional call must reach to open a position ({@code high} by default). */
     public String tradeEntryImpactTier()
     {
-        return attr(traderNode_, "entryImpactTier", "high");
+        return attr(newsLaneNode_, "entryImpactTier", "high");
     }
 
     /**
@@ -385,7 +391,7 @@ public final class Config
      */
     public int tradeEntryMaxNewsAgeInMin()
     {
-        return intAttr(traderNode_, "entryMaxNewsAgeInMin", 5);
+        return intAttr(newsLaneNode_, "entryMaxNewsAgeInMin", 5);
     }
 
     /**
@@ -408,18 +414,18 @@ public final class Config
     /** Margin committed per trade in USD (paper and live alike); exposure is this times {@link #tradeLeverage()}. */
     public double tradeNotionalInUsd()
     {
-        return doubleAttr(traderNode_, "notionalInUsd", 1000.0);
+        return doubleAttr(newsLaneNode_, "notionalInUsd", 1000.0);
     }
 
     public double tradeLeverage()
     {
-        return doubleAttr(traderNode_, "leverage", 2.0);
+        return doubleAttr(newsLaneNode_, "leverage", 2.0);
     }
 
     /** Initial stop distance from entry, in percent (the trailing stop ratchets from here). */
     public double tradeStopLossInPct()
     {
-        return doubleAttr(traderNode_, "stopLossInPct", 1.0);
+        return doubleAttr(newsLaneNode_, "stopLossInPct", 1.0);
     }
 
     /** Trailing-stop distance behind the best price, in percent. */
@@ -488,7 +494,7 @@ public final class Config
      */
     public boolean fastMoveTrade()
     {
-        return boolAttr(fastMoveNode_, "trade", false);
+        return boolAttr(fastLaneNode_, "trade", false);
     }
 
     /** How often the detector samples the live price into its rolling buffer. */
@@ -500,7 +506,7 @@ public final class Config
     /** Whether a confirmed opposite-direction fire closes an open momentum position at market (reversal exit). */
     public boolean fastMoveReversalExit()
     {
-        return boolAttr(fastMoveNode_, "reversalExit", true);
+        return boolAttr(fastLaneNode_, "reversalExit", true);
     }
 
     /**
@@ -510,7 +516,7 @@ public final class Config
      */
     public String fastMoveMinConviction()
     {
-        return attr(fastMoveNode_, "minConviction", "full");
+        return attr(fastLaneNode_, "minConviction", "full");
     }
 
     /**
@@ -563,12 +569,12 @@ public final class Config
     /** Margin per FastMove trade in USD (deliberately smaller than the news trader's by default). */
     public double fastMoveNotionalInUsd()
     {
-        return doubleAttr(fastMoveNode_, "notionalInUsd", 150.0);
+        return doubleAttr(fastLaneNode_, "notionalInUsd", 150.0);
     }
 
     public double fastMoveLeverage()
     {
-        return doubleAttr(fastMoveNode_, "leverage", 3.0);
+        return doubleAttr(fastLaneNode_, "leverage", 3.0);
     }
 
     /**
@@ -579,7 +585,7 @@ public final class Config
      */
     public double fastMoveStopLossInPct()
     {
-        return doubleAttr(fastMoveNode_, "stopLossInPct", 1.0);
+        return doubleAttr(fastLaneNode_, "stopLossInPct", 1.0);
     }
 
     // == Helpers ===============================================================

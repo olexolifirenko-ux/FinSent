@@ -15,7 +15,6 @@ import com.finsent.analyse.claude.PromptBuilder;
 import com.finsent.analyse.signal.EconEventSignals;
 import com.finsent.analyse.signal.FundingSignals;
 import com.finsent.analyse.signal.MacroSignals;
-import com.finsent.analyse.signal.MacroTrend;
 import com.finsent.analyse.signal.OptionsSignals;
 import com.finsent.collect.FSCollector;
 import com.finsent.core.Json;
@@ -23,27 +22,17 @@ import com.finsent.core.Times;
 
 /**
  * Reads the collector-owned context an analysis window needs (ports the Python {@code _load_*}
- * helpers): the rolling macro trend, the mechanical options signal, the previous macro snapshot,
- * the per-article pre-publication OHLC windows, and the window's BTC price. Pure with respect to the
- * collector's in-memory registries &mdash; it only reads them.
+ * helpers): the mechanical regime + options + funding signals, the per-article pre-publication OHLC
+ * windows, and the window's BTC price. Pure with respect to the collector's in-memory registries
+ * &mdash; it only reads them.
  */
 public final class WindowContext
 {
-    private static final int MACRO_TREND_LOOKBACK = 6; // windows (~1h at 10-min cadence)
     private static final int OPTIONS_DELTA_WINDOWS = 3;
     private static final int FUNDING_LOOKBACK = 6; // windows (~1h) for the OI build/unwind + price move
 
     private WindowContext()
     {
-    }
-
-    /**
-     * Rolling macro trend over the last {@value #MACRO_TREND_LOOKBACK} windows, crossing midnight
-     * into the previous trading day when needed, oldest-first into {@link MacroTrend}.
-     */
-    public static ObjectNode macroTrend(FSCollector collector, String day, String key, int windowMinutes)
-    {
-        return MacroTrend.of(macroSnapshots(collector, day, key, windowMinutes));
     }
 
     /**
@@ -111,19 +100,21 @@ public final class WindowContext
     }
 
     /**
-     * Assemble the window's {@link MarketContext} in one read of the collector: the mechanical regime,
-     * options, funding, macro-trend and price-context signals, plus the formatted {@code {market_signals}}
-     * block. The single place all three Claude paths (news deep analysis, econ, macro alert) build the
-     * context they judge against -- so they stay consistent and read the collector once.
+     * Assemble the window's {@link MarketContext} in one read of the collector: the mechanical regime
+     * (carried for the stored record/notifications, not shown to the model), the options + funding signals,
+     * the price context, and the formatted {@code {market_signals}} block. The single place the Claude paths
+     * (news deep analysis, econ) build the context they judge against -- so they stay consistent and read
+     * the collector once. The block intentionally omits macro regime/trend (see {@link PromptBuilder#marketSignals}).
      */
     public static MarketContext marketContext(FSCollector collector, String day, String key, int windowMinutes)
     {
         ObjectNode regime = MacroSignals.regime(collector.macro().get(day, key));
         ObjectNode options = optionsSignal(collector, day, key, windowMinutes);
         ObjectNode funding = fundingSignal(collector, day, key, windowMinutes);
-        ObjectNode trend = macroTrend(collector, day, key, windowMinutes);
         ObjectNode price = collector.price().get(day, key);
-        String block = PromptBuilder.marketSignals(regime, options, funding, trend, price);
+        // regime is still carried in the returned context (for the stored record/notifications), but it is
+        // deliberately NOT passed into the prompt block -- the deep pass must not be tinted by macro mood.
+        String block = PromptBuilder.marketSignals(options, funding, price);
         return new MarketContext(regime, options, funding, price, block);
     }
 
@@ -202,50 +193,6 @@ public final class WindowContext
         return found ? price : null;
     }
 
-
-    /** Collect up to lookback+1 macro snapshots backward from {@code key}, oldest-first. */
-    private static List<ObjectNode> macroSnapshots(FSCollector collector, String day, String key, int windowMinutes)
-    {
-        List<ObjectNode> newestFirst = new ArrayList<>();
-        String prevTradingDay = Intervals.prevTradingDay(day);
-        int current = Intervals.parseMinutes(key);
-        boolean stop = false;
-        for (int i = 0; i <= MACRO_TREND_LOOKBACK && !stop; i++)
-        {
-            int offset = current - i * windowMinutes;
-            ObjectNode snap = snapshotAt(collector, day, prevTradingDay, offset);
-            if (snap != null && snap.path("yahoo").size() > 0)
-            {
-                newestFirst.add(snap);
-            }
-            else if (i > 0)
-            {
-                stop = true; // gap in history (a missing current window is tolerated)
-            }
-            else if (offset < 0)
-            {
-                stop = true; // cannot cross midnight (weekend/Monday gap)
-            }
-        }
-        List<ObjectNode> oldestFirst = new ArrayList<>(newestFirst);
-        java.util.Collections.reverse(oldestFirst);
-        return oldestFirst;
-    }
-
-    /** The macro snapshot at {@code offsetMinutes} before midnight-of-day, crossing days as needed. */
-    private static ObjectNode snapshotAt(FSCollector collector, String day, String prevTradingDay, int offsetMinutes)
-    {
-        ObjectNode snap = null;
-        if (offsetMinutes >= 0)
-        {
-            snap = collector.macro().get(day, Intervals.formatKey(offsetMinutes));
-        }
-        else if (prevTradingDay != null)
-        {
-            snap = collector.macro().get(prevTradingDay, Intervals.formatKey(24 * 60 + offsetMinutes));
-        }
-        return snap;
-    }
 
     /** Options snapshot three windows back on the same day, or {@code null} when that wraps past midnight. */
     private static ObjectNode previousOptions(FSCollector collector, String day, String key, int windowMinutes)

@@ -13,15 +13,14 @@ import org.junit.Test;
 
 import com.finsent.analyse.signal.EconEventSignals;
 import com.finsent.analyse.signal.FundingSignals;
-import com.finsent.analyse.signal.MacroSignals;
-import com.finsent.analyse.signal.MacroTrend;
 import com.finsent.core.Json;
 
 /**
  * Byte-match of {@link PromptBuilder}'s blocks against Python {@code analyse.build_screener_prompt}
  * / {@code build_claude_prompt}: the article-line layout (source | pub | title, indented
  * description, per-article pre_trend, blank-line separators), the 1-based / offset id maps, and the
- * {@code market_signals} formatting (regime detail, options parts, macro-trend line).
+ * {@code market_signals} formatting (price-context, options parts, funding/positioning -- and that it
+ * carries no macro regime/trend line).
  */
 public class PromptBuilder_utest
 {
@@ -121,59 +120,25 @@ public class PromptBuilder_utest
     }
 
     @Test
-    public void marketSignalsNeutralIsRegimeOnly()
-    {
-        ObjectNode regime = MacroSignals.regime(macroSnap(0, 0, 0));
-        assertEquals("macro_regime: neutral", PromptBuilder.marketSignals(regime, null, null, null, null));
-    }
-
-    @Test
-    public void marketSignalsOmitsRegimeWhenMacroAbsent()
-    {
-        // No macro snapshot (e.g. macro collection disabled) must NOT fabricate a "neutral" regime line.
-        ObjectNode regime = MacroSignals.regime(Json.newObject());
-        assertEquals("", PromptBuilder.marketSignals(regime, null, null, null, null));
-    }
-
-    @Test
     public void marketSignalsLeadsWithPriceContext()
     {
-        ObjectNode regime = MacroSignals.regime(macroSnap(0, 0, 0));
-
-        String block = PromptBuilder.marketSignals(regime, null, null, null, priceCtx(67432.10, 0.8, -3.4, 0.12));
-
-        assertEquals(""
-                + "btc_price: $67432.10 | 1h +0.80% | 24h -3.40% (near 24h low)\n"
-                + "macro_regime: neutral", block);
+        String block = PromptBuilder.marketSignals(null, null, priceCtx(67432.10, 0.8, -3.4, 0.12));
+        assertEquals("btc_price: $67432.10 | 1h +0.80% | 24h -3.40% (near 24h low)", block);
     }
 
     @Test
-    public void marketSignalsFoldsRegimeDetailOptionsAndTrend()
+    public void marketSignalsFoldsOptionsLine()
     {
-        ObjectNode regime = MacroSignals.regime(macroSnap(6.0, 0.4, -0.6)); // VIX/DXY/SP500 breach -> risk_off
-        ObjectNode options = optionsSignal();
-        ObjectNode macroTrend = MacroTrend.of(List.of(vix(1), vix(2), vix(3), vix(4), vix(5)));
-
-        String block = PromptBuilder.marketSignals(regime, options, null, macroTrend, null);
-
-        assertEquals(""
-                + "macro_regime: risk_off\n"
-                + "macro_detail: 3/5 indicators (VIX↑, DXY↑, SP500↓)\n"
-                + "options: braced (IV 88%, rising)\n"
-                + "macro_trend: risk_off sustained (VIX rising 4w +4.0%)", block);
+        String block = PromptBuilder.marketSignals(optionsSignal(), null, null);
+        assertEquals("options: braced (IV 88%, rising)", block);
     }
 
     @Test
     public void marketSignalsIncludesFundingLine()
     {
-        ObjectNode regime = MacroSignals.regime(macroSnap(0, 0, 0));
         ObjectNode funding = FundingSignals.signal(funding(0.00038));
-
-        String block = PromptBuilder.marketSignals(regime, null, funding, null, null);
-
-        assertEquals(""
-                + "macro_regime: neutral\n"
-                + "positioning: crowded_long (funding +0.038%)", block);
+        String block = PromptBuilder.marketSignals(null, funding, null);
+        assertEquals("positioning: crowded_long (funding +0.038%)", block);
     }
 
     @Test
@@ -185,10 +150,22 @@ public class PromptBuilder_utest
         prior.put("open_interest", 100.0);
         ObjectNode funding = FundingSignals.signal(current, prior, 1.2); // OI +5% into a rising price
 
-        // No macro snapshot -> no regime line; positioning carries the OI delta and the fused setup.
-        String block = PromptBuilder.marketSignals(MacroSignals.regime(Json.newObject()), null, funding, null, null);
+        String block = PromptBuilder.marketSignals(null, funding, null);
 
         assertEquals("positioning: crowded_long (funding +0.038%) | OI +5.0%/1h building -> down_cascade_fuel", block);
+    }
+
+    @Test
+    public void marketSignalsCarriesNoMacroLine()
+    {
+        // Even with options + funding + price present, the block carries no macro regime/detail/trend line:
+        // the deep pass must never be tinted by macro mood.
+        ObjectNode funding = FundingSignals.signal(funding(0.00038));
+        String block = PromptBuilder.marketSignals(optionsSignal(), funding, priceCtx(67432.10, 0.8, -3.4, 0.12));
+        assertEquals(""
+                + "btc_price: $67432.10 | 1h +0.80% | 24h -3.40% (near 24h low)\n"
+                + "options: braced (IV 88%, rising)\n"
+                + "positioning: crowded_long (funding +0.038%)", block);
     }
 
     private static ObjectNode funding(double rate)
@@ -210,33 +187,6 @@ public class PromptBuilder_utest
         options.put("near_atm_iv", 88.0);
         options.put("priced_in", "braced");
         return options;
-    }
-
-    private static ObjectNode macroSnap(double vix, double dxy, double sp500)
-    {
-        ObjectNode yahoo = Json.newObject();
-        yahoo.set("VIX", changePct(vix));
-        yahoo.set("DXY", changePct(dxy));
-        yahoo.set("SP500", changePct(sp500));
-        ObjectNode snap = Json.newObject();
-        snap.set("yahoo", yahoo);
-        return snap;
-    }
-
-    private static ObjectNode vix(double changePct)
-    {
-        ObjectNode yahoo = Json.newObject();
-        yahoo.set("VIX", changePct(changePct));
-        ObjectNode snap = Json.newObject();
-        snap.set("yahoo", yahoo);
-        return snap;
-    }
-
-    private static ObjectNode changePct(double value)
-    {
-        ObjectNode indicator = Json.newObject();
-        indicator.put("change_pct", value);
-        return indicator;
     }
 
     private static ObjectNode article(int id, String src, String pub, String title, String desc)

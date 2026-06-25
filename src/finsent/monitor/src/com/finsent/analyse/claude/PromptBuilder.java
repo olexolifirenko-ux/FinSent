@@ -2,7 +2,6 @@ package com.finsent.analyse.claude;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -28,7 +27,6 @@ public final class PromptBuilder
     // description (RSS caps it at 500 on collection) -- richer context for the directional call.
     private static final int DEEP_DESC_MAX = 500;
     private static final int PUB_PREFIX_LEN = 16; // "YYYY-MM-DDTHH:MM"
-    private static final int TREND_STREAK_MIN = 2;
 
     private PromptBuilder()
     {
@@ -153,13 +151,14 @@ public final class PromptBuilder
 
     /**
      * The {@code {market_signals}} block: a leading BTC price-context line (when the window's price
-     * snapshot is available), the macro regime (with the breaching-indicator detail), an
-     * options priced-in (complacency) line, a funding-positioning line, and a macro-trend line &mdash;
-     * each emitted only when its signal is present. {@code optionsSignal} / {@code fundingSignal} /
-     * {@code macroTrend} / {@code priceContext} may be null.
+     * snapshot is available), an options priced-in (complacency) line, and a funding-positioning line
+     * &mdash; each emitted only when its signal is present. {@code optionsSignal} / {@code fundingSignal} /
+     * {@code priceContext} may be null. Deliberately carries NO macro-regime / macro-trend line: the deep
+     * pass is a per-item event detector, and an ambient macro mood would tint the fact/new/channel
+     * judgment (and corrupt the already-priced read) without adding precision the positioning and
+     * pre_trend signals do not already provide. Broad market-state lives in the mechanical price lane.
      */
-    public static String marketSignals(ObjectNode regime, ObjectNode optionsSignal, ObjectNode fundingSignal,
-                                       ObjectNode macroTrend, ObjectNode priceContext)
+    public static String marketSignals(ObjectNode optionsSignal, ObjectNode fundingSignal, ObjectNode priceContext)
     {
         List<String> lines = new ArrayList<>();
         String price = priceContextLine(priceContext);
@@ -167,10 +166,8 @@ public final class PromptBuilder
         {
             lines.add(price);
         }
-        appendRegimeLines(lines, regime);
         appendOptionsLine(lines, optionsSignal);
         appendFundingLine(lines, fundingSignal);
-        appendMacroTrendLine(lines, macroTrend);
         return String.join("\n", lines);
     }
 
@@ -243,24 +240,6 @@ public final class PromptBuilder
         }
     }
 
-    private static void appendRegimeLines(List<String> lines, ObjectNode regime)
-    {
-        // Only emit the regime when a macro snapshot was actually read; otherwise the line would assert
-        // a fabricated "neutral" from no data (e.g. with macro collection disabled), misleading the model.
-        if (regime.path("has_data").asBoolean())
-        {
-            String name = regime.path("regime").asText();
-            JsonNode triggered = regime.path("triggered");
-            lines.add("macro_regime: " + name);
-            boolean detailed = (name.equals("risk_off") || name.equals("risk_on") || name.equals("mixed"))
-                    && triggered.size() > 0;
-            if (detailed)
-            {
-                lines.add("macro_detail: " + triggered.size() + "/5 indicators (" + joinNode(triggered) + ")");
-            }
-        }
-    }
-
     private static void appendOptionsLine(List<String> lines, ObjectNode options)
     {
         String pricedIn = options == null ? "" : options.path("priced_in").asText("");
@@ -287,52 +266,6 @@ public final class PromptBuilder
             parts.add(trend.asText());
         }
         return parts.isEmpty() ? "" : " (" + String.join(", ", parts) + ")";
-    }
-
-    private static void appendMacroTrendLine(List<String> lines, ObjectNode macroTrend)
-    {
-        boolean active = macroTrend != null && (macroTrend.path("sustained").asBoolean()
-                || !macroTrend.path("net_trend").asText("flat").equals("flat"));
-        if (active)
-        {
-            List<String> parts = trendingParts(macroTrend.path("indicators"));
-            if (!parts.isEmpty())
-            {
-                String sustainedTag = macroTrend.path("sustained").asBoolean() ? " sustained" : "";
-                lines.add("macro_trend: " + macroTrend.path("net_trend").asText() + sustainedTag
-                        + " (" + String.join(", ", parts) + ")");
-            }
-        }
-    }
-
-    private static List<String> trendingParts(JsonNode indicators)
-    {
-        List<String> parts = new ArrayList<>();
-        Iterator<Map.Entry<String, JsonNode>> fields = indicators.fields();
-        while (fields.hasNext())
-        {
-            Map.Entry<String, JsonNode> entry = fields.next();
-            JsonNode info = entry.getValue();
-            boolean trending = !info.path("direction").asText().equals("flat")
-                    && info.path("streak").asInt() >= TREND_STREAK_MIN;
-            if (trending)
-            {
-                parts.add(entry.getKey() + " " + info.path("direction").asText() + " "
-                        + info.path("streak").asInt() + "w "
-                        + String.format(Locale.ROOT, "%+.1f%%", info.path("cumulative_delta").asDouble()));
-            }
-        }
-        return parts;
-    }
-
-    private static String joinNode(JsonNode array)
-    {
-        List<String> values = new ArrayList<>();
-        for (JsonNode element : array)
-        {
-            values.add(element.asText());
-        }
-        return String.join(", ", values);
     }
 
     /** The article's source name (Python {@code (a.get("source") or {}).get("name", "")}). */

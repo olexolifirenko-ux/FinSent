@@ -34,6 +34,7 @@ import com.finsent.collect.CollectionResult;
 import com.finsent.collect.FSCollector;
 import com.finsent.core.Config;
 import com.finsent.core.Json;
+import com.finsent.core.event.EventBus;
 import com.finsent.core.io.PersistenceService;
 import com.finsent.core.registry.ArticleRegistry;
 import com.finsent.util.xml.XMLData;
@@ -52,6 +53,7 @@ public class FSAnalyser_utest
     private static final Instant NOW = Instant.parse("2026-06-04T08:05:00Z");
 
     private Path dir_;
+    private EventBus bus_;
     private FSCollector collector_;
     private AnalysisStore store_;
     private Notifier notifier_;
@@ -62,7 +64,8 @@ public class FSAnalyser_utest
     {
         dir_ = Files.createTempDirectory("fs-analyser-utest");
         Config config = config();
-        collector_ = new FSCollector(config, dir_);
+        bus_ = new EventBus();
+        collector_ = new FSCollector(config, dir_, bus_);
         store_ = new AnalysisStore(dir_);
         notifier_ = new Notifier(new TelegramNotifier("", "", "https://api.telegram.org"),
                 new EmailNotifier(null, "", ""), "high", 60);
@@ -78,6 +81,7 @@ public class FSAnalyser_utest
         notifier_.shutdown();
         store_.shutdown();
         collector_.shutdown();
+        bus_.shutdown();
         try (Stream<Path> paths = Files.walk(dir_))
         {
             paths.sorted(Comparator.reverseOrder()).forEach(FSAnalyser_utest::deleteQuietly);
@@ -113,7 +117,7 @@ public class FSAnalyser_utest
     {
         AtomicReference<AnalysisReady> received = new AtomicReference<>();
         CountDownLatch delivered = new CountDownLatch(1);
-        collector_.subscribe(AnalysisReady.class, signal ->
+        bus_.subscribe(AnalysisReady.class, signal ->
         {
             received.set(signal);
             delivered.countDown();
@@ -222,7 +226,7 @@ public class FSAnalyser_utest
         // notify=false (anal window / backfill default) -> record-only: no AnalysisReady, so no trade entry.
         seedDayWithOneArticle();
         CountDownLatch delivered = new CountDownLatch(1);
-        collector_.subscribe(AnalysisReady.class, signal -> delivered.countDown());
+        bus_.subscribe(AnalysisReady.class, signal -> delivered.countDown());
 
         analyser(resonantClient()).reanalyse(DAY, KEY, false);
 
@@ -236,7 +240,7 @@ public class FSAnalyser_utest
         // notify=true (anal window -notify) -> the trader is fed, same as the live path.
         seedDayWithOneArticle();
         CountDownLatch delivered = new CountDownLatch(1);
-        collector_.subscribe(AnalysisReady.class, signal -> delivered.countDown());
+        bus_.subscribe(AnalysisReady.class, signal -> delivered.countDown());
 
         analyser(resonantClient()).reanalyse(DAY, KEY, true);
 
@@ -348,7 +352,7 @@ public class FSAnalyser_utest
 
     private FSAnalyser analyser(IClaudeClient client) throws IOException
     {
-        analyser_ = new FSAnalyser(collector_, store_, client, notifier_, config(), promptsDir(), true);
+        analyser_ = new FSAnalyser(collector_, bus_, store_, client, notifier_, config(), promptsDir(), true);
         return analyser_;
     }
 

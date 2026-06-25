@@ -27,6 +27,7 @@ import org.junit.Test;
 import com.finsent.collect.source.IArticleSource;
 import com.finsent.core.Config;
 import com.finsent.core.Json;
+import com.finsent.core.event.EventBus;
 import com.finsent.util.xml.XMLData;
 
 /**
@@ -45,6 +46,7 @@ public class FSCollector_utest
 
     private Path dir_;
     private Config config_;
+    private EventBus bus_;
     private final List<FSCollector> created_ = new ArrayList<>();
 
     @Before
@@ -53,12 +55,14 @@ public class FSCollector_utest
         dir_ = Files.createTempDirectory("fs-collector-utest");
         config_ = new Config(XMLData.valueOf(
                 "<FSSatellite><FSCollector analysisNewsWindow=\"10m\" articleMaxAge=\"48h\"/></FSSatellite>"));
+        bus_ = new EventBus();
     }
 
     @After
     public void tearDown() throws IOException
     {
         created_.forEach(FSCollector::shutdown);
+        bus_.shutdown();
         try (Stream<Path> paths = Files.walk(dir_))
         {
             paths.sorted(Comparator.reverseOrder()).forEach(FSCollector_utest::deleteQuietly);
@@ -156,7 +160,7 @@ public class FSCollector_utest
                 source("srcA", article("A1", "http://a/1", "2026-05-29T12:01:00Z")));
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<CollectionResult> received = new AtomicReference<>();
-        collector.addListener(result ->
+        bus_.subscribe(CollectionResult.class,result ->
         {
             received.set(result);
             latch.countDown();
@@ -176,7 +180,7 @@ public class FSCollector_utest
                 source("rss", article("SEC charges exchange", "http://a/1", "2026-05-29T12:01:00Z")));
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<CollectionResult> received = new AtomicReference<>();
-        collector.addListener(result ->
+        bus_.subscribe(CollectionResult.class,result ->
         {
             received.set(result);
             latch.countDown();
@@ -198,7 +202,7 @@ public class FSCollector_utest
                 source("rss", article("Bitcoin trades sideways", "http://a/2", "2026-05-29T12:02:00Z")));
         AtomicReference<CollectionResult> received = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
-        collector.addListener(result -> { received.set(result); latch.countDown(); });
+        bus_.subscribe(CollectionResult.class,result -> { received.set(result); latch.countDown(); });
 
         collector.collectUrgent(NOW);
 
@@ -215,7 +219,7 @@ public class FSCollector_utest
                 source("srcA", article("Late headline", "http://a/late", "2026-05-29T11:52:00Z")));
         AtomicReference<CollectionResult> withArticle = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
-        collector.addListener(result ->
+        bus_.subscribe(CollectionResult.class,result ->
         {
             if (!result.windowArticles().isEmpty()) { withArticle.set(result); latch.countDown(); }
         });
@@ -237,7 +241,7 @@ public class FSCollector_utest
                 source("srcA", article("Same story", "http://x/1", "2026-05-29T11:51:00Z")),
                 source("srcB", article("Same story", "http://x/1", "2026-05-29T11:51:00Z")));
         AtomicInteger windowPublishes = new AtomicInteger();
-        collector.addListener(result -> { if (!result.windowArticles().isEmpty()) { windowPublishes.incrementAndGet(); } });
+        bus_.subscribe(CollectionResult.class,result -> { if (!result.windowArticles().isEmpty()) { windowPublishes.incrementAndGet(); } });
 
         collector.collect(NOW); // stored once -> the 11:50 window publishes once
         collector.collect(NOW); // re-delivered duplicate -> deduped, must NOT re-publish 11:50
@@ -258,7 +262,7 @@ public class FSCollector_utest
 
     private FSCollector build(List<IArticleSource> sources, List<IArticleSource> urgentSources)
     {
-        FSCollector collector = new FSCollector(config_, dir_, sources, urgentSources, null, null, null, null, null);
+        FSCollector collector = new FSCollector(config_, dir_, bus_, sources, urgentSources, null, null, null, null, null);
         created_.add(collector);
         return collector;
     }

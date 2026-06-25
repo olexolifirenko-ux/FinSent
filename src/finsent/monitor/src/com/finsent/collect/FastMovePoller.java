@@ -16,6 +16,7 @@ import com.finsent.core.Config;
 import com.finsent.core.FastMoveWindow;
 import com.finsent.core.Num;
 import com.finsent.core.Times;
+import com.finsent.core.event.EventPublisher;
 import com.finsent.util.GlobalSystem;
 import com.finsent.util.IUninitializer;
 
@@ -38,6 +39,7 @@ public final class FastMovePoller implements IUninitializer
     private static final int RETENTION_MARGIN_MIN = 5;
 
     private final FSCollector collector_;
+    private final EventPublisher publisher_;
     private final long pollMillis_;
     private final int windowMinutes_;
     private final List<FastMoveWindow> windows_;
@@ -57,9 +59,10 @@ public final class FastMovePoller implements IUninitializer
     private long lastFireMillis_;
     private boolean compressionFlagged_;
 
-    public FastMovePoller(FSCollector collector)
+    public FastMovePoller(FSCollector collector, EventPublisher publisher)
     {
         collector_ = collector;
+        publisher_ = publisher;
         Config config = collector.config();
         pollMillis_ = config.fastMovePollInSec() * 1000L;
         windowMinutes_ = config.windowMinutes();
@@ -186,7 +189,7 @@ public final class FastMovePoller implements IUninitializer
         ObjectNode positioning = positioningAt(day, now, fire.magnitudePct());
         Conviction conviction = conviction(positioning);
         String setup = positioning == null ? "" : positioning.path("setup").asText("");
-        collector_.publish(new FastMoveReady(day, key, fire.direction(), conviction, price, fire.magnitudePct(),
+        publisher_.publish(new FastMoveReady(day, key, fire.direction(), conviction, price, fire.magnitudePct(),
                 fire.r2(), fire.spanMinutes(), setup, now));
         GlobalSystem.info().writes(NAME, "FASTMOVE " + fire.direction() + " " + Num.round(fire.magnitudePct(), 2)
                 + "% (" + fire.spanMinutes() + "m, r2=" + Num.round(fire.r2(), 2) + ") conviction=" + conviction.label()

@@ -42,6 +42,7 @@ import com.finsent.collect.FSCollector;
 import com.finsent.core.Config;
 import com.finsent.core.Json;
 import com.finsent.core.Times;
+import com.finsent.core.event.EventPublisher;
 import com.finsent.core.event.IEventListener;
 import com.finsent.directory.DirectorySystem;
 import com.finsent.feedback.FeedbackPriceCache;
@@ -82,6 +83,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     private static final int MAX_BACKFILL_SCAN = 100_000; // safety net against a runaway scan range
 
     private final FSCollector collector_;
+    private final EventPublisher publisher_;
     private final AnalysisStore store_;
     private final ScreenerPass screener_;
     private final DeepAnalysisPass deep_;
@@ -108,17 +110,18 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     private final AtomicBoolean feedbackRunning_ = new AtomicBoolean(false);
 
     /** Production wiring: build the store, Claude client/passes and notifier from config. */
-    public FSAnalyser(FSCollector collector, Config config, boolean startPaused)
+    public FSAnalyser(FSCollector collector, Config config, EventPublisher publisher, boolean startPaused)
     {
-        this(collector, buildStore(config), buildClaudeClient(config),
+        this(collector, publisher, buildStore(config), buildClaudeClient(config),
                 buildNotifier(config), config, DirectorySystem.resolveToFile(config.promptsDir()), startPaused);
     }
 
     /** Injecting constructor: store, Claude client and notifier supplied directly (used by tests). */
-    FSAnalyser(FSCollector collector, AnalysisStore store, IClaudeClient claudeClient, Notifier notifier,
-               Config config, File promptsDir, boolean startPaused)
+    FSAnalyser(FSCollector collector, EventPublisher publisher, AnalysisStore store, IClaudeClient claudeClient,
+               Notifier notifier, Config config, File promptsDir, boolean startPaused)
     {
         collector_ = collector;
+        publisher_ = publisher;
         store_ = store;
         screener_ = new ScreenerPass(claudeClient, config.claudeScreenerModel(), config.screenerThreshold());
         deep_ = new DeepAnalysisPass(claudeClient, config.claudeDeepAnalModel(), config.claudeDeepEffort());
@@ -811,7 +814,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
     {
         JsonNode anchor = prediction.path("btc_at_prediction");
         Double anchorPrice = anchor.isNumber() ? anchor.asDouble() : null;
-        collector_.publish(new AnalysisReady(day, key, "news", prediction.path("direction").asText(""),
+        publisher_.publish(new AnalysisReady(day, key, "news", prediction.path("direction").asText(""),
                 prediction.path("impact_tier").asText(""), anchorPrice, newestResonantAt(resonant), now));
     }
 

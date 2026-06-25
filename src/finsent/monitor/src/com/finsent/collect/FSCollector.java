@@ -26,8 +26,7 @@ import com.finsent.core.Config;
 import com.finsent.core.Json;
 import com.finsent.core.Num;
 import com.finsent.core.Times;
-import com.finsent.core.event.EventBus;
-import com.finsent.core.event.IEventListener;
+import com.finsent.core.event.EventPublisher;
 import com.finsent.core.io.DataStream;
 import com.finsent.core.io.LoadedDay;
 import com.finsent.core.io.PersistenceService;
@@ -39,15 +38,16 @@ import com.finsent.core.registry.OhlcRegistry;
 import com.finsent.util.GlobalSystem;
 
 /**
- * Singleton collector component: it fetches articles + market context, stores them, and is the
- * <b>subject</b> the analyser observes. It owns the in-memory registries (articles, macro, options,
- * OHLC), the persistence boundary ({@link PersistenceService}, created for the given data dir), the
- * article sources + market-data fetchers, and a private {@link EventBus} used only to deliver each
- * cycle's {@link CollectionResult} to subscribers. {@link #collect(Instant)} runs one boundary
- * cycle &mdash; ensure the interval's context snapshots, fetch + filter + store articles, commit
- * the whole cycle as one atomic batch, then publish the result (ports Python {@code
- * collect.run_collect} + {@code ensure_context_stored}). The scheduling thread lives in
- * {@code CollectorRunner}; {@code now} is injected so a cycle is deterministic and testable.
+ * Singleton collector component: it fetches articles + market context, stores them, and emits each
+ * cycle's {@link CollectionResult} (and resolved-econ events) for the analyser to observe. It owns the
+ * in-memory registries (articles, macro, options, OHLC), the persistence boundary
+ * ({@link PersistenceService}, created for the given data dir), and the article sources + market-data
+ * fetchers. It publishes its events on the application-owned event bus through the injected
+ * {@link EventPublisher} -- it does not own the bus (the app does, and wires subscriptions).
+ * {@link #collect(Instant)} runs one boundary cycle &mdash; ensure the interval's context snapshots,
+ * fetch + filter + store articles, commit the whole cycle as one atomic batch, then publish the result
+ * (ports Python {@code collect.run_collect} + {@code ensure_context_stored}). The scheduling thread
+ * lives in {@code CollectorRunner}; {@code now} is injected so a cycle is deterministic and testable.
  */
 public final class FSCollector
 {
@@ -59,7 +59,7 @@ public final class FSCollector
 
     private final Config config_;
     private final PersistenceService persistence_;
-    private final EventBus eventBus_;
+    private final EventPublisher publisher_;
     private final ArticleRegistry articles_;
     private final IntervalSnapshotRegistry macro_;
     private final IntervalSnapshotRegistry options_;
@@ -84,10 +84,10 @@ public final class FSCollector
     // the snapshot present and reads it rather than re-fetching.
     private final Object contextLock_ = new Object();
 
-    /** Production wiring: build the sources and fetchers from config. */
-    public FSCollector(Config config, Path dataDir)
+    /** Production wiring: build the sources and fetchers from config; publish events on the app-owned bus. */
+    public FSCollector(Config config, Path dataDir, EventPublisher publisher)
     {
-        this(config, dataDir, ArticleSources.fromConfig(config),
+        this(config, dataDir, publisher, ArticleSources.fromConfig(config),
                 ArticleSources.urgentSourcesFromConfig(config),
                 new MacroFetcher(config.yahooChartBaseUrl()),
                 new OptionsFetcher(config.deribitBaseUrl()),
@@ -97,13 +97,13 @@ public final class FSCollector
     }
 
     /** Injecting constructor: collaborators supplied directly (used by tests). */
-    FSCollector(Config config, Path dataDir, List<IArticleSource> sources, List<IArticleSource> urgentSources,
-            MacroFetcher macroFetcher, OptionsFetcher optionsFetcher, OhlcFetcher ohlcFetcher,
-            FundingFetcher fundingFetcher, EconActuals econActuals)
+    FSCollector(Config config, Path dataDir, EventPublisher publisher, List<IArticleSource> sources,
+            List<IArticleSource> urgentSources, MacroFetcher macroFetcher, OptionsFetcher optionsFetcher,
+            OhlcFetcher ohlcFetcher, FundingFetcher fundingFetcher, EconActuals econActuals)
     {
         config_ = config;
         persistence_ = new PersistenceService(dataDir);
-        eventBus_ = new EventBus();
+        publisher_ = publisher;
         articles_ = new ArticleRegistry();
         macro_ = new IntervalSnapshotRegistry(DataStream.MACRO);
         options_ = new IntervalSnapshotRegistry(DataStream.OPTIONS);
@@ -120,35 +120,6 @@ public final class FSCollector
         ohlcFetcher_ = ohlcFetcher;
         fundingFetcher_ = fundingFetcher;
         econActuals_ = econActuals;
-    }
-
-    /** Subscribe a listener to be notified (asynchronously) with each cycle's {@link CollectionResult}. */
-    public void addListener(IEventListener<CollectionResult> listener)
-    {
-        eventBus_.subscribe(CollectionResult.class, listener);
-    }
-
-    /** Subscribe a listener for {@link EconResolved} events (a freshly-resolved scheduled release, #21). */
-    public void addEconListener(IEventListener<EconResolved> listener)
-    {
-        eventBus_.subscribe(EconResolved.class, listener);
-    }
-
-    /**
-     * Subscribe a listener for events of {@code eventType} on the collector-owned bus. Generic so a
-     * downstream consumer (e.g. the analyser's {@code AnalysisReady}, which the trading module
-     * observes) can subscribe without the collector having to know the event class &mdash; keeping
-     * the collect layer free of any analyse/trade import.
-     */
-    public <E> void subscribe(Class<E> eventType, IEventListener<E> listener)
-    {
-        eventBus_.subscribe(eventType, listener);
-    }
-
-    /** Publish an event on the collector-owned bus (used by the analyser to emit downstream signals). */
-    public void publish(Object event)
-    {
-        eventBus_.publish(event);
     }
 
     /** Turn the X (Twitter) source's polling on/off at runtime; no-op when X is not configured. */
@@ -353,7 +324,7 @@ public final class FSCollector
         if (seen.add(day + " " + key))
         {
             List<ObjectNode> windowArticles = articles_.forInterval(day, key, false, windowMinutes);
-            eventBus_.publish(new CollectionResult(day, key, windowArticles.size(), windowArticles, urgent));
+            publisher_.publish(new CollectionResult(day, key, windowArticles.size(), windowArticles, urgent));
         }
     }
 
@@ -528,7 +499,7 @@ public final class FSCollector
                         + (publish ? " (auto-analysing)" : " (fetch-only)"));
                 if (publish)
                 {
-                    eventBus_.publish(new EconResolved(day,
+                    publisher_.publish(new EconResolved(day,
                             Times.intervalKey(Times.formatUtcIso(event.release()), config_.windowMinutes()), event.name()));
                 }
                 resolved = true;
@@ -731,11 +702,11 @@ public final class FSCollector
         persistence_.flush();
     }
 
-    /** Flush outstanding writes, stop the persistence writer, and stop the event bus (shutdown hook). */
+    /** Flush outstanding writes and stop the persistence writer (shutdown hook). The event bus is owned and
+     * stopped by {@code FSApp}, after the collector and all other producers have stopped. */
     public void shutdown()
     {
         persistence_.shutdown();
-        eventBus_.shutdown();
     }
 
     public Config config()

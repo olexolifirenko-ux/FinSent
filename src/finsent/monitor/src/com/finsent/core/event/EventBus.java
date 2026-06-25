@@ -19,7 +19,7 @@ import com.finsent.util.GlobalSystem;
  * that throws is logged and isolated &mdash; it never stops the dispatch thread or other
  * listeners.
  */
-public final class EventBus
+public final class EventBus implements EventPublisher
 {
     private static final String NAME = "EventBus";
 
@@ -42,6 +42,7 @@ public final class EventBus
     }
 
     /** Publish an event for asynchronous delivery. */
+    @Override
     public void publish(Object event)
     {
         if (running_)

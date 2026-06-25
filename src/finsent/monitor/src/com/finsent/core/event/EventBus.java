@@ -19,7 +19,7 @@ import com.finsent.util.GlobalSystem;
  * that throws is logged and isolated &mdash; it never stops the dispatch thread or other
  * listeners.
  */
-public final class EventBus implements EventPublisher
+public final class EventBus implements IEventPublisher
 {
     private static final String NAME = "EventBus";
 

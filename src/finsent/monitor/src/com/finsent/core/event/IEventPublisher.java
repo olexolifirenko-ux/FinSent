@@ -6,7 +6,7 @@ package com.finsent.core.event;
  * publish but cannot subscribe -- the application owns the bus and wires all subscriptions. Keeps the
  * producers decoupled from the bus's lifecycle and from each other.
  */
-public interface EventPublisher
+public interface IEventPublisher
 {
     /** Publish an event for asynchronous delivery to its registered listeners. */
     void publish(Object event);

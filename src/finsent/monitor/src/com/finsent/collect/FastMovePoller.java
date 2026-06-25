@@ -16,7 +16,7 @@ import com.finsent.core.Config;
 import com.finsent.core.FastMoveWindow;
 import com.finsent.core.Num;
 import com.finsent.core.Times;
-import com.finsent.core.event.EventPublisher;
+import com.finsent.core.event.IEventPublisher;
 import com.finsent.util.GlobalSystem;
 import com.finsent.util.IUninitializer;
 
@@ -39,7 +39,7 @@ public final class FastMovePoller implements IUninitializer
     private static final int RETENTION_MARGIN_MIN = 5;
 
     private final FSCollector collector_;
-    private final EventPublisher publisher_;
+    private final IEventPublisher publisher_;
     private final long pollMillis_;
     private final int windowMinutes_;
     private final List<FastMoveWindow> windows_;
@@ -59,7 +59,7 @@ public final class FastMovePoller implements IUninitializer
     private long lastFireMillis_;
     private boolean compressionFlagged_;
 
-    public FastMovePoller(FSCollector collector, EventPublisher publisher)
+    public FastMovePoller(FSCollector collector, IEventPublisher publisher)
     {
         collector_ = collector;
         publisher_ = publisher;

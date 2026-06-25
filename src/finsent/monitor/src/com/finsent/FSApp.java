@@ -28,7 +28,7 @@ import com.finsent.util.GlobalSystem;
  * {@link AbstractAppInitializer}, this owns the application {@link EventBus} and wires the top-level
  * components onto it:
  * <ol>
- *   <li>the {@link EventBus}: the app owns it and injects an {@link com.finsent.core.event.EventPublisher}
+ *   <li>the {@link EventBus}: the app owns it and injects an {@link com.finsent.core.event.IEventPublisher}
  *       into the producers (collector / analyser / poller); the app wires all subscriptions;</li>
  *   <li>the {@link FSCollector}, which owns collected-data persistence and publishes each cycle's result;</li>
  *   <li>the {@link FSAnalyser} (subscribed to the collector's results), which builds and owns everything it
@@ -77,7 +77,7 @@ public class FSApp extends AbstractAppInitializer
         Config config = Config.fromGlobalSystem();
         Path dataDir = DirectorySystem.resolveToFile(config.dataDir()).toPath();
 
-        // The application owns the event bus; producers get an EventPublisher, the app wires subscriptions.
+        // The application owns the event bus; producers get an IEventPublisher, the app wires subscriptions.
         eventBus_ = new EventBus();
         collector_ = new FSCollector(config, dataDir, eventBus_);
         collector_.recover(config.recoveryLookbackInDays());

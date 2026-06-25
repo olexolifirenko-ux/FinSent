@@ -26,7 +26,7 @@ import com.finsent.core.Config;
 import com.finsent.core.Json;
 import com.finsent.core.Num;
 import com.finsent.core.Times;
-import com.finsent.core.event.EventPublisher;
+import com.finsent.core.event.IEventPublisher;
 import com.finsent.core.io.DataStream;
 import com.finsent.core.io.LoadedDay;
 import com.finsent.core.io.PersistenceService;
@@ -43,7 +43,7 @@ import com.finsent.util.GlobalSystem;
  * in-memory registries (articles, macro, options, OHLC), the persistence boundary
  * ({@link PersistenceService}, created for the given data dir), and the article sources + market-data
  * fetchers. It publishes its events on the application-owned event bus through the injected
- * {@link EventPublisher} -- it does not own the bus (the app does, and wires subscriptions).
+ * {@link IEventPublisher} -- it does not own the bus (the app does, and wires subscriptions).
  * {@link #collect(Instant)} runs one boundary cycle &mdash; ensure the interval's context snapshots,
  * fetch + filter + store articles, commit the whole cycle as one atomic batch, then publish the result
  * (ports Python {@code collect.run_collect} + {@code ensure_context_stored}). The scheduling thread
@@ -59,7 +59,7 @@ public final class FSCollector
 
     private final Config config_;
     private final PersistenceService persistence_;
-    private final EventPublisher publisher_;
+    private final IEventPublisher publisher_;
     private final ArticleRegistry articles_;
     private final IntervalSnapshotRegistry macro_;
     private final IntervalSnapshotRegistry options_;
@@ -85,7 +85,7 @@ public final class FSCollector
     private final Object contextLock_ = new Object();
 
     /** Production wiring: build the sources and fetchers from config; publish events on the app-owned bus. */
-    public FSCollector(Config config, Path dataDir, EventPublisher publisher)
+    public FSCollector(Config config, Path dataDir, IEventPublisher publisher)
     {
         this(config, dataDir, publisher, ArticleSources.fromConfig(config),
                 ArticleSources.urgentSourcesFromConfig(config),
@@ -97,7 +97,7 @@ public final class FSCollector
     }
 
     /** Injecting constructor: collaborators supplied directly (used by tests). */
-    FSCollector(Config config, Path dataDir, EventPublisher publisher, List<IArticleSource> sources,
+    FSCollector(Config config, Path dataDir, IEventPublisher publisher, List<IArticleSource> sources,
             List<IArticleSource> urgentSources, MacroFetcher macroFetcher, OptionsFetcher optionsFetcher,
             OhlcFetcher ohlcFetcher, FundingFetcher fundingFetcher, EconActuals econActuals)
     {

@@ -18,6 +18,7 @@ Full guidelines: `.docs/common/coding-guidelines.md` (read it when making non-tr
 - Constants: `UPPERCASED_WITH_UNDERSCORES`
 - Instance fields: `lowerCamelCase_` (trailing underscore)
 - Static class fields: `UpperCamelCase_` (trailing underscore)
+- Interfaces: prefixed with `I` (e.g. `IBroker`, `IEventListener`, `IEventPublisher`)
 - No `m_`, leading underscores, or Hungarian notation
 - Config attribute names must include measurement suffixes: `timeoutInSec`, `minThresholdInPct`
 

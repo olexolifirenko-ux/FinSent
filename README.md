@@ -258,6 +258,8 @@ until the fresh print lands → compute the surprise → article-less deep pass 
   `anal feedback [--days N]`.
 - **`collect x on | off | status`** — turn the X (Twitter) source's polling on/off live (no restart).
   `collect econ [YYYYMMDD] <event>` — fetch a release's BLS actual on demand (fetch-only).
+- **`fastmove on | off | status`** — turn the FastMove momentum poller's detection on/off live (no
+  restart), or show its state.
 
 ### Feedback / scoring loop (`anal feedback`)
 `OutcomeScorer` scores each stored prediction's direction vs the realized BTC move at +1h/+24h (one
@@ -289,11 +291,13 @@ the `<FSSatellite>` node); `release/cfg/system.xml` holds the log facility.
 `screenerThreshold` (2), `promptsDir`, `notifyMinImpactTier` (high), `newsAgeToNotify` (1h), Telegram +
 SMTP delivery, `<MacroAlertThresholds>`.
 
-### Startup flags (launcher `-D`, both default OFF when absent)
+### Startup flags (launcher `-D`, default OFF when absent)
 - **`-DrunAnalyser`** — `true` runs the analyser at start; `false`/absent starts it **paused** (no Claude
   calls / alerts until `anal on`).
 - **`-DfetchX`** — `true` starts X polling; `false`/absent starts it **off** (no GetXAPI calls until
   `collect x on`).
+- **`-DrunFastMove`** — `true` starts the FastMove momentum poller detecting; `false`/absent starts it
+  **paused** (no fires until `fastmove on`).
 
 ### Secrets (`com.finsent.core.Secrets`)
 `ENV:VAR` (or `$VAR`) values resolve to a real env var first, else the gitignored `release/.env`, else

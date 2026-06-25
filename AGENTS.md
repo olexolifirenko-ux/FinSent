@@ -31,11 +31,11 @@ direction). `FSCollector` collects and never interprets; `FSAnalyser` subscribes
   ```
   Classes compile to `JavaClasses.sun/JavaClasses/{infra,monitor}`, tests to `.../test/monitor`. The
   full suite is ~197 tests; pass several FQCNs to `JUnitCore`, or enumerate every `*_utest.class`.
-- **Run:** launched by `release/bin/FSSatellite.pl`. The analyser and the X source both **start off**
-  (see the `-D` flags below); drive them at runtime with the `anal` and `collect` command groups.
-  Secrets go in `release/.env`.
+- **Run:** launched by `release/bin/FSSatellite.pl`. The analyser, trader, X source, and FastMove poller
+  all **start off** (see the `-D` flags below); drive them at runtime with the `anal`, `trade`, `collect`,
+  and `fastmove` commands. Secrets go in `release/.env`.
 
-### Launcher `-D` flags (both default OFF when absent; positively framed)
+### Launcher `-D` flags (all default OFF when absent; positively framed)
 - **`-DrunAnalyser`** — `true` starts the analyser running; `false`/absent starts it **paused** (no
   Claude calls / alerts until `anal on`). Read by `FSApp` via `Boolean.getBoolean`.
 - **`-DfetchX`** — `true` starts the X (Twitter) source polling; `false`/absent starts it **off**
@@ -43,6 +43,9 @@ direction). `FSCollector` collects and never interprets; `FSAnalyser` subscribes
 - **`-DrunTrader`** — `true` starts the paper trader acting on `AnalysisReady` signals; `false`/absent
   starts it **paused** (no positions opened until `trade on`). Paper only (no real orders). Read by
   `FSApp` via `Boolean.getBoolean`.
+- **`-DrunFastMove`** — `true` starts the FastMove momentum poller detecting; `false`/absent starts it
+  **paused** (no sampling/fires until `fastmove on`). Whether a fire may actually trade is the separate
+  `<FSTrader><FastMoveLane trade>` config. Read by `FSApp` via `Boolean.getBoolean`.
 
 ### Runtime commands
 - **`anal on | off | status`** — turn analysis on/off (resume/pause), show state. `start`/`pause` are
@@ -53,6 +56,8 @@ direction). `FSCollector` collects and never interprets; `FSAnalyser` subscribes
   Also: `collect econ [YYYYMMDD] <event>` (fetch-only BLS catch-up).
 - **`trade on | off | status | flatten`** — turn the paper trader on/off (resume/pause acting on
   signals), show state + open position + today's realized P&L, or close the open position now.
+- **`fastmove on | off | status`** — turn the FastMove momentum poller's detection on/off at runtime
+  (no restart), or show its state. The thread always runs; the toggle gates sampling/firing.
 
 ## Environment gotchas (this workspace)
 - **Run the Gradle build and JUnit runs via PowerShell.** The **Bash** tool works for `git` / `grep` /

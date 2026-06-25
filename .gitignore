@@ -18,6 +18,9 @@
 /release/logs/*
 !/release/logs/.gitkeep
 
+# --- Backtest/replay scratch metadata (build tooling artifact, not pipeline data) ---
+/release/data/_bt_meta.json
+
 # --- Secrets (read by com.finsent.core.Secrets as a fallback to real env vars) ---
 /release/.env
 .env

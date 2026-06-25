@@ -191,7 +191,9 @@
              (smaller) size and its own (wider) initial stop, since a momentum entry fires mid-move; exit
              management (trail / max-hold / profit-grace) and the divergence rail are SHARED with <FSTrader>,
              so they are not repeated here. reversalExit=true closes an open momentum position when a confirmed
-             opposite fire occurs. Rollout: backtest -> enabled=true,trade=false (observe) -> paper -> live
+             opposite fire occurs. minConviction=full opens only on full-conviction (OI-building) fires;
+             reduced fires still publish/log as telemetry but do not trade (the backtest showed reduced fires
+             net-lose). Rollout: backtest -> enabled=true,trade=false (observe) -> paper -> live
              small. Each <Window> carries its own span + the endpoint move (%) that fires it + the regression
              r2 floor that rejects choppy drift; a short span catches flash crashes, a long one catches slow
              grinds; the once-per-move latch means extra windows make detection earlier, not more frequent. -->
@@ -200,6 +202,7 @@
             trade="false"
             pollInSec="15"
             reversalExit="true"
+            minConviction="full"
             cooldownInMin="30"
             oiBuildingPct="0.5"
             oiLookbackInMin="40"

@@ -303,10 +303,45 @@ public class FSTrader_utest
         assertEquals(0, closed().size());
     }
 
-    /** A trader with the momentum lane armed (trade on, reversal-exit on), news+fast params identical. */
+    @Test
+    public void reducedConvictionDoesNotOpenUnderTheFullGate()
+    {
+        FSTrader trader = momentumTrader(); // minConviction = full (default)
+        price_ = 100.0;
+        trader.onFastSignal(fast("bearish", "reduced"), NOW); // below the gate -> telemetry only, no open
+        assertTrue(trader.describe(NOW).contains("Flat"));
+    }
+
+    @Test
+    public void reducedConvictionOpensWhenTheGateIsLowered()
+    {
+        FSTrader trader = new FSTrader(book_, new PaperBroker(), target -> price_, PARAMS, PARAMS, true, true,
+                "reduced", false);
+        price_ = 100.0;
+        trader.onFastSignal(fast("bearish", "reduced"), NOW);
+        assertTrue(trader.describe(NOW).contains("Open SHORT"));
+    }
+
+    @Test
+    public void aReducedOppositeStillTriggersAReversalExit()
+    {
+        // Reversal exits ignore minConviction: a momentum SHORT (opened on full) is closed even by a
+        // confirmed *reduced* opposite -- exiting a turned position is the conservative action.
+        FSTrader trader = momentumTrader();
+        price_ = 100.0;
+        trader.onFastSignal(fast("bearish", "full"), NOW);
+        price_ = 99.0;
+        trader.onFastSignal(fast("bullish", "reduced"), NOW);
+
+        ArrayNode closed = closed();
+        assertEquals(1, closed.size());
+        assertEquals("fastmove_reversal", closed.get(0).path("close_reason").asText());
+    }
+
+    /** A trader with the momentum lane armed (trade on, reversal-exit on, full-only gate), news+fast params identical. */
     private FSTrader momentumTrader()
     {
-        return new FSTrader(book_, new PaperBroker(), target -> price_, PARAMS, PARAMS, true, true, false);
+        return new FSTrader(book_, new PaperBroker(), target -> price_, PARAMS, PARAMS, true, true, "full", false);
     }
 
     private static FastMoveReady fast(String direction, String conviction)

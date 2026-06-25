@@ -504,6 +504,16 @@ public final class Config
     }
 
     /**
+     * Minimum conviction a fire must reach to OPEN a momentum position: {@code full} (default) or
+     * {@code reduced}. Default {@code full} because the backtest showed {@code reduced}-conviction fires
+     * were net losers across days. A below-minimum fire still publishes/logs (alert-only telemetry).
+     */
+    public String fastMoveMinConviction()
+    {
+        return attr(fastMoveNode_, "minConviction", "full");
+    }
+
+    /**
      * The detection windows ({@code <Windows><Window span=.. thresholdPct=.. r2Floor=../></Windows>}):
      * each a lookback span (e.g. {@code "30m"}), the endpoint move (percent) that fires it, and the
      * regression-fit floor that keeps choppy drift from firing. Multiple spans cover spikes through grinds.

@@ -61,6 +61,9 @@ public final class FSTrader implements IUninitializer
     private final boolean fastTrade_;
     // Whether a confirmed opposite-direction FastMove fire closes an open momentum position at market.
     private final boolean reversalExit_;
+    // Minimum conviction a FastMove fire must reach to OPEN ("full"/"reduced"); a lower-conviction fire
+    // still publishes/logs (telemetry) but does not trade. Reversal exits ignore this (any confirmed fire).
+    private final String fastMinConviction_;
     private final AtomicBoolean paused_;
     // Both lanes (news AnalysisReady + momentum FastMoveReady) feed this one queue; the worker dispatches
     // by type and routes both through the single synchronized open()/position_ gate.
@@ -77,7 +80,7 @@ public final class FSTrader implements IUninitializer
         // The live ticker price is always "now", so the PriceSource timestamp is ignored.
         this(buildBook(config), brokerFrom(config, whitebit), priceSourceFrom(config, whitebit, collector),
                 paramsFrom(config), fastParamsFrom(config), config.fastMoveTrade(), config.fastMoveReversalExit(),
-                startPaused);
+                config.fastMoveMinConviction(), startPaused);
     }
 
     /**
@@ -86,12 +89,12 @@ public final class FSTrader implements IUninitializer
      */
     FSTrader(TradeBook book, IBroker broker, PriceSource priceSource, Params params, boolean startPaused)
     {
-        this(book, broker, priceSource, params, params, false, true, startPaused);
+        this(book, broker, priceSource, params, params, false, true, "full", startPaused);
     }
 
-    /** Canonical injecting constructor: both lanes' params and the momentum trade/reversal-exit flags. */
+    /** Canonical injecting constructor: both lanes' params and the momentum trade / reversal / min-conviction. */
     FSTrader(TradeBook book, IBroker broker, PriceSource priceSource, Params params, Params fastParams,
-            boolean fastTrade, boolean reversalExit, boolean startPaused)
+            boolean fastTrade, boolean reversalExit, String fastMinConviction, boolean startPaused)
     {
         book_ = book;
         broker_ = broker;
@@ -100,6 +103,7 @@ public final class FSTrader implements IUninitializer
         fastParams_ = fastParams;
         fastTrade_ = fastTrade;
         reversalExit_ = reversalExit;
+        fastMinConviction_ = fastMinConviction;
         paused_ = new AtomicBoolean(startPaused);
         position_ = book.openPosition(); // adopt a recovered open position, if any
         thread_ = new Thread(this::loop, "FS-Trader");
@@ -401,7 +405,7 @@ public final class FSTrader implements IUninitializer
     private boolean isReversal(FastMoveReady signal, Position open)
     {
         return reversalExit_ && open != null && "momentum".equals(open.source())
-                && fastQualifies(signal) && opposes(signal, open);
+                && confirmedReversal(signal) && opposes(signal, open);
     }
 
     private synchronized void reversalClose(Position expected, double price, Instant now)
@@ -463,11 +467,48 @@ public final class FSTrader implements IUninitializer
         return directional && rank >= minimum && fresh(signal, now);
     }
 
-    /** A FastMove qualifies on direction and a non-{@code skip} conviction (the structural gate already ran). */
+    /**
+     * Whether a FastMove fire is eligible to OPEN: directional and at least the configured minimum
+     * conviction (default {@code full} -- the backtest showed {@code reduced} fires were net losers across
+     * days). A below-minimum fire still published/logged as telemetry; it just does not trade.
+     */
     private boolean fastQualifies(FastMoveReady signal)
     {
-        boolean directional = "bullish".equals(signal.direction()) || "bearish".equals(signal.direction());
-        return directional && !"skip".equals(signal.conviction());
+        return directional(signal) && convictionRank(signal.conviction()) >= convictionRank(fastMinConviction_);
+    }
+
+    /**
+     * Whether a fire is a confirmed (non-{@code skip}) directional move -- the bar for a reversal EXIT,
+     * independent of the entry {@code minConviction}: exiting a position the move turned against is the
+     * conservative action, so any confirmed opposite fire (even {@code reduced}) closes it.
+     */
+    private static boolean confirmedReversal(FastMoveReady signal)
+    {
+        return directional(signal) && !"skip".equals(signal.conviction());
+    }
+
+    private static boolean directional(FastMoveReady signal)
+    {
+        return "bullish".equals(signal.direction()) || "bearish".equals(signal.direction());
+    }
+
+    /** Conviction ordering for the entry gate: full > reduced > skip; an unknown label never qualifies. */
+    private static int convictionRank(String conviction)
+    {
+        int rank = -1;
+        if ("full".equals(conviction))
+        {
+            rank = 2;
+        }
+        else if ("reduced".equals(conviction))
+        {
+            rank = 1;
+        }
+        else if ("skip".equals(conviction))
+        {
+            rank = 0;
+        }
+        return rank;
     }
 
     /**

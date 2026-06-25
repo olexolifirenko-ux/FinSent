@@ -533,32 +533,33 @@
     "prediction_record" : null
   },
   "11:10" : {
-    "analyzed_at" : "2026-06-14T11:25:30Z",
+    "analyzed_at" : "2026-06-24T16:02:39Z",
     "model" : "claude-sonnet-4-6",
     "article_ids" : [ 3103 ],
     "screener" : [ {
       "article_id" : 3103,
-      "score" : 6,
-      "reason" : "Escalation risk: Israeli strike on Beirut same day as Iran deal signing creates geopolitical volatility; war expansion could trigger oil spike and risk-off positioning."
+      "score" : 3,
+      "reason" : "Major geopolitical escalation: Israel-Hezbollah conflict amid Iran deal signing—broad risk shock."
     } ],
     "prediction_record" : {
       "btc_at_prediction" : 64550.0,
       "article_count" : 1,
       "resonant_count" : 1,
       "claude_available" : true,
-      "direction" : "neutral",
+      "direction" : "bearish",
       "impact_tier" : "low",
-      "confidence" : "low",
-      "macro_regime" : "neutral",
-      "key_events" : [ "Israel strikes Beirut amid Iran deal news" ],
-      "reasoning" : "BTC's reaction to Middle East military strikes is historically ambiguous — it sometimes catches a hedge bid but often stays flat; the Iran deal context introduces a simultaneous de-escalation signal that muddies the transmission channel, and with macro_regime neutral, funding flat, and BTC mid-range on the day, institutional desks lack a clear directional catalyst to reposition around.",
+      "macro_regime" : "n/a",
+      "key_events" : [ "Israel bombs Beirut on the same day Iran deal signing was announced" ],
+      "reasoning" : "Fact (executed strike, not a threat) and new (not in already covered). The channel to BTC is indirect -- a single localized strike on Hezbollah infrastructure; per rules this is at most LOW even with complacent options. However, the timing directly threatens the Iran deal narrative already in ALREADY COVERED, adding a concrete risk-off wrinkle that is unpriced (flat pre_trend). Complacent vol slightly amplifies impact but cannot elevate a weak-channel strike to HIGH.",
       "options_signal" : {
         "positioning" : "neutral",
         "iv_elevated" : false,
         "oi_surge" : false,
         "signal_strength" : "none",
         "near_pc_ratio" : 0.7472,
-        "dvol_trend" : "flat"
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 38.12,
+        "priced_in" : "complacent"
       },
       "funding_signal" : {
         "positioning" : "neutral",
@@ -573,9 +574,9 @@
       "articles" : [ {
         "id" : 3103,
         "title" : "Israel attacks Beirut on same day Trump says Iran deal to be signed",
-        "direction" : "neutral",
-        "reasoning" : "Geopolitical military action carries an uncertain and historically weak BTC transmission mechanism; the simultaneous Trump-Iran deal signal partially offsets the escalation read, leaving the net price impact ambiguous and likely faded into a flat tape.",
-        "scenario" : "noise",
+        "direction" : "bearish",
+        "reasoning" : "Executed Israeli airstrike on Beirut -- a real new fact not in ALREADY COVERED, with an indirect geopolitical/risk-off channel to BTC; single localized strike caps this at LOW despite flat pre_trend and complacent vol.",
+        "scenario" : "fresh_bearish",
         "pre_trend" : "flat",
         "published_at" : "2026-06-14T11:15:23Z",
         "url" : "https://www.aljazeera.com/video/newsfeed/2026/6/14/israel-attacks-beirut-on-same-day-trump-says-iran-deal-to-be-signed?traffic_source=rss",

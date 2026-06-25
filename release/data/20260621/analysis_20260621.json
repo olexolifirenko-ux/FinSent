@@ -498,5 +498,51 @@
       "reason" : "Entertainment box office; no BTC relevance."
     } ],
     "prediction_record" : null
+  },
+  "22:00" : {
+    "analyzed_at" : "2026-06-22T23:00:15Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4299 ],
+    "screener" : [ {
+      "article_id" : 4299,
+      "score" : 2,
+      "reason" : "Upcoming inflation data release; Fed-sensitive macro event with direct BTC impact potential"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 63828.02,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Posture/anticipation: the article describes futures being lower while awaiting inflation data -- no new fact has occurred, just pre-event positioning. Fails Step 1 (no executed event) and Step 2 (waiting for known scheduled release is not new information).",
+      "options_signal" : { },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0068,
+        "oi_change_pct" : 0.439,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 63594.56,
+        "change_24h_pct" : -0.68,
+        "range_pos_24h" : 0.0784
+      },
+      "articles" : [ {
+        "id" : 4299,
+        "title" : "Stock market today: Live updates",
+        "direction" : "neutral",
+        "reasoning" : "Describes market anticipation of a scheduled data release -- no new fact, no fresh trigger, just pre-event context",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-21T22:03:04Z",
+        "url" : "https://www.cnbc.com/2026/06/21/stock-market-today-live-updates.html",
+        "price_at_publish" : 63828.02
+      } ]
+    },
+    "resonant_article_ids" : [ 4299 ]
   }
 }

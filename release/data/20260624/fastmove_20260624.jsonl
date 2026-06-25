@@ -1,0 +1,4 @@
+{"ts": "2026-06-24T13:22:00Z", "interval_key": "13:20", "direction": "bearish", "conviction": "full", "magnitude_pct": -1.5157, "r2": 0.8465, "span_min": 30, "setup": "", "price": 61776.01}
+{"ts": "2026-06-24T13:47:00Z", "interval_key": "13:40", "direction": "bearish", "conviction": "full", "magnitude_pct": -1.0822, "r2": 0.9485, "span_min": 15, "setup": "", "price": 61419.41}
+{"ts": "2026-06-24T16:51:00Z", "interval_key": "16:50", "direction": "bearish", "conviction": "full", "magnitude_pct": -1.5413, "r2": 0.8266, "span_min": 30, "setup": "", "price": 59660.52}
+{"ts": "2026-06-24T20:06:00Z", "interval_key": "20:00", "direction": "bullish", "conviction": "reduced", "magnitude_pct": 1.3591, "r2": 0.7826, "span_min": 15, "setup": "", "price": 60708.0}

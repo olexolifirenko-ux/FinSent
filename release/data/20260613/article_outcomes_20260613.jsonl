@@ -1,0 +1,9 @@
+{"article_id":2853,"day":"20260613","scenario":"fresh_bearish","pre_trend":"flat","price_at_publish":63792.0,"actual_1h_pct":-0.295,"scenario_validated":true}
+{"article_id":2907,"day":"20260613","scenario":"fresh_bearish","pre_trend":"flat","price_at_publish":63800.0,"actual_1h_pct":0.0155,"scenario_validated":false}
+{"article_id":2912,"day":"20260613","scenario":"noise","pre_trend":"flat","price_at_publish":63804.01,"actual_1h_pct":-0.0898,"scenario_validated":true}
+{"article_id":3097,"day":"20260613","scenario":"noise","pre_trend":"flat","price_at_publish":63828.01,"actual_1h_pct":-0.0891,"scenario_validated":true}
+{"article_id":2916,"day":"20260613","scenario":"noise","pre_trend":"flat","price_at_publish":63808.0,"actual_1h_pct":-0.0533,"scenario_validated":true}
+{"article_id":2945,"day":"20260613","scenario":"noise","pre_trend":"flat","price_at_publish":63945.99,"actual_1h_pct":0.3545,"scenario_validated":true}
+{"article_id":2986,"day":"20260613","scenario":"fresh_bullish","pre_trend":"flat","price_at_publish":64224.0,"actual_1h_pct":-0.4433,"scenario_validated":false}
+{"article_id":2996,"day":"20260613","scenario":"fresh_bullish","pre_trend":"flat","price_at_publish":64102.0,"actual_1h_pct":0.0112,"scenario_validated":true}
+{"article_id":3031,"day":"20260613","scenario":"noise","pre_trend":"flat","price_at_publish":64278.04,"actual_1h_pct":0.013,"scenario_validated":true}

@@ -1,0 +1,5 @@
+{"window":"2026-06-15T03:40:00Z","day":"20260615","key":"03:40","source":"news","direction":"neutral","impact_tier":"noise","btc_at_prediction":65933.4,"outcome_1h_pct":-0.3863,"direction_correct":false,"outcome_24h_pct":0.1981}
+{"window":"2026-06-15T05:00:00Z","day":"20260615","key":"05:00","source":"news","direction":"neutral","impact_tier":"low","btc_at_prediction":65627.99,"outcome_1h_pct":0.323,"direction_correct":false,"outcome_24h_pct":0.3789}
+{"window":"2026-06-15T06:40:00Z","day":"20260615","key":"06:40","source":"news","direction":"neutral","impact_tier":"low","btc_at_prediction":65798.01,"outcome_1h_pct":-0.0795,"direction_correct":false,"outcome_24h_pct":0.9675}
+{"window":"2026-06-15T08:40:00Z","day":"20260615","key":"08:40","source":"news","direction":"neutral","impact_tier":"noise","btc_at_prediction":65768.25,"outcome_1h_pct":-0.3052,"direction_correct":false,"outcome_24h_pct":1.216}
+{"window":"2026-06-15T11:00:00Z","day":"20260615","key":"11:00","source":"news","direction":"bullish","impact_tier":"low","btc_at_prediction":65914.01,"outcome_1h_pct":0.504,"direction_correct":true,"outcome_24h_pct":0.9539}

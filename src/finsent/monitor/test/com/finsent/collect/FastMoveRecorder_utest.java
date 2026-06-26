@@ -58,6 +58,7 @@ public class FastMoveRecorder_utest
         assertEquals("full", line.path("conviction").asText());
         assertEquals(-1.52, line.path("magnitude_pct").asDouble(), 1e-9);
         assertEquals(30, line.path("span_min").asInt());
+        assertEquals(1.8, line.path("velocity_ratio").asDouble(), 1e-9);
         assertEquals(61776.0, line.path("price").asDouble(), 1e-9);
     }
 
@@ -78,7 +79,7 @@ public class FastMoveRecorder_utest
             int span, double price)
     {
         Instant firedAt = Instant.parse("2026-06-24T" + key + ":00Z");
-        return new FastMoveReady("20260624", key, direction, conviction, price, magnitude, 0.85, span, "", firedAt);
+        return new FastMoveReady("20260624", key, direction, conviction, price, magnitude, 0.85, span, 1.8, "", firedAt);
     }
 
     private static void deleteQuietly(Path path)

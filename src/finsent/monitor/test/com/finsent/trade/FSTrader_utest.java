@@ -347,7 +347,7 @@ public class FSTrader_utest
 
     private static FastMoveReady fast(String direction, Conviction conviction)
     {
-        return new FastMoveReady(DAY, KEY, direction, conviction, 100.0, -1.5, 0.85, 30, "", NOW);
+        return new FastMoveReady(DAY, KEY, direction, conviction, 100.0, -1.5, 0.85, 30, 1.0, "", NOW);
     }
 
     private ArrayNode closed()

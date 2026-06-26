@@ -74,6 +74,18 @@ public class FastMoveSignal_utest
     }
 
     @Test
+    public void acceleratingMoveStampsVelocityRatioAboveOne()
+    {
+        // Flat for 3 bars then a fast drop: the short (3-bar) window's %/min pace exceeds the long
+        // (6-bar) window's, so the acceleration ratio is > 1 (a forced cascade/squeeze signature).
+        FastMoveSignal.Fire fire = FastMoveSignal.evaluate(bars(60000, 60000, 60000, 59800, 59600, 59400),
+                List.of(new FastMoveWindow(3, 0.3, 0.4), new FastMoveWindow(6, 0.3, 0.4)));
+        assertTrue(fire.fired());
+        assertEquals(6, fire.spanMinutes());            // the 6-bar window has the larger magnitude -> wins
+        assertEquals(1.34, fire.velocityRatio(), 0.02); // short-pace / long-pace -> accelerating
+    }
+
+    @Test
     public void tooFewBarsDoesNotFire()
     {
         assertFalse(FastMoveSignal.evaluate(bars(60000, 59000), List.of(new FastMoveWindow(5, 1.0, 0.5))).fired());

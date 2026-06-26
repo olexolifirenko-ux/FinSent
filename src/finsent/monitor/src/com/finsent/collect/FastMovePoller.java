@@ -55,6 +55,7 @@ public final class FastMovePoller implements IUninitializer
     private final int oiLookbackMinutes_;
     private final double compressionDropPct_;
     private final int compressionWindowMinutes_;
+    private final double accelerationRatio_;
     private final PriceTapeBuffer buffer_;
     private final Object lock_ = new Object();
     private final Thread thread_;
@@ -83,6 +84,7 @@ public final class FastMovePoller implements IUninitializer
         oiLookbackMinutes_ = config.fastMoveOiLookbackInMin();
         compressionDropPct_ = config.fastMoveFundingCompressionDropPct();
         compressionWindowMinutes_ = config.fastMoveFundingCompressionWindowMinutes();
+        accelerationRatio_ = config.fastMoveAccelRatio();
         buffer_ = new PriceTapeBuffer(longestSpanMinutes_ + RETENTION_MARGIN_MIN);
         thread_ = new Thread(this::loop, "FS-FastMove");
         thread_.setDaemon(true);
@@ -225,12 +227,13 @@ public final class FastMovePoller implements IUninitializer
         String day = Times.dayOf(Times.formatUtcIso(now));
         String key = Times.intervalKey(now, windowMinutes_);
         ObjectNode positioning = positioningAt(day, now, fire.magnitudePct());
-        Conviction conviction = conviction(positioning);
+        Conviction conviction = conviction(positioning, fire.velocityRatio());
         String setup = positioning == null ? "" : positioning.path("setup").asText("");
         publisher_.publish(new FastMoveReady(day, key, fire.direction(), conviction, price, fire.magnitudePct(),
-                fire.r2(), fire.spanMinutes(), setup, now));
+                fire.r2(), fire.spanMinutes(), fire.velocityRatio(), setup, now));
         GlobalSystem.info().writes(NAME, "FASTMOVE " + fire.direction() + " " + Num.round(fire.magnitudePct(), 2)
-                + "% (" + fire.spanMinutes() + "m, r2=" + Num.round(fire.r2(), 2) + ") conviction=" + conviction.label()
+                + "% (" + fire.spanMinutes() + "m, r2=" + Num.round(fire.r2(), 2) + ", accel=" + fire.velocityRatio()
+                + "x) conviction=" + conviction.label()
                 + (setup.isEmpty() ? "" : " setup=" + setup) + " @ " + Num.round(price, 2));
     }
 
@@ -245,12 +248,14 @@ public final class FastMovePoller implements IUninitializer
     }
 
     /**
-     * Grade the fire from open interest: OI building past the threshold is fresh positioning into the move
-     * ({@code full} -- a real trend); OI unwinding is positions closing ({@code skip} -- a likely transient
-     * wick); anything else (including no funding data) is {@code reduced} -- traded smaller, never trusted
-     * as fully confirmed.
+     * Grade the fire from open interest, disambiguated by acceleration. OI building past the threshold is
+     * fresh positioning into the move ({@code full} -- a real trend). OI unwinding is normally positions
+     * closing ({@code skip} -- a transient wick) -- UNLESS the tape is ACCELERATING ({@code velocityRatio >=}
+     * the threshold), which means the move is FORCING the unwind (a liquidation cascade / short squeeze): a
+     * forced move is real, so lift it to {@code reduced} (traded small) rather than skipping it. Anything
+     * else (including no funding data) is {@code reduced} -- traded smaller, never trusted as fully confirmed.
      */
-    private Conviction conviction(ObjectNode positioning)
+    private Conviction conviction(ObjectNode positioning, double velocityRatio)
     {
         Conviction conviction = Conviction.REDUCED;
         if (positioning != null && positioning.path("oi_change_pct").isNumber())
@@ -262,7 +267,7 @@ public final class FastMovePoller implements IUninitializer
             }
             else if (oiPct <= -oiBuildingPct_)
             {
-                conviction = Conviction.SKIP;
+                conviction = velocityRatio >= accelerationRatio_ ? Conviction.REDUCED : Conviction.SKIP;
             }
         }
         return conviction;

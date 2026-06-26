@@ -59,6 +59,7 @@ public final class FastMoveRecorder implements IEventListener<FastMoveReady>
         line.put("magnitude_pct", signal.magnitudePct());
         line.put("r2", signal.r2());
         line.put("span_min", signal.spanMinutes());
+        line.put("velocity_ratio", signal.velocityRatio());
         line.put("setup", signal.setup());
         if (signal.anchorPrice() != null)
         {

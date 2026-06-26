@@ -18,13 +18,16 @@ import com.finsent.analyse.signal.Conviction;
  * @param direction    the move's lean ({@code bullish} / {@code bearish}).
  * @param conviction   the funding/OI structural read (the {@link Conviction} grade).
  * @param anchorPrice  the live price at fire time (the trader's divergence rail anchors on it).
- * @param magnitudePct the endpoint move of the winning window (signed percent).
- * @param r2           the regression fit of the winning window (cleanliness).
- * @param spanMinutes  the lookback span of the winning window.
- * @param setup        the funding/OI setup label at fire time (e.g. {@code up_squeeze_fuel}), for logs.
- * @param firedAt      when the move fired.
+ * @param magnitudePct  the endpoint move of the winning window (signed percent).
+ * @param r2            the regression fit of the winning window (cleanliness).
+ * @param spanMinutes   the lookback span of the winning window.
+ * @param velocityRatio the acceleration (shortest-window pace / longest-window pace; &gt;1 = accelerating,
+ *                      a forced cascade/squeeze building -- it lifts an unwinding-OI fire off {@code skip}).
+ * @param setup         the funding/OI setup label at fire time (e.g. {@code up_squeeze_fuel}), for logs.
+ * @param firedAt       when the move fired.
  */
 public record FastMoveReady(String day, String intervalKey, String direction, Conviction conviction,
-        Double anchorPrice, double magnitudePct, double r2, int spanMinutes, String setup, Instant firedAt)
+        Double anchorPrice, double magnitudePct, double r2, int spanMinutes, double velocityRatio,
+        String setup, Instant firedAt)
 {
 }

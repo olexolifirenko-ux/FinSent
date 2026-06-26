@@ -42,7 +42,52 @@ public final class FastMoveSignal
                 best = candidate;
             }
         }
+        if (best.fired())
+        {
+            // Stamp the acceleration: the SHORTEST window's pace vs the LONGEST window's pace. >1 means the
+            // recent tape is moving faster than the move's overall average -- a building cascade/squeeze
+            // (forced), not a fade. ~1 is a steady move; <1 is decelerating.
+            best = new Fire(true, best.direction(), best.spanMinutes(), best.magnitudePct(), best.r2(),
+                    Num.round(velocityRatio(bars, windows), 2));
+        }
         return best;
+    }
+
+    /** Acceleration ratio: the shortest window's %/min pace divided by the longest window's, or 1.0 when undefined. */
+    private static double velocityRatio(ArrayNode bars, List<FastMoveWindow> windows)
+    {
+        FastMoveWindow shortest = windows.get(0);
+        FastMoveWindow longest = windows.get(0);
+        for (FastMoveWindow window : windows)
+        {
+            if (window.spanMinutes() < shortest.spanMinutes())
+            {
+                shortest = window;
+            }
+            if (window.spanMinutes() > longest.spanMinutes())
+            {
+                longest = window;
+            }
+        }
+        double longPace = pacePerMinute(bars, longest.spanMinutes());
+        return longPace > 1.0e-9 ? pacePerMinute(bars, shortest.spanMinutes()) / longPace : 1.0;
+    }
+
+    /** Absolute endpoint percent move over the last {@code spanMinutes} bars, divided by the span (%/min). */
+    private static double pacePerMinute(ArrayNode bars, int spanMinutes)
+    {
+        ArrayNode slice = lastBars(bars, spanMinutes);
+        double pace = 0.0;
+        if (slice.size() >= MIN_BARS)
+        {
+            double first = slice.get(0).path("c").asDouble();
+            double last = slice.get(slice.size() - 1).path("c").asDouble();
+            if (first > 0.0)
+            {
+                pace = Math.abs((last - first) / first * 100.0) / spanMinutes;
+            }
+        }
+        return pace;
     }
 
     private static Fire evaluateWindow(ArrayNode bars, FastMoveWindow window)
@@ -60,8 +105,9 @@ public final class FastMoveSignal
                 String direction = direction(magnitudePct, window.thresholdPct());
                 if (direction != null && r2 >= window.r2Floor())
                 {
+                    // velocityRatio is stamped on the winning fire in evaluate(); 0.0 here is a placeholder.
                     fire = new Fire(true, direction, window.spanMinutes(), Num.round(magnitudePct, 4),
-                            Num.round(r2, 4));
+                            Num.round(r2, 4), 0.0);
                 }
             }
         }
@@ -97,11 +143,13 @@ public final class FastMoveSignal
 
     /**
      * The detector outcome: whether a window fired, the {@code direction} (bullish/bearish), the
-     * {@code spanMinutes} of the winning window, the endpoint {@code magnitudePct}, and the fit
-     * {@code r2}. {@link #NONE} is the no-fire sentinel (magnitude 0, so it never beats a real fire).
+     * {@code spanMinutes} of the winning window, the endpoint {@code magnitudePct}, the fit {@code r2},
+     * and the {@code velocityRatio} (shortest-window pace / longest-window pace; &gt;1 = accelerating).
+     * {@link #NONE} is the no-fire sentinel (magnitude 0, so it never beats a real fire).
      */
-    public record Fire(boolean fired, String direction, int spanMinutes, double magnitudePct, double r2)
+    public record Fire(boolean fired, String direction, int spanMinutes, double magnitudePct, double r2,
+                       double velocityRatio)
     {
-        public static final Fire NONE = new Fire(false, null, 0, 0.0, 0.0);
+        public static final Fire NONE = new Fire(false, null, 0, 0.0, 0.0, 0.0);
     }
 }

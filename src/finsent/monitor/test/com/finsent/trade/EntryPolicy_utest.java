@@ -81,7 +81,7 @@ public class EntryPolicy_utest
 
     private static FastMoveReady fast(String direction, Conviction conviction)
     {
-        return new FastMoveReady("20260604", "08:00", direction, conviction, 100.0, -1.5, 0.85, 30, "", NOW);
+        return new FastMoveReady("20260604", "08:00", direction, conviction, 100.0, -1.5, 0.85, 30, 1.0, "", NOW);
     }
 
     private static Position momentum(Side side)

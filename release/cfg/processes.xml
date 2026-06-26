@@ -212,6 +212,7 @@
             cooldownInMin="30"
             oiBuildingPct="0.5"
             oiLookbackInMin="40"
+            accelRatio="1.5"
             fundingCompressionDropPct="40"
             fundingCompressionWindow="60m"
         >

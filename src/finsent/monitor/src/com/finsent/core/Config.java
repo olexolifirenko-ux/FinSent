@@ -552,6 +552,13 @@ public final class Config
         return intAttr(fastMoveNode_, "oiLookbackInMin", 40);
     }
 
+    /** Acceleration ratio (shortest-window pace / longest-window pace) at/above which an unwinding-OI fire is
+     *  a FORCED cascade/squeeze and graded {@code reduced} rather than {@code skip}. */
+    public double fastMoveAccelRatio()
+    {
+        return doubleAttr(fastMoveNode_, "accelRatio", 1.5);
+    }
+
     /** Relative fall in funding (percent) over its window that counts as the compressing early-warning. */
     public double fastMoveFundingCompressionDropPct()
     {

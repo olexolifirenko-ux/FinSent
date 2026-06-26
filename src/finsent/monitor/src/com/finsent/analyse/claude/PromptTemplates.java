@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 /**
  * Loads the Claude prompt templates from the configured prompts directory and substitutes the
@@ -21,10 +24,36 @@ public final class PromptTemplates
     {
     }
 
+    private static final int VERSION_HEX_LEN = 12; // 6 bytes of the digest -> 12 hex chars
+
     /** Read {@code <promptsDir>/<name>.txt} as UTF-8. */
     public static String load(File promptsDir, String name) throws IOException
     {
         return Files.readString(new File(promptsDir, name + EXTENSION).toPath(), StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Short content hash of a prompt's text ({@value #VERSION_HEX_LEN} hex chars of its SHA-256), stamped
+     * onto the analysis record so the feedback loop can attribute a score shift to a specific prompt
+     * revision. Stable across runs; changes whenever the prompt's text (the rules) does.
+     */
+    public static String version(String prompt)
+    {
+        try
+        {
+            byte[] digest = MessageDigest.getInstance("SHA-256").digest(prompt.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hex = new StringBuilder(VERSION_HEX_LEN);
+            for (int i = 0; i < VERSION_HEX_LEN / 2; i++)
+            {
+                hex.append(String.format(Locale.ROOT, "%02x", digest[i]));
+            }
+            return hex.toString();
+        }
+        catch (NoSuchAlgorithmException unavailable)
+        {
+            // SHA-256 is mandated on every conformant JVM; this branch is unreachable.
+            throw new IllegalStateException("SHA-256 unavailable", unavailable);
+        }
     }
 
     /** Fill the screener template's {@code {covered}} (dedup reference) + {@code {articles}} placeholders. */

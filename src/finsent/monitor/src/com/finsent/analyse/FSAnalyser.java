@@ -780,6 +780,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         // own deepDedupLookback -- typically longer than the screener's, to catch multi-day themes.
         String coveredBlock = PromptBuilder.coveredBlock(recentlyCovered(day, key, config_.deepDedupLookbackMinutes()));
         String system = loadTemplate("deep_analysis");
+        String promptVersion = PromptTemplates.version(system);
         String userContent = PromptTemplates.fillDeepDynamic(loadTemplate("deep_analysis_dynamic"),
                 resonant.size(), market.block(), articlesBlock, coveredBlock);
 
@@ -789,7 +790,7 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
                 deep.prediction(), regimeLabel(market.regime()), market.options(), market.funding(),
                 market.priceContext(), articlePredictions);
 
-        store_.record(day, key, interval(analyzedAt, config_.claudeDeepAnalModel(), unique, screenerOut, prediction, resonant));
+        store_.record(day, key, interval(analyzedAt, config_.claudeDeepAnalModel(), promptVersion, unique, screenerOut, prediction, resonant));
         logAnalysis(day, key, prediction);
         logResonant(resonant);
         // notify gates BOTH actions: deliver alerts AND feed the trader. The live path always passes
@@ -1029,12 +1030,13 @@ public final class FSAnalyser implements IEventListener<CollectionResult>, IUnin
         return byArticleId;
     }
 
-    private ObjectNode interval(String analyzedAt, String model, List<ObjectNode> unique, ArrayNode screenerOut,
-                                ObjectNode prediction, List<ObjectNode> resonant)
+    private ObjectNode interval(String analyzedAt, String model, String promptVersion, List<ObjectNode> unique,
+                                ArrayNode screenerOut, ObjectNode prediction, List<ObjectNode> resonant)
     {
         ObjectNode interval = Json.newObject();
         interval.put("analyzed_at", analyzedAt);
         interval.put("model", model);
+        interval.put("prompt_version", promptVersion);
         interval.set("article_ids", ids(unique));
         interval.set("screener", screenerOut);
         interval.set("prediction_record", prediction);

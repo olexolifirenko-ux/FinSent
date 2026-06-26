@@ -1,5 +1,6 @@
 package com.finsent.analyse;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import com.finsent.analyse.signal.EconEventSignals;
 import com.finsent.analyse.signal.FundingSignals;
 import com.finsent.analyse.signal.MacroSignals;
 import com.finsent.analyse.signal.OptionsSignals;
+import com.finsent.analyse.signal.RegimeSignal;
 import com.finsent.collect.FSCollector;
 import com.finsent.core.Json;
 import com.finsent.core.Times;
@@ -112,10 +114,61 @@ public final class WindowContext
         ObjectNode options = optionsSignal(collector, day, key, windowMinutes);
         ObjectNode funding = fundingSignal(collector, day, key, windowMinutes);
         ObjectNode price = collector.price().get(day, key);
-        // regime is still carried in the returned context (for the stored record/notifications), but it is
-        // deliberately NOT passed into the prompt block -- the deep pass must not be tinted by macro mood.
-        String block = PromptBuilder.marketSignals(options, funding, price);
+        String btcRegime = btcRegime(collector, day, key, price);
+        // macro regime is still carried in the returned context (for the stored record/notifications), but
+        // it is deliberately NOT passed into the prompt block -- the deep pass must not be tinted by macro
+        // mood. The btc_regime line is different: a mechanical multi-day PRICE read (see RegimeSignal), shown
+        // only when EXTENDED so the deep pass can treat a further systemic shock as already-priced.
+        String block = PromptBuilder.marketSignals(options, funding, price, btcRegime);
         return new MarketContext(regime, options, funding, price, block);
+    }
+
+    /**
+     * The mechanical {@code btc_regime} line for the window, or {@code ""} when the multi-day tape is not
+     * EXTENDED (see {@link RegimeSignal}). Ensures the {@value RegimeSignal#REGIME_DAYS}-day OHLC window is
+     * resident (the registries load lazily; backfill holds only the current day), then takes the max-high /
+     * min-low over that window and classifies against the window's BTC price. The recover calls are
+     * idempotent &mdash; a no-op once the days are loaded.
+     */
+    static String btcRegime(FSCollector collector, String day, String key, ObjectNode price)
+    {
+        String line = "";
+        double current = price == null ? 0.0 : price.path("btc_price").asDouble(0.0);
+        Instant window = windowInstant(day, key);
+        if (current > 0.0 && window != null)
+        {
+            for (int back = 0; back <= RegimeSignal.REGIME_DAYS; back++)
+            {
+                collector.recoverDay(back == 0 ? day : Intervals.minusDays(day, back));
+            }
+            ObjectNode extremes = collector.ohlc().extremes(
+                    Times.formatUtcIso(window.minus(Duration.ofDays(RegimeSignal.REGIME_DAYS))),
+                    Times.formatUtcIso(window));
+            if (extremes.has("high"))
+            {
+                line = RegimeSignal.line(current, extremes.path("high").asDouble(), extremes.path("low").asDouble());
+            }
+        }
+        return line;
+    }
+
+    /** {@code YYYYMMDD} + {@code HH:MM} &rarr; the window's UTC instant, or {@code null} when malformed. */
+    private static Instant windowInstant(String day, String key)
+    {
+        Instant result = null;
+        if (day.length() == 8 && key.length() == 5)
+        {
+            try
+            {
+                result = Times.parseIso(day.substring(0, 4) + "-" + day.substring(4, 6) + "-"
+                        + day.substring(6, 8) + "T" + key + ":00Z");
+            }
+            catch (RuntimeException malformed)
+            {
+                result = null;
+            }
+        }
+        return result;
     }
 
     /**

@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.finsent.analyse.signal.EconEventSignals;
 import com.finsent.analyse.signal.FundingSignals;
+import com.finsent.analyse.signal.RegimeSignal;
 import com.finsent.core.Json;
 
 /**
@@ -122,14 +123,14 @@ public class PromptBuilder_utest
     @Test
     public void marketSignalsLeadsWithPriceContext()
     {
-        String block = PromptBuilder.marketSignals(null, null, priceCtx(67432.10, 0.8, -3.4, 0.12));
+        String block = PromptBuilder.marketSignals(null, null, priceCtx(67432.10, 0.8, -3.4, 0.12), "");
         assertEquals("btc_price: $67432.10 | 1h +0.80% | 24h -3.40% (near 24h low)", block);
     }
 
     @Test
     public void marketSignalsFoldsOptionsLine()
     {
-        String block = PromptBuilder.marketSignals(optionsSignal(), null, null);
+        String block = PromptBuilder.marketSignals(optionsSignal(), null, null, "");
         assertEquals("options: braced (IV 88%, rising)", block);
     }
 
@@ -137,7 +138,7 @@ public class PromptBuilder_utest
     public void marketSignalsIncludesFundingLine()
     {
         ObjectNode funding = FundingSignals.signal(funding(0.00038));
-        String block = PromptBuilder.marketSignals(null, funding, null);
+        String block = PromptBuilder.marketSignals(null, funding, null, "");
         assertEquals("positioning: crowded_long (funding +0.038%)", block);
     }
 
@@ -150,9 +151,22 @@ public class PromptBuilder_utest
         prior.put("open_interest", 100.0);
         ObjectNode funding = FundingSignals.signal(current, prior, 1.2); // OI +5% into a rising price
 
-        String block = PromptBuilder.marketSignals(null, funding, null);
+        String block = PromptBuilder.marketSignals(null, funding, null, "");
 
         assertEquals("positioning: crowded_long (funding +0.038%) | OI +5.0%/1h building -> down_cascade_fuel", block);
+    }
+
+    @Test
+    public void marketSignalsFoldsExtendedRegimeLineAfterPrice()
+    {
+        // EXTENDED regime (drawdown -9.2% from the 5d-high, near the 5d low) -> the btc_regime line renders
+        // directly after the price line; a non-extended regime yields "" and no line (see RegimeSignal_utest).
+        String regime = RegimeSignal.line(59000.0, 65000.0, 58000.0);
+        String block = PromptBuilder.marketSignals(null, null, priceCtx(59000.0, -0.1, -2.3, 0.12), regime);
+        assertEquals(""
+                + "btc_price: $59000.00 | 1h -0.10% | 24h -2.30% (near 24h low)\n"
+                + "btc_regime: -9.2% from 5d-high $65000, near the 5d low -- EXTENDED multi-day sell-off"
+                + " (the broad risk-off is largely PRICED in)", block);
     }
 
     @Test
@@ -161,7 +175,7 @@ public class PromptBuilder_utest
         // Even with options + funding + price present, the block carries no macro regime/detail/trend line:
         // the deep pass must never be tinted by macro mood.
         ObjectNode funding = FundingSignals.signal(funding(0.00038));
-        String block = PromptBuilder.marketSignals(optionsSignal(), funding, priceCtx(67432.10, 0.8, -3.4, 0.12));
+        String block = PromptBuilder.marketSignals(optionsSignal(), funding, priceCtx(67432.10, 0.8, -3.4, 0.12), "");
         assertEquals(""
                 + "btc_price: $67432.10 | 1h +0.80% | 24h -3.40% (near 24h low)\n"
                 + "options: braced (IV 88%, rising)\n"

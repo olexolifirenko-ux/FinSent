@@ -48,6 +48,14 @@ flows), or a genuine broad risk shock? No channel -> noise.
   priced-in discount, it does NOT by itself make a weak channel strong. A lone strike
   reaches HIGH only as a STRATEGIC shock -- a war declaration, an attack on a major
   economy, an oil-supply hit, or a broad risk cascade -- not a single localized strike.
+- For a CRYPTO-STRUCTURAL item, strong vs weak turns on FORCED FLOW and SURPRISE, not the actor's
+  size. STRONG (HIGH): a flow-forcing or existential shock -- an exchange insolvency, hack, or
+  withdrawal halt; a stablecoin de-peg; a mass forced liquidation; a SUDDEN enforcement action that
+  threatens a major venue's survival. WEAK / INDIRECT (at most LOW): a REGIONAL, TELEGRAPHED, or
+  PARTIAL regulatory / operational step -- a country exit, a single-jurisdiction license loss, a
+  partial-service suspension, an expected compliance deadline -- which forces no BTC flow. The actor's
+  SIZE is not the channel: the 'world's largest exchange' taking an expected, regional regulatory step
+  is still LOW, while a small venue's sudden insolvency can be HIGH.
 
 Only an item that is a FACT and is NEW and has a CHANNEL is a causative event worth a
 directional, material call. Everything else is noise (or at most low).
@@ -60,6 +68,11 @@ already priced). Judge already-priced from THIS item's immediate pre_trend, not 
 multi-hour drift or a same-batch market-reaction recap: a FLAT pre_trend means the move
 has NOT started, so a fresh shock is unpriced even if BTC already sits near a 24h low for
 other reasons.
+A btc_regime line (when present) gives BTC's MULTI-DAY state and flags whether the broad RISK-OFF is
+already priced. It answers a DIFFERENT question than pre_trend: pre_trend judges whether THIS item's
+move has started; btc_regime judges whether the broad risk-off is already priced. When it reads
+EXTENDED (a deep multi-day sell-off near the lows), the broad risk-off is largely priced and the
+down-fuel spent. The line is emitted ONLY when EXTENDED; if absent, judge normally.
 Use the positioning line (funding + open interest) to judge how VIOLENTLY a confirmed
 catalyst will land -- not its direction. A catalyst that pushes the crowded, leverage-
 building side offside cascades (down_cascade_fuel = crowded longs exposed to a bearish
@@ -127,14 +140,36 @@ RULES:
   report counts, never the follow-up coverage or the market-reaction recaps. This applies
   ACROSS windows too: an event already in the ALREADY COVERED block was the first report;
   a later item on it is follow-up unless it adds a materially-new step (see STEP 2).
-- A FRESH extreme market shock -- a major equity-index crash / circuit-breaker move NOT yet
-  in ALREADY COVERED -- with a flat immediate pre_trend is impact HIGH: do not demote the
-  first report on a slow prior drift, a same-batch reaction recap, or neutral positioning
-  (positioning scales how violently it lands, not whether it is material). This HIGH floor
-  is ONLY for an acute major-index crash / circuit-breaker move; a slow or indirect-channel
-  item (private-credit stress, macro data, a sentiment read, a corporate event) keeps the
-  usual dampers -- an indirect/slow channel and neutral positioning hold it to LOW even into
+- A broad RISK-OFF / equity shock is impact HIGH only when GENUINELY SYSTEMIC -- broad-based, not
+  isolated. Systemic means ANY of: a trading halt / circuit-breaker on a major market; a volatility
+  (VIX) blowout; MULTIPLE markets, sectors, or asset classes falling together on a shared risk-off
+  driver (a broad risk-asset selloff -- e.g. 'a tech selloff drags risk assets lower / sank several
+  markets'); OR an equity shock with crypto ALREADY transmitting (BTC/crypto visibly falling WITH it,
+  per the item -- OBSERVED transmission, not a flat-BTC forecast). These transmit hard -- equity-crypto
+  correlation spikes toward 1. For a systemic shock the recap / slow-drift / neutral-positioning
+  dampers do NOT suppress it: never let a first report or a same-batch reaction recap eat a genuine
+  systemic cascade down to noise.
+- A LONE, ISOLATED, sector, or moderate move is NOT systemic and is at most LOW, however dramatic the
+  headline: a single regional / emerging-market bourse or one sector index while OTHER markets are
+  little changed, or a one-market drop with no halt, no broad breadth, and crypto NOT moving with it.
+  Discount over-read framing ('dips below $X', 'steepest since ...'). Flag it; do not arm a trade.
+- Do NOT read a FLAT BTC pre_trend as 'unpriced -> BTC will follow' -- that is a forward cross-asset
+  TRANSMISSION FORECAST this detector must not make. Flat BTC is AMBIGUOUS (possible DECOUPLING -- BTC
+  trading its own flows). HIGH rests on the shock's systemic BREADTH or OBSERVED crypto transmission,
+  never on a bet that flat BTC catches up. A slow or indirect-channel item (private-credit stress,
+  macro data, a sentiment read, a corporate event) keeps the usual dampers and stays LOW even into
   complacent options vol.
+- Even a systemic shock is a PARTLY-PRICED CONTINUATION (LOW, not high) once btc_regime reads EXTENDED
+  -- a deep multi-day sell-off near its lows, the broad risk-off already priced and the down-fuel
+  spent: keep the bearish lean, rate it LOW. This damper governs a CONTINUATION of that same broad
+  EQUITY / MACRO risk-off -- another index crash, a circuit-breaker, more equity selloff: those stay
+  LOW, the carve-out does NOT lift them. The ONE carve-out is a NEW, MATERIAL forced-flow CRYPTO-
+  STRUCTURAL shock on its own separate channel -- a MAJOR exchange insolvency / hack / withdrawal
+  halt, a SYSTEMIC stablecoin de-peg (a top stablecoin, not a small / niche token), a mass forced
+  liquidation -- big enough to force real BTC flow, which the equity/macro sell-off has not priced:
+  that is an un-priced ACCELERANT into the weak tape -- keep its tier (HIGH). A SMALL / niche venue
+  or token (a minor DeFi stablecoin de-peg, a tiny exchange) forces little BTC flow and stays LOW
+  (the same forced-flow-vs-weak test as STEP 3).
 - Once that crash is in ALREADY COVERED (even a milder earlier print of it), a later report
   -- INCLUDING a worse magnitude or a final/closing number -- is a PARTLY-EXPECTED follow-up:
   KEEP its directional lean (e.g. bearish) but rate it LOW -- never high, and never noise.

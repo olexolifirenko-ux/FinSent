@@ -125,6 +125,46 @@ public final class OhlcRegistry implements IRegistry
         return result;
     }
 
+    /**
+     * Max-high and min-low over every bar in {@code [fromTs, toTs]} across ALL resident days in the span
+     * &mdash; unlike {@link #barsInRange}, which only visits the from-day and to-day buckets (built for
+     * sub-day strips) and would skip the middle of a multi-day span. Returns {@code {high, low}}, or an
+     * empty object when no bars fall in range. Used for the multi-day {@code btc_regime} read; tolerant of
+     * partial residency (computes over whatever days are loaded &mdash; a shorter lookback, never invented
+     * data).
+     */
+    public ObjectNode extremes(String fromTs, String toTs)
+    {
+        double high = Double.NEGATIVE_INFINITY;
+        double low = Double.POSITIVE_INFINITY;
+        boolean found = false;
+        String fromDay = Times.dayOf(fromTs);
+        String toDay = Times.dayOf(toTs);
+        synchronized (lock_)
+        {
+            for (Map.Entry<String, TreeMap<String, ObjectNode>> entry : byDay_.entrySet())
+            {
+                String day = entry.getKey();
+                if (day.compareTo(fromDay) >= 0 && day.compareTo(toDay) <= 0)
+                {
+                    for (ObjectNode bar : entry.getValue().subMap(fromTs, true, toTs, true).values())
+                    {
+                        high = Math.max(high, bar.path("h").asDouble());
+                        low = Math.min(low, bar.path("l").asDouble());
+                        found = true;
+                    }
+                }
+            }
+        }
+        ObjectNode result = Json.newObject();
+        if (found)
+        {
+            result.put("high", high);
+            result.put("low", low);
+        }
+        return result;
+    }
+
     /** The newest bar's {@code ts} across all resident days, or {@code ""} when none (for incremental fetch). */
     public String latestTs()
     {

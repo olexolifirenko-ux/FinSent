@@ -151,20 +151,28 @@ public final class PromptBuilder
 
     /**
      * The {@code {market_signals}} block: a leading BTC price-context line (when the window's price
-     * snapshot is available), an options priced-in (complacency) line, and a funding-positioning line
-     * &mdash; each emitted only when its signal is present. {@code optionsSignal} / {@code fundingSignal} /
-     * {@code priceContext} may be null. Deliberately carries NO macro-regime / macro-trend line: the deep
-     * pass is a per-item event detector, and an ambient macro mood would tint the fact/new/channel
-     * judgment (and corrupt the already-priced read) without adding precision the positioning and
-     * pre_trend signals do not already provide. Broad market-state lives in the mechanical price lane.
+     * snapshot is available), the {@code btc_regime} multi-day line (only when EXTENDED &mdash; see
+     * {@code RegimeSignal}; {@code regimeLine} is {@code ""}/null otherwise), an options priced-in
+     * (complacency) line, and a funding-positioning line &mdash; each emitted only when present.
+     * {@code optionsSignal} / {@code fundingSignal} / {@code priceContext} may be null. Deliberately
+     * carries NO macro-regime / macro-trend line: the deep pass is a per-item event detector, and an
+     * ambient macro mood would tint the fact/new/channel judgment (and corrupt the already-priced read)
+     * without adding precision the positioning and pre_trend signals do not already provide. The
+     * {@code btc_regime} line is different &mdash; a mechanical multi-day PRICE read, not a mood. Broad
+     * market-state lives in the mechanical price lane.
      */
-    public static String marketSignals(ObjectNode optionsSignal, ObjectNode fundingSignal, ObjectNode priceContext)
+    public static String marketSignals(ObjectNode optionsSignal, ObjectNode fundingSignal,
+                                       ObjectNode priceContext, String regimeLine)
     {
         List<String> lines = new ArrayList<>();
         String price = priceContextLine(priceContext);
         if (!price.isEmpty())
         {
             lines.add(price);
+        }
+        if (regimeLine != null && !regimeLine.isEmpty())
+        {
+            lines.add(regimeLine);
         }
         appendOptionsLine(lines, optionsSignal);
         appendFundingLine(lines, fundingSignal);

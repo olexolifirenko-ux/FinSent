@@ -3,12 +3,14 @@ package com.finsent;
 import java.nio.file.Path;
 
 import com.finsent.analyse.AnalysisReady;
+import com.finsent.analyse.CompressionWarning;
 import com.finsent.analyse.FSAnalyser;
 import com.finsent.analyse.FastMoveReady;
 import com.finsent.analyse.cmd.AnalGroupCmdHandler;
 import com.finsent.app.AbstractAppInitializer;
 import com.finsent.collect.CollectionResult;
 import com.finsent.collect.CollectorRunner;
+import com.finsent.collect.CompressionRecorder;
 import com.finsent.collect.EconResolved;
 import com.finsent.collect.EconScheduler;
 import com.finsent.collect.FSCollector;
@@ -108,6 +110,9 @@ public class FSApp extends AbstractAppInitializer
         // Alert-only telemetry: record every fire (any conviction) to fastmove_<day>.jsonl for the
         // observation phase (subscribed after the trader so the telemetry write never delays the trade).
         eventBus_.subscribe(FastMoveReady.class, new FastMoveRecorder(dataDir));
+        // Pre-move funding-compression early-warning: record each episode to compression_<day>.jsonl for
+        // lead-time measurement (joined against the fires). Fragility signal only -- it never trades.
+        eventBus_.subscribe(CompressionWarning.class, new CompressionRecorder(dataDir));
         GlobalSystem.getCmdInterpreter().registerCmdHandler(TradeGroupCmdHandler.COMMAND,
                 new TradeGroupCmdHandler(trader_, whitebit), TradeGroupCmdHandler.DESCRIPTION,
                 TradeGroupCmdHandler.COMMAND_ALIASES);

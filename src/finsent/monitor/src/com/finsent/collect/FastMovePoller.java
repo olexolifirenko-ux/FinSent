@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import com.finsent.analyse.CompressionWarning;
 import com.finsent.analyse.FastMoveReady;
 import com.finsent.analyse.signal.Conviction;
 import com.finsent.analyse.signal.FastMoveSignal;
@@ -186,7 +187,7 @@ public final class FastMovePoller implements IUninitializer
             ArrayNode bars = buffer_.barsLastMinutes(longestSpanMinutes_);
             boolean flat = "flat".equals(PreTrend.of(bars).path("label").asText(""));
             act(now, price, FastMoveSignal.evaluate(bars, windows_), flat);
-            checkCompression(now, flat);
+            checkCompression(now, price, flat);
         }
     }
 
@@ -267,11 +268,17 @@ public final class FastMovePoller implements IUninitializer
         return conviction;
     }
 
-    /** Log (once per episode) the soft early-warning: positive funding draining into a still-flat tape. */
-    private void checkCompression(Instant now, boolean flat)
+    /**
+     * Publish (once per episode) the pre-move early-warning: funding magnitude draining into a still-flat
+     * tape, the leverage precursor that LEADS a break. Symmetric -- positive funding draining primes a
+     * DOWN break, negative funding draining primes an UP break. Fragility only: it emits a
+     * {@link CompressionWarning} (arming the operator + lead-time telemetry); it never opens a position.
+     */
+    private void checkCompression(Instant now, double price, boolean flat)
     {
         String day = Times.dayOf(Times.formatUtcIso(now));
-        ObjectNode current = collector_.funding().get(day, Times.intervalKey(now, windowMinutes_));
+        String key = Times.intervalKey(now, windowMinutes_);
+        ObjectNode current = collector_.funding().get(day, key);
         Instant before = now.minusSeconds(compressionWindowMinutes_ * 60L);
         ObjectNode prior = collector_.funding().get(Times.dayOf(Times.formatUtcIso(before)),
                 Times.intervalKey(before, windowMinutes_));
@@ -279,8 +286,11 @@ public final class FastMovePoller implements IUninitializer
                 FundingCompression.of(current, prior, flat, compressionDropPct_);
         if (compression.compressing() && !compressionFlagged_)
         {
+            publisher_.publish(new CompressionWarning(day, key, compression.primedDirection(),
+                    compression.fundingDropPct(), price, now));
             GlobalSystem.info().writes(NAME, "EARLY-WARNING: funding compressing " + compression.fundingDropPct()
-                    + "% over " + compressionWindowMinutes_ + "m into a flat tape -- long conviction draining.");
+                    + "% over " + compressionWindowMinutes_ + "m into a flat tape -- " + compression.primedDirection()
+                    + "-primed (conviction draining).");
             compressionFlagged_ = true;
         }
         else if (!compression.compressing())

@@ -17,7 +17,8 @@ import com.finsent.util.GlobalSystem;
 
 /**
  * Binance BTC market-data fetcher: OHLC klines (ports Python {@code collect._fetch_btc_candles}) plus
- * the 24h rolling ticker for price context. Klines are normalized into {@code {ts,o,h,l,c,v}} bars
+ * the 24h rolling ticker for price context and a lightweight last-price ticker for high-frequency
+ * sampling. Klines are normalized into {@code {ts,o,h,l,c,v}} bars
  * (prices 2dp, volume 4dp, timestamp the bar's open time as UTC ISO) &mdash; the shape the
  * {@code OhlcRegistry} stores. This module only fetches; the boundary-strip and per-article time
  * ranges are computed by {@link OhlcWindows}, and the store/merge semantics live in the registry.
@@ -31,13 +32,16 @@ public final class OhlcFetcher
 
     private final String klinesUrl_;
     private final String ticker24hUrl_;
+    private final String tickerPriceUrl_;
 
     public OhlcFetcher(String binanceBaseUrl)
     {
         klinesUrl_ = binanceBaseUrl;
-        // The 24h ticker is a sibling endpoint of klines on the same Binance base (no extra config).
+        // The tickers are sibling endpoints of klines on the same Binance base (no extra config).
         int lastSlash = binanceBaseUrl.lastIndexOf('/');
-        ticker24hUrl_ = (lastSlash > 0 ? binanceBaseUrl.substring(0, lastSlash) : binanceBaseUrl) + "/ticker/24hr";
+        String apiBase = lastSlash > 0 ? binanceBaseUrl.substring(0, lastSlash) : binanceBaseUrl;
+        ticker24hUrl_ = apiBase + "/ticker/24hr";
+        tickerPriceUrl_ = apiBase + "/ticker/price";
     }
 
     /**
@@ -65,6 +69,33 @@ public final class OhlcFetcher
             GlobalSystem.warning().writes(NAME, "Interrupted fetching 24h ticker", interrupted);
         }
         return ticker;
+    }
+
+    /**
+     * Fetch just BTC's last trade price in one lightweight call (the {@code /ticker/price} {@code {symbol,
+     * price}} endpoint &mdash; far lighter than the 24h ticker) for high-frequency sampling. Null on failure.
+     */
+    public Double fetchLastPrice()
+    {
+        Double price = null;
+        try
+        {
+            JsonNode parsed = Json.parse(Http.get(tickerPriceUrl_, Map.of("symbol", SYMBOL), null, TIMEOUT));
+            if (parsed.has("price"))
+            {
+                price = parsed.path("price").asDouble();
+            }
+        }
+        catch (IOException | RuntimeException fetchFailed)
+        {
+            GlobalSystem.warning().writes(NAME, "last-price fetch failed", fetchFailed);
+        }
+        catch (InterruptedException interrupted)
+        {
+            Thread.currentThread().interrupt();
+            GlobalSystem.warning().writes(NAME, "Interrupted fetching last price", interrupted);
+        }
+        return price;
     }
 
     /**

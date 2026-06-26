@@ -491,10 +491,14 @@ public final class Config
         return boolAttr(fastLaneNode_, "trade", false);
     }
 
-    /** How often the detector samples the live price into its rolling buffer. */
+    /**
+     * How often the detector samples the live price into its rolling buffer. Sub-minute (the leading-edge
+     * latency is FastMove's edge) but not finer than needed: the buffer collapses to 1-minute closes, so
+     * faster sampling only refreshes the current minute's endpoint, not the resolution.
+     */
     public int fastMovePollInSec()
     {
-        return intAttr(fastMoveNode_, "pollInSec", 15);
+        return intAttr(fastMoveNode_, "pollInSec", 20);
     }
 
     /** Whether a confirmed opposite-direction fire closes an open momentum position at market (reversal exit). */

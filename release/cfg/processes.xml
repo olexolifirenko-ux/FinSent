@@ -208,7 +208,7 @@
              choppy drift; a short span catches flash crashes, a long one catches slow grinds; the once-per-move
              latch means extra windows make detection earlier, not more frequent. -->
         <FSFastMove
-            pollInSec="15"
+            pollInSec="20"
             cooldownInMin="30"
             oiBuildingPct="0.5"
             oiLookbackInMin="40"

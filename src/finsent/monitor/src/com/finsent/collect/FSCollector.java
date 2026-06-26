@@ -797,21 +797,13 @@ public final class FSCollector
     }
 
     /**
-     * The current BTC price from the Binance 24h ticker ({@code lastPrice}), or null when unavailable.
-     * The robust real-time price for the trader: unlike {@link #fetchClosePriceAt} it has no
-     * mid-minute kline gap (the ticker is a live rolling value, not a per-minute bar).
+     * The current BTC price from Binance's lightweight spot-price ticker ({@code /ticker/price}), or null
+     * when unavailable. The robust real-time price for the trader and the FastMove poller: a live
+     * last-trade value, so unlike {@link #fetchClosePriceAt} it has no mid-minute kline gap &mdash; and it
+     * avoids pulling the full 24h ticker on every high-frequency sample.
      */
     public Double currentPrice()
     {
-        Double price = null;
-        if (ohlcFetcher_ != null)
-        {
-            JsonNode ticker = ohlcFetcher_.fetch24hTicker();
-            if (ticker != null && ticker.has("lastPrice"))
-            {
-                price = ticker.path("lastPrice").asDouble();
-            }
-        }
-        return price;
+        return ohlcFetcher_ == null ? null : ohlcFetcher_.fetchLastPrice();
     }
 }

@@ -48,6 +48,17 @@ flows), or a genuine broad risk shock? No channel -> noise.
   priced-in discount, it does NOT by itself make a weak channel strong. A lone strike
   reaches HIGH only as a STRATEGIC shock -- a war declaration, an attack on a major
   economy, an oil-supply hit, or a broad risk cascade -- not a single localized strike.
+  For a GEOPOLITICAL / conflict / regional-strike item whose channel to BTC runs through OIL or regional
+  spillover, that strategic-shock bar is CONFIRMED + SYSTEMIC, not dramatic-but-indirect: an 'oil-supply
+  hit' means a CONFIRMED cutoff (a strait CLOSURE, a blockade, oil limit-up), NOT strikes that merely
+  'threaten' / 'raise fears' about supply (oil may be flat or falling); a 'war' means markets BROADLY
+  de-risking, not a 'shooting exchange' / 'collapsed deal' headline on its own. Because that geopolitics
+  -> oil -> BTC channel is INDIRECT, such an item is HIGH only when the shock is confirmed-systemic OR
+  BTC is OBSERVABLY transmitting (its own pre_trend already moving with it); into a flat or opposite BTC
+  it is LOW, however dramatic -- require the confirmed shock or the observed move, do not forecast it.
+  This is the GEOPOLITICS test ONLY: a genuine equity-index crash / circuit-breaker / VIX blowout /
+  broad multi-market risk-off follows the SYSTEMIC rule above -- it is HIGH on BREADTH even with a flat
+  BTC, and this transmission test does NOT apply to it.
 - For a CRYPTO-STRUCTURAL item, strong vs weak turns on FORCED FLOW and SURPRISE, not the actor's
   size. STRONG (HIGH): a flow-forcing or existential shock -- an exchange insolvency, hack, or
   withdrawal halt; a stablecoin de-peg; a mass forced liquidation; a SUDDEN enforcement action that

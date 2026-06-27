@@ -33,6 +33,7 @@ sourceSets {
             // Inline tests (if any) under src/, plus the dedicated test/ root.
             srcDirs = ['src', 'test']
             include '**/*_utest.java', '**/*_test.java'
+            include '**/FastMoveBacktest.java' // offline backtest tool (a main, not a unit test)
         }
         resources { srcDirs = [] }
     }

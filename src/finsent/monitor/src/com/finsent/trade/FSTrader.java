@@ -59,6 +59,10 @@ public final class FSTrader implements IUninitializer
     // Entry/exit params for the FastMove (momentum) lane -- own sizing/stops, plus whether it may trade.
     private final Params fastParams_;
     private final boolean fastTrade_;
+    // Re-entry cooldown: suppress a fresh FastMove OPEN for this long after a momentum position closes, so a
+    // choppy post-move bounce can't whipsaw the trader in and out. The reversal/exit fire still fires and still
+    // closes -- this gates only re-OPENING. 0 disables.
+    private final long fastReentryCooldownMillis_;
     // The strategy's pure eligibility rules (news min tier / momentum min conviction / reversal-exit gate).
     // The trader consults it to DECIDE, then owns the execution guards (freshness, divergence) and acts.
     private final EntryPolicy policy_;
@@ -71,6 +75,8 @@ public final class FSTrader implements IUninitializer
     // The single open position, or null when flat. Guarded by this monitor: the worker thread mutates
     // it (entry/trail/exit); the command thread reads it (status) and can flatten it.
     private Position position_;
+    // Epoch ms of the last momentum-position close; arms the re-entry cooldown. Worker-thread state.
+    private long lastFastExitMillis_;
 
     /** Production wiring: build the recovered book and the configured broker (paper or live WhiteBIT). */
     public FSTrader(FSCollector collector, Config config, WhiteBitClient whitebit, boolean startPaused)
@@ -78,7 +84,8 @@ public final class FSTrader implements IUninitializer
         // The live ticker price is always "now", so the PriceSource timestamp is ignored.
         this(buildBook(config), brokerFrom(config, whitebit), priceSourceFrom(config, whitebit, collector),
                 paramsFrom(config), fastParamsFrom(config), config.fastMoveTrade(), config.fastMoveReversalExit(),
-                Conviction.of(config.fastMoveMinConviction(), Conviction.FULL), startPaused);
+                Conviction.of(config.fastMoveMinConviction(), Conviction.FULL),
+                config.fastMoveReentryCooldownInMin() * 60_000L, startPaused);
     }
 
     /**
@@ -87,12 +94,13 @@ public final class FSTrader implements IUninitializer
      */
     FSTrader(TradeBook book, IBroker broker, PriceSource priceSource, Params params, boolean startPaused)
     {
-        this(book, broker, priceSource, params, params, false, true, Conviction.FULL, startPaused);
+        this(book, broker, priceSource, params, params, false, true, Conviction.FULL, 0L, startPaused);
     }
 
-    /** Canonical injecting constructor: both lanes' params and the momentum trade / reversal / min-conviction. */
+    /** Canonical injecting constructor: both lanes' params and the momentum trade / reversal / min-conviction / re-entry cooldown. */
     FSTrader(TradeBook book, IBroker broker, PriceSource priceSource, Params params, Params fastParams,
-            boolean fastTrade, boolean reversalExit, Conviction fastMinConviction, boolean startPaused)
+            boolean fastTrade, boolean reversalExit, Conviction fastMinConviction, long fastReentryCooldownMillis,
+            boolean startPaused)
     {
         book_ = book;
         broker_ = broker;
@@ -100,6 +108,7 @@ public final class FSTrader implements IUninitializer
         params_ = params;
         fastParams_ = fastParams;
         fastTrade_ = fastTrade;
+        fastReentryCooldownMillis_ = fastReentryCooldownMillis;
         policy_ = new EntryPolicy(params.entryImpactTier(), fastMinConviction, reversalExit);
         paused_ = new AtomicBoolean(startPaused);
         position_ = book.openPosition(); // adopt a recovered open position, if any
@@ -354,11 +363,28 @@ public final class FSTrader implements IUninitializer
                 GlobalSystem.debug().writes(NAME, "FastMove alert-only (trade=false) -- not opening "
                         + signal.direction() + "/" + signal.conviction() + " " + signal.intervalKey());
             }
+            else if (inReentryCooldown(now))
+            {
+                GlobalSystem.info().writes(NAME, "FastMove re-entry cooldown -- not opening "
+                        + signal.direction() + "/" + signal.conviction() + " " + signal.intervalKey()
+                        + " (sitting out the chop after the last momentum exit)");
+            }
             else
             {
                 openFastMove(signal, now);
             }
         }
+    }
+
+    /**
+     * Within the re-entry cooldown after the last momentum exit -- suppress a fresh OPEN so a choppy
+     * post-move bounce does not whipsaw the trader in and out. Gates re-OPENING only; the reversal exit
+     * (which closes a live position on an opposite fire) is unaffected. Disabled at {@code <= 0}.
+     */
+    private boolean inReentryCooldown(Instant now)
+    {
+        return fastReentryCooldownMillis_ > 0
+                && now.toEpochMilli() - lastFastExitMillis_ < fastReentryCooldownMillis_;
     }
 
     private void openFastMove(FastMoveReady signal, Instant now)
@@ -556,6 +582,10 @@ public final class FSTrader implements IUninitializer
             book_.recordClose(open, record);
             position_ = null;
             closed = true;
+            if ("momentum".equals(open.source()))
+            {
+                lastFastExitMillis_ = now.toEpochMilli(); // arm the FastMove re-entry cooldown
+            }
             GlobalSystem.info().writes(NAME, "CLOSE " + open.side() + " @ " + Num.round(fill.price(), 2) + " (" + reason
                     + ") pnl " + Num.round(open.pnlUsd(fill.price()), 2) + " USD / "
                     + Num.round(open.pnlPct(fill.price()), 2) + "%");

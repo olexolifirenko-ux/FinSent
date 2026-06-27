@@ -317,10 +317,53 @@ public class FSTrader_utest
     public void reducedConvictionOpensWhenTheGateIsLowered()
     {
         FSTrader trader = new FSTrader(book_, new PaperBroker(), target -> price_, PARAMS, PARAMS, true, true,
-                Conviction.REDUCED, false);
+                Conviction.REDUCED, 0L, false);
         price_ = 100.0;
         trader.onFastSignal(fast("bearish", Conviction.REDUCED), NOW);
         assertTrue(trader.describe(NOW).contains("Open SHORT"));
+    }
+
+    @Test
+    public void reentryCooldownSuppressesTheBounceWhipsawButKeepsTheExit()
+    {
+        // Replays the 06-25 shape: a cascade SHORT, its reversal EXIT (28m later), then a choppy bounce that
+        // re-fires bearish/bullish/bearish within the cooldown. With a 30-min re-entry cooldown the chop
+        // re-opens are suppressed -- but the reversal exit still closes the cascade short.
+        FSTrader trader = momentumTrader(30 * 60_000L);
+        Instant exit = NOW.plusSeconds(28 * 60);
+
+        price_ = 100.0; trader.onFastSignal(fastAt("bearish", Conviction.FULL, 100.0, NOW), NOW);            // open SHORT
+        assertTrue(trader.describe(NOW).contains("Open SHORT"));
+        price_ = 98.0;  trader.onFastSignal(fastAt("bullish", Conviction.FULL, 98.0, exit), exit);           // reversal exit
+        price_ = 97.0;  trader.onFastSignal(fastAt("bearish", Conviction.FULL, 97.0, min(35)), min(35));     // cooldown -> no open
+        price_ = 99.0;  trader.onFastSignal(fastAt("bullish", Conviction.FULL, 99.0, min(40)), min(40));     // cooldown
+        price_ = 98.5;  trader.onFastSignal(fastAt("bearish", Conviction.FULL, 98.5, min(56)), min(56));     // cooldown (28m<30m)
+
+        assertEquals("only the cascade round trip closed", 1, closed().size());
+        assertEquals("fastmove_reversal", closed().get(0).path("close_reason").asText());
+        assertTrue("flat -- the chop was sat out", trader.describe(min(56)).contains("Flat"));
+    }
+
+    @Test
+    public void withoutCooldownTheBounceWhipsawsTheTrader()
+    {
+        // Same sequence, cooldown OFF (today's behavior): each opposite fire reverse-exits then re-opens,
+        // chopping the trader through the bounce -- two round trips and a fresh short left open.
+        FSTrader trader = momentumTrader(0L);
+
+        price_ = 100.0; trader.onFastSignal(fastAt("bearish", Conviction.FULL, 100.0, NOW), NOW);            // open SHORT
+        price_ = 98.0;  trader.onFastSignal(fastAt("bullish", Conviction.FULL, 98.0, min(28)), min(28));     // reversal exit (1)
+        price_ = 97.0;  trader.onFastSignal(fastAt("bearish", Conviction.FULL, 97.0, min(35)), min(35));     // RE-OPEN short
+        price_ = 99.0;  trader.onFastSignal(fastAt("bullish", Conviction.FULL, 99.0, min(40)), min(40));     // reversal exit (2)
+        price_ = 98.5;  trader.onFastSignal(fastAt("bearish", Conviction.FULL, 98.5, min(56)), min(56));     // RE-OPEN short
+
+        assertEquals("whipsaw: two reversal round trips", 2, closed().size());
+        assertTrue("ends in a fresh chop short", trader.describe(min(56)).contains("Open SHORT"));
+    }
+
+    private static Instant min(int minutesFromNow)
+    {
+        return NOW.plusSeconds(minutesFromNow * 60L);
     }
 
     @Test
@@ -342,12 +385,25 @@ public class FSTrader_utest
     /** A trader with the momentum lane armed (trade on, reversal-exit on, full-only gate), news+fast params identical. */
     private FSTrader momentumTrader()
     {
-        return new FSTrader(book_, new PaperBroker(), target -> price_, PARAMS, PARAMS, true, true, Conviction.FULL, false);
+        return momentumTrader(0L);
+    }
+
+    /** As {@link #momentumTrader()} but with a re-entry cooldown (ms) after a momentum exit. */
+    private FSTrader momentumTrader(long reentryCooldownMillis)
+    {
+        return new FSTrader(book_, new PaperBroker(), target -> price_, PARAMS, PARAMS, true, true,
+                Conviction.FULL, reentryCooldownMillis, false);
     }
 
     private static FastMoveReady fast(String direction, Conviction conviction)
     {
         return new FastMoveReady(DAY, KEY, direction, conviction, 100.0, -1.5, 0.85, 30, 1.0, "", NOW);
+    }
+
+    /** A FastMove fire with an explicit anchor (so the divergence rail passes when price == anchor) and fire time. */
+    private static FastMoveReady fastAt(String direction, Conviction conviction, double anchor, Instant firedAt)
+    {
+        return new FastMoveReady(DAY, KEY, direction, conviction, anchor, -1.5, 0.85, 5, 1.0, "", firedAt);
     }
 
     private ArrayNode closed()

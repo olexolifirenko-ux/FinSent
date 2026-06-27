@@ -508,6 +508,16 @@ public final class Config
     }
 
     /**
+     * Minutes to suppress a fresh FastMove OPEN after a momentum position closes -- the re-entry cooldown
+     * that keeps a choppy post-move bounce from whipsawing the trader in and out. The reversal exit still
+     * closes a live position; this gates only re-OPENING. 0 disables.
+     */
+    public int fastMoveReentryCooldownInMin()
+    {
+        return intAttr(fastLaneNode_, "reentryCooldownInMin", 30);
+    }
+
+    /**
      * Minimum conviction a fire must reach to OPEN a momentum position: {@code full} (default) or
      * {@code reduced}. Default {@code full} because the backtest showed {@code reduced}-conviction fires
      * were net losers across days. A below-minimum fire still publishes/logs (alert-only telemetry).

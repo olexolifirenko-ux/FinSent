@@ -186,6 +186,7 @@
                 trade="false"
                 minConviction="full"
                 reversalExit="true"
+                reentryCooldownInMin="30"
                 notionalInUsd="150.0"
                 leverage="3.0"
                 stopLossInPct="1.0"

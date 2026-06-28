@@ -61,9 +61,23 @@ public final class Http
     private static HttpClient newClient()
     {
         return HttpClient.newBuilder()
+                .version(httpVersion())
                 .connectTimeout(Duration.ofSeconds(15))
                 .followRedirects(HttpClient.Redirect.NORMAL)
                 .build();
+    }
+
+    /**
+     * The HTTP protocol version for the shared clients, from the {@code -Dfinsent.httpVersion} launcher
+     * property (default {@code "1.1"}). HTTP/1.1 avoids the JDK HttpClient's HTTP/2 {@code "too many
+     * concurrent streams"} failure when overlapping fetches hit one flaky host (e.g. a slow feed on the
+     * fast urgent lane): each request gets its own pooled connection, with no stream multiplexing cap.
+     * Set {@code -Dfinsent.httpVersion=2} to switch back to HTTP/2 when a host needs it.
+     */
+    private static HttpClient.Version httpVersion()
+    {
+        return "2".equals(System.getProperty("finsent.httpVersion", "1.1"))
+                ? HttpClient.Version.HTTP_2 : HttpClient.Version.HTTP_1_1;
     }
 
     static HttpClient clientFor(Channel channel)

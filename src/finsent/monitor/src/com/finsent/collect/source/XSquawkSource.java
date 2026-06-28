@@ -168,6 +168,11 @@ public final class XSquawkSource implements IArticleSource
             page++;
         }
         warnIfTruncated(more);
+        // Per-cycle observability (mirrors the RSS lane's debug lines): show the squawk poll ran and its
+        // yield, so a quiet but healthy X lane is visible -- not just the warning when it fails.
+        GlobalSystem.debug().writes(NAME, articles.isEmpty()
+                ? "squawk poll -- no new tweets"
+                : "squawk poll -- " + articles.size() + " new tweet(s) over " + page + " page(s)");
         return articles;
     }
 

@@ -1,0 +1,3413 @@
+{
+  "01:10" : {
+    "analyzed_at" : "2026-06-27T01:15:16Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5016 ],
+    "screener" : [ {
+      "article_id" : 5016,
+      "score" : 1,
+      "reason" : "Political opinion/attack; no new policy catalyst or market event."
+    } ],
+    "prediction_record" : null
+  },
+  "07:40" : {
+    "analyzed_at" : "2026-06-27T12:47:14Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5023, 5128 ],
+    "screener" : [ {
+      "article_id" : 5023,
+      "score" : 0,
+      "reason" : "Weekly price recap; no new catalyst."
+    }, {
+      "article_id" : 5128,
+      "score" : 3,
+      "reason" : "Iran-US military escalation; geopolitical shock with broad risk implications."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60484.03,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "Iran's military strikes targets linked to US forces, reversing recent US-Iran de-escalation" ],
+      "reasoning" : "Fact (Iran's foreign ministry confirms a strike already executed, not a threat), and new (the prior ALREADY COVERED item covered the US-Iran deal and Hormuz recovery -- this is a concrete new escalation step reversing that de-escalation). Channel is real but indirect: a single regional military exchange creates broad risk-off pressure but does not meet the bar for a strategic systemic shock (war declaration, major-economy attack, or oil-supply halt) needed for HIGH; complacent vol and flat BTC pre_trend confirm the move is unpriced but neutral positioning provides no cascade fuel. Rated LOW bearish.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7765,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.36,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0041,
+        "oi_change_pct" : -0.02,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60440.0,
+        "change_24h_pct" : -0.485,
+        "range_pos_24h" : 0.8601
+      },
+      "articles" : [ {
+        "id" : 5128,
+        "title" : "BREAKING: Iran's foreign ministry says its military struck targets linked to US forces in response to air strikes on its southern coast.\n\n\uD83D\uDD34 LIVE updates: https://t.co/wF9ohri9TW https://t.co/5DGTOcToVj",
+        "direction" : "bearish",
+        "reasoning" : "Confirmed executed military strike by Iran on US-linked targets -- a new escalation step beyond the covered US-Iran deal, with a real but indirect/weak risk-off channel to BTC",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T07:47:53Z",
+        "url" : "https://x.com/AJEnglish/status/2070776116277821664",
+        "price_at_publish" : 60484.03
+      } ]
+    },
+    "resonant_article_ids" : [ 5128 ]
+  },
+  "07:50" : {
+    "analyzed_at" : "2026-06-27T08:00:48Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5025 ],
+    "screener" : [ {
+      "article_id" : 5025,
+      "score" : 1,
+      "reason" : "Opinion on Saylor strategy; indirect sentiment, no new catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "09:50" : {
+    "analyzed_at" : "2026-06-27T12:45:31Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5028, 5088, 5089, 5090 ],
+    "screener" : [ {
+      "article_id" : 5028,
+      "score" : 0,
+      "reason" : "Political campaign post; no direct BTC catalyst."
+    }, {
+      "article_id" : 5088,
+      "score" : 1,
+      "reason" : "Geopolitical escalation signal; indirect risk channel to BTC."
+    }, {
+      "article_id" : 5089,
+      "score" : 0,
+      "reason" : "Environmental status update; no market or BTC relevance."
+    }, {
+      "article_id" : 5090,
+      "score" : 1,
+      "reason" : "Shipping incident; potential supply-chain/risk signal but minor."
+    } ],
+    "prediction_record" : null
+  },
+  "10:00" : {
+    "analyzed_at" : "2026-06-27T10:11:14Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5029, 5030 ],
+    "screener" : [ {
+      "article_id" : 5029,
+      "score" : 0,
+      "reason" : "Political opinion/polling; no direct BTC catalyst."
+    }, {
+      "article_id" : 5030,
+      "score" : 0,
+      "reason" : "Campaign event recap; no market or policy impact on BTC."
+    } ],
+    "prediction_record" : null
+  },
+  "12:00" : {
+    "analyzed_at" : "2026-06-28T12:50:27Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5034, 5052, 5554, 5556 ],
+    "screener" : [ {
+      "article_id" : 5034,
+      "score" : 1,
+      "reason" : "MicroStrategy valuation shift; indirect BTC sentiment signal only"
+    }, {
+      "article_id" : 5052,
+      "score" : 0,
+      "reason" : "Routine war update; already covered escalation pattern"
+    }, {
+      "article_id" : 5554,
+      "score" : 1,
+      "reason" : "Cardano exploit recovery; minor crypto event, no systemic impact"
+    }, {
+      "article_id" : 5556,
+      "score" : 0,
+      "reason" : "Retail earnings recap; no BTC relevance"
+    } ],
+    "prediction_record" : null
+  },
+  "12:30" : {
+    "analyzed_at" : "2026-06-27T12:42:19Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5039, 5040, 5041, 5042, 5043, 5044, 5045, 5046 ],
+    "screener" : [ {
+      "article_id" : 5039,
+      "score" : 2,
+      "reason" : "Iran-Bahrain escalation; geopolitical risk shock to oil/markets"
+    }, {
+      "article_id" : 5040,
+      "score" : 0,
+      "reason" : "Regulatory penalty; no direct BTC catalyst"
+    }, {
+      "article_id" : 5041,
+      "score" : 0,
+      "reason" : "Social media restrictions; indirect/slow channel to BTC"
+    }, {
+      "article_id" : 5042,
+      "score" : 0,
+      "reason" : "Regulatory authority; no direct BTC impact"
+    }, {
+      "article_id" : 5043,
+      "score" : 1,
+      "reason" : "Iran sanctions threat; potential macro risk but conditional"
+    }, {
+      "article_id" : 5044,
+      "score" : 0,
+      "reason" : "Diplomatic statement; no new catalyst"
+    }, {
+      "article_id" : 5045,
+      "score" : 1,
+      "reason" : "Israel-Lebanon escalation; geopolitical risk but localized"
+    }, {
+      "article_id" : 5046,
+      "score" : 0,
+      "reason" : "Weather/drowning report; no BTC relevance"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60315.57,
+      "article_count" : 8,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Step 1: This is a condemnation statement (posture) from a GCC official, not a confirmed executed military action on Bahrain — reports of drone attacks are unverified and the item is a political statement. Step 2/3: Even if treated as a fact, a localized Gulf incident is not a strategic shock with a strong crypto channel, and with btc_regime EXTENDED the broad risk-off is already priced.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7758,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.75,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0042,
+        "oi_change_pct" : 0.036,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60345.97,
+        "change_24h_pct" : 1.102,
+        "range_pos_24h" : 0.8862
+      },
+      "articles" : [ {
+        "id" : 5039,
+        "title" : "Gulf Cooperation Council (GCC) Secretary-General Jasem Mohamed Albudaiwi says he \"condemns in the strongest terms the treacherous Iranian attacks\" on Bahrain, after reports that drones had targeted its territory.\n\n\uD83D\uDD34 LIVE updates ⤵️ https://t.co/NQnjQI8dBW",
+        "direction" : "neutral",
+        "reasoning" : "A condemnation/posture statement about unverified drone attacks — fails Step 1 as no confirmed executed action, and even if real, a localized geopolitical incident with no strong crypto channel",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T12:39:49Z",
+        "url" : "https://x.com/AJEnglish/status/2070849581332783472",
+        "price_at_publish" : 60315.57
+      } ]
+    },
+    "resonant_article_ids" : [ 5039 ]
+  },
+  "12:20" : {
+    "analyzed_at" : "2026-06-27T12:42:39Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5047 ],
+    "screener" : [ {
+      "article_id" : 5047,
+      "score" : 2,
+      "reason" : "African gold control shift; potential macro asset-reserve policy catalyst."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60345.97,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "This item describes Africa's existing gold export dynamic and governmental posture toward retaining more control -- it is a macro/commodity background piece, not a new executed action. Even if treated as a fact, there is no concrete crypto channel.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7756,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.71,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0044,
+        "oi_change_pct" : -0.174,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60298.84,
+        "change_24h_pct" : 1.227,
+        "range_pos_24h" : 0.8636
+      },
+      "articles" : [ {
+        "id" : 5047,
+        "title" : "Africa is one of the world’s richest gold regions but captures little of its value, as most is exported mainly to the UK for refining and trading. African governments are now pushing to retain more control and treat gold as a strategic financial asset https://t.co/snRkgEms13 https://t.co/dXqQLWpsCk",
+        "direction" : "neutral",
+        "reasoning" : "Background piece on African gold policy posture -- no new executed fact and no crypto channel",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T12:29:34Z",
+        "url" : "https://x.com/AJEnglish/status/2070847001357697190",
+        "price_at_publish" : 60345.97
+      } ]
+    },
+    "resonant_article_ids" : [ 5047 ]
+  },
+  "12:10" : {
+    "analyzed_at" : "2026-06-28T12:50:29Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5048, 5049, 5050, 5051, 5555 ],
+    "screener" : [ {
+      "article_id" : 5048,
+      "score" : 0,
+      "reason" : "Human interest story; no new economic/policy catalyst."
+    }, {
+      "article_id" : 5049,
+      "score" : 0,
+      "reason" : "Diplomatic statement recap; already covered agreement."
+    }, {
+      "article_id" : 5050,
+      "score" : 0,
+      "reason" : "Regional condemnation; already covered Iran-Bahrain incident."
+    }, {
+      "article_id" : 5051,
+      "score" : 0,
+      "reason" : "Diplomatic statement; already covered Lebanon-Israel agreement."
+    }, {
+      "article_id" : 5555,
+      "score" : 1,
+      "reason" : "Oil-inflation signal but indirect; routine market analysis."
+    } ],
+    "prediction_record" : null
+  },
+  "11:50" : {
+    "analyzed_at" : "2026-06-27T12:42:53Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5053, 5054 ],
+    "screener" : [ {
+      "article_id" : 5053,
+      "score" : 1,
+      "reason" : "German auto sector stress; indirect macro headwind, slow channel."
+    }, {
+      "article_id" : 5054,
+      "score" : 1,
+      "reason" : "Venezuela earthquake; geopolitical/humanitarian crisis, weak direct BTC link."
+    } ],
+    "prediction_record" : null
+  },
+  "11:40" : {
+    "analyzed_at" : "2026-06-27T12:42:54Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5055, 5056 ],
+    "screener" : [ {
+      "article_id" : 5055,
+      "score" : 1,
+      "reason" : "Localized incident; indirect geopolitical risk signal only."
+    }, {
+      "article_id" : 5056,
+      "score" : 2,
+      "reason" : "Iran naval posture shift; potential shipping/sanctions escalation catalyst."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60224.79,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Step 1 fails: this is posture, not a fact -- Iran's Revolutionary Guard Navy is threatening ships, not actually seizing or striking them; no executed action has occurred. A threat or warning from a party known for leverage-seeking statements does not constitute a causative event.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7748,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.91,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0057,
+        "oi_change_pct" : -0.262,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60239.95,
+        "change_24h_pct" : 1.319,
+        "range_pos_24h" : 0.8353
+      },
+      "articles" : [ {
+        "id" : 5056,
+        "title" : "Iranian TV: The Revolutionary Guard Navy will deal firmly with ships that take routes other than those specified by Iran",
+        "direction" : "neutral",
+        "reasoning" : "Posture only -- a threat/warning from Iran's Revolutionary Guard, not an executed seizure or strike; fails Step 1",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T11:41:17Z",
+        "url" : "https://x.com/FirstSquawk/status/2070834852153450857",
+        "price_at_publish" : 60224.79
+      } ]
+    },
+    "resonant_article_ids" : [ 5056 ]
+  },
+  "11:20" : {
+    "analyzed_at" : "2026-06-27T12:43:01Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5057, 5058, 5059, 5060 ],
+    "screener" : [ {
+      "article_id" : 5057,
+      "score" : 3,
+      "reason" : "Strait of Hormuz escalation; oil-supply shock catalyst."
+    }, {
+      "article_id" : 5058,
+      "score" : 0,
+      "reason" : "Duplicate of article 1; same event, minor restatement."
+    }, {
+      "article_id" : 5059,
+      "score" : 2,
+      "reason" : "Hormuz tension detail; reinforces supply-risk signal."
+    }, {
+      "article_id" : 5060,
+      "score" : 1,
+      "reason" : "Regional conflict signal; indirect oil/geopolitical risk."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60306.6,
+      "article_count" : 4,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "Iran demands all ships get permits from Revolutionary Guard to transit Strait of Hormuz; warning shots fired at unauthorized vessels" ],
+      "reasoning" : "Partially fact: warning shots are an executed action and the permit decree is a new, concrete policy step -- passes Step 1. It is a new escalation beyond routine Iran-Hormuz posturing -- passes Step 2. However, the crypto channel is indirect (oil supply disruption → global risk-off → BTC), which is at most weak/slow; and with btc_regime EXTENDED (broad risk-off already largely priced into the multi-day selloff), even a genuine geopolitical escalation keeps its LOW rating.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7738,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.65,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0062,
+        "oi_change_pct" : -0.03,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60326.01,
+        "change_24h_pct" : 1.465,
+        "range_pos_24h" : 0.8766
+      },
+      "articles" : [ {
+        "id" : 5057,
+        "title" : "Iranian TV: All ships must communicate and coordinate with the Revolutionary Guard Navy for entry or exit from the Strait of Hormuz",
+        "direction" : "bearish",
+        "reasoning" : "New Iranian policy decree requiring Revolutionary Guard coordination for Hormuz transit -- a fact but with an indirect crypto channel, and EXTENDED regime dampens further downside",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T11:26:30Z",
+        "url" : "https://x.com/FirstSquawk/status/2070831131549921284",
+        "price_at_publish" : 60306.6
+      }, {
+        "id" : 5059,
+        "title" : "Iranian TV: Ships seek permits from Iran to cross Hormuz after unauthorized ships faced warning shots",
+        "direction" : "bearish",
+        "reasoning" : "Same Hormuz story as item 1 -- warning shots are the executed fact underpinning the decree; assessed jointly, indirect channel only",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T11:25:51Z",
+        "url" : "https://x.com/FirstSquawk/status/2070830966025941357",
+        "price_at_publish" : 60336.64
+      } ]
+    },
+    "resonant_article_ids" : [ 5057, 5059 ]
+  },
+  "11:10" : {
+    "analyzed_at" : "2026-06-28T11:50:16Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5061, 5062, 5063, 5064, 5530 ],
+    "screener" : [ {
+      "article_id" : 5061,
+      "score" : 0,
+      "reason" : "Follow-up recap of already-covered Iran-US strikes"
+    }, {
+      "article_id" : 5062,
+      "score" : 0,
+      "reason" : "Regional diplomatic statement, no new catalyst"
+    }, {
+      "article_id" : 5063,
+      "score" : 0,
+      "reason" : "Regional diplomatic statement, no new catalyst"
+    }, {
+      "article_id" : 5064,
+      "score" : 0,
+      "reason" : "Follow-up recap of already-covered Iranian drone attack"
+    }, {
+      "article_id" : 5530,
+      "score" : 1,
+      "reason" : "China economic data; indirect macro signal, slow channel to BTC"
+    } ],
+    "prediction_record" : null
+  },
+  "11:00" : {
+    "analyzed_at" : "2026-06-27T12:44:01Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5065 ],
+    "screener" : [ {
+      "article_id" : 5065,
+      "score" : 2,
+      "reason" : "Strait of Hormuz tension escalation; oil-supply shock risk channel to BTC."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60415.23,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact: warning shots and permit-seeking are real events. However, Step 3 fails: Hormuz shipping tensions are a localized geopolitical/oil-supply item with only a weak, indirect path to BTC -- no monetary shock, no crypto-structural element, no broad multi-market risk cascade observed. Flat BTC pre-trend and neutral positioning add no fuel, and complacent vol alone cannot elevate a weak-channel item.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.775,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.57,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0066,
+        "oi_change_pct" : 0.051,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60420.28,
+        "change_24h_pct" : 1.858,
+        "range_pos_24h" : 0.9219
+      },
+      "articles" : [ {
+        "id" : 5065,
+        "title" : "MORE SHIPS SEEK PERMITS FROM IRAN TO TRANSIT STRAIT OF HORMUZ AFTER NON-AUTHORISED VESSELS FACED WARNING SHOTS",
+        "direction" : "neutral",
+        "reasoning" : "Real geopolitical development but indirect channel -- oil/shipping disruption risk with no direct transmission to crypto, insufficient for a tradeable BTC signal.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T11:01:15Z",
+        "url" : "https://x.com/DeItaone/status/2070824775086137840",
+        "price_at_publish" : 60415.23
+      } ]
+    },
+    "resonant_article_ids" : [ 5065 ]
+  },
+  "10:50" : {
+    "analyzed_at" : "2026-06-27T12:44:18Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5066, 5067, 5068, 5069, 5070 ],
+    "screener" : [ {
+      "article_id" : 5066,
+      "score" : 2,
+      "reason" : "Israel political instability; geopolitical risk shock potential"
+    }, {
+      "article_id" : 5067,
+      "score" : 1,
+      "reason" : "Regional tension escalation; indirect macro/risk channel"
+    }, {
+      "article_id" : 5068,
+      "score" : 1,
+      "reason" : "Duplicate of article 2; same event, minor detail"
+    }, {
+      "article_id" : 5069,
+      "score" : 1,
+      "reason" : "Lebanon sectarian risk; slow/indirect BTC channel"
+    }, {
+      "article_id" : 5070,
+      "score" : 1,
+      "reason" : "Gulf regional tension; indirect risk asset pressure"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60402.0,
+      "article_count" : 5,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Posture/opinion: this is a political commentary about Netanyahu's electoral prospects, not an executed fact. Fails Step 1 (no concrete action) and Step 3 (no crypto channel).",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7759,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.49,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0066,
+        "oi_change_pct" : 0.047,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60411.43,
+        "change_24h_pct" : 1.596,
+        "range_pos_24h" : 0.9176
+      },
+      "articles" : [ {
+        "id" : 5066,
+        "title" : "\"It looks like [Netanyahu] might be in real trouble.\"\n\nUpcoming elections in Israel will likely decide the legacy of PM Benjamin Netanyahu, who faces mounting pressure over his handling of wars in the region and corruption charges https://t.co/8HUgZzVQIN https://t.co/haLOSWsDig",
+        "direction" : "neutral",
+        "reasoning" : "Editorial opinion on Israeli elections and Netanyahu's political future -- no executed fact and no crypto channel.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:57:00Z",
+        "url" : "https://x.com/AJEnglish/status/2070823705895420407",
+        "price_at_publish" : 60402.0
+      } ]
+    },
+    "resonant_article_ids" : [ 5066 ]
+  },
+  "10:40" : {
+    "analyzed_at" : "2026-06-27T12:44:24Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5071, 5072 ],
+    "screener" : [ {
+      "article_id" : 5071,
+      "score" : 2,
+      "reason" : "AI bubble warning; equity risk shock could trigger BTC volatility."
+    }, {
+      "article_id" : 5072,
+      "score" : 3,
+      "reason" : "US-Iran escalation; geopolitical shock threatens peace deal, major risk catalyst."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60414.29,
+      "article_count" : 2,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "US and Iran trade strikes after June 15 preliminary agreement, raising escalation risk" ],
+      "reasoning" : "Item [2] is a fact (strikes executed, not threatened) and new to this coverage window -- it represents a concrete escalation step within an ongoing conflict, threatening the preliminary agreement. The geopolitical channel to BTC is real (oil-supply risk, broad risk-off), but this is within an already-known conflict framework and BTC pre_trend is flat with neutral positioning, suggesting limited immediate transmission -- LOW rather than HIGH. Item [1] fails Step 1: hedge-fund warnings about an AI 'super bubble' are opinion/posture with no executed action and an indirect channel to crypto.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7759,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.45,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0067,
+        "oi_change_pct" : 0.064,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60442.0,
+        "change_24h_pct" : 1.575,
+        "range_pos_24h" : 0.9323
+      },
+      "articles" : [ {
+        "id" : 5071,
+        "title" : "CHINESE HEDGE FUNDS WARN AI ‘SUPER BUBBLE’ NEARS BURSTING POINT\n\nTwo prominent Chinese hedge fund managers are warning that the global AI rally has entered a “super bubble” phase and may be approaching a major correction.\n\nMain points from the Bloomberg report shown:\n\nWealspring Asset says global AI stocks have become a “super bubble” and believes a collapse is possible, even if the exact timing is uncertain.\nShanghai Banxia Investment Management says the conditions for an AI bubble to burst have already emerged.\n\nAt least four other Chinese hedge funds have also turned cautious on AI investments.\n\nTheir concerns center on:\nExtremely rich valuations after the sharp rally in AI-related stocks.\nThe possibility that many AI infrastructure companies lack durable long-term competitive advantages (economic moats).\nInvestor expectations that may have become overly optimistic.",
+        "direction" : "neutral",
+        "reasoning" : "Posture/opinion -- hedge fund managers expressing views on AI valuations, no executed market action and only a weak indirect channel to BTC.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:49:36Z",
+        "url" : "https://x.com/FirstSquawk/status/2070821844438106488",
+        "price_at_publish" : 60414.29
+      }, {
+        "id" : 5072,
+        "title" : "The US and Iran have traded strikes in the first such confrontation since a preliminary agreement was reached on June 15 to end the months-long war.\n\nWill these strikes unravel the agreement between the two sides? https://t.co/i9MGqCx6zs https://t.co/YvZY844eef",
+        "direction" : "bearish",
+        "reasoning" : "Fact (strikes occurred between US and Iran), new to this window, real geopolitical risk-off channel via oil-supply concern, but within an already-known ongoing conflict framework -- real but not clearly systemic, rates LOW.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:47:50Z",
+        "url" : "https://x.com/AJEnglish/status/2070821401465122908",
+        "price_at_publish" : 60404.01
+      } ]
+    },
+    "resonant_article_ids" : [ 5071, 5072 ]
+  },
+  "10:30" : {
+    "analyzed_at" : "2026-06-27T12:45:01Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5073, 5074 ],
+    "screener" : [ {
+      "article_id" : 5073,
+      "score" : 2,
+      "reason" : "Geopolitical escalation; potential oil/shipping disruption risk to BTC macro environment."
+    }, {
+      "article_id" : 5074,
+      "score" : 2,
+      "reason" : "Strait of Hormuz tension; direct oil-supply shock channel to risk assets and BTC."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60442.0,
+      "article_count" : 2,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Item 1 is a fact (a drone strike occurred) but it is a localized/isolated military incident with no broad systemic breadth, no observed BTC transmission (flat pre_trend), and no direct crypto channel — at most a weak geopolitical channel, insufficient for HIGH. Item 2 is a partial de-escalation fact (cargo resuming post-US strikes) but is a narrow operational update with no direct crypto channel and no systemic risk-off/risk-on shock. Neither item passes Step 3 with sufficient channel strength.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7771,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.42,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0067,
+        "oi_change_pct" : 0.101,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60445.34,
+        "change_24h_pct" : 1.201,
+        "range_pos_24h" : 0.9339
+      },
+      "articles" : [ {
+        "id" : 5073,
+        "title" : "BREAKING: An Israeli drone has struck the Nabatiyeh area in southern Lebanon, the country’s state news agency says, a day after Israel and Lebanon signed a US-brokered security arrangement aimed at reducing tensions along their border.\n\n\uD83D\uDD34 LIVE updates: https://t.co/lbxOZDCyS2 https://t.co/5QXQIznEuq",
+        "direction" : "neutral",
+        "reasoning" : "Fact (drone strike occurred), but a localized single-strike with no systemic breadth, no observed BTC transmission, and only a weak indirect geopolitical channel — noise.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:39:35Z",
+        "url" : "https://x.com/AJEnglish/status/2070819325192339915",
+        "price_at_publish" : 60442.0
+      }, {
+        "id" : 5074,
+        "title" : "Iran says cargo clearance has resumed after the US carried out attacks on Iran, following a drone attack on a cargo ship in the Strait of Hormuz on Thursday, according to the IRNA news agency.\n\n\uD83D\uDD34 LIVE updates: https://t.co/NQnjQI8dBW https://t.co/Hsqjri34iR",
+        "direction" : "neutral",
+        "reasoning" : "Fact (cargo clearance resumed), but a narrow operational update on an ongoing conflict backdrop with no crypto channel and no systemic risk impact — noise.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:34:43Z",
+        "url" : "https://x.com/AJEnglish/status/2070818098484297745",
+        "price_at_publish" : 60430.0
+      } ]
+    },
+    "resonant_article_ids" : [ 5073, 5074 ]
+  },
+  "10:20" : {
+    "analyzed_at" : "2026-06-27T12:45:10Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5075, 5076, 5077, 5078, 5079, 5080, 5081, 5082, 5083 ],
+    "screener" : [ {
+      "article_id" : 5075,
+      "score" : 1,
+      "reason" : "Geopolitical statement; indirect macro channel to BTC."
+    }, {
+      "article_id" : 5076,
+      "score" : 1,
+      "reason" : "Geopolitical statement; indirect macro channel to BTC."
+    }, {
+      "article_id" : 5077,
+      "score" : 2,
+      "reason" : "Iran escalation threat; Strait of Hormuz risk affects oil/macro."
+    }, {
+      "article_id" : 5078,
+      "score" : 2,
+      "reason" : "Iran accuses US of MOU violation; Strait tension escalates."
+    }, {
+      "article_id" : 5079,
+      "score" : 2,
+      "reason" : "Iran escalation claim; geopolitical risk to oil/macro."
+    }, {
+      "article_id" : 5080,
+      "score" : 2,
+      "reason" : "Iran Supreme Leader advisor threat; swift retaliation language."
+    }, {
+      "article_id" : 5081,
+      "score" : 2,
+      "reason" : "Iran escalation; Strait of Hormuz tension risk."
+    }, {
+      "article_id" : 5082,
+      "score" : 1,
+      "reason" : "Analysis of agreement ambiguity; slow/indirect macro channel."
+    }, {
+      "article_id" : 5083,
+      "score" : 2,
+      "reason" : "Iran escalation claim; geopolitical risk to oil/macro."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60464.91,
+      "article_count" : 9,
+      "resonant_count" : 6,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "All six items are posture, not fact: Iranian officials threatening a 'swift and devastating' response to alleged MOU violations -- no action has been executed, only warnings and accusations. Fails Step 1; these are rhetorical threats from figures known for leverage-seeking statements, not executed events.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7774,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.3,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0067,
+        "oi_change_pct" : 0.091,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60472.15,
+        "change_24h_pct" : 1.182,
+        "range_pos_24h" : 0.9468
+      },
+      "articles" : [ {
+        "id" : 5077,
+        "title" : "Member of Iran's Expediency Discernment Council: The response to any violation of the terms of the memorandum of understanding will be swift and devastating.",
+        "direction" : "neutral",
+        "reasoning" : "Posture -- a threat of future retaliation, no action taken",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:21:52Z",
+        "url" : "https://x.com/FirstSquawk/status/2070814863535092216",
+        "price_at_publish" : 60464.91
+      }, {
+        "id" : 5078,
+        "title" : "Member of Iran's Assembly for the Discernment of Expediency: Washington has violated the first clause of the memorandum by continuing to stoke tensions in the Strait of Hormuz",
+        "direction" : "neutral",
+        "reasoning" : "Posture -- an accusation of violation with no executed response",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:21:42Z",
+        "url" : "https://x.com/FirstSquawk/status/2070814825387823314",
+        "price_at_publish" : 60464.91
+      }, {
+        "id" : 5079,
+        "title" : "Member of Iran's Assembly for the Discernment of Expediency: Washington violated the first clause of the memorandum by supporting the actions of its Israeli agent",
+        "direction" : "neutral",
+        "reasoning" : "Posture -- same accusation framed differently, no action",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:21:31Z",
+        "url" : "https://x.com/FirstSquawk/status/2070814776884912250",
+        "price_at_publish" : 60464.91
+      }, {
+        "id" : 5080,
+        "title" : "Iranian Supreme Leader's Advisor: The response to any violation of the memorandum of understanding's provisions will be swift and devastating",
+        "direction" : "neutral",
+        "reasoning" : "Posture -- duplicate threat from Supreme Leader's advisor, no action taken",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:20:27Z",
+        "url" : "https://x.com/FirstSquawk/status/2070814509066047853",
+        "price_at_publish" : 60472.14
+      }, {
+        "id" : 5081,
+        "title" : "Iranian Supreme Leader's Advisor: Washington violated the first clause of the memorandum of understanding by continuing to stir tensions in the Strait of Hormuz",
+        "direction" : "neutral",
+        "reasoning" : "Posture -- accusation of MOU violation, no executed response",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:20:15Z",
+        "url" : "https://x.com/FirstSquawk/status/2070814456683114697",
+        "price_at_publish" : 60472.14
+      }, {
+        "id" : 5083,
+        "title" : "Iranian Supreme Leader's Advisor: Washington violated the first clause of the memorandum of understanding by supporting its Israeli proxy's actions in the region",
+        "direction" : "neutral",
+        "reasoning" : "Posture -- same accusation rephrased, no new executed fact",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:20:02Z",
+        "url" : "https://x.com/FirstSquawk/status/2070814405789635051",
+        "price_at_publish" : 60472.14
+      } ]
+    },
+    "resonant_article_ids" : [ 5077, 5078, 5079, 5080, 5081, 5083 ]
+  },
+  "10:10" : {
+    "analyzed_at" : "2026-06-27T12:45:20Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5084, 5085, 5086, 5087 ],
+    "screener" : [ {
+      "article_id" : 5084,
+      "score" : 3,
+      "reason" : "Geopolitical escalation in Middle East; Strait of Hormuz oil-supply risk."
+    }, {
+      "article_id" : 5085,
+      "score" : 2,
+      "reason" : "Iran threat escalation; potential conflict catalyst."
+    }, {
+      "article_id" : 5086,
+      "score" : 3,
+      "reason" : "Strait of Hormuz tension; direct oil-supply shock channel."
+    }, {
+      "article_id" : 5087,
+      "score" : 0,
+      "reason" : "Duplicate of article 3; same event, same source."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60450.0,
+      "article_count" : 4,
+      "resonant_count" : 3,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Item 1 is a localized Israeli drone strike on southern Lebanon -- a real fact but a single isolated strike with no systemic breadth, no BTC transmission, and no broad risk cascade (flat BTC pre_trend confirms no transmission). Items 2-3 are posture: an Iranian advisor issuing a warning/threat about a 'breach' and promising a 'rapid and resolute reaction' -- unexecuted future threat, not a fact. None pass all three steps.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7772,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.21,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0066,
+        "oi_change_pct" : -0.046,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60424.03,
+        "change_24h_pct" : 1.082,
+        "range_pos_24h" : 0.9237
+      },
+      "articles" : [ {
+        "id" : 5084,
+        "title" : "Israeli drone strikes target Nabatiyeh area in southern Lebanon - Lebanese state news agency",
+        "direction" : "neutral",
+        "reasoning" : "A localized single strike on southern Lebanon -- real fact but no systemic breadth, no observed crypto transmission, at most LOW channel and BTC is flat/unmoving",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:18:22Z",
+        "url" : "https://x.com/FirstSquawk/status/2070813984912183582",
+        "price_at_publish" : 60450.0
+      }, {
+        "id" : 5085,
+        "title" : "Rezaei: reaction to any breach of memorandum will be rapid and resolute",
+        "direction" : "neutral",
+        "reasoning" : "Posture -- a threat of 'rapid and resolute reaction' is an unexecuted future action, fails Step 1",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:13:19Z",
+        "url" : "https://x.com/FirstSquawk/status/2070812714583331249",
+        "price_at_publish" : 60459.64
+      }, {
+        "id" : 5086,
+        "title" : "Rezaei, advisor to Iran’s supreme leader: U.S. breaches peace memorandum by escalating tensions in Strait of Hormuz",
+        "direction" : "neutral",
+        "reasoning" : "Posture -- Iranian advisor alleging a breach and implying retaliation; no executed action, fails Step 1",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T10:13:11Z",
+        "url" : "https://x.com/FirstSquawk/status/2070812680349532590",
+        "price_at_publish" : 60459.64
+      } ]
+    },
+    "resonant_article_ids" : [ 5084, 5085, 5086 ]
+  },
+  "09:40" : {
+    "analyzed_at" : "2026-06-27T12:45:33Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5091, 5092, 5093, 5094 ],
+    "screener" : [ {
+      "article_id" : 5091,
+      "score" : 3,
+      "reason" : "Oil-supply shock catalyst: tanker attack in critical Hormuz chokepoint."
+    }, {
+      "article_id" : 5092,
+      "score" : 1,
+      "reason" : "Follow-up on incident [1]; no environmental impact is minor detail."
+    }, {
+      "article_id" : 5093,
+      "score" : 2,
+      "reason" : "Duplicate of [1] with slightly different wording; core event material."
+    }, {
+      "article_id" : 5094,
+      "score" : 2,
+      "reason" : "Confirms new Hormuz incident; vague but material geopolitical risk."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60400.42,
+      "article_count" : 4,
+      "resonant_count" : 3,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact (a tanker was struck), and new, but the channel is weak for BTC: a single localized maritime incident in the Strait of Hormuz is not a strategic energy shock or broad risk-off cascade -- it is an isolated geopolitical event with no direct crypto-structural transmission. Positioning is neutral, pre-trend flat, and complacent vol does not elevate a weak-channel event. Stays noise.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7767,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.15,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0063,
+        "oi_change_pct" : 0.024,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60408.39,
+        "change_24h_pct" : 0.63,
+        "range_pos_24h" : 0.9162
+      },
+      "articles" : [ {
+        "id" : 5091,
+        "title" : "UKMTO: Master of tanker reports being hit by unidentified projectile",
+        "direction" : "neutral",
+        "reasoning" : "A real incident but a single localized maritime strike -- weak, indirect channel to BTC, not a systemic shock",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T09:49:49Z",
+        "url" : "https://x.com/FirstSquawk/status/2070806799553331659",
+        "price_at_publish" : 60400.42
+      }, {
+        "id" : 5093,
+        "title" : "British Maritime Authority: Oil tanker reports being targeted in Strait of Hormuz by unknown projectile",
+        "direction" : "neutral",
+        "reasoning" : "Same event as item 1, duplicate report -- same weak-channel assessment",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T09:45:14Z",
+        "url" : "https://x.com/FirstSquawk/status/2070805645847363716",
+        "price_at_publish" : 60429.99
+      }, {
+        "id" : 5094,
+        "title" : "British Maritime Authority: Report of a new incident in the Strait of Hormuz",
+        "direction" : "neutral",
+        "reasoning" : "Same Strait of Hormuz incident, third duplicate -- no additional causative fact",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T09:45:01Z",
+        "url" : "https://x.com/FirstSquawk/status/2070805593263341682",
+        "price_at_publish" : 60429.99
+      } ]
+    },
+    "resonant_article_ids" : [ 5091, 5093, 5094 ]
+  },
+  "09:30" : {
+    "analyzed_at" : "2026-06-27T12:45:42Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5095, 5096, 5097 ],
+    "screener" : [ {
+      "article_id" : 5095,
+      "score" : 0,
+      "reason" : "Regional conflict update, no direct BTC catalyst"
+    }, {
+      "article_id" : 5096,
+      "score" : 0,
+      "reason" : "Diplomatic statement, no market-moving catalyst"
+    }, {
+      "article_id" : 5097,
+      "score" : 0,
+      "reason" : "Domestic political incident, no BTC-relevant shock"
+    } ],
+    "prediction_record" : null
+  },
+  "09:20" : {
+    "analyzed_at" : "2026-06-27T12:45:43Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5098 ],
+    "screener" : [ {
+      "article_id" : 5098,
+      "score" : 1,
+      "reason" : "Geopolitical escalation; indirect macro risk channel to BTC via safe-haven flows."
+    } ],
+    "prediction_record" : null
+  },
+  "09:10" : {
+    "analyzed_at" : "2026-06-27T12:45:45Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5099, 5100, 5101, 5102, 5103, 5104, 5105 ],
+    "screener" : [ {
+      "article_id" : 5099,
+      "score" : 0,
+      "reason" : "Humanitarian crisis; no direct BTC catalyst."
+    }, {
+      "article_id" : 5100,
+      "score" : 1,
+      "reason" : "China macro divergence; indirect growth signal, slow channel."
+    }, {
+      "article_id" : 5101,
+      "score" : 0,
+      "reason" : "Regional diplomatic statement; no new economic/policy shock."
+    }, {
+      "article_id" : 5102,
+      "score" : 0,
+      "reason" : "Natural disaster; no direct BTC or macro catalyst."
+    }, {
+      "article_id" : 5103,
+      "score" : 2,
+      "reason" : "Iran-Bahrain escalation; geopolitical risk shock, oil/sanctions risk."
+    }, {
+      "article_id" : 5104,
+      "score" : 0,
+      "reason" : "China tech valuation news; no new catalyst, routine update."
+    }, {
+      "article_id" : 5105,
+      "score" : 3,
+      "reason" : "US-Iran military escalation, Strait of Hormuz; major geopolitical shock, oil-supply risk."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60380.27,
+      "article_count" : 7,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "high",
+      "macro_regime" : "n/a",
+      "key_events" : [ "US strikes Iranian missile/drone/radar sites; Iran retaliates against US-linked targets — active military exchange breaks apparent U.S.-Iran deal", "Iranian drone attack on Singapore-flagged vessel in Strait of Hormuz; Bahrain condemns Iranian attack" ],
+      "reasoning" : "All three steps pass: these are executed facts (actual strikes on both sides, a ship attacked, a sovereign condemnation issued), genuinely new relative to the ALREADY COVERED 'U.S.-Iran deal' that has now visibly collapsed into live military exchanges, and the channel is strong — a US-Iran shooting war centered on the Strait of Hormuz threatens oil supply disruption and triggers broad risk-off; complacent options (IV 35%) and flat pre_trend confirm this shock is unpriced, amplifying the bearish impact into neutral positioning.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7775,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.24,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0053,
+        "oi_change_pct" : 0.052,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60417.01,
+        "change_24h_pct" : 0.545,
+        "range_pos_24h" : 0.9203
+      },
+      "articles" : [ {
+        "id" : 5103,
+        "title" : "BREAKING: Bahrain’s foreign ministry said it strongly condemns an Iranian drone attack in the early morning hours, describing it as a \"serious violation\" of sovereignty and international law.\n\n\uD83D\uDD34 LIVE updates: https://t.co/NQnjQI8dBW https://t.co/mFDWpR91Mb",
+        "direction" : "bearish",
+        "reasoning" : "Fact: Bahrain officially condemns an executed Iranian drone attack — new escalation step beyond the covered deal, with a geopolitical risk-off channel.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T09:12:04Z",
+        "url" : "https://x.com/AJEnglish/status/2070797299773853781",
+        "price_at_publish" : 60380.27
+      }, {
+        "id" : 5105,
+        "title" : "The statement came hours after the United States said it had struck Iranian missile, drone and radar sites in southern Iran in response to what it described as an Iranian drone attack on the Singapore-flagged container ship Ever Lovely in the Strait of Hormuz. Iran, in turn, said it had retaliated by striking US-linked targets and accused Washington of violating the memorandum of understanding.",
+        "direction" : "bearish",
+        "reasoning" : "Fact: US struck Iranian sites and Iran retaliated — actual executed military exchange breaking the previously covered U.S.-Iran deal, with a strong oil/risk-off channel to BTC.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T09:11:01Z",
+        "url" : "https://x.com/FirstSquawk/status/2070797035234828677",
+        "price_at_publish" : 60378.01
+      } ]
+    },
+    "resonant_article_ids" : [ 5103, 5105 ]
+  },
+  "09:00" : {
+    "analyzed_at" : "2026-06-27T12:46:14Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5106, 5107, 5108, 5109, 5110, 5111 ],
+    "screener" : [ {
+      "article_id" : 5106,
+      "score" : 2,
+      "reason" : "Iran-US tensions escalate; geopolitical risk shock to oil/markets."
+    }, {
+      "article_id" : 5107,
+      "score" : 1,
+      "reason" : "Lebanon military oversight; indirect geopolitical signal, slow channel."
+    }, {
+      "article_id" : 5108,
+      "score" : 0,
+      "reason" : "UK defense policy; no new catalyst or market shock."
+    }, {
+      "article_id" : 5109,
+      "score" : 0,
+      "reason" : "Lifestyle trend; no market or macro relevance."
+    }, {
+      "article_id" : 5110,
+      "score" : 2,
+      "reason" : "Major natural disaster; potential economic/insurance shock, risk repricing."
+    }, {
+      "article_id" : 5111,
+      "score" : 1,
+      "reason" : "Ukraine war update; ongoing conflict, incremental tactical news."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60458.0,
+      "article_count" : 6,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "Iranian drone attack on Bahrain, breaching US-Iran MOU -- new Middle East escalation step" ],
+      "reasoning" : "Item 1 is a fact (an attack occurred, Bahrain formally condemned it), and it is new -- a concrete escalation beyond the covered US-Iran deal, not a recap. However, the crypto channel is weak/indirect: this is a localized Gulf incident involving a small state, not a strategic shock to a major economy, oil supply, or global markets, so it reaches at most LOW bearish. Item 2 (Venezuela earthquake rescue) is a natural disaster with no crypto channel -- noise.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7772,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.41,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0051,
+        "oi_change_pct" : 0.028,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60451.95,
+        "change_24h_pct" : 0.332,
+        "range_pos_24h" : 0.9371
+      },
+      "articles" : [ {
+        "id" : 5106,
+        "title" : "Bahrain condemned an Iranian drone attack targeting its territory early on Saturday, accusing Tehran of violating its sovereignty and breaching the US-Iran memorandum of understanding reached this month.",
+        "direction" : "bearish",
+        "reasoning" : "Fact -- an Iranian drone strike on Bahrain actually occurred, a new escalation step beyond the covered US-Iran MOU; but the channel is weak/indirect (small Gulf state, no systemic breadth), so at most LOW bearish.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T09:09:50Z",
+        "url" : "https://x.com/FirstSquawk/status/2070796738198466633",
+        "price_at_publish" : 60458.0
+      }, {
+        "id" : 5110,
+        "title" : "Rescuers are racing against time in Venezuela, three days after two powerful earthquakes struck, with at least 920 people confirmed dead and more than 51,000 still missing https://t.co/BFqWQ8BToh https://t.co/3y5rnWGjg3",
+        "direction" : "neutral",
+        "reasoning" : "Ongoing natural disaster with no monetary, regulatory, or crypto-structural channel -- noise.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T09:07:56Z",
+        "url" : "https://x.com/AJEnglish/status/2070796259880001651",
+        "price_at_publish" : 60465.69
+      } ]
+    },
+    "resonant_article_ids" : [ 5106, 5110 ]
+  },
+  "08:30" : {
+    "analyzed_at" : "2026-06-27T12:46:46Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5112, 5113, 5114, 5115, 5116, 5117 ],
+    "screener" : [ {
+      "article_id" : 5112,
+      "score" : 2,
+      "reason" : "Iran-US-Israel tensions escalation; geopolitical risk shock."
+    }, {
+      "article_id" : 5113,
+      "score" : 1,
+      "reason" : "Regional attack; indirect macro/risk channel to BTC."
+    }, {
+      "article_id" : 5114,
+      "score" : 0,
+      "reason" : "Weather event; no direct BTC catalyst."
+    }, {
+      "article_id" : 5115,
+      "score" : 2,
+      "reason" : "Ukraine-Russia escalation; geopolitical risk catalyst."
+    }, {
+      "article_id" : 5116,
+      "score" : 0,
+      "reason" : "Crime report; no BTC relevance."
+    }, {
+      "article_id" : 5117,
+      "score" : 2,
+      "reason" : "Hormuz shipping threat; oil-supply shock risk channel."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60408.01,
+      "article_count" : 6,
+      "resonant_count" : 3,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "All three items fail the three-step test: [1] is too vague (no casualties, no damage, no claimed responsibility, no clear actor or target -- not a concrete new fact); [2] is a fact (Ukraine strike on Volgograd), but a single localized strike in an ongoing conflict is not new or systemic -- the channel to BTC is weak and indirect (not a strategic shock, no broad risk cascade, BTC flat and not transmitting); [3] is posture from Iran's parliament threatening Hormuz -- an unexecuted threat that fails Step 1 and echoes an already-covered backdrop. None pass all three steps.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7783,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.64,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0044,
+        "oi_change_pct" : 0.053,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60446.76,
+        "change_24h_pct" : 0.237,
+        "range_pos_24h" : 0.9346
+      },
+      "articles" : [ {
+        "id" : 5112,
+        "title" : "There were no immediate reports of casualties or damage, and no group claimed responsibility for the attack.\n\nThe strike came amid heightened regional tensions following recent fighting involving Iran, the United States and Israel.",
+        "direction" : "neutral",
+        "reasoning" : "Too vague to constitute a concrete fact -- no actor, no target confirmed, no damage, no responsibility claimed; fails Step 1 as a causative event.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T08:39:57Z",
+        "url" : "https://x.com/FirstSquawk/status/2070789219308777728",
+        "price_at_publish" : 60408.01
+      }, {
+        "id" : 5115,
+        "title" : "Zelensky published video of FP-5 Flamingo cruise missile launches and precision hits on the Titan-Barricades plant in Volgograd, Russia:",
+        "direction" : "neutral",
+        "reasoning" : "Fact (strike confirmed via video), but a single localized strike in the ongoing Ukraine-Russia war is not new or systemic -- weak, indirect channel to BTC with no observed transmission.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T08:34:41Z",
+        "url" : "https://x.com/FirstSquawk/status/2070787891169739069",
+        "price_at_publish" : 60450.5
+      }, {
+        "id" : 5117,
+        "title" : "Iranian Parliament's National Security Committee: We will deal firmly with any violation of shipping instructions in Hormuz",
+        "direction" : "neutral",
+        "reasoning" : "Posture, not fact -- an unexecuted parliamentary threat about Hormuz shipping; echoes the already-covered US-Iran backdrop and fails Step 1.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T08:33:40Z",
+        "url" : "https://x.com/FirstSquawk/status/2070787635162108363",
+        "price_at_publish" : 60453.0
+      } ]
+    },
+    "resonant_article_ids" : [ 5112, 5115, 5117 ]
+  },
+  "08:20" : {
+    "analyzed_at" : "2026-06-28T08:30:04Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 5118, 5468 ],
+    "screener" : [ {
+      "article_id" : 5118,
+      "score" : 0,
+      "reason" : "Crime story; no BTC/macro/geopolitical relevance."
+    }, {
+      "article_id" : 5468,
+      "score" : 2,
+      "reason" : "EU regulatory action on DeFi/staking/NFTs under MiCA; material crypto policy catalyst."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60456.5,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact (a committee urge/recommendation), but fails Step 1 -- this is a posture/intention to assess regulation, not an enacted rule. Even if treated as a fact, it is a slow-moving regulatory discussion with no concrete enforcement action, failing Step 3 as a weak/indirect channel to BTC.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7783,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.81,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0042,
+        "oi_change_pct" : 0.07,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60450.36,
+        "change_24h_pct" : 0.418,
+        "range_pos_24h" : 0.9363
+      },
+      "articles" : [ {
+        "id" : 5468,
+        "title" : "EU lawmakers urge assessing DeFi, staking, NFT regulation",
+        "direction" : "neutral",
+        "reasoning" : "A parliamentary committee urging an assessment of future regulation is posture/intent, not an enacted rule, and represents a slow-moving indirect channel with no forced crypto flow.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T08:21:04Z",
+        "url" : "https://cointelegraph.com/news/eu-lawmakers-assessing-defi-staking-nft-regulation",
+        "price_at_publish" : 60456.5
+      } ]
+    },
+    "resonant_article_ids" : [ 5468 ]
+  },
+  "08:00" : {
+    "analyzed_at" : "2026-06-28T08:30:12Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 5119, 5120, 5121, 5122, 5123, 5124, 5125, 5126, 5127, 5469 ],
+    "screener" : [ {
+      "article_id" : 5119,
+      "score" : 0,
+      "reason" : "Political opinion/attack; no market catalyst"
+    }, {
+      "article_id" : 5120,
+      "score" : 1,
+      "reason" : "Ukraine weapons strike; indirect geopolitical risk signal"
+    }, {
+      "article_id" : 5121,
+      "score" : 0,
+      "reason" : "Stock analyst call; no macro/policy catalyst"
+    }, {
+      "article_id" : 5122,
+      "score" : 0,
+      "reason" : "Lebanon stability statement; no new event"
+    }, {
+      "article_id" : 5123,
+      "score" : 0,
+      "reason" : "Tax fraud case; no market relevance"
+    }, {
+      "article_id" : 5124,
+      "score" : 1,
+      "reason" : "US-China chip policy friction; minor trade tension"
+    }, {
+      "article_id" : 5125,
+      "score" : 1,
+      "reason" : "Lebanon-Israel framework; geopolitical stabilization signal"
+    }, {
+      "article_id" : 5126,
+      "score" : 0,
+      "reason" : "Political comment; no market event"
+    }, {
+      "article_id" : 5127,
+      "score" : 0,
+      "reason" : "Fraud arrest; no macro/market impact"
+    }, {
+      "article_id" : 5469,
+      "score" : 2,
+      "reason" : "Oil supply shock recovery; direct energy/macro catalyst"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60469.44,
+      "article_count" : 10,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bullish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "Saudi Aramco resumes oil loading at Ras Tanura, signaling partial supply normalization despite Strait of Hormuz tensions" ],
+      "reasoning" : "Fact (an executed resumption of oil loading, not a plan), and marginally new as a specific supply-normalization step beyond yesterday's already-covered 'shipping rebounds' story -- though directionally consistent with it. Channel to BTC is indirect: oil supply resumption -> lower energy-price stress -> mild risk-on, but the geopolitics->oil->BTC path is weak and indirect; pre_trend is flat with no observed BTC transmission, and complacent vol/neutral positioning provide no amplifying fuel. At most a low-tier, soft bullish signal.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7766,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.44,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0043,
+        "oi_change_pct" : 0.067,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60548.07,
+        "change_24h_pct" : 0.016,
+        "range_pos_24h" : 0.9832
+      },
+      "articles" : [ {
+        "id" : 5469,
+        "title" : "Saudi Aramco resumes oil loading at Ras Tanura in boost to supply",
+        "direction" : "bullish",
+        "reasoning" : "A real, executed fact (oil loading resumed at a key Saudi terminal) with mild new specificity beyond the already-covered shipping-rebound narrative, but the channel to BTC is indirect and the pre_trend is flat -- weak-channel, low-tier bullish at best.",
+        "scenario" : "fresh_bullish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T08:03:59Z",
+        "url" : "https://www.cnbc.com/2026/06/27/saudi-aramco-resumes-oil-loading-at-ras-tanura-in-boost-to-supply.html",
+        "price_at_publish" : 60469.44
+      } ]
+    },
+    "resonant_article_ids" : [ 5469 ]
+  },
+  "07:30" : {
+    "analyzed_at" : "2026-06-27T12:47:51Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5129, 5130, 5131 ],
+    "screener" : [ {
+      "article_id" : 5129,
+      "score" : 0,
+      "reason" : "Bangladesh shipbreaking industry transition; no BTC channel."
+    }, {
+      "article_id" : 5130,
+      "score" : 1,
+      "reason" : "Ukraine recruitment dynamics; indirect geopolitical risk signal only."
+    }, {
+      "article_id" : 5131,
+      "score" : 1,
+      "reason" : "Apple India price hike; minor inflation/demand signal, slow indirect channel."
+    } ],
+    "prediction_record" : null
+  },
+  "07:20" : {
+    "analyzed_at" : "2026-06-27T12:47:52Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5132, 5133, 5134, 5135 ],
+    "screener" : [ {
+      "article_id" : 5132,
+      "score" : 3,
+      "reason" : "US-Iran military escalation; geopolitical shock with broad macro/risk-asset impact"
+    }, {
+      "article_id" : 5133,
+      "score" : 1,
+      "reason" : "Supply-chain inflation signal; indirect macro channel, no immediate catalyst"
+    }, {
+      "article_id" : 5134,
+      "score" : 2,
+      "reason" : "Iran nuclear standoff escalation; sanctions/conflict risk catalyst"
+    }, {
+      "article_id" : 5135,
+      "score" : 1,
+      "reason" : "Iran-IAEA negotiation status; slow-moving diplomatic process, minor immediacy"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60423.99,
+      "article_count" : 4,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "US strikes on Iran's southern coastline condemned by Tehran, breaking the recently covered US-Iran deal", "Iran suspends IAEA cooperation and bars inspectors" ],
+      "reasoning" : "Both items pass Step 1 (executed actions, not threats -- Iran's MFA condemns actual strikes; Iran's government enacts IAEA suspension under domestic law) and Step 2 (the ALREADY COVERED block shows a US-Iran deal in place as of June 26 -- these strikes and the IAEA suspension are a concrete new escalation step beyond that covered deal). The channel is a geopolitical/oil-supply shock (Strait of Hormuz, risk-off) which is real but indirect for BTC; however, btc_regime is EXTENDED (broad risk-off already largely priced) and positioning is neutral with flat OI, limiting the marginal fuel -- this keeps the tier LOW despite the genuine novelty of the escalation.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7746,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.61,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0042,
+        "oi_change_pct" : 0.041,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60345.99,
+        "change_24h_pct" : -0.416,
+        "range_pos_24h" : 0.8168
+      },
+      "articles" : [ {
+        "id" : 5132,
+        "title" : "BREAKING: Iran’s Ministry of Foreign Affairs has condemned the US strikes on several locations along Iran’s southern coastline, accusing Washington of violating the UN Charter and the Memorandum of Understanding on ending the war.\n\n\uD83D\uDD34 LIVE updates: https://t.co/6kiKmb23ji https://t.co/F3mLREqNEi",
+        "direction" : "bearish",
+        "reasoning" : "Fact -- Iran's MFA condemning actual US strikes on Iranian coastline is a new executed military action that breaks the covered US-Iran deal; real geopolitical/oil-shock channel, but EXTENDED btc_regime dampens the incremental impact to LOW.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T07:27:50Z",
+        "url" : "https://x.com/AJEnglish/status/2070771070731481242",
+        "price_at_publish" : 60423.99
+      }, {
+        "id" : 5134,
+        "title" : "Mohseni Sani accused the IAEA director general of “hostile” conduct, saying his actions had helped advance anti-Iran resolutions at the UN Security Council and the IAEA Board of Governors.\n\nHe said that under Iran’s law requiring the government to suspend cooperation with the IAEA, the agency would not be allowed to enter the country to inspect the sites it wants to visit.",
+        "direction" : "bearish",
+        "reasoning" : "Fact -- Iran enacting an IAEA inspection ban under domestic law is a new concrete escalation step (nuclear oversight collapse), adding to geopolitical risk-off; indirect crypto channel and EXTENDED regime keep it LOW.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T07:20:21Z",
+        "url" : "https://x.com/FirstSquawk/status/2070769184557170941",
+        "price_at_publish" : 60345.99
+      } ]
+    },
+    "resonant_article_ids" : [ 5132, 5134 ]
+  },
+  "07:10" : {
+    "analyzed_at" : "2026-06-27T12:48:27Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5136, 5137, 5138 ],
+    "screener" : [ {
+      "article_id" : 5136,
+      "score" : 0,
+      "reason" : "Weather event, no direct BTC catalyst channel."
+    }, {
+      "article_id" : 5137,
+      "score" : 1,
+      "reason" : "Supply disruption risk in emerging market, indirect macro effect."
+    }, {
+      "article_id" : 5138,
+      "score" : 0,
+      "reason" : "Demographic trend, no new financial or policy catalyst for BTC."
+    } ],
+    "prediction_record" : null
+  },
+  "12:40" : {
+    "analyzed_at" : "2026-06-27T12:48:54Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5139, 5140 ],
+    "screener" : [ {
+      "article_id" : 5139,
+      "score" : 0,
+      "reason" : "Yemen drought; no direct BTC catalyst channel."
+    }, {
+      "article_id" : 5140,
+      "score" : 0,
+      "reason" : "Venezuela earthquake already covered at 09:07; follow-up recap."
+    } ],
+    "prediction_record" : null
+  },
+  "13:00" : {
+    "analyzed_at" : "2026-06-27T13:10:16Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5141, 5142 ],
+    "screener" : [ {
+      "article_id" : 5141,
+      "score" : 0,
+      "reason" : "Promotional content; no new market catalyst."
+    }, {
+      "article_id" : 5142,
+      "score" : 1,
+      "reason" : "Commentary on existing conditions; no new event or catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "13:10" : {
+    "analyzed_at" : "2026-06-27T13:13:37Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5143, 5144, 5145, 5146, 5147, 5148, 5149, 5150, 5151 ],
+    "screener" : [ {
+      "article_id" : 5143,
+      "score" : 1,
+      "reason" : "Hezbollah statement on Lebanon deal; escalation risk but already-covered regional tensions."
+    }, {
+      "article_id" : 5144,
+      "score" : 1,
+      "reason" : "AI model access approval; indirect macro relevance, no direct BTC channel."
+    }, {
+      "article_id" : 5145,
+      "score" : 0,
+      "reason" : "Duplicate of article 2; same event, same source."
+    }, {
+      "article_id" : 5146,
+      "score" : 1,
+      "reason" : "Hezbollah red-line warning; regional escalation but part of ongoing covered conflict."
+    }, {
+      "article_id" : 5147,
+      "score" : 1,
+      "reason" : "Hezbollah calls for scrapping Lebanon deal; escalation signal but incremental to covered tensions."
+    }, {
+      "article_id" : 5148,
+      "score" : 1,
+      "reason" : "Hezbollah pressure statement; regional posturing, no new catalyst."
+    }, {
+      "article_id" : 5149,
+      "score" : 0,
+      "reason" : "Qatar diplomatic statement; routine follow-up to already-covered memorandum."
+    }, {
+      "article_id" : 5150,
+      "score" : 0,
+      "reason" : "Qatar de-escalation call; routine diplomatic response, no new event."
+    }, {
+      "article_id" : 5151,
+      "score" : 0,
+      "reason" : "Qatar condemnation of Iran; restatement of already-covered drone attack on Bahrain."
+    } ],
+    "prediction_record" : null
+  },
+  "13:20" : {
+    "analyzed_at" : "2026-06-27T13:25:38Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5152, 5153, 5154, 5155, 5156, 5157 ],
+    "screener" : [ {
+      "article_id" : 5152,
+      "score" : 1,
+      "reason" : "Hezbollah rhetoric on agreement; indirect geopolitical signal."
+    }, {
+      "article_id" : 5153,
+      "score" : 1,
+      "reason" : "Hezbollah rejects disarmament terms; escalation rhetoric, slow channel."
+    }, {
+      "article_id" : 5154,
+      "score" : 0,
+      "reason" : "Hezbollah political statement; no new catalyst or event."
+    }, {
+      "article_id" : 5155,
+      "score" : 1,
+      "reason" : "Hezbollah rejects framework; geopolitical tension but already-covered context."
+    }, {
+      "article_id" : 5156,
+      "score" : 0,
+      "reason" : "Rhetorical posturing; no new fact or catalyst."
+    }, {
+      "article_id" : 5157,
+      "score" : 0,
+      "reason" : "Domestic Lebanese politics; no BTC-relevant catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "13:40" : {
+    "analyzed_at" : "2026-06-27T13:50:05Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5161, 5162, 5163, 5164, 5166 ],
+    "screener" : [ {
+      "article_id" : 5161,
+      "score" : 1,
+      "reason" : "Hezbollah rhetoric; escalation risk but not new catalyst."
+    }, {
+      "article_id" : 5162,
+      "score" : 1,
+      "reason" : "Earthquake; geopolitical risk but indirect BTC channel."
+    }, {
+      "article_id" : 5163,
+      "score" : 0,
+      "reason" : "Duplicate of already-covered Hormuz shipping restrictions."
+    }, {
+      "article_id" : 5164,
+      "score" : 1,
+      "reason" : "Earthquake magnitude; geopolitical risk but indirect."
+    }, {
+      "article_id" : 5166,
+      "score" : 2,
+      "reason" : "ECB inflation signal; macro catalyst for rates/policy."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60623.11,
+      "article_count" : 5,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Step 1: A speech/article by an ECB official asking a rhetorical question is posture/opinion, not an executed monetary policy action. Step 2: Even if treated as a fact, it describes the known macro debate. Step 3: No direct crypto channel without a concrete rate decision or shock.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7689,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 35.72,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0029,
+        "oi_change_pct" : -0.032,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60627.09,
+        "change_24h_pct" : 2.39,
+        "range_pos_24h" : 0.9738
+      },
+      "articles" : [ {
+        "id" : 5166,
+        "title" : "Isabel Schnabel: Is inflation back?",
+        "direction" : "neutral",
+        "reasoning" : "An ECB official's rhetorical speech title -- no executed action, no new monetary fact, no crypto channel.",
+        "scenario" : "noise",
+        "pre_trend" : "rising",
+        "published_at" : "2026-06-27T13:45:00Z",
+        "url" : "https://www.ecb.europa.eu//press/key/date/2026/html/ecb.sp260627~3807c2766e.en.pdf",
+        "price_at_publish" : 60623.11
+      } ]
+    },
+    "resonant_article_ids" : [ 5166 ]
+  },
+  "13:50" : {
+    "analyzed_at" : "2026-06-27T13:50:44Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5167 ],
+    "screener" : [ {
+      "article_id" : 5167,
+      "score" : 3,
+      "reason" : "Major escalation: Iran may exit peace talks post-US strike; direct geopolitical shock to oil/risk assets."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60570.82,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fails Step 1: 'weighs walking away' and 'may halt' are unexecuted posture -- Iran has not actually suspended talks, only signaled it is considering doing so. The broader US-Iran strike exchange is already extensively covered, so even if this were a fact it would describe the known escalation trajectory rather than a new trigger.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7716,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 36.39,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.003,
+        "oi_change_pct" : 0.099,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60570.82,
+        "change_24h_pct" : 1.843,
+        "range_pos_24h" : 0.9256
+      },
+      "articles" : [ {
+        "id" : 5167,
+        "title" : "IRAN WEIGHS WALKING AWAY FROM SWISS TALKS AFTER US STRIKE\n\nIRAN MAY HALT SWISS TALKS AFTER US STRIKE ON SIRIK",
+        "direction" : "neutral",
+        "reasoning" : "Posture, not fact -- Iran is considering halting talks but has not done so; unexecuted threat in an already-covered escalation backdrop",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T13:50:09Z",
+        "url" : "https://x.com/FirstSquawk/status/2070867282595811407",
+        "price_at_publish" : 60570.82
+      } ]
+    },
+    "resonant_article_ids" : [ 5167 ]
+  },
+  "14:00" : {
+    "analyzed_at" : "2026-06-27T14:05:18Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5169, 5170, 5171 ],
+    "screener" : [ {
+      "article_id" : 5169,
+      "score" : 1,
+      "reason" : "US-China chip trade friction; indirect macro/policy channel to BTC."
+    }, {
+      "article_id" : 5170,
+      "score" : 1,
+      "reason" : "Venezuela earthquake humanitarian crisis; no direct BTC catalyst."
+    }, {
+      "article_id" : 5171,
+      "score" : 0,
+      "reason" : "US domestic political opinion; no new fact or BTC relevance."
+    } ],
+    "prediction_record" : null
+  },
+  "14:10" : {
+    "analyzed_at" : "2026-06-27T14:20:04Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5172, 5173, 5174, 5175, 5176 ],
+    "screener" : [ {
+      "article_id" : 5172,
+      "score" : 2,
+      "reason" : "Strait of Hormuz threat escalation; oil-supply shock channel to BTC."
+    }, {
+      "article_id" : 5173,
+      "score" : 0,
+      "reason" : "Reassurance statement; no new catalyst, already-covered conflict."
+    }, {
+      "article_id" : 5174,
+      "score" : 1,
+      "reason" : "Shipping corridor expansion; minor de-escalation signal, indirect BTC link."
+    }, {
+      "article_id" : 5175,
+      "score" : 2,
+      "reason" : "Exchange hack/security breach; direct crypto market stability concern."
+    }, {
+      "article_id" : 5176,
+      "score" : 1,
+      "reason" : "Regulatory compliance shift; minor competitive reshuffling, slow channel."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60631.86,
+      "article_count" : 5,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "US Navy raises threat level in Strait of Hormuz" ],
+      "reasoning" : "Item 1 is a fact (an official US military action taken) and is a new concrete step beyond the already-covered Hormuz escalation backdrop, but the channel to BTC remains weak and indirect -- a geopolitical/oil-supply risk indicator that does not directly force crypto flows; complacent options and neutral positioning provide little amplification. Item 2 (Polymarket hack updated to $3.1M + investigation) is a fact and appears new, but Polymarket is a prediction market platform, not major crypto infrastructure, forcing no meaningful BTC flow -- noise.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.775,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 36.34,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0029,
+        "oi_change_pct" : 0.088,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60587.99,
+        "change_24h_pct" : 0.926,
+        "range_pos_24h" : 0.9391
+      },
+      "articles" : [ {
+        "id" : 5172,
+        "title" : "CNN: The U.S. Navy's Joint Maritime Information Center has significantly raised the threat level in the Strait of Hormuz today.",
+        "direction" : "bearish",
+        "reasoning" : "Fact and a new formal escalation step (US Navy officially raising threat level) beyond the already-covered Hormuz tensions, but the channel to BTC is weak and indirect -- geopolitical risk, not a direct crypto-structural or liquidity shock.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T14:16:55Z",
+        "url" : "https://x.com/FirstSquawk/status/2070874016899076223",
+        "price_at_publish" : 60631.86
+      }, {
+        "id" : 5175,
+        "title" : "Polymarket hack updated to $3.1 million days after the platform promised users full refunds",
+        "direction" : "neutral",
+        "reasoning" : "Fact and likely new, but Polymarket is peripheral crypto infrastructure; a $3.1M hack forces negligible BTC flow and the regulatory investigation is slow-channel -- noise for BTC price action.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T14:13:22Z",
+        "url" : "https://www.coindesk.com/markets/2026/06/27/polymarket-hack-updated-to-usd3-1-million-days-after-the-platform-promised-users-full-refunds",
+        "price_at_publish" : 60695.0
+      } ]
+    },
+    "resonant_article_ids" : [ 5172, 5175 ]
+  },
+  "14:20" : {
+    "analyzed_at" : "2026-06-27T14:27:02Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5177, 5178, 5179, 5180, 5181, 5182 ],
+    "screener" : [ {
+      "article_id" : 5177,
+      "score" : 0,
+      "reason" : "No new fact provided; URL only."
+    }, {
+      "article_id" : 5178,
+      "score" : 0,
+      "reason" : "No new fact provided; URL only."
+    }, {
+      "article_id" : 5179,
+      "score" : 1,
+      "reason" : "Hezbollah rejects Israel-Lebanon deal; minor escalation signal, indirect BTC channel."
+    }, {
+      "article_id" : 5180,
+      "score" : 0,
+      "reason" : "No new fact provided; URL only."
+    }, {
+      "article_id" : 5181,
+      "score" : 0,
+      "reason" : "No new fact provided; URL only."
+    }, {
+      "article_id" : 5182,
+      "score" : 1,
+      "reason" : "Duplicate of article 3; Hezbollah rejection already covered in live updates."
+    } ],
+    "prediction_record" : null
+  },
+  "14:40" : {
+    "analyzed_at" : "2026-06-27T14:47:18Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5188, 5189 ],
+    "screener" : [ {
+      "article_id" : 5188,
+      "score" : 0,
+      "reason" : "Follow-up coverage of Venezuela earthquake already covered."
+    }, {
+      "article_id" : 5189,
+      "score" : 1,
+      "reason" : "Military support discussion; indirect/slow channel to BTC via regional stability."
+    } ],
+    "prediction_record" : null
+  },
+  "14:50" : {
+    "analyzed_at" : "2026-06-27T14:59:27Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5190 ],
+    "screener" : [ {
+      "article_id" : 5190,
+      "score" : 0,
+      "reason" : "Follow-up on already-covered Israel-Lebanon agreement; diplomatic support is secondary commentary."
+    } ],
+    "prediction_record" : null
+  },
+  "15:00" : {
+    "analyzed_at" : "2026-06-28T15:00:17Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5191, 5192, 5193, 5194, 5595 ],
+    "screener" : [ {
+      "article_id" : 5191,
+      "score" : 0,
+      "reason" : "Data center proximity; no BTC catalyst."
+    }, {
+      "article_id" : 5192,
+      "score" : 1,
+      "reason" : "Iran Hormuz management talk; indirect geopolitical risk."
+    }, {
+      "article_id" : 5193,
+      "score" : 1,
+      "reason" : "Iran-Oman Hormuz framework discussion; indirect oil/risk channel."
+    }, {
+      "article_id" : 5194,
+      "score" : 1,
+      "reason" : "Tether gold lending; crypto-adjacent but minor product feature."
+    }, {
+      "article_id" : 5595,
+      "score" : 0,
+      "reason" : "Bond allocation opinion; no new event or catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "15:20" : {
+    "analyzed_at" : "2026-06-27T15:27:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5195 ],
+    "screener" : [ {
+      "article_id" : 5195,
+      "score" : 0,
+      "reason" : "Natural disaster coverage; no direct BTC catalyst channel."
+    } ],
+    "prediction_record" : null
+  },
+  "15:30" : {
+    "analyzed_at" : "2026-06-27T15:37:40Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5196, 5197 ],
+    "screener" : [ {
+      "article_id" : 5196,
+      "score" : 1,
+      "reason" : "Ukraine-Russia routine daily combat; indirect macro risk channel."
+    }, {
+      "article_id" : 5197,
+      "score" : 0,
+      "reason" : "Israeli drone strike on Lebanon already covered (10:39 Nabatiyeh strike)."
+    } ],
+    "prediction_record" : null
+  },
+  "15:40" : {
+    "analyzed_at" : "2026-06-27T15:50:21Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5199, 5200 ],
+    "screener" : [ {
+      "article_id" : 5199,
+      "score" : 0,
+      "reason" : "UK police incident; no BTC relevance."
+    }, {
+      "article_id" : 5200,
+      "score" : 0,
+      "reason" : "No title/content; cannot assess relevance."
+    } ],
+    "prediction_record" : null
+  },
+  "15:50" : {
+    "analyzed_at" : "2026-06-27T15:55:42Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5201, 5202 ],
+    "screener" : [ {
+      "article_id" : 5201,
+      "score" : 1,
+      "reason" : "Localized security incident; indirect macro/BTC channel."
+    }, {
+      "article_id" : 5202,
+      "score" : 0,
+      "reason" : "Routine commodity procurement; no new catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "16:00" : {
+    "analyzed_at" : "2026-06-27T16:09:02Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5203, 5204, 5205, 5206, 5207, 5208, 5209, 5210, 5211, 5212, 5213 ],
+    "screener" : [ {
+      "article_id" : 5203,
+      "score" : 0,
+      "reason" : "UK political instability; no direct BTC channel"
+    }, {
+      "article_id" : 5204,
+      "score" : 0,
+      "reason" : "JD Vance opinion on presidential stock trading; no BTC relevance"
+    }, {
+      "article_id" : 5205,
+      "score" : 1,
+      "reason" : "Israel-Lebanon agreement follow-up; geopolitical stabilization, indirect risk reduction"
+    }, {
+      "article_id" : 5206,
+      "score" : 0,
+      "reason" : "AI bubble warning already covered in ALREADY COVERED list (10:49)"
+    }, {
+      "article_id" : 5207,
+      "score" : 0,
+      "reason" : "Duplicate of article 3; same Israel-Lebanon agreement statement"
+    }, {
+      "article_id" : 5208,
+      "score" : 1,
+      "reason" : "Iran-axis strategic shift; geopolitical risk reduction, indirect BTC impact"
+    }, {
+      "article_id" : 5209,
+      "score" : 0,
+      "reason" : "Israel military posture statement; no new catalyst or market shock"
+    }, {
+      "article_id" : 5210,
+      "score" : 0,
+      "reason" : "UAE Sudan policy statement; no direct BTC channel"
+    }, {
+      "article_id" : 5211,
+      "score" : 0,
+      "reason" : "UAE Sudan peace efforts; no direct BTC channel"
+    }, {
+      "article_id" : 5212,
+      "score" : 0,
+      "reason" : "Israel security statement; no new catalyst or market shock"
+    }, {
+      "article_id" : 5213,
+      "score" : 0,
+      "reason" : "Israel-Lebanon agreement implementation outlook; no new catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "16:20" : {
+    "analyzed_at" : "2026-06-27T16:30:14Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 5214, 5215 ],
+    "screener" : [ {
+      "article_id" : 5214,
+      "score" : 0,
+      "reason" : "Diplomatic visit; no new catalyst or market shock."
+    }, {
+      "article_id" : 5215,
+      "score" : 2,
+      "reason" : "Major ETF outflow + worst week on record; direct BTC channel."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60716.63,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact (actual outflow data), but fails Step 2: seven consecutive weeks of ETF outflows is a known, ongoing trend -- this article is a weekly recap/summary of a well-established pattern, not a new causative event. BTC trading near its 24h high (+1.07%) confirms the market has already priced this dynamic and is not reacting to it.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7776,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 37.36,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0039,
+        "oi_change_pct" : -0.065,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60722.57,
+        "change_24h_pct" : 1.073,
+        "range_pos_24h" : 0.8422
+      },
+      "articles" : [ {
+        "id" : 5215,
+        "title" : "Average IBIT investor now down about 40% as spot bitcoin ETFs cap second-worst week on record",
+        "direction" : "neutral",
+        "reasoning" : "A weekly data recap of a 7-week-old known trend in ETF outflows; describes the known situation rather than delivering a new catalyst, and flat BTC near 24h highs confirms it is priced in.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T16:29:22Z",
+        "url" : "https://www.theblock.co/post/406451/average-ibit-investor-now-down-about-40-as-spot-bitcoin-etfs-cap-second-worst-week-on-record?utm_source=rss&utm_medium=rss",
+        "price_at_publish" : 60716.63
+      } ]
+    },
+    "resonant_article_ids" : [ 5215 ]
+  },
+  "16:30" : {
+    "analyzed_at" : "2026-06-27T16:40:22Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 5216, 5217, 5218, 5219 ],
+    "screener" : [ {
+      "article_id" : 5216,
+      "score" : 2,
+      "reason" : "Strait of Hormuz tensions escalate; oil-supply shock risk channel."
+    }, {
+      "article_id" : 5217,
+      "score" : 0,
+      "reason" : "West Bank operation; indirect/slow BTC channel vs. macro catalysts."
+    }, {
+      "article_id" : 5218,
+      "score" : 1,
+      "reason" : "Robinhood layoffs; minor sentiment signal, not direct catalyst."
+    }, {
+      "article_id" : 5219,
+      "score" : 0,
+      "reason" : "No title/content; cannot assess relevance."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60716.93,
+      "article_count" : 4,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "This is a description of the known situation -- the Strait of Hormuz tensions, competing claims, and ceasefire durability concerns are all already covered in prior windows. No new executed action is reported; it is explanatory/analytical journalism recapping the existing backdrop. Fails Step 2.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7776,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 37.47,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0038,
+        "oi_change_pct" : -0.103,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60713.47,
+        "change_24h_pct" : 1.054,
+        "range_pos_24h" : 0.8356
+      },
+      "articles" : [ {
+        "id" : 5216,
+        "title" : "The Strait of Hormuz remains a flashpoint between the US and Iran despite a ceasefire. Competing claims over the waterway and transit routes are raising concerns over maritime security and the durability of the truce.\n\nAl Jazeera’s @LinaAbuAkleh explains. https://t.co/DSnfYjCutO",
+        "direction" : "neutral",
+        "reasoning" : "Recap/explainer of the already-covered Hormuz situation -- no new fact, just a description of the known conjuncture",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T16:30:00Z",
+        "url" : "https://x.com/AJEnglish/status/2070907508399411541",
+        "price_at_publish" : 60716.93
+      } ]
+    },
+    "resonant_article_ids" : [ 5216 ]
+  },
+  "16:40" : {
+    "analyzed_at" : "2026-06-27T16:46:05Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 5220, 5221, 5222, 5223, 5224, 5225, 5226 ],
+    "screener" : [ {
+      "article_id" : 5220,
+      "score" : 2,
+      "reason" : "Hezbollah rejects Lebanon-Israel deal; escalation risk in volatile region."
+    }, {
+      "article_id" : 5221,
+      "score" : 1,
+      "reason" : "French diplomatic statement; indirect geopolitical commentary, no new catalyst."
+    }, {
+      "article_id" : 5222,
+      "score" : 1,
+      "reason" : "French welcome of agreement; diplomatic positioning, minimal new information."
+    }, {
+      "article_id" : 5223,
+      "score" : 1,
+      "reason" : "France offers implementation support; routine diplomatic follow-up."
+    }, {
+      "article_id" : 5224,
+      "score" : 1,
+      "reason" : "French conditions on agreement; diplomatic statement, no new event."
+    }, {
+      "article_id" : 5225,
+      "score" : 0,
+      "reason" : "Heatwave deaths; unrelated to BTC or macro catalysts."
+    }, {
+      "article_id" : 5226,
+      "score" : 2,
+      "reason" : "Israel prepares long-term Lebanon presence; escalation signal amid ceasefire."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60774.8,
+      "article_count" : 7,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Both items relate to the Israel-Lebanon situation already covered (Israeli drone strike on Nabatiyeh, the security arrangement). Item 1 is posture (a directive to 'prepare' -- not an executed action). Item 2 is a political rejection statement from Hezbollah, which is posture/opinion with no executed action and no direct crypto channel. Neither passes Step 1 as a new executed fact beyond the known backdrop.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7773,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 37.54,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0039,
+        "oi_change_pct" : -0.182,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60774.8,
+        "change_24h_pct" : 0.854,
+        "range_pos_24h" : 0.8799
+      },
+      "articles" : [ {
+        "id" : 5220,
+        "title" : "Hezbollah leader Naim Qassem has rejected the framework agreement signed by Lebanon and Israel in Washington DC, calling it “humiliating, shameful and a surrender of sovereignty” for Beirut.\n\n\uD83D\uDD17: https://t.co/9aJ36HpwKl https://t.co/Dz1GuPmHia",
+        "direction" : "neutral",
+        "reasoning" : "Hezbollah rejecting the framework is a political statement/posture, not an executed fact, and adds no new crypto channel beyond the already-covered regional tension.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T16:40:00Z",
+        "url" : "https://x.com/AJEnglish/status/2070910024617197935",
+        "price_at_publish" : 60774.8
+      }, {
+        "id" : 5226,
+        "title" : "Israeli Defense Minister: Directed the army with Netanyahu to prepare to remain for a long time in southern Lebanon",
+        "direction" : "neutral",
+        "reasoning" : "Posture -- a directive to prepare, not an executed military action; the Lebanon backdrop is already covered.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T16:45:32Z",
+        "url" : "https://x.com/FirstSquawk/status/2070911419399450944",
+        "price_at_publish" : 60774.8
+      } ]
+    },
+    "resonant_article_ids" : [ 5220, 5226 ]
+  },
+  "16:50" : {
+    "analyzed_at" : "2026-06-27T16:51:04Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 5233 ],
+    "screener" : [ {
+      "article_id" : 5233,
+      "score" : 2,
+      "reason" : "Iran rejects US military hotline; escalates Hormuz tension risk."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60809.81,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "Iran rejects US military hotline proposal for Strait of Hormuz, reducing de-escalation prospects" ],
+      "reasoning" : "Fact (Iran has officially indicated rejection of the hotline, not a threat), and marginally new beyond the already-covered backdrop of Hormuz tensions and Iran-US confrontation -- it removes a specific de-escalation mechanism the market might have hoped for. However, the channel to BTC is indirect (geopolitical -> oil -> risk-off), the Hormuz tension backdrop is already heavily covered, BTC pre_trend is flat with no observed transmission, and the shock is not confirmed-systemic (no strait closure, no confirmed oil supply cutoff). This rates LOW bearish.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7773,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 37.57,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0042,
+        "oi_change_pct" : -0.149,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60814.43,
+        "change_24h_pct" : 1.175,
+        "range_pos_24h" : 0.9085
+      },
+      "articles" : [ {
+        "id" : 5233,
+        "title" : "Iran has indicated that there will be no direct communication between US and Iranian military officials as part of a hotline proposed by Washington designed to ease tensions in the Strait of Hormuz https://t.co/2AEoCpX8GG https://t.co/bopXgTw7iU",
+        "direction" : "bearish",
+        "reasoning" : "A real fact (Iran rejects hotline) that adds a marginal new de-escalation-failure detail to the covered Hormuz standoff, but the channel to BTC is indirect and unobserved, keeping this LOW.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T16:50:00Z",
+        "url" : "https://x.com/AJEnglish/status/2070912541275181176",
+        "price_at_publish" : 60809.81
+      } ]
+    },
+    "resonant_article_ids" : [ 5233 ]
+  },
+  "17:00" : {
+    "analyzed_at" : "2026-06-27T17:10:30Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5234, 5235, 5237 ],
+    "screener" : [ {
+      "article_id" : 5234,
+      "score" : 0,
+      "reason" : "Follow-up coverage of already-covered Lebanon-Israel framework agreement."
+    }, {
+      "article_id" : 5235,
+      "score" : 1,
+      "reason" : "Data center spending trend; indirect AI/infrastructure relevance to BTC."
+    }, {
+      "article_id" : 5237,
+      "score" : 0,
+      "reason" : "Generic statement on Lebanon situation; no new catalyst or event."
+    } ],
+    "prediction_record" : null
+  },
+  "17:10" : {
+    "analyzed_at" : "2026-06-27T17:16:08Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 5236, 5238, 5239, 5240, 5241, 5242, 5243 ],
+    "screener" : [ {
+      "article_id" : 5236,
+      "score" : 0,
+      "reason" : "Follow-up on already-covered Lebanon framework agreement; no new catalyst."
+    }, {
+      "article_id" : 5238,
+      "score" : 1,
+      "reason" : "Minor tactical update on Israeli withdrawal; indirect geopolitical signal."
+    }, {
+      "article_id" : 5239,
+      "score" : 0,
+      "reason" : "Routine security statement; no new event or catalyst."
+    }, {
+      "article_id" : 5240,
+      "score" : 1,
+      "reason" : "Political instability in non-core economy; weak indirect macro signal."
+    }, {
+      "article_id" : 5241,
+      "score" : 0,
+      "reason" : "Recap of already-covered Israel-Lebanon strikes and framework agreement."
+    }, {
+      "article_id" : 5242,
+      "score" : 1,
+      "reason" : "Geopolitical tension in key region; unverified but warrants credibility check."
+    }, {
+      "article_id" : 5243,
+      "score" : 2,
+      "reason" : "Pentagon market-timing disclosure; reveals policy coordination with financial impact intent."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60536.21,
+      "article_count" : 7,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "The US strikes on Iran are already in ALREADY COVERED; this item only adds a timing/communications detail (Pentagon delayed announcing until after equity close) -- no new causative action. For BTC, which trades 24/7, the strikes were already in the market's information set, so this meta-detail adds nothing actionable. Fails Step 2 (no materially new fact beyond the covered event).",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7835,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 38.34,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0047,
+        "oi_change_pct" : -0.847,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60536.21,
+        "change_24h_pct" : 0.512,
+        "range_pos_24h" : 0.7076
+      },
+      "articles" : [ {
+        "id" : 5243,
+        "title" : "BREAKING: The Pentagon reportedly delayed announcing the U.S. strikes on Iran until after the stock market closed at 4 p.m. ET on Friday, with the timing intended to minimize the immediate impact on financial markets, according to NBC News.",
+        "direction" : "neutral",
+        "reasoning" : "A procedural detail about announcement timing for already-covered US strikes on Iran -- no new executed action and no fresh crypto channel.",
+        "scenario" : "noise",
+        "pre_trend" : "falling",
+        "published_at" : "2026-06-27T17:15:42Z",
+        "url" : "https://x.com/unusual_whales/status/2070919012125704668",
+        "price_at_publish" : 60536.21
+      } ]
+    },
+    "resonant_article_ids" : [ 5243 ]
+  },
+  "17:20" : {
+    "analyzed_at" : "2026-06-27T17:28:02Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 5244, 5245 ],
+    "screener" : [ {
+      "article_id" : 5244,
+      "score" : 2,
+      "reason" : "Major natural disaster; potential capital flight, currency pressure, oil disruption risk"
+    }, {
+      "article_id" : 5245,
+      "score" : 2,
+      "reason" : "Major natural disaster; potential capital flight, currency pressure, oil disruption risk"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60608.23,
+      "article_count" : 2,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Both items are updates on the Venezuela earthquake casualty count -- a humanitarian/natural disaster fact with no monetary, regulatory, or crypto-structural channel to BTC. Fails Step 3.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7834,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 38.3,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0051,
+        "oi_change_pct" : -0.874,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60608.23,
+        "change_24h_pct" : 0.809,
+        "range_pos_24h" : 0.7596
+      },
+      "articles" : [ {
+        "id" : 5244,
+        "title" : "Venezuela top lawmaker Rodriguez: 3,238 people wounded, 3,142 left homeless",
+        "direction" : "neutral",
+        "reasoning" : "Updated injury/displacement figures from a natural disaster -- no crypto channel.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T17:27:46Z",
+        "url" : "https://x.com/FirstSquawk/status/2070922045266026816",
+        "price_at_publish" : 60608.23
+      }, {
+        "id" : 5245,
+        "title" : "Venezuela top lawmaker Jorge Rodriguez: Venezuela earthquake death toll rises to 1,430",
+        "direction" : "neutral",
+        "reasoning" : "Higher earthquake death toll -- a humanitarian fact with no transmission path to BTC.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T17:27:36Z",
+        "url" : "https://x.com/FirstSquawk/status/2070922004971352405",
+        "price_at_publish" : 60608.23
+      } ]
+    },
+    "resonant_article_ids" : [ 5244, 5245 ]
+  },
+  "17:30" : {
+    "analyzed_at" : "2026-06-27T17:31:44Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5246 ],
+    "screener" : [ {
+      "article_id" : 5246,
+      "score" : 1,
+      "reason" : "Pakistan security incident; indirect macro/geopolitical risk channel to BTC."
+    } ],
+    "prediction_record" : null
+  },
+  "17:40" : {
+    "analyzed_at" : "2026-06-27T17:47:56Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5247, 5248, 5249 ],
+    "screener" : [ {
+      "article_id" : 5247,
+      "score" : 1,
+      "reason" : "Israel-Lebanon military posture; indirect macro risk channel."
+    }, {
+      "article_id" : 5248,
+      "score" : 1,
+      "reason" : "Undisclosed security annex; geopolitical opacity, weak BTC link."
+    }, {
+      "article_id" : 5249,
+      "score" : 0,
+      "reason" : "Follow-up on already-covered Lebanon-Israel framework agreement."
+    } ],
+    "prediction_record" : null
+  },
+  "17:50" : {
+    "analyzed_at" : "2026-06-27T17:59:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5250, 5251, 5252, 5253, 5254, 5255 ],
+    "screener" : [ {
+      "article_id" : 5250,
+      "score" : 0,
+      "reason" : "Diplomatic statement; no new catalyst or market shock."
+    }, {
+      "article_id" : 5251,
+      "score" : 1,
+      "reason" : "Framework agreement announced but Hezbollah already rejected it (covered)."
+    }, {
+      "article_id" : 5252,
+      "score" : 0,
+      "reason" : "Restatement of Strait security concerns already covered."
+    }, {
+      "article_id" : 5253,
+      "score" : 0,
+      "reason" : "Regional diplomatic response; no new catalyst."
+    }, {
+      "article_id" : 5254,
+      "score" : 1,
+      "reason" : "Military claim on Hezbollah damage; minor escalation detail."
+    }, {
+      "article_id" : 5255,
+      "score" : 1,
+      "reason" : "Ongoing military operations; incremental, not new shock."
+    } ],
+    "prediction_record" : null
+  },
+  "18:00" : {
+    "analyzed_at" : "2026-06-27T18:01:46Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5258, 5259 ],
+    "screener" : [ {
+      "article_id" : 5258,
+      "score" : 0,
+      "reason" : "Natural disaster; no direct BTC channel."
+    }, {
+      "article_id" : 5259,
+      "score" : 1,
+      "reason" : "Fed credibility commentary; indirect macro signal only."
+    } ],
+    "prediction_record" : null
+  },
+  "18:10" : {
+    "analyzed_at" : "2026-06-27T18:20:14Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5260, 5261, 5262, 5263, 5264, 5265 ],
+    "screener" : [ {
+      "article_id" : 5260,
+      "score" : 0,
+      "reason" : "Follow-up on already-covered Lebanon framework agreement; no new catalyst."
+    }, {
+      "article_id" : 5261,
+      "score" : 0,
+      "reason" : "Netanyahu statement on covered Lebanon-Israel agreement; no new event."
+    }, {
+      "article_id" : 5262,
+      "score" : 0,
+      "reason" : "Netanyahu military posture statement; reiterates covered Lebanon situation."
+    }, {
+      "article_id" : 5263,
+      "score" : 0,
+      "reason" : "Netanyahu territorial claim in covered Lebanon conflict; no new catalyst."
+    }, {
+      "article_id" : 5264,
+      "score" : 0,
+      "reason" : "FIFA World Cup expansion; no BTC relevance."
+    }, {
+      "article_id" : 5265,
+      "score" : 1,
+      "reason" : "Gold/silver selloff analysis; indirect BTC channel via dollar/Fed narrative."
+    } ],
+    "prediction_record" : null
+  },
+  "18:20" : {
+    "analyzed_at" : "2026-06-27T18:24:02Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5266, 5267, 5268, 5269, 5270, 5271, 5272, 5273, 5274, 5275, 5276, 5277, 5278, 5279 ],
+    "screener" : [ {
+      "article_id" : 5266,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    }, {
+      "article_id" : 5267,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    }, {
+      "article_id" : 5268,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    }, {
+      "article_id" : 5269,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    }, {
+      "article_id" : 5270,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    }, {
+      "article_id" : 5271,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    }, {
+      "article_id" : 5272,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    }, {
+      "article_id" : 5273,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    }, {
+      "article_id" : 5274,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    }, {
+      "article_id" : 5275,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    }, {
+      "article_id" : 5276,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    }, {
+      "article_id" : 5277,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    }, {
+      "article_id" : 5278,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    }, {
+      "article_id" : 5279,
+      "score" : 0,
+      "reason" : "Netanyahu statement; geopolitical commentary, no new catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "18:30" : {
+    "analyzed_at" : "2026-06-27T18:31:27Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5280 ],
+    "screener" : [ {
+      "article_id" : 5280,
+      "score" : 0,
+      "reason" : "Follow-up analysis of already-covered Lebanon-Israel framework agreement."
+    } ],
+    "prediction_record" : null
+  },
+  "18:40" : {
+    "analyzed_at" : "2026-06-27T21:36:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5281, 5324 ],
+    "screener" : [ {
+      "article_id" : 5281,
+      "score" : 0,
+      "reason" : "Regional conflict escalation; indirect BTC channel, already covered context."
+    }, {
+      "article_id" : 5324,
+      "score" : 0,
+      "reason" : "Political opinion/commentary; no new catalyst or market event."
+    } ],
+    "prediction_record" : null
+  },
+  "21:30" : {
+    "analyzed_at" : "2026-06-27T21:38:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5293, 5325, 5326 ],
+    "screener" : [ {
+      "article_id" : 5293,
+      "score" : 0,
+      "reason" : "West Bank settlement dispute; no direct BTC catalyst."
+    }, {
+      "article_id" : 5325,
+      "score" : 0,
+      "reason" : "Lebanon agreement criticism; already covered framework agreement."
+    }, {
+      "article_id" : 5326,
+      "score" : 0,
+      "reason" : "ICE director nomination; no BTC-relevant policy catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "21:20" : {
+    "analyzed_at" : "2026-06-27T21:35:09Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 5294 ],
+    "screener" : [ {
+      "article_id" : 5294,
+      "score" : 3,
+      "reason" : "New military escalation in Iran; direct geopolitical shock to oil/risk assets."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60451.0,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "New explosions reported in Iran's Sirik by state broadcaster IRIB, hours after the earlier US strike on the same location" ],
+      "reasoning" : "Fact (IRIB reporting live explosions), and while Sirik was struck earlier today (already covered), fresh explosions hours later constitute a new executed escalation step beyond the prior covered event; however, the channel to BTC runs indirectly through geopolitics->oil and BTC pre_trend is flat with no observed transmission, so by the geopolitics test this stays LOW despite the already-complacent options vol.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7918,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 39.78,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.005,
+        "oi_change_pct" : -0.324,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60396.44,
+        "change_24h_pct" : 1.143,
+        "range_pos_24h" : 0.5561
+      },
+      "articles" : [ {
+        "id" : 5294,
+        "title" : "EXPLOSIONS HEARD IN IRAN'S SIRIK, IRAN'S STATE BROADCASTER IRIB SAYS",
+        "direction" : "bearish",
+        "reasoning" : "Real fact (state broadcaster reporting new explosions), a discrete new escalation step beyond the already-covered earlier Sirik strike, but the oil/regional channel is indirect and BTC is flat -- rates LOW per the geopolitics transmission test",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T21:29:49Z",
+        "url" : "https://x.com/DeItaone/status/2070982962451992603",
+        "price_at_publish" : 60451.0
+      } ]
+    },
+    "resonant_article_ids" : [ 5294 ]
+  },
+  "21:10" : {
+    "analyzed_at" : "2026-06-27T21:35:37Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5295 ],
+    "screener" : [ {
+      "article_id" : 5295,
+      "score" : 1,
+      "reason" : "Political instability in Serbia; indirect macro risk, limited direct BTC channel."
+    } ],
+    "prediction_record" : null
+  },
+  "21:00" : {
+    "analyzed_at" : "2026-06-27T21:35:39Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5296 ],
+    "screener" : [ {
+      "article_id" : 5296,
+      "score" : 1,
+      "reason" : "Indirect macro signal; wealth concentration affects demand but slow channel to BTC."
+    } ],
+    "prediction_record" : null
+  },
+  "20:50" : {
+    "analyzed_at" : "2026-06-27T21:35:40Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5297 ],
+    "screener" : [ {
+      "article_id" : 5297,
+      "score" : 0,
+      "reason" : "Kenya police brutality; no direct BTC catalyst channel."
+    } ],
+    "prediction_record" : null
+  },
+  "20:40" : {
+    "analyzed_at" : "2026-06-27T21:35:41Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5298, 5299 ],
+    "screener" : [ {
+      "article_id" : 5298,
+      "score" : 1,
+      "reason" : "Follow-up on Lebanon agreement; geopolitical but indirect BTC channel"
+    }, {
+      "article_id" : 5299,
+      "score" : 1,
+      "reason" : "Iran-US tensions recap; geopolitical but no new catalyst or market shock"
+    } ],
+    "prediction_record" : null
+  },
+  "20:30" : {
+    "analyzed_at" : "2026-06-27T21:35:43Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5300, 5301, 5302, 5303, 5304, 5305, 5306 ],
+    "screener" : [ {
+      "article_id" : 5300,
+      "score" : 0,
+      "reason" : "No content provided; cannot assess relevance."
+    }, {
+      "article_id" : 5301,
+      "score" : 0,
+      "reason" : "No content provided; cannot assess relevance."
+    }, {
+      "article_id" : 5302,
+      "score" : 0,
+      "reason" : "No content provided; cannot assess relevance."
+    }, {
+      "article_id" : 5303,
+      "score" : 0,
+      "reason" : "No content provided; cannot assess relevance."
+    }, {
+      "article_id" : 5304,
+      "score" : 0,
+      "reason" : "No content provided; cannot assess relevance."
+    }, {
+      "article_id" : 5305,
+      "score" : 0,
+      "reason" : "No content provided; cannot assess relevance."
+    }, {
+      "article_id" : 5306,
+      "score" : 0,
+      "reason" : "Israel-Lebanon framework already covered; no new catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "20:20" : {
+    "analyzed_at" : "2026-06-27T21:35:44Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5307 ],
+    "screener" : [ {
+      "article_id" : 5307,
+      "score" : 0,
+      "reason" : "Ongoing conflict coverage; no new catalyst or market shock."
+    } ],
+    "prediction_record" : null
+  },
+  "20:10" : {
+    "analyzed_at" : "2026-06-27T21:35:46Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5308 ],
+    "screener" : [ {
+      "article_id" : 5308,
+      "score" : 0,
+      "reason" : "Gaza conflict update; no new catalyst or market shock."
+    } ],
+    "prediction_record" : null
+  },
+  "20:00" : {
+    "analyzed_at" : "2026-06-27T21:35:47Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5309 ],
+    "screener" : [ {
+      "article_id" : 5309,
+      "score" : 1,
+      "reason" : "Indirect macro signal; slow channel to BTC via inflation/demand."
+    } ],
+    "prediction_record" : null
+  },
+  "19:40" : {
+    "analyzed_at" : "2026-06-27T21:35:51Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5310, 5311, 5312 ],
+    "screener" : [ {
+      "article_id" : 5310,
+      "score" : 0,
+      "reason" : "Follow-up on already-covered Lebanon framework agreement rejection."
+    }, {
+      "article_id" : 5311,
+      "score" : 0,
+      "reason" : "Domestic US personnel appointment, no BTC channel."
+    }, {
+      "article_id" : 5312,
+      "score" : 0,
+      "reason" : "Social media regulation, indirect and no new catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "19:30" : {
+    "analyzed_at" : "2026-06-27T21:35:53Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5284, 5285, 5313 ],
+    "screener" : [ {
+      "article_id" : 5284,
+      "score" : 0,
+      "reason" : "Domestic US personnel appointment; no BTC catalyst."
+    }, {
+      "article_id" : 5285,
+      "score" : 0,
+      "reason" : "Empty/duplicate repost; no new information."
+    }, {
+      "article_id" : 5313,
+      "score" : 0,
+      "reason" : "Already covered: Israeli Defense Minister Lebanon statement (16:45)."
+    } ],
+    "prediction_record" : null
+  },
+  "19:20" : {
+    "analyzed_at" : "2026-06-27T21:35:55Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5283, 5314 ],
+    "screener" : [ {
+      "article_id" : 5283,
+      "score" : 0,
+      "reason" : "No substantive content; Trump social post without details."
+    }, {
+      "article_id" : 5314,
+      "score" : 1,
+      "reason" : "US-Iran strike follow-up; geopolitical risk but already covered extensively."
+    } ],
+    "prediction_record" : null
+  },
+  "19:10" : {
+    "analyzed_at" : "2026-06-27T21:35:56Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5315, 5316, 5317, 5318 ],
+    "screener" : [ {
+      "article_id" : 5315,
+      "score" : 0,
+      "reason" : "Political statement; no new market catalyst."
+    }, {
+      "article_id" : 5316,
+      "score" : 0,
+      "reason" : "Political announcement; no direct BTC impact."
+    }, {
+      "article_id" : 5317,
+      "score" : 1,
+      "reason" : "Casualty update on ongoing conflict; indirect geopolitical risk."
+    }, {
+      "article_id" : 5318,
+      "score" : 1,
+      "reason" : "Ongoing conflict casualty report; indirect risk signal."
+    } ],
+    "prediction_record" : null
+  },
+  "19:00" : {
+    "analyzed_at" : "2026-06-27T21:35:58Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5319, 5320 ],
+    "screener" : [ {
+      "article_id" : 5319,
+      "score" : 1,
+      "reason" : "Consumer debt stress; indirect macro headwind for risk assets."
+    }, {
+      "article_id" : 5320,
+      "score" : 0,
+      "reason" : "Cultural/lifestyle story; no BTC or macro relevance."
+    } ],
+    "prediction_record" : null
+  },
+  "18:50" : {
+    "analyzed_at" : "2026-06-27T21:36:00Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 5321, 5322, 5323 ],
+    "screener" : [ {
+      "article_id" : 5321,
+      "score" : 0,
+      "reason" : "Duplicate of already-covered Israeli Defense Minister statement on Lebanon presence"
+    }, {
+      "article_id" : 5322,
+      "score" : 2,
+      "reason" : "New Iran military threat escalation; direct geopolitical risk to oil/Strait security"
+    }, {
+      "article_id" : 5323,
+      "score" : 0,
+      "reason" : "Local security incident in Pakistan; no direct BTC catalyst channel"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60566.21,
+      "article_count" : 3,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fails Step 1: this is a conditional threat/posture ('if Iran tries...we will respond'), not an executed action. The surrounding geopolitical backdrop is already covered extensively, and this adds no new fact -- it is a deterrence statement, not a causative event.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7837,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 38.61,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0058,
+        "oi_change_pct" : 0.109,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60537.87,
+        "change_24h_pct" : 1.454,
+        "range_pos_24h" : 0.7088
+      },
+      "articles" : [ {
+        "id" : 5322,
+        "title" : "Israeli Defense Minister: If Iran tries to launch an attack to prevent the implementation of the agreement with Lebanon, we will respond with great force",
+        "direction" : "neutral",
+        "reasoning" : "Conditional threat/posture from Israeli Defense Minister -- no executed action, fails Step 1",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T18:55:25Z",
+        "url" : "https://x.com/FirstSquawk/status/2070944105530818742",
+        "price_at_publish" : 60566.21
+      } ]
+    },
+    "resonant_article_ids" : [ 5322 ]
+  },
+  "21:40" : {
+    "analyzed_at" : "2026-06-27T21:48:06Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 5327 ],
+    "screener" : [ {
+      "article_id" : 5327,
+      "score" : 2,
+      "reason" : "Escalation in US-Iran military action; geopolitical risk shock to oil/markets."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60304.0,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "CENTCOM announces additional US strikes on Iran following Iran's latest commercial ship attack in the Strait of Hormuz" ],
+      "reasoning" : "Fact (CENTCOM confirms executed additional strikes) and a new discrete escalation step beyond the already-covered initial US-Iran exchange -- a fresh round of strikes after a new ship attack. However, the channel is geopolitics -> oil/Hormuz -> BTC, which is indirect; BTC pre_trend is flat with no observed transmission, and the geopolitics test requires confirmed systemic shock (strait closure, oil limit-up) or observed BTC move to reach HIGH -- neither is present. Rates LOW bearish as a real but indirect-channel escalation into flat crypto.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7921,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 39.82,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0047,
+        "oi_change_pct" : -0.511,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60304.0,
+        "change_24h_pct" : 0.617,
+        "range_pos_24h" : 0.4633
+      },
+      "articles" : [ {
+        "id" : 5327,
+        "title" : "U.S. CENTRAL COMMAND: U.S. FORCES CONDUCT ADDITIONAL STRIKES AFTER IRAN’S LATEST COMMERCIAL SHIP ATTACK",
+        "direction" : "bearish",
+        "reasoning" : "New executed fact (additional US strikes, new ship attack) beyond the already-covered initial exchange, but channel is indirect (geopolitics->oil->BTC) with flat BTC pre_trend and no confirmed systemic shock -- LOW, not HIGH.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-27T21:47:25Z",
+        "url" : "https://x.com/DeItaone/status/2070987391158956354",
+        "price_at_publish" : 60304.0
+      } ]
+    },
+    "resonant_article_ids" : [ 5327 ]
+  },
+  "21:50" : {
+    "analyzed_at" : "2026-06-27T21:59:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5329 ],
+    "screener" : [ {
+      "article_id" : 5329,
+      "score" : 1,
+      "reason" : "Geopolitical escalation ongoing; indirect BTC risk channel via oil/rates."
+    } ],
+    "prediction_record" : null
+  },
+  "22:00" : {
+    "analyzed_at" : "2026-06-27T22:08:35Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5330, 5331 ],
+    "screener" : [ {
+      "article_id" : 5330,
+      "score" : 0,
+      "reason" : "Migration trend; no direct BTC catalyst channel."
+    }, {
+      "article_id" : 5331,
+      "score" : 0,
+      "reason" : "Iran strikes already covered; no new escalation step."
+    } ],
+    "prediction_record" : null
+  },
+  "22:10" : {
+    "analyzed_at" : "2026-06-27T22:13:41Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5332 ],
+    "screener" : [ {
+      "article_id" : 5332,
+      "score" : 0,
+      "reason" : "Follow-up on already-covered Lebanon-Israel agreement; no new catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "22:20" : {
+    "analyzed_at" : "2026-06-27T22:25:47Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5333 ],
+    "screener" : [ {
+      "article_id" : 5333,
+      "score" : 0,
+      "reason" : "Already covered: U.S. strikes on Iran reported earlier today"
+    } ],
+    "prediction_record" : null
+  },
+  "22:30" : {
+    "analyzed_at" : "2026-06-27T22:32:28Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5334 ],
+    "screener" : [ {
+      "article_id" : 5334,
+      "score" : 0,
+      "reason" : "Follow-up coverage of already-covered Iran-US military engagement."
+    } ],
+    "prediction_record" : null
+  },
+  "22:50" : {
+    "analyzed_at" : "2026-06-27T23:00:27Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5336, 5337 ],
+    "screener" : [ {
+      "article_id" : 5336,
+      "score" : 1,
+      "reason" : "Water scarcity affects mining costs indirectly, slow channel."
+    }, {
+      "article_id" : 5337,
+      "score" : 0,
+      "reason" : "No title or content; cannot assess relevance."
+    } ],
+    "prediction_record" : null
+  },
+  "23:00" : {
+    "analyzed_at" : "2026-06-27T23:05:37Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5338, 5339 ],
+    "screener" : [ {
+      "article_id" : 5338,
+      "score" : 1,
+      "reason" : "Japan visa fee hike; minor indirect macro signal, slow channel to BTC."
+    }, {
+      "article_id" : 5339,
+      "score" : 0,
+      "reason" : "Political opinion/rhetoric; no new economic fact or catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "23:10" : {
+    "analyzed_at" : "2026-06-27T23:16:11Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5340, 5341 ],
+    "screener" : [ {
+      "article_id" : 5340,
+      "score" : 1,
+      "reason" : "Crypto-specific exploit; indirect macro impact."
+    }, {
+      "article_id" : 5341,
+      "score" : 0,
+      "reason" : "Iran strikes already covered; this is follow-up commentary."
+    } ],
+    "prediction_record" : null
+  },
+  "23:30" : {
+    "analyzed_at" : "2026-06-27T23:34:09Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 5342 ],
+    "screener" : [ {
+      "article_id" : 5342,
+      "score" : 3,
+      "reason" : "Major geopolitical escalation: US President threatens further Iran strikes, direct war/peace catalyst."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59987.99,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Step 1 fails: Trump's statement is posture -- a threat to 'complete the job' is an unexecuted future threat, not a new executed action. The US strikes on Iran are already in ALREADY COVERED; this is Trump confirming/describing those known strikes plus issuing a forward threat, adding no new executed fact. Noise.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7934,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 42.28,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0048,
+        "oi_change_pct" : 0.039,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 59987.99,
+        "change_24h_pct" : 0.033,
+        "range_pos_24h" : 0.1223
+      },
+      "articles" : [ {
+        "id" : 5342,
+        "title" : "BREAKING: US President Donald Trump has threatened to \"complete the job\" and launch further attacks on Iran.\n\nWriting on Truth Social, Trump said US aircraft had struck Iranian missile and drone storage sites and coastal radar installations.\n\n\uD83D\uDD34 LIVE updates: https://t.co/sh7vwRubFh",
+        "direction" : "neutral",
+        "reasoning" : "Posture (a threat of further strikes, not an executed action) and a recap of already-covered US strikes on Iran -- fails Steps 1 and 2",
+        "scenario" : "noise",
+        "pre_trend" : "falling",
+        "published_at" : "2026-06-27T23:33:30Z",
+        "url" : "https://x.com/AJEnglish/status/2071014084892295457",
+        "price_at_publish" : 59987.99
+      } ]
+    },
+    "resonant_article_ids" : [ 5342 ]
+  },
+  "05:30" : {
+    "analyzed_at" : "2026-06-28T06:10:04Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5431 ],
+    "screener" : [ {
+      "article_id" : 5431,
+      "score" : 1,
+      "reason" : "Securitize IPO; minor indirect crypto-market sentiment signal"
+    } ],
+    "prediction_record" : null
+  },
+  "05:00" : {
+    "analyzed_at" : "2026-06-28T06:10:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5432 ],
+    "screener" : [ {
+      "article_id" : 5432,
+      "score" : 1,
+      "reason" : "Kraken pre-IPO access product launch; minor indirect crypto infrastructure channel"
+    } ],
+    "prediction_record" : null
+  },
+  "06:50" : {
+    "analyzed_at" : "2026-06-28T07:20:15Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5454 ],
+    "screener" : [ {
+      "article_id" : 5454,
+      "score" : 1,
+      "reason" : "Natural disaster in Venezuela; indirect macro/geopolitical risk channel to BTC via potential capital flight, but not an immediate confirmed catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "14:30" : {
+    "analyzed_at" : "2026-06-28T15:00:15Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5594 ],
+    "screener" : [ {
+      "article_id" : 5594,
+      "score" : 0,
+      "reason" : "Opinion piece; no new catalyst or event."
+    } ],
+    "prediction_record" : null
+  }
+}

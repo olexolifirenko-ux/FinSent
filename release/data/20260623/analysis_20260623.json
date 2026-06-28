@@ -334,32 +334,37 @@
     "resonant_article_ids" : [ 4316 ]
   },
   "05:20" : {
-    "analyzed_at" : "2026-06-23T23:22:20Z",
+    "analyzed_at" : "2026-06-27T18:47:31Z",
     "model" : "claude-sonnet-4-6",
-    "article_ids" : [ 4317, 4419, 4420 ],
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 4317, 4419, 4420, 4547 ],
     "screener" : [ {
       "article_id" : 4317,
       "score" : 2,
-      "reason" : "Equity selloff (AI/chips) with 3%+ BTC decline; broad risk shock."
+      "reason" : "Tech selloff with 6%+ equity decline is broad risk shock."
     }, {
       "article_id" : 4419,
       "score" : 1,
-      "reason" : "Nikkei down 2.3%; routine daily move, not extreme shock."
+      "reason" : "Nikkei 2.3% decline is routine daily move, indirect BTC link."
     }, {
       "article_id" : 4420,
-      "score" : 3,
-      "reason" : "KOSPI down 7.3%; circuit-breaker-level crash, major risk shock catalyst."
+      "score" : 2,
+      "reason" : "KOSPI 7.3% drop is extreme equity move, broad risk catalyst."
+    }, {
+      "article_id" : 4547,
+      "score" : 0,
+      "reason" : "Duplicate of article 1, same event and details."
     } ],
     "prediction_record" : {
       "btc_at_prediction" : 63461.99,
-      "article_count" : 3,
+      "article_count" : 4,
       "resonant_count" : 2,
       "claude_available" : true,
       "direction" : "bearish",
       "impact_tier" : "high",
       "macro_regime" : "n/a",
-      "key_events" : [ "KOSPI drops 7.3% on Seoul stock exchange -- a major Asian equity market crash not yet in ALREADY COVERED" ],
-      "reasoning" : "Fact (executed market move, not posture), new (KOSPI crash not in ALREADY COVERED, flat pre_trend confirms BTC has not priced it), and a direct risk-off channel to crypto; complacent options vol (IV 41%) means the shock is unhedged, amplifying impact despite neutral positioning.",
+      "key_events" : [ "KOSPI drops 7.3% as tech selloff sinks Asian markets; crypto falls with them (observed transmission)" ],
+      "reasoning" : "Fact (KOSPI 7.3% drop is an executed market event, not posture); partially new -- the already-covered block flagged a 'rotation out of megacap techs,' but a 7.3% single-session KOSPI crash is a material escalation well beyond a rotation narrative. Channel is strong: multiple Asian markets falling on a shared risk-off driver with BTC/crypto explicitly observed falling with them (item 1), satisfying the systemic breadth + observed-transmission test. Pre_trend is flat, meaning the immediate BTC shock is unhedged; complacent options (IV 41%) amplify the surprise. Impact is HIGH despite BTC being near its 24h low, because the systemic-shock carve-out says the recap/flat-pre_trend dampers do not suppress a genuine broad cascade.",
       "options_signal" : {
         "positioning" : "neutral",
         "iv_elevated" : false,
@@ -386,7 +391,7 @@
         "id" : 4317,
         "title" : "Bitcoin slips toward $63,000 as a tech selloff drags risk assets lower",
         "direction" : "bearish",
-        "reasoning" : "Market recap framing BTC's slide around the KOSPI drop -- the KOSPI crash is the causative fact here, but this item presents it as backdrop to a price-reaction summary rather than as the primary report.",
+        "reasoning" : "Fact (BTC and crypto observed falling with Asian equities), escalation beyond the already-covered rotation narrative, with explicit crypto transmission -- systemic channel confirmed.",
         "scenario" : "fresh_bearish",
         "pre_trend" : "flat",
         "published_at" : "2026-06-23T05:24:57Z",
@@ -396,7 +401,7 @@
         "id" : 4420,
         "title" : "The KOSPI dropped 7.3% on the Seoul stock exchange.",
         "direction" : "bearish",
-        "reasoning" : "Direct fact: KOSPI -7.3%, a major equity-index crash, not in ALREADY COVERED, flat pre_trend -- a genuine risk-off shock with a clear channel to BTC.",
+        "reasoning" : "New specific fact: KOSPI 7.3% single-session drop, a major-market shock and the primary catalyst driving the broad risk-off cascade.",
         "scenario" : "fresh_bearish",
         "pre_trend" : "flat",
         "published_at" : "2026-06-23T05:20:02Z",

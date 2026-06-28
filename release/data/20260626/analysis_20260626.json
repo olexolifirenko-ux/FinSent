@@ -1,0 +1,1680 @@
+{
+  "01:10" : {
+    "analyzed_at" : "2026-06-26T01:15:16Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4898 ],
+    "screener" : [ {
+      "article_id" : 4898,
+      "score" : 0,
+      "reason" : "Trump rally recap; no new BTC catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "02:00" : {
+    "analyzed_at" : "2026-06-26T02:10:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4900, 4901 ],
+    "screener" : [ {
+      "article_id" : 4900,
+      "score" : 0,
+      "reason" : "Trump rally recap; no new catalyst or policy detail."
+    }, {
+      "article_id" : 4901,
+      "score" : 1,
+      "reason" : "Ark fund buying crypto stocks; minor signal, indirect BTC channel."
+    } ],
+    "prediction_record" : null
+  },
+  "02:20" : {
+    "analyzed_at" : "2026-06-26T02:30:37Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4902 ],
+    "screener" : [ {
+      "article_id" : 4902,
+      "score" : 0,
+      "reason" : "Trump rally recap; no new catalyst or policy announcement"
+    } ],
+    "prediction_record" : null
+  },
+  "03:10" : {
+    "analyzed_at" : "2026-06-26T03:20:14Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4906 ],
+    "screener" : [ {
+      "article_id" : 4906,
+      "score" : 0,
+      "reason" : "Duplicate of already-covered Trump rally post from June 25."
+    } ],
+    "prediction_record" : null
+  },
+  "03:40" : {
+    "analyzed_at" : "2026-06-27T04:30:10Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 4910, 5019 ],
+    "screener" : [ {
+      "article_id" : 4910,
+      "score" : 1,
+      "reason" : "BitGo restructuring; indirect crypto infrastructure impact."
+    }, {
+      "article_id" : 5019,
+      "score" : 2,
+      "reason" : "First public stablecoin company listing; regulatory/market structure signal."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59654.26,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact (Nasdaq listing upcoming), but the channel is weak and indirect -- a small stablecoin company listing is not a forced-flow or existential crypto-structural event, and with btc_regime EXTENDED and positioning exhausting, there is no amplification. Fails Step 3 for a high-impact call.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7211,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 48.11,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0029,
+        "oi_change_pct" : -1.441,
+        "oi_trend" : "unwinding",
+        "setup" : "exhausting"
+      },
+      "price_context" : {
+        "btc_price" : 59467.2,
+        "change_24h_pct" : -2.119,
+        "range_pos_24h" : 0.3515
+      },
+      "articles" : [ {
+        "id" : 5019,
+        "title" : "StablecoinX bets on Ethena ecosystem with Nasdaq debut on Friday",
+        "direction" : "neutral",
+        "reasoning" : "A niche stablecoin company Nasdaq debut -- real but no direct BTC channel, and btc_regime is already EXTENDED",
+        "scenario" : "noise",
+        "pre_trend" : "rising",
+        "published_at" : "2026-06-26T03:48:03Z",
+        "url" : "https://cointelegraph.com/news/stablecoinx-merges-with-tlgy-and-begins-trading-on-nasdaq-friday",
+        "price_at_publish" : 59654.26
+      } ]
+    },
+    "resonant_article_ids" : [ 5019 ]
+  },
+  "03:50" : {
+    "analyzed_at" : "2026-06-27T04:30:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4911, 5018 ],
+    "screener" : [ {
+      "article_id" : 4911,
+      "score" : 1,
+      "reason" : "Institutional ETH purchase; minor direct BTC signal."
+    }, {
+      "article_id" : 5018,
+      "score" : 1,
+      "reason" : "Same event as [1]; duplicate coverage, adds price detail only."
+    } ],
+    "prediction_record" : null
+  },
+  "05:00" : {
+    "analyzed_at" : "2026-06-26T05:10:04Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4912 ],
+    "screener" : [ {
+      "article_id" : 4912,
+      "score" : 3,
+      "reason" : "Circuit breaker in major Asian equity index; broad risk shock to BTC."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59932.65,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "high",
+      "macro_regime" : "n/a",
+      "key_events" : [ "South Korea's Kospi drops over 8%, triggering a circuit breaker Friday morning" ],
+      "reasoning" : "Fact (circuit breaker actually triggered, not a threat), new (not in ALREADY COVERED, and pre_trend is flat meaning this catalyst is not yet priced into BTC), with a strong broad risk-off channel; per the circuit-breaker rule, this qualifies as HIGH impact. Complacent options (IV 47%) mean the move is unhedged, amplifying the shock, while neutral positioning limits cascade fuel but does not override the HIGH floor for a major-index circuit-breaker event.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.727,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 46.64,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0049,
+        "oi_change_pct" : 0.421,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 59932.65,
+        "change_24h_pct" : -2.318,
+        "range_pos_24h" : 0.4724
+      },
+      "articles" : [ {
+        "id" : 4912,
+        "title" : "Bitcoin briefly dips below $59,000 as macro pressures drag crypto, Asian equities lower",
+        "direction" : "bearish",
+        "reasoning" : "Fact -- Kospi circuit breaker actually triggered (not posture); new -- absent from ALREADY COVERED and pre_trend is flat; strong channel -- a major-index circuit-breaker move triggers broad risk-off with direct transmission to BTC.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T05:00:53Z",
+        "url" : "https://www.theblock.co/post/406284/bitcoin-slides-below-59000?utm_source=rss&utm_medium=rss",
+        "price_at_publish" : 59932.65
+      } ]
+    },
+    "resonant_article_ids" : [ 4912 ]
+  },
+  "05:10" : {
+    "analyzed_at" : "2026-06-27T05:40:10Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4913, 5020 ],
+    "screener" : [ {
+      "article_id" : 4913,
+      "score" : 0,
+      "reason" : "Price recap of already-covered BTC dip and Asian equity decline."
+    }, {
+      "article_id" : 5020,
+      "score" : 1,
+      "reason" : "Base outage resolved; minor indirect impact on BTC ecosystem confidence."
+    } ],
+    "prediction_record" : null
+  },
+  "05:40" : {
+    "analyzed_at" : "2026-06-26T05:50:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4915, 4916 ],
+    "screener" : [ {
+      "article_id" : 4915,
+      "score" : 0,
+      "reason" : "Recap of already-covered BTC dip; routine daily move."
+    }, {
+      "article_id" : 4916,
+      "score" : 1,
+      "reason" : "Structural trend (pension adoption) but no new catalyst or event."
+    } ],
+    "prediction_record" : null
+  },
+  "06:10" : {
+    "analyzed_at" : "2026-06-26T06:20:07Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4917 ],
+    "screener" : [ {
+      "article_id" : 4917,
+      "score" : 2,
+      "reason" : "Major regulatory framework for stablecoins; direct BTC ecosystem impact."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59816.76,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Explainer/guide article recapping already-enacted legislation (GENIUS Act signed July 2025) -- not a new fact, just educational content describing known law. Fails Step 2 entirely.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7341,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 48.3,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0067,
+        "oi_change_pct" : -0.381,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 59778.01,
+        "change_24h_pct" : -3.09,
+        "range_pos_24h" : 0.4322
+      },
+      "articles" : [ {
+        "id" : 4917,
+        "title" : "What Is the GENIUS Act? A Guide to U.S. Stablecoin Law",
+        "direction" : "neutral",
+        "reasoning" : "Educational recap of already-signed legislation -- not a new event, no fresh trigger",
+        "scenario" : "noise",
+        "pre_trend" : "falling",
+        "published_at" : "2026-06-26T06:19:08Z",
+        "url" : "https://www.theblock.co/learn/406286/what-is-the-genius-act?utm_source=rss&utm_medium=rss",
+        "price_at_publish" : 59816.76
+      } ]
+    },
+    "resonant_article_ids" : [ 4917 ]
+  },
+  "06:30" : {
+    "analyzed_at" : "2026-06-26T06:40:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4918 ],
+    "screener" : [ {
+      "article_id" : 4918,
+      "score" : 1,
+      "reason" : "Commentary on existing position losses; no new catalyst or event."
+    } ],
+    "prediction_record" : null
+  },
+  "07:00" : {
+    "analyzed_at" : "2026-06-26T07:10:07Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4920 ],
+    "screener" : [ {
+      "article_id" : 4920,
+      "score" : 1,
+      "reason" : "Opinion on corporate BTC holdings; no new catalyst or event."
+    } ],
+    "prediction_record" : null
+  },
+  "07:50" : {
+    "analyzed_at" : "2026-06-26T08:00:41Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4922 ],
+    "screener" : [ {
+      "article_id" : 4922,
+      "score" : 0,
+      "reason" : "Educational explainer on ETF mechanics, no new flow event or catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "08:00" : {
+    "analyzed_at" : "2026-06-26T08:10:14Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4923 ],
+    "screener" : [ {
+      "article_id" : 4923,
+      "score" : 2,
+      "reason" : "ECB inflation/rate expectations shift signals macro pressure on BTC"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60576.95,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact (published survey data), but a routine scheduled ECB consumer expectations release with no surprise flagged -- fails Step 2 as a regularly-anticipated data drop. Even if it contained a surprise, the channel to BTC is weak and indirect (euro-area inflation sentiment -> ECB rate path -> broad risk appetite), insufficient for a high-impact call.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : true,
+        "signal_strength" : "moderate",
+        "near_pc_ratio" : 0.7814,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 48.66,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0059,
+        "oi_change_pct" : 0.718,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60576.95,
+        "change_24h_pct" : -2.141,
+        "range_pos_24h" : 0.647
+      },
+      "articles" : [ {
+        "id" : 4923,
+        "title" : "ECB Consumer Expectations Survey results – May 2026",
+        "direction" : "neutral",
+        "reasoning" : "Routine ECB survey publication -- no concrete surprise established, and the channel to crypto is too weak and indirect to matter.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T08:00:00Z",
+        "url" : "https://www.ecb.europa.eu//press/pr/date/2026/html/ecb.pr260626_1~60a21704a8.en.html",
+        "price_at_publish" : 60576.95
+      } ]
+    },
+    "resonant_article_ids" : [ 4923 ]
+  },
+  "08:20" : {
+    "analyzed_at" : "2026-06-27T09:10:15Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4924, 5026 ],
+    "screener" : [ {
+      "article_id" : 4924,
+      "score" : 0,
+      "reason" : "Opinion/commentary on personal BTC accumulation strategy, no new catalyst."
+    }, {
+      "article_id" : 5026,
+      "score" : 1,
+      "reason" : "Platform security incident; minor indirect impact on crypto confidence/risk."
+    } ],
+    "prediction_record" : null
+  },
+  "08:30" : {
+    "analyzed_at" : "2026-06-26T08:40:14Z",
+    "model" : "claude-sonnet-4-6",
+    "article_ids" : [ 4925 ],
+    "screener" : [ {
+      "article_id" : 4925,
+      "score" : 2,
+      "reason" : "Major exchange acquisition; consolidation signal, regulatory confidence."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60308.0,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bullish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "SBI Holdings announces $289M acquisition of Japanese crypto exchange Bitbank" ],
+      "reasoning" : "Fact (deal officially announced, not rumored) and new (not in covered block), with a real but indirect crypto channel -- institutional M&A validates crypto infrastructure investment but does not directly inject liquidity or alter BTC market structure; pre_trend flat and positioning neutral limit amplification.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7964,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 47.71,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0047,
+        "oi_change_pct" : 0.346,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60304.01,
+        "change_24h_pct" : -2.375,
+        "range_pos_24h" : 0.5933
+      },
+      "articles" : [ {
+        "id" : 4925,
+        "title" : "Japanese financial services giant SBI Holdings to buy Bitbank for $289 million",
+        "direction" : "bullish",
+        "reasoning" : "Confirmed acquisition by a major Japanese financial group is a new fact with a weak-indirect crypto-adoption channel -- bullish sentiment signal but not a direct BTC price catalyst",
+        "scenario" : "fresh_bullish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T08:31:57Z",
+        "url" : "https://www.coindesk.com/business/2026/06/26/japanese-financial-services-giant-sbi-holdings-to-buy-bitbank-for-usd289-million",
+        "price_at_publish" : 60308.0
+      } ]
+    },
+    "resonant_article_ids" : [ 4925 ]
+  },
+  "09:40" : {
+    "analyzed_at" : "2026-06-26T09:50:14Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4929 ],
+    "screener" : [ {
+      "article_id" : 4929,
+      "score" : 1,
+      "reason" : "Minor ETH inflow signal; indirect BTC correlation via risk sentiment."
+    } ],
+    "prediction_record" : null
+  },
+  "10:10" : {
+    "analyzed_at" : "2026-06-27T10:20:15Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4931, 4932, 5031 ],
+    "screener" : [ {
+      "article_id" : 4931,
+      "score" : 0,
+      "reason" : "Binance EU exit already covered 2026-06-26 08:00"
+    }, {
+      "article_id" : 4932,
+      "score" : 1,
+      "reason" : "Base hard fork delay; minor technical event, indirect BTC impact"
+    }, {
+      "article_id" : 5031,
+      "score" : 1,
+      "reason" : "BitGo layoff; real but slow/indirect channel to BTC sentiment"
+    } ],
+    "prediction_record" : null
+  },
+  "10:20" : {
+    "analyzed_at" : "2026-06-26T10:40:17Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4933 ],
+    "screener" : [ {
+      "article_id" : 4933,
+      "score" : 0,
+      "reason" : "Preferred stock dividend mechanics; no direct BTC catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "11:00" : {
+    "analyzed_at" : "2026-06-26T11:10:14Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4934 ],
+    "screener" : [ {
+      "article_id" : 4934,
+      "score" : 1,
+      "reason" : "Price recap with derivatives data; routine daily volatility, not extreme move."
+    } ],
+    "prediction_record" : null
+  },
+  "11:30" : {
+    "analyzed_at" : "2026-06-26T11:40:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4937 ],
+    "screener" : [ {
+      "article_id" : 4937,
+      "score" : 0,
+      "reason" : "Price recap and strategy opinion, no new catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "12:00" : {
+    "analyzed_at" : "2026-06-27T12:20:40Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4938, 5038 ],
+    "screener" : [ {
+      "article_id" : 4938,
+      "score" : 1,
+      "reason" : "Market sentiment recap; no new catalyst identified."
+    }, {
+      "article_id" : 5038,
+      "score" : 0,
+      "reason" : "Equity market recap; no new event or BTC-specific catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "12:20" : {
+    "analyzed_at" : "2026-06-27T13:30:20Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4943, 5159 ],
+    "screener" : [ {
+      "article_id" : 4943,
+      "score" : 0,
+      "reason" : "Market recap; no new catalyst or event."
+    }, {
+      "article_id" : 5159,
+      "score" : 1,
+      "reason" : "BTC price move is routine daily decline; Kraken-Aave deal minor."
+    } ],
+    "prediction_record" : null
+  },
+  "12:40" : {
+    "analyzed_at" : "2026-06-26T12:50:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4944, 4945 ],
+    "screener" : [ {
+      "article_id" : 4944,
+      "score" : 0,
+      "reason" : "Political opinion, no new BTC-relevant fact or catalyst."
+    }, {
+      "article_id" : 4945,
+      "score" : 1,
+      "reason" : "Price recap with routine daily move; ETF outflows are minor/slow channel."
+    } ],
+    "prediction_record" : null
+  },
+  "12:50" : {
+    "analyzed_at" : "2026-06-27T13:30:22Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4946, 4961, 5160 ],
+    "screener" : [ {
+      "article_id" : 4946,
+      "score" : 0,
+      "reason" : "VC fundraising; no direct BTC catalyst."
+    }, {
+      "article_id" : 4961,
+      "score" : 1,
+      "reason" : "Regulatory harmonization proposal; slow indirect channel."
+    }, {
+      "article_id" : 5160,
+      "score" : 0,
+      "reason" : "Gold/minerals sanctions; no BTC nexus."
+    } ],
+    "prediction_record" : null
+  },
+  "13:20" : {
+    "analyzed_at" : "2026-06-26T13:31:01Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4957 ],
+    "screener" : [ {
+      "article_id" : 4957,
+      "score" : 0,
+      "reason" : "Price recap of routine daily moves, no new catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "13:30" : {
+    "analyzed_at" : "2026-06-27T14:30:32Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4958, 5187 ],
+    "screener" : [ {
+      "article_id" : 4958,
+      "score" : 0,
+      "reason" : "Price recap; no new catalyst or event."
+    }, {
+      "article_id" : 5187,
+      "score" : 1,
+      "reason" : "Fed personnel shift; indirect macro signal, unverified impact scope."
+    } ],
+    "prediction_record" : null
+  },
+  "14:50" : {
+    "analyzed_at" : "2026-06-26T15:00:14Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4962 ],
+    "screener" : [ {
+      "article_id" : 4962,
+      "score" : 0,
+      "reason" : "Political opinion on immigration policy; no BTC catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "15:00" : {
+    "analyzed_at" : "2026-06-26T15:05:47Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4963 ],
+    "screener" : [ {
+      "article_id" : 4963,
+      "score" : 0,
+      "reason" : "Immigration policy opinion; no direct BTC catalyst or market shock."
+    } ],
+    "prediction_record" : null
+  },
+  "18:20" : {
+    "analyzed_at" : "2026-06-26T18:30:16Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 4991 ],
+    "screener" : [ {
+      "article_id" : 4991,
+      "score" : 2,
+      "reason" : "Regulatory action on crypto accountability; potential policy shift affecting BTC ecosystem"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59995.99,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact (an advocacy group's statement), but fails Step 2 -- it is a policy opinion/commentary on pending legislation with no new executed action, and fails Step 3 -- no concrete transmission channel to BTC pricing.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8528,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 42.52,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0085,
+        "oi_change_pct" : -0.048,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60028.0,
+        "change_24h_pct" : 0.603,
+        "range_pos_24h" : 0.6979
+      },
+      "articles" : [ {
+        "id" : 4991,
+        "title" : "Anti-trafficking group says Clarity Act's Section 604 could weaken accountability",
+        "direction" : "neutral",
+        "reasoning" : "An advocacy group's opinion on a legislative provision -- no executed action, no crypto channel",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T18:24:24Z",
+        "url" : "https://www.coindesk.com/policy/2026/06/26/anti-trafficking-group-warns-clarity-act-s-section-604-could-weaken-accountability",
+        "price_at_publish" : 59995.99
+      } ]
+    },
+    "resonant_article_ids" : [ 4991 ]
+  },
+  "18:30" : {
+    "analyzed_at" : "2026-06-26T18:40:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4992, 4993 ],
+    "screener" : [ {
+      "article_id" : 4992,
+      "score" : 1,
+      "reason" : "Ethereum governance/funding shift; indirect, slow channel to BTC."
+    }, {
+      "article_id" : 4993,
+      "score" : 0,
+      "reason" : "SOL price move recap; routine daily volatility, not extreme shock."
+    } ],
+    "prediction_record" : null
+  },
+  "19:00" : {
+    "analyzed_at" : "2026-06-26T19:05:11Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4994 ],
+    "screener" : [ {
+      "article_id" : 4994,
+      "score" : 0,
+      "reason" : "Social media post, no new fact or catalyst"
+    } ],
+    "prediction_record" : null
+  },
+  "19:20" : {
+    "analyzed_at" : "2026-06-26T19:25:27Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4995 ],
+    "screener" : [ {
+      "article_id" : 4995,
+      "score" : 0,
+      "reason" : "Social media greeting; no new fact or catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "19:30" : {
+    "analyzed_at" : "2026-06-26T19:40:22Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5000 ],
+    "screener" : [ {
+      "article_id" : 5000,
+      "score" : 2,
+      "reason" : "Potential regulatory action on crypto in retirement accounts; Waters influence on committee matters."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59896.87,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "Maxine Waters asks DOL to withdraw crypto-in-401(k) proposal" ],
+      "reasoning" : "Fact (a letter was sent), new (not previously covered), but channel is weak and indirect -- a political request with no enforcement power, slow-moving regulatory posture rather than an executed rule change. Mild bearish sentiment on institutional crypto adoption, but no forced flow or structural shock.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8493,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 41.58,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0095,
+        "oi_change_pct" : -0.313,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 59939.99,
+        "change_24h_pct" : 1.003,
+        "range_pos_24h" : 0.6616
+      },
+      "articles" : [ {
+        "id" : 5000,
+        "title" : "U.S. House Democrat, who may soon run key committee, condemns crypto in 401(k)s",
+        "direction" : "bearish",
+        "reasoning" : "A real but low-channel political statement -- a ranking member's letter requesting withdrawal of a proposal, no executed action, weak and slow indirect channel to BTC",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T19:38:12Z",
+        "url" : "https://www.coindesk.com/policy/2026/06/26/u-s-house-democrat-who-may-soon-run-key-committee-condemns-crypto-in-401-k-s",
+        "price_at_publish" : 59896.87
+      } ]
+    },
+    "resonant_article_ids" : [ 5000 ]
+  },
+  "20:10" : {
+    "analyzed_at" : "2026-06-26T20:20:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5001, 5002 ],
+    "screener" : [ {
+      "article_id" : 5001,
+      "score" : 0,
+      "reason" : "Trump tribute in India; no BTC catalyst."
+    }, {
+      "article_id" : 5002,
+      "score" : 1,
+      "reason" : "Crypto price recap with minor Solana/Aave detail; routine move."
+    } ],
+    "prediction_record" : null
+  },
+  "20:40" : {
+    "analyzed_at" : "2026-06-26T20:50:19Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5003, 5007 ],
+    "screener" : [ {
+      "article_id" : 5003,
+      "score" : 0,
+      "reason" : "Political endorsement; no BTC catalyst or market impact."
+    }, {
+      "article_id" : 5007,
+      "score" : 1,
+      "reason" : "Crypto industry opinion on competitor; minor indirect sentiment signal."
+    } ],
+    "prediction_record" : null
+  },
+  "20:50" : {
+    "analyzed_at" : "2026-06-26T20:55:12Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5008 ],
+    "screener" : [ {
+      "article_id" : 5008,
+      "score" : 0,
+      "reason" : "Opinion/commentary on passport policy; no direct BTC catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "21:20" : {
+    "analyzed_at" : "2026-06-26T21:30:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5009 ],
+    "screener" : [ {
+      "article_id" : 5009,
+      "score" : 1,
+      "reason" : "Minor fund discount; indirect BTC sentiment signal only."
+    } ],
+    "prediction_record" : null
+  },
+  "23:00" : {
+    "analyzed_at" : "2026-06-28T00:50:14Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5013, 5350 ],
+    "screener" : [ {
+      "article_id" : 5013,
+      "score" : 0,
+      "reason" : "Political endorsement; no direct BTC catalyst."
+    }, {
+      "article_id" : 5350,
+      "score" : 0,
+      "reason" : "Human interest story; no BTC or macro impact."
+    } ],
+    "prediction_record" : null
+  },
+  "00:40" : {
+    "analyzed_at" : "2026-06-27T01:10:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5015 ],
+    "screener" : [ {
+      "article_id" : 5015,
+      "score" : 1,
+      "reason" : "Company layoff; minor indirect signal on crypto sector health."
+    } ],
+    "prediction_record" : null
+  },
+  "01:40" : {
+    "analyzed_at" : "2026-06-27T02:20:06Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5017 ],
+    "screener" : [ {
+      "article_id" : 5017,
+      "score" : 2,
+      "reason" : "Oil-supply shock risk from Middle East escalation; indirect but material BTC macro channel"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59395.99,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "This is a CNBC Daily Open market recap that bundles already-known Middle East/Iran tensions (Senate Iran vote already covered) with a vague 'reportedly attacked a cargo ship' detail lacking confirmation -- failing Step 1 as fact and Step 2 as new. With btc_regime EXTENDED (broad risk-off already priced) and pre_trend flat, no fresh causative trigger is present.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7245,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 45.71,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0049,
+        "oi_change_pct" : 0.506,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 59355.48,
+        "change_24h_pct" : -2.469,
+        "range_pos_24h" : 0.3224
+      },
+      "articles" : [ {
+        "id" : 5017,
+        "title" : "CNBC Daily Open: Oil worries flare as tech's winners split from the pack",
+        "direction" : "neutral",
+        "reasoning" : "Market recap/daily-open piece describing already-covered Iran/geopolitical backdrop with an unconfirmed cargo-ship claim -- posture/recap, not a new executable fact, and broad risk-off already priced per EXTENDED regime.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T01:49:50Z",
+        "url" : "https://www.cnbc.com/2026/06/26/cnbc-daily-open-oil-worries-flare-as-techs-winners-split-from-the-pack.html",
+        "price_at_publish" : 59395.99
+      } ]
+    },
+    "resonant_article_ids" : [ 5017 ]
+  },
+  "04:40" : {
+    "analyzed_at" : "2026-06-27T05:40:12Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5021 ],
+    "screener" : [ {
+      "article_id" : 5021,
+      "score" : 3,
+      "reason" : "Major equity crash (Kospi -7.5%, Nikkei -4.4%) is broad risk shock."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59926.74,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "Kospi -7.5%, Nikkei -5%: broad Asian equity selloff with US futures also declining" ],
+      "reasoning" : "Fact (observed market moves), new (fresh session selloff not previously covered), and the channel is systemic -- multiple major markets falling together on a shared risk-off driver meets the breadth threshold. However, btc_regime is EXTENDED (BTC already down ~8.6% from 5d high, broad risk-off largely priced), so per the rules this equity/macro continuation stays LOW even though it is genuinely systemic; directional lean is bearish. Down_cascade_fuel from OI build could amplify if BTC transmits, but the regime damper caps the tier at LOW.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.7268,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 46.41,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0044,
+        "oi_change_pct" : 1.158,
+        "oi_trend" : "building",
+        "setup" : "down_cascade_fuel"
+      },
+      "price_context" : {
+        "btc_price" : 59920.0,
+        "change_24h_pct" : -1.69,
+        "range_pos_24h" : 0.4691
+      },
+      "articles" : [ {
+        "id" : 5021,
+        "title" : "Asian shares sink, with Kospi down 7.5% and Nikkei shedding 4.4%",
+        "direction" : "bearish",
+        "reasoning" : "A real, broad multi-market Asian equity selloff (Kospi -7.5%, Nikkei -5%, US futures down) -- systemic channel confirmed, but btc_regime EXTENDED means the broad risk-off is largely priced, capping this at LOW rather than HIGH.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T04:42:51Z",
+        "url" : "https://apnews.com/article/stocks-markets-ai-chips-oil-rates-e356760ec69cab916e53a9804336b845",
+        "price_at_publish" : 59926.74
+      } ]
+    },
+    "resonant_article_ids" : [ 5021 ]
+  },
+  "06:00" : {
+    "analyzed_at" : "2026-06-27T06:50:06Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5022 ],
+    "screener" : [ {
+      "article_id" : 5022,
+      "score" : 2,
+      "reason" : "Major crypto asset reranking amid broad selloff; signals liquidity stress."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59816.01,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact (ETH price and market cap milestone are real), but fails Step 2: this is a descriptive recap of the already-covered broad crypto selloff (Bitcoin below $59K, Asian equities sinking already covered), not a new causative event. The Tether-flipping-ETH milestone is a consequence of the ongoing decline, not a forced-flow structural shock; btc_regime is EXTENDED, broad risk-off already priced.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.735,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 48.0,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0068,
+        "oi_change_pct" : -0.192,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 59928.01,
+        "change_24h_pct" : -2.717,
+        "range_pos_24h" : 0.4712
+      },
+      "articles" : [ {
+        "id" : 5022,
+        "title" : "Tether stablecoin flips Ether by market cap as ETH routs to $1.5K",
+        "direction" : "neutral",
+        "reasoning" : "Describes a market cap milestone and ETH price level as part of the already-covered broad selloff -- a descriptive recap, not a new causative event, and btc_regime is EXTENDED",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T06:02:01Z",
+        "url" : "https://cointelegraph.com/news/tether-stablecoin-flips-ether-by-market-cap-as-eth-routs-to-15k",
+        "price_at_publish" : 59816.01
+      } ]
+    },
+    "resonant_article_ids" : [ 5022 ]
+  },
+  "07:20" : {
+    "analyzed_at" : "2026-06-27T08:00:20Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5024 ],
+    "screener" : [ {
+      "article_id" : 5024,
+      "score" : 3,
+      "reason" : "Major regulatory action: Binance EU exit, MiCA compliance deadline catalyst"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60556.97,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fails Step 2: the already-covered block explicitly includes 'Binance faces EU service limits next week as MiCA rules take effect' from 2026-06-25 12:19 -- this FT report is a restatement/confirmation of that same known event, not a materially-new step. Even if treated as new, Step 3 fails: a telegraphed, single-jurisdiction service suspension under an expected regulatory deadline is a weak/indirect channel that forces no BTC flow.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.768,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 48.94,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0072,
+        "oi_change_pct" : 0.273,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60598.0,
+        "change_24h_pct" : -2.045,
+        "range_pos_24h" : 0.6454
+      },
+      "articles" : [ {
+        "id" : 5024,
+        "title" : "Binance to stop providing services to European clients after failing to obtain license: Financial Times",
+        "direction" : "neutral",
+        "reasoning" : "Recap of an already-covered story (Binance MiCA/EU service limits); no new executed fact beyond what was reported yesterday, and the channel is weak even if it were fresh.",
+        "scenario" : "noise",
+        "pre_trend" : "rising",
+        "published_at" : "2026-06-26T07:23:50Z",
+        "url" : "https://www.cnbc.com/2026/06/26/binance-to-stop-providing-services-to-european-clients-after-failing-to-obtain-license-ft.html",
+        "price_at_publish" : 60556.97
+      } ]
+    },
+    "resonant_article_ids" : [ 5024 ]
+  },
+  "08:40" : {
+    "analyzed_at" : "2026-06-27T09:10:17Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5027 ],
+    "screener" : [ {
+      "article_id" : 5027,
+      "score" : 1,
+      "reason" : "Indirect macro signal; yields and energy moves matter but no new shock confirmed"
+    } ],
+    "prediction_record" : null
+  },
+  "09:30" : {
+    "analyzed_at" : "2026-06-27T10:20:17Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5032, 5033 ],
+    "screener" : [ {
+      "article_id" : 5032,
+      "score" : 0,
+      "reason" : "Price recap of already-covered BTC dip below $60K; ETF flows are secondary market reaction."
+    }, {
+      "article_id" : 5033,
+      "score" : 2,
+      "reason" : "U.S.-Iran peace deal is major geopolitical catalyst; oil/energy stability affects macro risk appetite and BTC."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60086.02,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "The U.S.-Iran deal is already covered in prior windows; this item merely describes the shipping recovery as a follow-up to that known event. It adds no new executed action or materially-new step, and the btc_regime is EXTENDED (broad risk-off largely priced). Fails Step 2.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.802,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 45.7,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0033,
+        "oi_change_pct" : 0.069,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60131.66,
+        "change_24h_pct" : -2.536,
+        "range_pos_24h" : 0.5502
+      },
+      "articles" : [ {
+        "id" : 5033,
+        "title" : "Shipping rebounds in Strait of Hormuz one week after U.S.-Iran deal – but fragile confidence threatens recovery",
+        "direction" : "neutral",
+        "reasoning" : "Recap of an already-covered U.S.-Iran deal outcome -- shipping recovery is a downstream description of the known situation, not a new causative fact.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T09:36:24Z",
+        "url" : "https://www.cnbc.com/2026/06/26/strait-of-hormuz-shipping-oil-us-iran.html",
+        "price_at_publish" : 60086.02
+      } ]
+    },
+    "resonant_article_ids" : [ 5033 ]
+  },
+  "12:10" : {
+    "analyzed_at" : "2026-06-27T12:20:15Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5035, 5037 ],
+    "screener" : [ {
+      "article_id" : 5035,
+      "score" : 2,
+      "reason" : "Regulatory relief extension affects crypto business operations and compliance landscape."
+    }, {
+      "article_id" : 5037,
+      "score" : 0,
+      "reason" : "Generic market recap; no specific new catalyst identified for BTC."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59455.39,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact, but fails Step 3: a regional, telegraphed, partial regulatory step (an extension of an existing no-action period) in Australia forces no BTC flow and has only a weak indirect channel. Not a material crypto-structural event.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8333,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 51.86,
+        "priced_in" : "normal"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0041,
+        "oi_change_pct" : 0.036,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 59435.22,
+        "change_24h_pct" : -2.944,
+        "range_pos_24h" : 0.3621
+      },
+      "articles" : [ {
+        "id" : 5035,
+        "title" : "Australian regulator extends no-action period for crypto licensing",
+        "direction" : "neutral",
+        "reasoning" : "A routine regulatory deadline extension in a single jurisdiction -- telegraphed, no forced flow, weak channel",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T12:14:31Z",
+        "url" : "https://cointelegraph.com/news/australia-asic-extends-crypto-licensing-relief-september",
+        "price_at_publish" : 59455.39
+      } ]
+    },
+    "resonant_article_ids" : [ 5035 ]
+  },
+  "11:40" : {
+    "analyzed_at" : "2026-06-27T12:20:22Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5036 ],
+    "screener" : [ {
+      "article_id" : 5036,
+      "score" : 2,
+      "reason" : "Exchange liquidity crisis risk; potential contagion catalyst if reserves questioned."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59418.01,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "AscendEX users report delayed withdrawals as ZachXBT questions exchange reserves" ],
+      "reasoning" : "Fact (real user withdrawal complaints and an on-chain investigator flagging liquidity concerns) and new (not in already covered). However, AscendEX is a mid-tier, not a top-tier exchange -- per the forced-flow test, a smaller venue forces limited BTC flow and the channel is weak/indirect, keeping this LOW rather than HIGH. With btc_regime EXTENDED and positioning neutral, there is little additional cascade fuel even if the situation worsens.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8347,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 51.47,
+        "priced_in" : "normal"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0037,
+        "oi_change_pct" : 0.109,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 59456.02,
+        "change_24h_pct" : -3.063,
+        "range_pos_24h" : 0.3678
+      },
+      "articles" : [ {
+        "id" : 5036,
+        "title" : "AscendEX withdrawal complaints mount as ZachXBT questions reserves",
+        "direction" : "bearish",
+        "reasoning" : "Real, new crypto-structural concern (withdrawal delays + reserve questions), but AscendEX is a smaller venue with limited forced BTC flow -- weak channel, rates LOW bearish",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T11:47:02Z",
+        "url" : "https://cointelegraph.com/news/ascendex-exchange-reportedly-faces-liquidity-issues-claims-zachxbt",
+        "price_at_publish" : 59418.01
+      } ]
+    },
+    "resonant_article_ids" : [ 5036 ]
+  },
+  "13:10" : {
+    "analyzed_at" : "2026-06-27T13:30:15Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5158 ],
+    "screener" : [ {
+      "article_id" : 5158,
+      "score" : 2,
+      "reason" : "Regulatory action against major DEX; potential precedent for enforcement."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59042.0,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact, but weak channel: Singapore's MAS adding Hyperliquid to its Investor Alert List is a regional, telegraphed regulatory step against a DEX with no forced BTC flow and no existential threat to a major venue. Fails Step 3 -- no concrete transmission to BTC.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8289,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 56.81,
+        "priced_in" : "normal"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0043,
+        "oi_change_pct" : -0.388,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 59020.0,
+        "change_24h_pct" : -3.601,
+        "range_pos_24h" : 0.2781
+      },
+      "articles" : [ {
+        "id" : 5158,
+        "title" : "Hyperliquid added to Singapore's Investor Alert List",
+        "direction" : "neutral",
+        "reasoning" : "Regional regulatory notice with no forced BTC flow -- weak channel, noise",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T13:11:29Z",
+        "url" : "https://cointelegraph.com/news/hyperliquid-singapore-mas-investor-alert-list",
+        "price_at_publish" : 59042.0
+      } ]
+    },
+    "resonant_article_ids" : [ 5158 ]
+  },
+  "14:10" : {
+    "analyzed_at" : "2026-06-27T14:30:15Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5183 ],
+    "screener" : [ {
+      "article_id" : 5183,
+      "score" : 1,
+      "reason" : "Opinion piece; no new catalyst or market event."
+    } ],
+    "prediction_record" : null
+  },
+  "13:50" : {
+    "analyzed_at" : "2026-06-27T14:30:17Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 4959, 5184, 5186 ],
+    "screener" : [ {
+      "article_id" : 4959,
+      "score" : 0,
+      "reason" : "Opinion/approval rating poll; no BTC catalyst"
+    }, {
+      "article_id" : 5184,
+      "score" : 1,
+      "reason" : "VC fund expansion into AI/energy; indirect crypto relevance only"
+    }, {
+      "article_id" : 5186,
+      "score" : 2,
+      "reason" : "Fed policy signal amid 4%+ inflation; rate expectations material to BTC"
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60180.0,
+      "article_count" : 3,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Posture/description: Trump 'repeating calls to cut' is ongoing political pressure, not a new executed fact (no rate decision, no Fed action, no firing). This describes a known dynamic -- Trump pressure on the Fed has been widely covered -- and fails Step 2 as well. No new crypto channel.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8402,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 52.42,
+        "priced_in" : "normal"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0048,
+        "oi_change_pct" : -1.992,
+        "oi_trend" : "unwinding",
+        "setup" : "exhausting"
+      },
+      "price_context" : {
+        "btc_price" : 59467.03,
+        "change_24h_pct" : -0.126,
+        "range_pos_24h" : 0.5112
+      },
+      "articles" : [ {
+        "id" : 5186,
+        "title" : "Trump eases pressure on Fed Chairman Kevin Warsh as inflation tops 4%",
+        "direction" : "neutral",
+        "reasoning" : "Describes ongoing political pressure on the Fed chair -- known backdrop, no new executed action, fails Steps 1 and 2",
+        "scenario" : "noise",
+        "pre_trend" : "rising",
+        "published_at" : "2026-06-26T13:58:29Z",
+        "url" : "https://www.cnbc.com/2026/06/26/trump-warsh-fed-rate-cuts-inflation.html",
+        "price_at_publish" : 60180.0
+      } ]
+    },
+    "resonant_article_ids" : [ 5186 ]
+  },
+  "13:40" : {
+    "analyzed_at" : "2026-06-27T14:30:25Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "e27b7ad39579",
+    "article_ids" : [ 5185 ],
+    "screener" : [ {
+      "article_id" : 5185,
+      "score" : 2,
+      "reason" : "Large ETF outflow ($692M) is material catalyst; options expiry adds volatility risk."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59432.0,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact but not new: the ETF outflows and options expiry are recaps/descriptions of market dynamics already embedded in the ALREADY COVERED broader sell-off (BTC dipping below $59K, Asian equity rout). The btc_regime is EXTENDED (broad risk-off largely priced), positioning is unwinding/exhausting, and this item adds no new causative fact beyond what is already covered.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8392,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 53.11,
+        "priced_in" : "normal"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0046,
+        "oi_change_pct" : -2.152,
+        "oi_trend" : "unwinding",
+        "setup" : "exhausting"
+      },
+      "price_context" : {
+        "btc_price" : 59218.01,
+        "change_24h_pct" : -2.386,
+        "range_pos_24h" : 0.417
+      },
+      "articles" : [ {
+        "id" : 5185,
+        "title" : "Bitcoin Tests $59K as ETFs Shed $692M, Options Expiry Looms",
+        "direction" : "neutral",
+        "reasoning" : "A recap of known ETF outflow data and upcoming options expiry -- describes the existing situation, no new causative fact, and the broad risk-off is already priced per btc_regime EXTENDED.",
+        "scenario" : "noise",
+        "pre_trend" : "volatile",
+        "published_at" : "2026-06-26T13:43:02Z",
+        "url" : "https://decrypt.co/372180/bitcoin-tests-59k-as-etfs-shed-692m-options-expiry-looms",
+        "price_at_publish" : 59432.0
+      } ]
+    },
+    "resonant_article_ids" : [ 5185 ]
+  },
+  "15:30" : {
+    "analyzed_at" : "2026-06-27T15:40:16Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5198 ],
+    "screener" : [ {
+      "article_id" : 5198,
+      "score" : 1,
+      "reason" : "Price recap of STRC and BTC; no new catalyst or event."
+    } ],
+    "prediction_record" : null
+  },
+  "16:20" : {
+    "analyzed_at" : "2026-06-27T16:50:15Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 4973, 5227 ],
+    "screener" : [ {
+      "article_id" : 4973,
+      "score" : 2,
+      "reason" : "Trump tariff threat on EU could escalate trade tensions, broad macro shock risk."
+    }, {
+      "article_id" : 5227,
+      "score" : 1,
+      "reason" : "Industry updates; minor indirect BTC relevance, no new catalyst."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 59985.08,
+      "article_count" : 2,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fails Step 1: this is posture, not fact -- Trump is threatening a future tariff contingent on a future European action; no tariff has been imposed and no European country has actually enacted a Digital Services Tax. Trump is a figure known for using tariff threats as negotiating leverage, and no causative action has occurred. Even if treated as new, the channel to BTC is indirect (macro/trade sentiment) and BTC pre_trend is flat with btc_regime already EXTENDED.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.854,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 44.12,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0074,
+        "oi_change_pct" : 0.687,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60085.98,
+        "change_24h_pct" : 0.444,
+        "range_pos_24h" : 0.7218
+      },
+      "articles" : [ {
+        "id" : 4973,
+        "title" : "Numerous European Countries have been discussing the imminent implementation of a Digital Services Tax on American Companies. Some of these Countries are close to actually doing this. Please let this statement serve to represent that any Country that imposes such a Tax will immediately be met with a 100% TARIFF on any and all Goods sent to the United States of America. This TARIFF will supersede Trade Deals made with the Country, whether implemented, signed, or not. Additionally, the 100% TARIFF will be immediately imposed, if they proceed. Thank you for your attention to this matter. President DONALD J. TRUMP",
+        "direction" : "neutral",
+        "reasoning" : "A conditional tariff threat from Trump -- posture, not an executed fact; no tariff imposed, no DST enacted, channel to BTC is indirect at best",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T16:20:58Z",
+        "url" : "https://www.trumpstruth.org/statuses/39546",
+        "price_at_publish" : 59985.08
+      } ]
+    },
+    "resonant_article_ids" : [ 4973 ]
+  },
+  "16:10" : {
+    "analyzed_at" : "2026-06-27T16:50:23Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5228 ],
+    "screener" : [ {
+      "article_id" : 5228,
+      "score" : 1,
+      "reason" : "Regulatory skirmish on prediction markets; indirect BTC channel."
+    } ],
+    "prediction_record" : null
+  },
+  "15:50" : {
+    "analyzed_at" : "2026-06-27T16:50:24Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 4969, 5229, 5230, 5232 ],
+    "screener" : [ {
+      "article_id" : 4969,
+      "score" : 3,
+      "reason" : "Iran drone attack on ships in Strait of Hormuz; geopolitical escalation threatens oil supply shock."
+    }, {
+      "article_id" : 5229,
+      "score" : 0,
+      "reason" : "Price recap of BTC weakness; already covered ETF flows and options expiry context."
+    }, {
+      "article_id" : 5230,
+      "score" : 1,
+      "reason" : "Bitcoin miner infrastructure opportunity; indirect and promotional, not a new catalyst."
+    }, {
+      "article_id" : 5232,
+      "score" : 2,
+      "reason" : "Fed rate hike signal; unverified but major monetary policy shift with direct BTC channel."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60161.99,
+      "article_count" : 4,
+      "resonant_count" : 2,
+      "claude_available" : true,
+      "direction" : "bearish",
+      "impact_tier" : "low",
+      "macro_regime" : "n/a",
+      "key_events" : [ "Iran fired drones at ships in Strait of Hormuz, one hit a cargo ship -- ceasefire violation confirmed by Trump" ],
+      "reasoning" : "Item 1 passes Step 1 (executed attack, reported as fact by Trump) and Step 2 (a materially new escalation step beyond the already-covered 'shipping rebounds' story -- actual ceasefire violation with a drone strike), but the geopolitics->oil->BTC channel is indirect: the Strait is not closed, the hit ship continued on its way, and BTC pre_trend is flat with btc_regime EXTENDED (broad risk-off already priced). Per the geopolitics rule, without a confirmed strait closure/cutoff or observed BTC transmission, this is LOW not HIGH. Item 2 is Kashkari's forward expectation of a rate hike -- posture/opinion about a future action, not an executed fact, and rate-hike fears are already substantially priced given 4%+ inflation already covered.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8533,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 44.18,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0072,
+        "oi_change_pct" : 0.424,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60346.38,
+        "change_24h_pct" : 1.833,
+        "range_pos_24h" : 0.8293
+      },
+      "articles" : [ {
+        "id" : 4969,
+        "title" : "The Islamic Republic of Iran shot at least four One Way Attack Drones at Ships transversing the Strait of Hormuz. One of the Drones solidly hit the upper deck of a large and very expensive Cargo Carrying Ship. Damage was done, but the Ship was able to proceed on its way. We knocked down three other Drones. Obviously, this is a foolish violation of our Ceasefire Agreement. President DONALD J. TRUMP",
+        "direction" : "bearish",
+        "reasoning" : "Fact (executed drone strike, ceasefire violation), new escalation step beyond the covered Hormuz recovery story, but geopolitics->oil->BTC channel is indirect -- no confirmed strait closure, ship proceeded, BTC flat and regime EXTENDED; rates LOW.",
+        "scenario" : "fresh_bearish",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T15:51:03Z",
+        "url" : "https://www.trumpstruth.org/statuses/39545",
+        "price_at_publish" : 60161.99
+      }, {
+        "id" : 5232,
+        "title" : "Minneapolis Fed President Neel Kashkari says he expects a rate hike this year",
+        "direction" : "neutral",
+        "reasoning" : "Forward expectation from a Fed official, not an executed rate decision; fails Step 1 as posture, and rate-hike fears are already priced given the known 4%+ inflation backdrop.",
+        "scenario" : "noise",
+        "pre_trend" : "rising",
+        "published_at" : "2026-06-26T15:50:20Z",
+        "url" : "https://www.cnbc.com/2026/06/26/minneapolis-fed-president-neel-kashkari-says-he-expects-a-rate-hike-this-year.html",
+        "price_at_publish" : 60406.5
+      } ]
+    },
+    "resonant_article_ids" : [ 4969, 5232 ]
+  },
+  "16:40" : {
+    "analyzed_at" : "2026-06-27T16:51:02Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4975, 4985, 5231 ],
+    "screener" : [ {
+      "article_id" : 4975,
+      "score" : 0,
+      "reason" : "ETF outflow recap; already covered $692M shed story"
+    }, {
+      "article_id" : 4985,
+      "score" : 1,
+      "reason" : "Polymarket investigation; minor regulatory action, indirect BTC channel"
+    }, {
+      "article_id" : 5231,
+      "score" : 0,
+      "reason" : "Duplicate of already-covered Trump tariff threat on DST"
+    } ],
+    "prediction_record" : null
+  },
+  "17:40" : {
+    "analyzed_at" : "2026-06-27T18:00:15Z",
+    "model" : "claude-sonnet-4-6",
+    "prompt_version" : "45298258bac1",
+    "article_ids" : [ 5256 ],
+    "screener" : [ {
+      "article_id" : 5256,
+      "score" : 2,
+      "reason" : "Regulatory framework change affecting crypto derivatives margin rules; material but not immediate shock."
+    } ],
+    "prediction_record" : {
+      "btc_at_prediction" : 60090.0,
+      "article_count" : 1,
+      "resonant_count" : 1,
+      "claude_available" : true,
+      "direction" : "neutral",
+      "impact_tier" : "noise",
+      "macro_regime" : "n/a",
+      "key_events" : [ ],
+      "reasoning" : "Fact (agencies seeking public input), but fails Step 2: a request for public comment is a preliminary regulatory process step, not an executed rule change, and is widely expected as crypto derivatives expand. No forced flow or structural channel -- this is a slow-moving regulatory process with no immediate impact on BTC.",
+      "options_signal" : {
+        "positioning" : "neutral",
+        "iv_elevated" : false,
+        "oi_surge" : false,
+        "signal_strength" : "none",
+        "near_pc_ratio" : 0.8576,
+        "dvol_trend" : "flat",
+        "near_atm_iv" : 44.67,
+        "priced_in" : "complacent"
+      },
+      "funding_signal" : {
+        "positioning" : "neutral",
+        "funding_rate_pct" : 0.0083,
+        "oi_change_pct" : 0.032,
+        "oi_trend" : "flat",
+        "setup" : "neutral"
+      },
+      "price_context" : {
+        "btc_price" : 60016.34,
+        "change_24h_pct" : 0.589,
+        "range_pos_24h" : 0.6931
+      },
+      "articles" : [ {
+        "id" : 5256,
+        "title" : "SEC, CFTC seek input on unified portfolio margin rules across securities and derivatives",
+        "direction" : "neutral",
+        "reasoning" : "A public comment solicitation is posture/process, not an executed rule -- no immediate crypto-structural channel and no new forced flow.",
+        "scenario" : "noise",
+        "pre_trend" : "flat",
+        "published_at" : "2026-06-26T17:43:33Z",
+        "url" : "https://cointelegraph.com/news/sec-cftc-portfolio-margin-rules",
+        "price_at_publish" : 60090.0
+      } ]
+    },
+    "resonant_article_ids" : [ 5256 ]
+  },
+  "17:00" : {
+    "analyzed_at" : "2026-06-27T18:00:22Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5257 ],
+    "screener" : [ {
+      "article_id" : 5257,
+      "score" : 0,
+      "reason" : "Price prediction/technical analysis; no new catalyst event."
+    } ],
+    "prediction_record" : null
+  },
+  "22:10" : {
+    "analyzed_at" : "2026-06-27T22:40:04Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5335 ],
+    "screener" : [ {
+      "article_id" : 5335,
+      "score" : 0,
+      "reason" : "Price recap; whale movement is routine market activity, not catalyst."
+    } ],
+    "prediction_record" : null
+  }
+}

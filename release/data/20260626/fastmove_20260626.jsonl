@@ -1,0 +1,6 @@
+{"ts":"2026-06-26T02:13:33Z","interval_key":"02:10","direction":"bearish","conviction":"reduced","magnitude_pct":-1.0892,"r2":0.5713,"span_min":15,"setup":"neutral","price":58784.19}
+{"ts":"2026-06-26T03:39:07Z","interval_key":"03:30","direction":"bullish","conviction":"skip","magnitude_pct":1.022,"r2":0.8255,"span_min":15,"setup":"neutral","price":59439.34}
+{"ts":"2026-06-26T12:40:31Z","interval_key":"12:40","direction":"bearish","conviction":"reduced","magnitude_pct":-0.8751,"r2":0.9516,"span_min":5,"setup":"neutral","price":59145.84}
+{"ts":"2026-06-26T13:19:33Z","interval_key":"13:10","direction":"bearish","conviction":"reduced","magnitude_pct":-0.8451,"r2":0.862,"span_min":5,"setup":"neutral","price":58644.19}
+{"ts":"2026-06-26T13:47:10Z","interval_key":"13:40","direction":"bullish","conviction":"skip","magnitude_pct":1.0148,"r2":0.885,"span_min":15,"setup":"exhausting","price":59499.99}
+{"ts":"2026-06-26T13:59:41Z","interval_key":"13:50","direction":"bullish","conviction":"skip","magnitude_pct":1.0195,"r2":0.958,"span_min":15,"setup":"exhausting","price":60203.52}

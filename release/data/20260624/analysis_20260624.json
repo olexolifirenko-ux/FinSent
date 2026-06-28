@@ -2737,5 +2737,68 @@
       "reason" : "Price recap; tech pullback already covered as context"
     } ],
     "prediction_record" : null
+  },
+  "22:00" : {
+    "analyzed_at" : "2026-06-25T22:10:06Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4886, 4890 ],
+    "screener" : [ {
+      "article_id" : 4886,
+      "score" : 0,
+      "reason" : "Price recap of altcoin; no new catalyst."
+    }, {
+      "article_id" : 4890,
+      "score" : 0,
+      "reason" : "Routine market update; PCE timing is known."
+    } ],
+    "prediction_record" : null
+  },
+  "21:30" : {
+    "analyzed_at" : "2026-06-25T22:10:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4887 ],
+    "screener" : [ {
+      "article_id" : 4887,
+      "score" : 1,
+      "reason" : "State tax on prediction markets; indirect regulatory channel to BTC."
+    } ],
+    "prediction_record" : null
+  },
+  "21:00" : {
+    "analyzed_at" : "2026-06-25T22:10:09Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4888, 4889 ],
+    "screener" : [ {
+      "article_id" : 4888,
+      "score" : 0,
+      "reason" : "FTX legal follow-up; no new catalyst for BTC."
+    }, {
+      "article_id" : 4889,
+      "score" : 0,
+      "reason" : "Meme stock retail trading; no BTC impact channel."
+    } ],
+    "prediction_record" : null
+  },
+  "22:20" : {
+    "analyzed_at" : "2026-06-25T23:20:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4896 ],
+    "screener" : [ {
+      "article_id" : 4896,
+      "score" : 0,
+      "reason" : "Price prediction opinion; no new catalyst or event."
+    } ],
+    "prediction_record" : null
+  },
+  "23:20" : {
+    "analyzed_at" : "2026-06-26T00:30:05Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 4897 ],
+    "screener" : [ {
+      "article_id" : 4897,
+      "score" : 1,
+      "reason" : "Retail flow shift to AI; indirect demand pressure, not new catalyst."
+    } ],
+    "prediction_record" : null
   }
 }

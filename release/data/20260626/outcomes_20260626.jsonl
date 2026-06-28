@@ -1,0 +1,5 @@
+{"window":"2026-06-26T05:00:00Z","day":"20260626","key":"05:00","source":"news","direction":"bearish","impact_tier":"high","btc_at_prediction":59932.65,"outcome_1h_pct":-0.1015,"direction_correct":true,"outcome_24h_pct":null}
+{"window":"2026-06-26T06:10:00Z","day":"20260626","key":"06:10","source":"news","direction":"neutral","impact_tier":"noise","btc_at_prediction":59816.76,"outcome_1h_pct":1.0319,"direction_correct":false,"outcome_24h_pct":null}
+{"window":"2026-06-26T08:00:00Z","day":"20260626","key":"08:00","source":"news","direction":"neutral","impact_tier":"noise","btc_at_prediction":60576.95,"outcome_1h_pct":-0.6421,"direction_correct":false,"outcome_24h_pct":null}
+{"window":"2026-06-26T08:30:00Z","day":"20260626","key":"08:30","source":"news","direction":"bullish","impact_tier":"low","btc_at_prediction":60308.0,"outcome_1h_pct":-0.2952,"direction_correct":false,"outcome_24h_pct":null}
+{"window":"2026-06-26T10:10:00Z","day":"20260626","key":"10:10","source":"news","direction":"bearish","impact_tier":"high","btc_at_prediction":59746.67,"outcome_1h_pct":-0.4621,"direction_correct":true,"outcome_24h_pct":null}

@@ -84,7 +84,7 @@ public final class FSTrader implements IUninitializer
         // The live ticker price is always "now", so the PriceSource timestamp is ignored.
         this(buildBook(config), brokerFrom(config, whitebit), priceSourceFrom(config, whitebit, collector),
                 paramsFrom(config), fastParamsFrom(config), config.fastMoveTrade(), config.fastMoveReversalExit(),
-                Conviction.of(config.fastMoveMinConviction(), Conviction.FULL),
+                config.newsReversalExit(), Conviction.of(config.fastMoveMinConviction(), Conviction.FULL),
                 config.fastMoveReentryCooldownInMin() * 60_000L, startPaused);
     }
 
@@ -94,13 +94,17 @@ public final class FSTrader implements IUninitializer
      */
     FSTrader(TradeBook book, IBroker broker, PriceSource priceSource, Params params, boolean startPaused)
     {
-        this(book, broker, priceSource, params, params, false, true, Conviction.FULL, 0L, startPaused);
+        this(book, broker, priceSource, params, params, false, true, false, Conviction.FULL, 0L, startPaused);
     }
 
-    /** Canonical injecting constructor: both lanes' params and the momentum trade / reversal / min-conviction / re-entry cooldown. */
+    /**
+     * Canonical injecting constructor: both lanes' params, the momentum trade flag, each lane's reversal-exit
+     * arming (fast = an opposite fire closes a momentum position; news = an opposite HIGH call closes a news
+     * position), the momentum min-conviction, and the momentum re-entry cooldown.
+     */
     FSTrader(TradeBook book, IBroker broker, PriceSource priceSource, Params params, Params fastParams,
-            boolean fastTrade, boolean reversalExit, Conviction fastMinConviction, long fastReentryCooldownMillis,
-            boolean startPaused)
+            boolean fastTrade, boolean fastReversalExit, boolean newsReversalExit, Conviction fastMinConviction,
+            long fastReentryCooldownMillis, boolean startPaused)
     {
         book_ = book;
         broker_ = broker;
@@ -109,7 +113,7 @@ public final class FSTrader implements IUninitializer
         fastParams_ = fastParams;
         fastTrade_ = fastTrade;
         fastReentryCooldownMillis_ = fastReentryCooldownMillis;
-        policy_ = new EntryPolicy(params.entryImpactTier(), fastMinConviction, reversalExit);
+        policy_ = new EntryPolicy(params.entryImpactTier(), fastMinConviction, fastReversalExit, newsReversalExit);
         paused_ = new AtomicBoolean(startPaused);
         position_ = book.openPosition(); // adopt a recovered open position, if any
         thread_ = new Thread(this::loop, "FS-Trader");
@@ -128,7 +132,7 @@ public final class FSTrader implements IUninitializer
     /** Select the live WhiteBIT broker only when configured for it and keyed; otherwise the safe paper broker. */
     private static IBroker brokerFrom(Config config, WhiteBitClient whitebit)
     {
-        IBroker broker = new PaperBroker();
+        IBroker broker = new PaperBroker(config.tradeSlippageInPct());
         if (liveWhiteBit(config, whitebit))
         {
             broker = new WhiteBitBroker(whitebit);
@@ -170,7 +174,8 @@ public final class FSTrader implements IUninitializer
         return new Params(config.tradeEntryImpactTier(), config.tradeNotionalInUsd(), config.tradeLeverage(),
                 config.tradeStopLossInPct(), config.tradeTrailInPct(), config.tradeMaxHoldInHours() * 3_600_000L,
                 config.tradePricePollInSec() * 1000L, config.tradeProfitGraceInMin() * 60_000L,
-                config.tradeEntryMaxNewsAgeInMin() * 60_000L, config.tradeEntryMaxPriceDivergencePct());
+                config.tradeEntryMaxNewsAgeInMin() * 60_000L, config.tradeEntryMaxPriceDivergencePct(),
+                config.tradeFeeRatePct());
     }
 
     /**
@@ -186,7 +191,8 @@ public final class FSTrader implements IUninitializer
         return new Params("", config.fastMoveNotionalInUsd(), config.fastMoveLeverage(),
                 config.fastMoveStopLossInPct(), config.tradeTrailInPct(),
                 config.tradeMaxHoldInHours() * 3_600_000L, config.tradePricePollInSec() * 1000L,
-                config.tradeProfitGraceInMin() * 60_000L, 0L, config.tradeEntryMaxPriceDivergencePct());
+                config.tradeProfitGraceInMin() * 60_000L, 0L, config.tradeEntryMaxPriceDivergencePct(),
+                config.tradeFeeRatePct());
     }
 
     /**
@@ -315,11 +321,27 @@ public final class FSTrader implements IUninitializer
 
     // == Strategy (the deterministic seams) ====================================
 
-    /** Act on one news signal: open a position when it qualifies and we are flat. Worker-thread / test entry point. */
+    /**
+     * Act on one news signal. Worker-thread / test entry point. Flat: open when the call qualifies (tier +
+     * direction) and the catalyst is fresh. Holding a NEWS position: a fresh, opposite, equally-qualifying
+     * call closes it (the reversal exit) when armed -- the thesis we opened on has been contradicted.
+     */
     void onSignal(AnalysisReady signal, Instant now)
     {
+        if (isFlat())
+        {
+            maybeOpenNews(signal, now);
+        }
+        else
+        {
+            maybeNewsReversalExit(signal, now);
+        }
+    }
+
+    private void maybeOpenNews(AnalysisReady signal, Instant now)
+    {
         // Merit (tier/direction) is the policy's call; freshness is an execution-time guard the trader owns.
-        if (isFlat() && policy_.qualifiesNews(signal) && fresh(signal, now))
+        if (policy_.qualifiesNews(signal) && fresh(signal, now))
         {
             Double price = priceSource_.priceAt(now);
             if (price == null)
@@ -332,6 +354,31 @@ public final class FSTrader implements IUninitializer
             {
                 open(signal.day(), signal.intervalKey(), signal.source(), signal.direction(), price, params_, now,
                         signal.day() + " " + signal.intervalKey() + " " + signal.direction() + "/" + signal.impactTier());
+            }
+        }
+    }
+
+    /**
+     * News reversal exit: a fresh, opposite-direction qualifying call closes an open NEWS position at market
+     * -- the catalyst that opened it has been contradicted by an equally-strong opposite one, so bank it
+     * rather than hold against the new information. Scoped to news positions (a momentum position has its own
+     * reversal); freshness-gated like an entry so a stale/backfilled opposite article cannot shake the
+     * position out. Closes only (no flip). Off when {@code reversalExit} is false on the news lane.
+     */
+    private void maybeNewsReversalExit(AnalysisReady signal, Instant now)
+    {
+        Position open = current();
+        if (policy_.isNewsReversalExit(signal, open) && fresh(signal, now))
+        {
+            Double price = priceSource_.priceAt(now);
+            if (price == null)
+            {
+                GlobalSystem.warning().writes(NAME, "No price for news reversal exit " + signal.day() + " "
+                        + signal.intervalKey());
+            }
+            else
+            {
+                reversalClose(open, price, now, "news_reversal");
             }
         }
     }
@@ -421,16 +468,16 @@ public final class FSTrader implements IUninitializer
             }
             else
             {
-                reversalClose(open, price, now);
+                reversalClose(open, price, now, "fastmove_reversal");
             }
         }
     }
 
-    private synchronized void reversalClose(Position expected, double price, Instant now)
+    private synchronized void reversalClose(Position expected, double price, Instant now, String reason)
     {
         if (position_ == expected) // still the same live position (not closed on another thread meanwhile)
         {
-            close(price, now, "fastmove_reversal");
+            close(price, now, reason);
         }
     }
 
@@ -519,8 +566,10 @@ public final class FSTrader implements IUninitializer
         try
         {
             Fill fill = broker_.marketOrder(order, qty, price);
-            position_ = Position.open(day, key, source, side, fill.price(), params.notionalInUsd(),
-                    params.leverage(), now, params.stopLossInPct());
+            // Book the venue's ACTUAL filled price and quantity -- not the requested qty -- so the position
+            // we manage and later close matches what is really held (the venue may round/partially fill).
+            position_ = Position.open(day, key, source, side, fill.price(), fill.qty(),
+                    params.leverage(), now, params.stopLossInPct(), params.feeRatePct());
             book_.recordPosition(position_);
             GlobalSystem.info().writes(NAME, "OPEN " + side + " @ " + Num.round(fill.price(), 2) + " stop "
                     + Num.round(position_.currentStop(), 2) + " (" + tag + ")");
@@ -678,9 +727,8 @@ public final class FSTrader implements IUninitializer
     private Position adopt(VenueState venue, Instant now)
     {
         String day = Times.dayOf(Times.formatUtcIso(now));
-        double notionalInUsd = venue.qty() * venue.entryPrice() / params_.leverage();
         Position adopted = Position.open(day, "reconciled", "reconcile", venue.side(), venue.entryPrice(),
-                notionalInUsd, params_.leverage(), now, params_.stopLossInPct());
+                venue.qty(), params_.leverage(), now, params_.stopLossInPct(), params_.feeRatePct());
         book_.recordPosition(adopted);
         return adopted;
     }
@@ -798,7 +846,7 @@ public final class FSTrader implements IUninitializer
     /** The numeric strategy parameters, built from {@link Config} in production and directly in tests. */
     public record Params(String entryImpactTier, double notionalInUsd, double leverage, double stopLossInPct,
             double trailInPct, long maxHoldMillis, long pricePollMillis, long profitGraceMillis,
-            long entryMaxNewsAgeMillis, double entryMaxPriceDivergencePct)
+            long entryMaxNewsAgeMillis, double entryMaxPriceDivergencePct, double feeRatePct)
     {
     }
 }

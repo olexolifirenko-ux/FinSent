@@ -39,11 +39,12 @@ public class FSTrader_utest
     private static final Instant NOW = Instant.parse("2026-06-04T08:00:00Z");
     private static final long FRESH_5MIN = 300_000L; // entryMaxNewsAgeMillis for the tests
     private static final double DIV_1PCT = 1.0;       // entryMaxPriceDivergencePct for the tests
+    private static final double NO_FEE = 0.0;         // feeRatePct: costless fills, so the P&L assertions stay gross
     private static final FSTrader.Params PARAMS =
-            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L, FRESH_5MIN, DIV_1PCT); // time stop off
+            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L, FRESH_5MIN, DIV_1PCT, NO_FEE); // time stop off
     // Same, but with a 10-minute profit-grace time stop enabled and a long max-hold (so only the time stop fires).
     private static final FSTrader.Params GRACE_PARAMS =
-            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 86_400_000L, 20_000L, 600_000L, FRESH_5MIN, DIV_1PCT);
+            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 86_400_000L, 20_000L, 600_000L, FRESH_5MIN, DIV_1PCT, NO_FEE);
 
     private Path dir_;
     private TradeBook book_;
@@ -305,6 +306,44 @@ public class FSTrader_utest
     }
 
     @Test
+    public void newsReversalClosesANewsPositionOnAFreshOppositeHigh()
+    {
+        FSTrader trader = newsReversalTrader();
+        price_ = 100.0;
+        trader.onSignal(signal("bearish", "high"), NOW);   // opens a NEWS short
+        assertTrue(trader.describe(NOW).contains("Open SHORT"));
+        price_ = 99.0;
+        trader.onSignal(signal("bullish", "high"), NOW);   // fresh opposite HIGH -> reversal exit (closes, no flip)
+
+        assertTrue("closed flat, not flipped long", trader.describe(NOW).contains("Flat"));
+        ArrayNode closed = closed();
+        assertEquals(1, closed.size());
+        assertEquals("news_reversal", closed.get(0).path("close_reason").asText());
+    }
+
+    @Test
+    public void newsReversalHoldsOnSameSideOrStaleOpposite()
+    {
+        FSTrader trader = newsReversalTrader();
+        price_ = 100.0;
+        trader.onSignal(signal("bearish", "high"), NOW);                        // NEWS short
+        trader.onSignal(signal("bearish", "high"), NOW);                        // same side -> not a reversal
+        trader.onSignal(signal("bullish", "high", NOW.minusSeconds(600)), NOW); // opposite but stale -> not a reversal
+        assertTrue(trader.describe(NOW).contains("Open SHORT"));
+        assertEquals(0, closed().size());
+    }
+
+    @Test
+    public void newsReversalDisabledHoldsThroughAnOppositeHigh()
+    {
+        price_ = 100.0;
+        trader_.onSignal(signal("bearish", "high"), NOW);  // default trader: reversalExit off
+        trader_.onSignal(signal("bullish", "high"), NOW);  // opposite HIGH -> held (no news reversal)
+        assertTrue(trader_.describe(NOW).contains("Open SHORT"));
+        assertEquals(0, closed().size());
+    }
+
+    @Test
     public void reducedConvictionDoesNotOpenUnderTheFullGate()
     {
         FSTrader trader = momentumTrader(); // minConviction = full (default)
@@ -317,7 +356,7 @@ public class FSTrader_utest
     public void reducedConvictionOpensWhenTheGateIsLowered()
     {
         FSTrader trader = new FSTrader(book_, new PaperBroker(), target -> price_, PARAMS, PARAMS, true, true,
-                Conviction.REDUCED, 0L, false);
+                false, Conviction.REDUCED, 0L, false);
         price_ = 100.0;
         trader.onFastSignal(fast("bearish", Conviction.REDUCED), NOW);
         assertTrue(trader.describe(NOW).contains("Open SHORT"));
@@ -392,7 +431,14 @@ public class FSTrader_utest
     private FSTrader momentumTrader(long reentryCooldownMillis)
     {
         return new FSTrader(book_, new PaperBroker(), target -> price_, PARAMS, PARAMS, true, true,
-                Conviction.FULL, reentryCooldownMillis, false);
+                false, Conviction.FULL, reentryCooldownMillis, false);
+    }
+
+    /** A news-lane trader with the news reversal exit armed (momentum lane off). */
+    private FSTrader newsReversalTrader()
+    {
+        return new FSTrader(book_, new PaperBroker(), target -> price_, PARAMS, PARAMS, false, false, true,
+                Conviction.FULL, 0L, false);
     }
 
     private static FastMoveReady fast(String direction, Conviction conviction)

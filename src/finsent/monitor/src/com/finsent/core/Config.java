@@ -428,6 +428,12 @@ public final class Config
         return doubleAttr(newsLaneNode_, "stopLossInPct", 1.0);
     }
 
+    /** Whether a fresh opposite-direction qualifying news call closes an open news position (reversal exit). */
+    public boolean newsReversalExit()
+    {
+        return boolAttr(newsLaneNode_, "reversalExit", true);
+    }
+
     /** Trailing-stop distance behind the best price, in percent. */
     public double tradeTrailInPct()
     {
@@ -453,6 +459,26 @@ public final class Config
     public int tradePricePollInSec()
     {
         return intAttr(traderNode_, "pricePollInSec", 20);
+    }
+
+    /**
+     * Taker fee charged per side as a percent of traded notional (exposure), applied on BOTH the entry and
+     * the exit; reported P&amp;L is net of it. WhiteBIT BTC_USDT futures taker is ~0.035% &mdash; set it to
+     * your actual fee tier. Shared by both lanes; {@code 0} models a costless fill.
+     */
+    public double tradeFeeRatePct()
+    {
+        return doubleAttr(traderNode_, "feeRatePct", 0.035);
+    }
+
+    /**
+     * Per-side slippage the <b>paper</b> broker applies adversely to each market fill (percent of price): a
+     * BUY fills this much above, a SELL below, modeling the spread/impact a market order crosses. Live fills
+     * already carry real slippage, so this only affects paper/backtest realism. {@code 0} fills at the price.
+     */
+    public double tradeSlippageInPct()
+    {
+        return doubleAttr(traderNode_, "slippageInPct", 0.02);
     }
 
     /** WhiteBIT private-API public key (read-only connectivity check for now); "" disables it. */

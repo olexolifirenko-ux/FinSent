@@ -32,11 +32,17 @@ import com.finsent.trade.broker.PaperBroker;
  */
 public final class FastMoveBacktest
 {
-    // Momentum-lane params mirroring <FastMoveLane> + <FSTrader> (size/stop/trail/grace/max-hold/divergence).
+    // Cost model mirroring the <FSTrader feeRatePct/slippageInPct> defaults so the backtest P&L is NET of
+    // the costs the live trader actually pays: a taker fee per side (charged on both entry and exit) and a
+    // per-side slippage on each market fill. Tune to your venue fee tier / observed fills.
+    private static final double TAKER_FEE_PCT = 0.035;
+    private static final double SLIPPAGE_PCT = 0.02;
+
+    // Momentum-lane params mirroring <FastMoveLane> + <FSTrader> (size/stop/trail/grace/max-hold/divergence/fee).
     // pricePoll is set huge so the trader's worker thread never fires manage() under us -- the backtest
     // drives manage() itself, minute by minute, off the replayed tape.
     private static final FSTrader.Params FAST_PARAMS = new FSTrader.Params("", 150.0, 3.0, 1.0, 1.0,
-            24 * 3_600_000L, 3_600_000L, 30 * 60_000L, 0L, 1.0);
+            24 * 3_600_000L, 3_600_000L, 30 * 60_000L, 0L, 1.0, TAKER_FEE_PCT);
 
     private FastMoveBacktest()
     {
@@ -70,8 +76,8 @@ public final class FastMoveBacktest
         {
             TradeBook book = new TradeBook(tmp);
             ReplayPriceSource price = new ReplayPriceSource(tape);
-            FSTrader trader = new FSTrader(book, new PaperBroker(), price, FAST_PARAMS, FAST_PARAMS, true, true,
-                    Conviction.FULL, cooldownMin * 60_000L, false);
+            FSTrader trader = new FSTrader(book, new PaperBroker(SLIPPAGE_PCT), price, FAST_PARAMS, FAST_PARAMS,
+                    true, true, false, Conviction.FULL, cooldownMin * 60_000L, false);
             int next = 0;
             for (Map.Entry<Long, Double> bar : tape.entrySet())
             {
@@ -96,19 +102,24 @@ public final class FastMoveBacktest
     private static void report(String day, TradeBook book, int cooldownMin)
     {
         ArrayNode closed = book.closedForDay(day);
-        double total = 0.0;
+        double net = 0.0;
+        double gross = 0.0;
+        double fees = 0.0;
         for (JsonNode trade : closed)
         {
-            total += trade.path("pnl_usd").asDouble();
+            net += trade.path("pnl_usd").asDouble();
+            gross += trade.path("gross_pnl_usd").asDouble();
+            fees += trade.path("fee_usd").asDouble();
         }
-        System.out.printf("%n=== cooldown %dm: %d round trip(s), total %+.2f USD ===%n",
-                cooldownMin, closed.size(), total);
+        System.out.printf("%n=== cooldown %dm: %d round trip(s), net %+.2f USD (gross %+.2f, fees %.2f) ===%n",
+                cooldownMin, closed.size(), net, gross, fees);
         for (JsonNode trade : closed)
         {
-            System.out.printf("   %s %-5s %.2f -> %.2f (%s)  %+.2f USD%n",
+            System.out.printf("   %s %-5s %.2f -> %.2f (%s)  net %+.2f USD (fee %.2f)%n",
                     hhmm(trade.path("opened_at").asText()), trade.path("side").asText(),
                     trade.path("entry_price").asDouble(), trade.path("exit_price").asDouble(),
-                    trade.path("close_reason").asText(), trade.path("pnl_usd").asDouble());
+                    trade.path("close_reason").asText(), trade.path("pnl_usd").asDouble(),
+                    trade.path("fee_usd").asDouble());
         }
     }
 

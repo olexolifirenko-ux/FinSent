@@ -67,25 +67,28 @@
                 <Source name="rss"/>
             </Sources>
 
-            <!-- Crypto-native + primary monetary/regulatory sources. The lagged general-macro wires
-                 (Bloomberg Markets/Economics, CNBC) and low-crypto-yield geopolitical feeds (ArabNews,
-                 TimesOfIsrael) were pruned (monitor reframe); the fast squawk feeds replace them. -->
+            <!-- Primary monetary/regulatory sources. The crypto-native outlets (CoinDesk, TheBlock,
+                 BloombergCrypto) were promoted to UrgentSources for faster pickup; the lagged general-macro
+                 wires (Bloomberg Markets/Economics, CNBC) and low-crypto-yield geopolitical feeds (ArabNews,
+                 TimesOfIsrael) were pruned (monitor reframe). -->
             <RssFeeds>
-                <Feed name="CoinDesk"           url="https://www.coindesk.com/arc/outboundfeeds/rss/"/>
-                <Feed name="TheBlock"           url="https://www.theblock.co/rss.xml"/>
-                <Feed name="BloombergCrypto"    url="https://feeds.bloomberg.com/crypto/news.rss"/>
                 <Feed name="ECB_Press"          url="https://www.ecb.europa.eu/rss/press.html"/>
                 <Feed name="BoJ"                url="https://www.boj.or.jp/en/rss/whatsnew.xml"/>
                 <Feed name="BoE"                url="https://www.bankofengland.co.uk/rss/news"/>
                 <Feed name="SEC_Press"          url="https://www.sec.gov/news/pressreleases.rss"/>
             </RssFeeds>
 
-            <!-- Fast official/primary sources only. The geopolitical wires (AlJazeera, IranIntl) were
-                 pruned: a low-crypto-yield bearish firehose the analyser repeatedly mis-called. -->
+            <!-- Fast official/primary sources, plus the crypto-native outlets (CoinDesk, TheBlock,
+                 BloombergCrypto) promoted from the regular RSS lane for faster pickup. The geopolitical
+                 wires (AlJazeera, IranIntl) were pruned: a low-crypto-yield bearish firehose the analyser
+                 repeatedly mis-called. -->
             <UrgentSources>
                 <Source name="TruthSocial_Trump" url="https://www.trumpstruth.org/feed"/>
                 <Source name="FedReserve"        url="https://www.federalreserve.gov/feeds/press_all.xml"/>
                 <Source name="WhiteHouse"        url="https://www.whitehouse.gov/presidential-actions/feed/"/>
+                <Source name="CoinDesk"          url="https://www.coindesk.com/arc/outboundfeeds/rss/"/>
+                <Source name="TheBlock"          url="https://www.theblock.co/rss.xml"/>
+                <Source name="BloombergCrypto"   url="https://feeds.bloomberg.com/crypto/news.rss"/>
             </UrgentSources>
 
             <!-- Fast X (Twitter) amplifier accounts, fetched as one merged from:a OR from:b query on the
@@ -152,9 +155,10 @@
              rules + size + initial stop in a sub-element: <NewsLane> off the analyser's AnalysisReady signals,
              <FastMoveLane> off the mechanical FastMove fires. The SHARED execution + exit-management settings
              stay as <FSTrader> attributes - broker, price poll, the trailing-stop trail, the profit-grace
-             time stop, the max-hold backstop, the price-divergence entry rail, and the WhiteBIT keys. One net
-             position at a time across BOTH lanes. broker=paper simulates fills (no real orders); broker=whitebit
-             places live WhiteBIT futures orders. Starts paused unless -DrunTrader=true, toggled with `trade`. -->
+             time stop, the max-hold backstop, the price-divergence entry rail, the cost model (taker fee +
+             paper slippage), and the WhiteBIT keys. One net position at a time across BOTH lanes. broker=paper
+             simulates fills (no real orders); broker=whitebit places live WhiteBIT futures orders. Starts
+             paused unless -DrunTrader=true, toggled with `trade`. -->
         <FSTrader
             broker="whitebit"
             entryMaxPriceDivergencePct="1.0"
@@ -162,6 +166,8 @@
             profitGraceInMin="30"
             maxHoldInHours="24"
             pricePollInSec="20"
+            feeRatePct="0.035"
+            slippageInPct="0.02"
             whitebitApiKey="ENV:WHITEBIT_API_KEY"
             whitebitApiSecret="ENV:WHITEBIT_API_SECRET"
             whitebitBaseUrl="https://whitebit.com"
@@ -169,10 +175,13 @@
         >
             <!-- News lane: opens long on bullish / short on bearish at entryImpactTier or higher, and only on
                  a FRESH catalyst (the newest resonant article no older than entryMaxNewsAgeInMin, so it never
-                 opens on a stale re-analysis/backfill/late-article call; 0 disables that gate). Own size + stop. -->
+                 opens on a stale re-analysis/backfill/late-article call; 0 disables that gate). reversalExit=true
+                 closes an open news position when a fresh opposite-direction call of the same tier arrives - the
+                 catalyst it opened on has been contradicted (closes only, never flips). Own size + stop. -->
             <NewsLane
                 entryImpactTier="high"
                 entryMaxNewsAgeInMin="5"
+                reversalExit="true"
                 notionalInUsd="300.0"
                 leverage="5.0"
                 stopLossInPct="0.3"

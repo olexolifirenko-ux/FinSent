@@ -34,6 +34,7 @@ sourceSets {
             srcDirs = ['src', 'test']
             include '**/*_utest.java', '**/*_test.java'
             include '**/FastMoveBacktest.java' // offline backtest tool (a main, not a unit test)
+            include '**/WhiteBitStopProbe.java' // one-shot live venueStop probe (a main, not a unit test)
         }
         resources { srcDirs = [] }
     }

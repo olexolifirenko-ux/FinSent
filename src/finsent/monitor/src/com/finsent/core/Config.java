@@ -481,6 +481,37 @@ public final class Config
         return doubleAttr(traderNode_, "slippageInPct", 0.02);
     }
 
+    /**
+     * Daily realized-loss kill-switch in USD: once the day's net realized P&amp;L is at or below {@code -this}
+     * value, no NEW position opens for the rest of the UTC day (an open position is still managed to its exit).
+     * Account-level, shared by both lanes. {@code 0} disables it (the default &mdash; opt in deliberately).
+     */
+    public double tradeMaxDailyLossInUsd()
+    {
+        return doubleAttr(traderNode_, "maxDailyLossInUsd", 0.0);
+    }
+
+    /**
+     * Max number of trades (round trips) per UTC day before new opens are halted &mdash; the runaway/whipsaw
+     * circuit breaker. Counts closed trades for the day; an open position is still managed to its exit.
+     * Account-level, shared by both lanes. {@code 0} disables it.
+     */
+    public int tradeMaxTradesPerDay()
+    {
+        return intAttr(traderNode_, "maxTradesPerDay", 0);
+    }
+
+    /**
+     * Whether a live entry attaches a venue-resting protective stop (an OTO bracket at the initial stop) so the
+     * position keeps a stop at the venue even if this process dies, and a close first cancels it. {@code false}
+     * by default &mdash; it places live conditional orders whose reduce-only / auto-cancel-on-flat behavior
+     * must be validated against the venue first. Paper ignores it (no resting orders). Shared by both lanes.
+     */
+    public boolean tradeVenueStop()
+    {
+        return boolAttr(traderNode_, "venueStop", false);
+    }
+
     /** WhiteBIT private-API public key (read-only connectivity check for now); "" disables it. */
     public String whitebitApiKey()
     {

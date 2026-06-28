@@ -31,6 +31,39 @@ public class WhiteBitBroker_utest
     }
 
     @Test
+    public void formatsTheStopTriggerToTheMarketPricePrecision()
+    {
+        assertEquals("59000.00", WhiteBitBroker.formatPrice(59000.0));
+        assertEquals("60353.95", WhiteBitBroker.formatPrice(60353.945));
+    }
+
+    @Test
+    public void collectsStopOrderIdsFromActiveOrdersFilteringByType() throws JsonProcessingException
+    {
+        // Active orders is a bare array; cancel only the stop/trigger orders, leave a plain resting limit alone.
+        assertEquals(java.util.List.of("100", "200"), WhiteBitBroker.protectiveStopIds(Json.parse(
+                "[{\"orderId\":\"100\",\"type\":\"trigger margin market\"},"
+                + "{\"orderId\":\"999\",\"type\":\"limit\"},"
+                + "{\"orderId\":\"200\",\"type\":\"stop limit\"}]")));
+    }
+
+    @Test
+    public void collectsStopOrderIdsFromARecordsWrappedResponseToo() throws JsonProcessingException
+    {
+        assertEquals(java.util.List.of("4180284841"), WhiteBitBroker.protectiveStopIds(Json.parse(
+                "{\"records\":[{\"orderId\":\"4180284841\",\"type\":\"stop market\"}]}")));
+    }
+
+    @Test
+    public void noStopOrderIdsWhenThereAreNoActiveStops() throws JsonProcessingException
+    {
+        assertEquals(java.util.List.of(), WhiteBitBroker.protectiveStopIds(Json.parse("[]")));
+        assertEquals(java.util.List.of(), WhiteBitBroker.protectiveStopIds(Json.parse(
+                "[{\"orderId\":\"5\",\"type\":\"limit\"}]")));
+        assertEquals(java.util.List.of(), WhiteBitBroker.protectiveStopIds(Json.parse("{}")));
+    }
+
+    @Test
     public void parsesAFlatVenueFromAnEmptyArray() throws JsonProcessingException
     {
         assertEquals(VenueState.Kind.FLAT, WhiteBitBroker.parsePositions(Json.parse("[]")).kind());

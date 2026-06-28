@@ -120,6 +120,12 @@ public final class FSTrader implements IUninitializer
         thread_.setDaemon(true);
         GlobalSystem.info().writes(NAME, "Trader created (" + status() + ", broker=" + broker.name()
                 + (position_ == null ? ", flat" : ", adopted open " + position_.side()) + ").");
+        if (params.venueStop())
+        {
+            GlobalSystem.warning().writes(NAME, "venueStop=ON: live entries will attach a WhiteBIT protective-stop "
+                    + "bracket and closes will cancel venue stops -- verify the venue's reduce-only / auto-cancel-"
+                    + "on-flat behavior with a tiny live probe before trusting this on real size.");
+        }
     }
 
     private static TradeBook buildBook(Config config)
@@ -175,7 +181,8 @@ public final class FSTrader implements IUninitializer
                 config.tradeStopLossInPct(), config.tradeTrailInPct(), config.tradeMaxHoldInHours() * 3_600_000L,
                 config.tradePricePollInSec() * 1000L, config.tradeProfitGraceInMin() * 60_000L,
                 config.tradeEntryMaxNewsAgeInMin() * 60_000L, config.tradeEntryMaxPriceDivergencePct(),
-                config.tradeFeeRatePct());
+                config.tradeFeeRatePct(), config.tradeMaxDailyLossInUsd(), config.tradeMaxTradesPerDay(),
+                config.tradeVenueStop());
     }
 
     /**
@@ -192,7 +199,8 @@ public final class FSTrader implements IUninitializer
                 config.fastMoveStopLossInPct(), config.tradeTrailInPct(),
                 config.tradeMaxHoldInHours() * 3_600_000L, config.tradePricePollInSec() * 1000L,
                 config.tradeProfitGraceInMin() * 60_000L, 0L, config.tradeEntryMaxPriceDivergencePct(),
-                config.tradeFeeRatePct());
+                config.tradeFeeRatePct(), config.tradeMaxDailyLossInUsd(), config.tradeMaxTradesPerDay(),
+                config.tradeVenueStop());
     }
 
     /**
@@ -560,24 +568,32 @@ public final class FSTrader implements IUninitializer
     private synchronized void open(String day, String key, String source, String direction, double price,
             Params params, Instant now, String tag)
     {
-        Side side = "bullish".equals(direction) ? Side.LONG : Side.SHORT;
-        OrderSide order = side.isLong() ? OrderSide.BUY : OrderSide.SELL;
-        double qty = params.notionalInUsd() * params.leverage() / price;
-        try
+        if (!haltedForDay(params, now)) // account-level circuit breaker: gates opens only, never an exit
         {
-            Fill fill = broker_.marketOrder(order, qty, price);
-            // Book the venue's ACTUAL filled price and quantity -- not the requested qty -- so the position
-            // we manage and later close matches what is really held (the venue may round/partially fill).
-            position_ = Position.open(day, key, source, side, fill.price(), fill.qty(),
-                    params.leverage(), now, params.stopLossInPct(), params.feeRatePct());
-            book_.recordPosition(position_);
-            GlobalSystem.info().writes(NAME, "OPEN " + side + " @ " + Num.round(fill.price(), 2) + " stop "
-                    + Num.round(position_.currentStop(), 2) + " (" + tag + ")");
-        }
-        catch (BrokerException orderRejected)
-        {
-            // Entry rejected by the venue: stay flat (the signal is dropped, no phantom position booked).
-            GlobalSystem.error().writes(NAME, "OPEN " + side + " REJECTED -- staying flat: " + orderRejected.getMessage());
+            Side side = "bullish".equals(direction) ? Side.LONG : Side.SHORT;
+            OrderSide order = side.isLong() ? OrderSide.BUY : OrderSide.SELL;
+            double qty = params.notionalInUsd() * params.leverage() / price;
+            // When venueStop is on, attach a venue-resting protective stop at the INITIAL level in the same
+            // order, so the position keeps a stop at the venue even if this process dies (the app still trails
+            // tighter locally). 0 = no bracket (the off default, and always for paper).
+            double protectiveStop = params.venueStop()
+                    ? TrailingStop.initialStop(side, price, params.stopLossInPct()) : 0.0;
+            try
+            {
+                Fill fill = broker_.marketOrder(order, qty, price, protectiveStop);
+                // Book the venue's ACTUAL filled price and quantity -- not the requested qty -- so the position
+                // we manage and later close matches what is really held (the venue may round/partially fill).
+                position_ = Position.open(day, key, source, side, fill.price(), fill.qty(),
+                        params.leverage(), now, params.stopLossInPct(), params.feeRatePct());
+                book_.recordPosition(position_);
+                GlobalSystem.info().writes(NAME, "OPEN " + side + " @ " + Num.round(fill.price(), 2) + " stop "
+                        + Num.round(position_.currentStop(), 2) + " (" + tag + ")");
+            }
+            catch (BrokerException orderRejected)
+            {
+                // Entry rejected by the venue: stay flat (the signal is dropped, no phantom position booked).
+                GlobalSystem.error().writes(NAME, "OPEN " + side + " REJECTED -- staying flat: " + orderRejected.getMessage());
+            }
         }
     }
 
@@ -623,6 +639,7 @@ public final class FSTrader implements IUninitializer
     {
         Position open = position_;
         OrderSide order = open.side().isLong() ? OrderSide.SELL : OrderSide.BUY;
+        cancelVenueStops(); // pull the resting stop first, so the close can't leave a naked, flip-risk order
         boolean closed = false;
         try
         {
@@ -646,6 +663,30 @@ public final class FSTrader implements IUninitializer
                     + ") -- position STILL OPEN, will retry: " + orderRejected.getMessage());
         }
         return closed;
+    }
+
+    /**
+     * Cancel the venue-resting protective stop before a deliberate close (no-op unless {@code venueStop} is on
+     * and the broker has venue orders). A cancel failure is logged but does not block the close &mdash; holding
+     * unwanted risk is worse than a lingering stop, which the next reconcile cleans up. NOTE (probe-gated): if
+     * the venue stop already fired (position flat at venue) the subsequent close could open an opposite
+     * position; this is acceptable only once the venue's reduce-only/auto-cancel behavior is verified, which is
+     * why {@code venueStop} is off by default.
+     */
+    private void cancelVenueStops()
+    {
+        if (params_.venueStop())
+        {
+            try
+            {
+                broker_.cancelProtectiveStops();
+            }
+            catch (BrokerException cancelFailed)
+            {
+                GlobalSystem.warning().writes(NAME, "Could not cancel venue protective stop before close: "
+                        + cancelFailed.getMessage() + " -- closing anyway; reconcile will clear any orphan.");
+            }
+        }
     }
 
     // == Startup reconciliation (live broker) ==================================
@@ -843,10 +884,41 @@ public final class FSTrader implements IUninitializer
         return book_.closedForDay(Times.dayOf(Times.formatUtcIso(now))).size();
     }
 
-    /** The numeric strategy parameters, built from {@link Config} in production and directly in tests. */
+    /**
+     * Whether the day's realized results have tripped a risk limit, halting NEW opens for the rest of the UTC
+     * day: too many trades, or realized loss at/under the daily cap. The account-level circuit breaker shared
+     * by both lanes -- it gates {@link #open} only, so every exit path (trailing/time/max-hold stops, both
+     * reversals, manual flatten) is untouched and a live position is always still managed to its exit. The
+     * realized total is net of fees ({@code pnl_usd}); each limit is disabled at {@code <= 0}. Effectively
+     * latched for the day, since once tripped no further opens (and thus wins) can occur until the UTC rollover.
+     */
+    private boolean haltedForDay(Params params, Instant now)
+    {
+        int trades = closedToday(now);
+        double realized = realizedToday(now);
+        boolean tradesHit = params.maxTradesPerDay() > 0 && trades >= params.maxTradesPerDay();
+        boolean lossHit = params.maxDailyLossUsd() > 0 && realized <= -params.maxDailyLossUsd();
+        boolean halted = tradesHit || lossHit;
+        if (halted)
+        {
+            String why = tradesHit ? trades + " trade(s) >= max " + params.maxTradesPerDay()
+                    : "realized " + Num.round(realized, 2) + " USD <= -" + params.maxDailyLossUsd();
+            GlobalSystem.warning().writes(NAME, "Daily risk limit reached -- new opens halted (" + why
+                    + "); the open position, if any, is still managed to its exit.");
+        }
+        return halted;
+    }
+
+    /**
+     * The numeric strategy parameters, built from {@link Config} in production and directly in tests. The
+     * exit-management and risk knobs ({@code trailInPct}, {@code maxHoldMillis}, {@code profitGraceMillis},
+     * {@code entryMaxPriceDivergencePct}, {@code feeRatePct}, and the daily {@code maxDailyLossUsd} /
+     * {@code maxTradesPerDay} limits) are account-level and shared, so both lanes carry the same values.
+     */
     public record Params(String entryImpactTier, double notionalInUsd, double leverage, double stopLossInPct,
             double trailInPct, long maxHoldMillis, long pricePollMillis, long profitGraceMillis,
-            long entryMaxNewsAgeMillis, double entryMaxPriceDivergencePct, double feeRatePct)
+            long entryMaxNewsAgeMillis, double entryMaxPriceDivergencePct, double feeRatePct,
+            double maxDailyLossUsd, int maxTradesPerDay, boolean venueStop)
     {
     }
 }

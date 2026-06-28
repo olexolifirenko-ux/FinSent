@@ -10,12 +10,14 @@ import com.finsent.core.Times;
 
 /**
  * One open paper position and the running trailing-stop state the {@link FSTrader} manages for it.
- * Exposure is {@code notionalInUsd * leverage}; the BTC quantity is that exposure divided by the
- * entry price, so the P&amp;L on a price move is
- * {@code side * (price-entry)/entry * notionalInUsd * leverage}. The best price and current stop
- * mutate as price is observed ({@link #updateTrail}); everything else is fixed at entry. Serializes
- * to/from the {@code ObjectNode} shapes the {@link TradeBook} persists (the open-position snapshot
- * and, on exit, a closed-trade record).
+ * The authoritative size is {@code qty} BTC &mdash; the broker's <b>actual</b> filled quantity, not a
+ * notional-derived estimate &mdash; so the P&amp;L on a move is {@code side * qty * (price-entry)},
+ * net of round-trip taker fees ({@link #feeUsd}). {@code notionalInUsd} is the margin actually
+ * committed ({@code qty * entry / leverage}), used as the denominator for the return-on-margin
+ * {@link #pnlPct}. The best price and current stop mutate as price is observed
+ * ({@link #updateTrail}); everything else is fixed at entry. Serializes to/from the
+ * {@code ObjectNode} shapes the {@link TradeBook} persists (the open-position snapshot and, on exit,
+ * a closed-trade record).
  */
 public final class Position
 {
@@ -29,12 +31,15 @@ public final class Position
     private final double leverage_;
     private final Instant openedAt_;
     private final double initialStop_;
+    // Taker fee per side, as a percent of traded notional (exposure). Charged on both the entry and the exit;
+    // pnlUsd is reported net of it. 0 for a costless (paper, zero-fee) fill.
+    private final double feeRatePct_;
     private double bestPrice_;
     private double currentStop_;
 
     private Position(String day, String intervalKey, String source, Side side, double entryPrice, double qty,
             double notionalInUsd, double leverage, Instant openedAt, double initialStop, double bestPrice,
-            double currentStop)
+            double currentStop, double feeRatePct)
     {
         day_ = day;
         intervalKey_ = intervalKey;
@@ -46,18 +51,24 @@ public final class Position
         leverage_ = leverage;
         openedAt_ = openedAt;
         initialStop_ = initialStop;
+        feeRatePct_ = feeRatePct;
         bestPrice_ = bestPrice;
         currentStop_ = currentStop;
     }
 
-    /** Open a fresh position at {@code entryPrice}, seeding the best price to entry and the stop to the initial. */
+    /**
+     * Open a fresh position from the broker's actual filled {@code qty} at {@code entryPrice} (the venue's
+     * fill, so the booked size matches what is really held), seeding the best price to entry and the stop to
+     * the initial. The committed margin is derived from the fill ({@code qty * entry / leverage}); fills are
+     * priced for {@code feeRatePct} taker fee per side.
+     */
     public static Position open(String day, String intervalKey, String source, Side side, double entryPrice,
-            double notionalInUsd, double leverage, Instant openedAt, double stopInPct)
+            double qty, double leverage, Instant openedAt, double stopInPct, double feeRatePct)
     {
-        double qty = notionalInUsd * leverage / entryPrice;
+        double notionalInUsd = leverage == 0.0 ? 0.0 : qty * entryPrice / leverage;
         double initialStop = TrailingStop.initialStop(side, entryPrice, stopInPct);
         return new Position(day, intervalKey, source, side, entryPrice, qty, notionalInUsd, leverage, openedAt,
-                initialStop, entryPrice, initialStop);
+                initialStop, entryPrice, initialStop, feeRatePct);
     }
 
     /** Advance the best price and ratchet the stop toward the trade for the newly observed {@code price}. */
@@ -67,16 +78,31 @@ public final class Position
         currentStop_ = TrailingStop.trail(side_, currentStop_, bestPrice_, trailInPct);
     }
 
-    /** Profit/loss in USD if the position were closed at {@code price}. */
+    /** Profit/loss in USD if the position were closed at {@code price}, net of round-trip taker fees. */
     public double pnlUsd(double price)
     {
-        return side_.sign() * (price - entryPrice_) / entryPrice_ * notionalInUsd_ * leverage_;
+        return grossPnlUsd(price) - feeUsd(price);
     }
 
-    /** Return on the committed notional in percent at {@code price} (leverage-scaled). */
+    /** Gross profit/loss in USD on the price move alone (before fees): {@code side * qty * (price-entry)}. */
+    public double grossPnlUsd(double price)
+    {
+        return side_.sign() * qty_ * (price - entryPrice_);
+    }
+
+    /**
+     * Round-trip taker fees in USD: {@code feeRatePct} of the traded notional on both the entry and the exit
+     * ({@code qty * (entry + exit)}). Zero when the fill is costless (paper, zero-fee).
+     */
+    public double feeUsd(double exitPrice)
+    {
+        return feeRatePct_ / 100.0 * qty_ * (entryPrice_ + exitPrice);
+    }
+
+    /** Return on the committed margin in percent at {@code price}, net of fees. */
     public double pnlPct(double price)
     {
-        return side_.sign() * (price - entryPrice_) / entryPrice_ * leverage_ * 100.0;
+        return notionalInUsd_ == 0.0 ? 0.0 : pnlUsd(price) / notionalInUsd_ * 100.0;
     }
 
     public Side side()
@@ -134,6 +160,7 @@ public final class Position
         node.put("leverage", leverage_);
         node.put("opened_at", Times.formatUtcIso(openedAt_));
         node.put("initial_stop", Num.round(initialStop_, 2));
+        node.put("fee_rate_pct", feeRatePct_);
         node.put("best_price", Num.round(bestPrice_, 2));
         node.put("current_stop", Num.round(currentStop_, 2));
         return node;
@@ -150,7 +177,8 @@ public final class Position
                     node.path("entry_price").asDouble(), node.path("qty").asDouble(),
                     node.path("notional_usd").asDouble(), node.path("leverage").asDouble(1.0),
                     Times.parseIso(node.path("opened_at").asText()), node.path("initial_stop").asDouble(),
-                    node.path("best_price").asDouble(), node.path("current_stop").asDouble());
+                    node.path("best_price").asDouble(), node.path("current_stop").asDouble(),
+                    node.path("fee_rate_pct").asDouble(0.0));
         }
         return position;
     }
@@ -163,6 +191,8 @@ public final class Position
         node.put("closed_at", Times.formatUtcIso(closedAt));
         node.put("close_reason", reason);
         node.put("held_seconds", Math.max(0L, closedAt.getEpochSecond() - openedAt_.getEpochSecond()));
+        node.put("gross_pnl_usd", Num.round(grossPnlUsd(exitPrice), 2));
+        node.put("fee_usd", Num.round(feeUsd(exitPrice), 2));
         node.put("pnl_usd", Num.round(pnlUsd(exitPrice), 2));
         node.put("pnl_pct", Num.round(pnlPct(exitPrice), 4));
         return node;

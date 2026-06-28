@@ -344,7 +344,7 @@ public final class TradeGroupCmdHandler extends CmdGroupHandler
             int code = 0;
             try
             {
-                JsonNode response = whitebit_.placeCollateralMarketOrder(side, amount, positionSide);
+                JsonNode response = whitebit_.placeCollateralMarketOrder(side, amount, positionSide, "");
                 UtilityFunctions.writeln(writer, "ORDER PLACED: status=" + response.path("status").asText("?")
                         + " filled=" + response.path("dealStock").asText("?") + " cost=" + response.path("dealMoney").asText("?")
                         + " id=" + response.path("orderId").asText("?"));

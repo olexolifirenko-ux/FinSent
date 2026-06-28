@@ -156,7 +156,10 @@
              <FastMoveLane> off the mechanical FastMove fires. The SHARED execution + exit-management settings
              stay as <FSTrader> attributes - broker, price poll, the trailing-stop trail, the profit-grace
              time stop, the max-hold backstop, the price-divergence entry rail, the cost model (taker fee +
-             paper slippage), and the WhiteBIT keys. One net position at a time across BOTH lanes. broker=paper
+             paper slippage), the daily kill-switch (maxDailyLossInUsd / maxTradesPerDay; 0 = off, halts new
+             opens only), the venue-resting stop (venueStop; false = off, a live OTO bracket at the initial
+             stop - verify the venue's reduce-only behavior before enabling), and the WhiteBIT keys. One net
+             position at a time across BOTH lanes. broker=paper
              simulates fills (no real orders); broker=whitebit places live WhiteBIT futures orders. Starts
              paused unless -DrunTrader=true, toggled with `trade`. -->
         <FSTrader
@@ -168,6 +171,9 @@
             pricePollInSec="20"
             feeRatePct="0.035"
             slippageInPct="0.02"
+            maxDailyLossInUsd="0.0"
+            maxTradesPerDay="0"
+            venueStop="true"
             whitebitApiKey="ENV:WHITEBIT_API_KEY"
             whitebitApiSecret="ENV:WHITEBIT_API_SECRET"
             whitebitBaseUrl="https://whitebit.com"

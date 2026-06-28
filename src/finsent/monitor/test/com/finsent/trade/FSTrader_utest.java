@@ -40,11 +40,16 @@ public class FSTrader_utest
     private static final long FRESH_5MIN = 300_000L; // entryMaxNewsAgeMillis for the tests
     private static final double DIV_1PCT = 1.0;       // entryMaxPriceDivergencePct for the tests
     private static final double NO_FEE = 0.0;         // feeRatePct: costless fills, so the P&L assertions stay gross
+    private static final double NO_LOSS_CAP = 0.0;    // maxDailyLossUsd: daily-loss kill-switch off
+    private static final int NO_TRADE_CAP = 0;        // maxTradesPerDay: max-trades kill-switch off
+    private static final boolean NO_VENUE_STOP = false; // venueStop: no venue-resting protective stop
     private static final FSTrader.Params PARAMS =
-            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L, FRESH_5MIN, DIV_1PCT, NO_FEE); // time stop off
+            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L, FRESH_5MIN, DIV_1PCT, NO_FEE,
+                    NO_LOSS_CAP, NO_TRADE_CAP, NO_VENUE_STOP); // time stop off, no daily limits
     // Same, but with a 10-minute profit-grace time stop enabled and a long max-hold (so only the time stop fires).
     private static final FSTrader.Params GRACE_PARAMS =
-            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 86_400_000L, 20_000L, 600_000L, FRESH_5MIN, DIV_1PCT, NO_FEE);
+            new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 86_400_000L, 20_000L, 600_000L, FRESH_5MIN, DIV_1PCT,
+                    NO_FEE, NO_LOSS_CAP, NO_TRADE_CAP, NO_VENUE_STOP);
 
     private Path dir_;
     private TradeBook book_;
@@ -188,6 +193,80 @@ public class FSTrader_utest
         ArrayNode closed = closed();
         assertEquals(1, closed.size());
         assertEquals("max_hold", closed.get(0).path("close_reason").asText());
+    }
+
+    @Test
+    public void dailyLossLimitHaltsNewOpens()
+    {
+        // $10 daily-loss kill-switch. One stop-out loses ~$22 (past the cap) -> further opens are halted.
+        FSTrader.Params capped = new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L,
+                FRESH_5MIN, DIV_1PCT, NO_FEE, 10.0, NO_TRADE_CAP, NO_VENUE_STOP);
+        FSTrader trader = new FSTrader(book_, new PaperBroker(), target -> price_, capped, false);
+
+        price_ = 100.0; trader.onSignal(signal("bullish", "high"), NOW); // open LONG, stop 99
+        price_ = 98.9;  trader.manage(NOW);                              // stop out for ~ -22 USD
+        assertEquals(1, closed().size());
+        assertTrue("first trade lost past the cap", closed().get(0).path("pnl_usd").asDouble() < -10.0);
+
+        price_ = 100.0; trader.onSignal(signal("bullish", "high"), NOW); // fresh qualifying call, but day is capped
+        assertTrue("halted after the daily loss cap", trader.describe(NOW).contains("Flat"));
+        assertEquals("no new position opened while halted", 1, closed().size());
+    }
+
+    @Test
+    public void maxTradesPerDayHaltsNewOpens()
+    {
+        // At most one round trip per day. The exit (flatten) is never gated; only the next OPEN is.
+        FSTrader.Params capped = new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L,
+                FRESH_5MIN, DIV_1PCT, NO_FEE, NO_LOSS_CAP, 1, NO_VENUE_STOP);
+        FSTrader trader = new FSTrader(book_, new PaperBroker(), target -> price_, capped, false);
+
+        price_ = 100.0; trader.onSignal(signal("bullish", "high"), NOW); // trade 1: open
+        price_ = 101.0; trader.flatten(NOW);                             // ...and close (the day's one trade)
+        assertEquals(1, closed().size());
+
+        price_ = 100.0; trader.onSignal(signal("bullish", "high"), NOW); // trade 2 blocked by the per-day cap
+        assertTrue("halted after max trades/day", trader.describe(NOW).contains("Flat"));
+        assertEquals("no second position opened", 1, closed().size());
+    }
+
+    @Test
+    public void venueStopAttachesTheInitialStopToTheEntry()
+    {
+        FakeBroker broker = new FakeBroker();
+        FSTrader trader = new FSTrader(book_, broker, target -> price_, venueStopParams(), false);
+        price_ = 100.0;
+        trader.onSignal(signal("bullish", "high"), NOW); // LONG entry at 100 with a 1% initial stop
+        assertEquals("entry carries the initial protective stop (1% below)", 99.0, broker.lastProtectiveStop_, 1e-9);
+    }
+
+    @Test
+    public void closeCancelsTheVenueStopFirst()
+    {
+        FakeBroker broker = new FakeBroker();
+        FSTrader trader = new FSTrader(book_, broker, target -> price_, venueStopParams(), false);
+        price_ = 100.0; trader.onSignal(signal("bullish", "high"), NOW);
+        price_ = 101.0; trader.flatten(NOW); // a deliberate close must pull the resting stop first
+        assertEquals(1, closed().size());
+        assertTrue("the venue stop is cancelled on close", broker.cancelStopCalls_ >= 1);
+    }
+
+    @Test
+    public void venueStopOffAttachesNoBracketAndCancelsNothing()
+    {
+        FakeBroker broker = new FakeBroker();
+        FSTrader trader = new FSTrader(book_, broker, target -> price_, PARAMS, false); // venueStop off
+        price_ = 100.0; trader.onSignal(signal("bullish", "high"), NOW);
+        assertEquals("no protective stop attached", 0.0, broker.lastProtectiveStop_, 1e-9);
+        price_ = 101.0; trader.flatten(NOW);
+        assertEquals("no venue cancel when off", 0, broker.cancelStopCalls_);
+    }
+
+    /** News params with the venue-resting stop armed (1% initial stop), for the venue-stop wiring tests. */
+    private static FSTrader.Params venueStopParams()
+    {
+        return new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L, FRESH_5MIN, DIV_1PCT,
+                NO_FEE, NO_LOSS_CAP, NO_TRADE_CAP, true);
     }
 
     @Test
@@ -467,16 +546,35 @@ public class FSTrader_utest
         return new AnalysisReady(DAY, KEY, "news", direction, tier, 100.0, catalystAt, NOW);
     }
 
-    /** A broker with a scriptable venue state for reconciliation tests; fills paper-style at the passed price. */
+    /**
+     * A broker with a scriptable venue state for reconciliation tests; fills paper-style at the passed price.
+     * Also spies the venue-resting-stop seam: it records the protective-stop price the trader attaches to an
+     * entry and counts {@code cancelProtectiveStops} calls.
+     */
     private static final class FakeBroker implements IBroker
     {
         private VenueState venue_ = VenueState.untracked();
         private boolean unreachable_;
+        private double lastProtectiveStop_ = -1.0; // the stop attached to the most recent entry (-1 = none seen)
+        private int cancelStopCalls_;
 
         @Override
         public Fill marketOrder(OrderSide side, double qty, double price)
         {
             return new Fill(price, qty);
+        }
+
+        @Override
+        public Fill marketOrder(OrderSide side, double qty, double price, double protectiveStopPrice)
+        {
+            lastProtectiveStop_ = protectiveStopPrice;
+            return marketOrder(side, qty, price);
+        }
+
+        @Override
+        public void cancelProtectiveStops()
+        {
+            cancelStopCalls_++;
         }
 
         @Override

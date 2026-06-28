@@ -33,6 +33,10 @@ public final class WhiteBitClient
     private static final String COLLATERAL_SUMMARY = "/api/v4/collateral-account/balance-summary";
     private static final String OPEN_POSITIONS = "/api/v4/collateral-account/positions/open";
     private static final String ORDER_COLLATERAL_MARKET = "/api/v4/order/collateral/market";
+    private static final String ORDER_CANCEL = "/api/v4/order/cancel";
+    private static final String ORDER_COLLATERAL_TRIGGER_MARKET = "/api/v4/order/collateral/trigger-market";
+    private static final String CONDITIONAL_ORDERS = "/api/v4/conditional-orders";
+    private static final String ACTIVE_ORDERS = "/api/v4/orders";
 
     private final String apiKey_;
     private final String apiSecret_;
@@ -135,27 +139,74 @@ public final class WhiteBitClient
     public WhiteBitSigner.Signed previewMarketOrder(String side, String amount, String positionSide)
     {
         String body = requestBody(ORDER_COLLATERAL_MARKET, nextNonce(),
-                marketOrderParams(market_, side, amount, positionSide));
+                marketOrderParams(market_, side, amount, positionSide, ""));
         return WhiteBitSigner.sign(body, apiSecret_);
     }
 
     /**
      * Place a collateral (futures) MARKET order &mdash; <b>this sends a real order</b>. {@code side} is
      * {@code "buy"}/{@code "sell"}, {@code amount} the base (BTC) quantity, {@code positionSide} empty for
-     * one-way mode or {@code "LONG"}/{@code "SHORT"} for hedge mode. Returns the exchange response (carries
-     * {@code status}, {@code dealStock} filled base, {@code dealMoney} filled quote, {@code orderId}).
+     * one-way mode or {@code "LONG"}/{@code "SHORT"} for hedge mode. When {@code stopLoss} is non-empty it is
+     * the trigger price of a position-linked protective stop attached to this entry as an OTO bracket (the
+     * venue-resting stop); empty places a plain order. Returns the exchange response (carries {@code status},
+     * {@code dealStock} filled base, {@code dealMoney} filled quote, {@code orderId}, and the {@code oto} object).
      */
-    public JsonNode placeCollateralMarketOrder(String side, String amount, String positionSide)
+    public JsonNode placeCollateralMarketOrder(String side, String amount, String positionSide, String stopLoss)
             throws IOException, InterruptedException
     {
-        return post(ORDER_COLLATERAL_MARKET, marketOrderParams(market_, side, amount, positionSide));
+        return post(ORDER_COLLATERAL_MARKET, marketOrderParams(market_, side, amount, positionSide, stopLoss));
+    }
+
+    /**
+     * Place a collateral (futures) standalone TRIGGER-MARKET stop &mdash; <b>a real order</b>. {@code side} is
+     * {@code "buy"}/{@code "sell"} (opposite the position to protect it), {@code amount} the base (BTC) size,
+     * {@code activationPrice} the trigger price, {@code positionSide} empty in one-way mode. Unlike the
+     * order-level OTO {@code stopLoss} param, this rests as a conditional order observable via
+     * {@link #conditionalOrders()} and cancelable via {@link #cancelOrder}.
+     */
+    public JsonNode placeCollateralTriggerMarket(String side, String amount, String activationPrice,
+            String positionSide) throws IOException, InterruptedException
+    {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("market", market_);
+        params.put("side", side);
+        params.put("amount", amount);
+        params.put("activation_price", activationPrice);
+        if (positionSide != null && !positionSide.isEmpty())
+        {
+            params.put("positionSide", positionSide);
+        }
+        return post(ORDER_COLLATERAL_TRIGGER_MARKET, params);
+    }
+
+    /** Cancel a single active order by {@code orderId} on the configured market (used to pull a resting stop). */
+    public JsonNode cancelOrder(String orderId) throws IOException, InterruptedException
+    {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("market", market_);
+        params.put("orderId", orderId);
+        return post(ORDER_CANCEL, params);
+    }
+
+    /** Active conditional (stop/OCO/OTO) orders for the configured market &mdash; where venue-resting stops live. */
+    public JsonNode conditionalOrders() throws IOException, InterruptedException
+    {
+        return post(CONDITIONAL_ORDERS, Map.of("market", market_));
+    }
+
+    /** Active (unfilled) orders for the configured market &mdash; the other place a resting stop could surface. */
+    public JsonNode activeOrders() throws IOException, InterruptedException
+    {
+        return post(ACTIVE_ORDERS, Map.of("market", market_));
     }
 
     /**
      * Ordered market-order params (insertion order kept so the signed body is deterministic/testable);
-     * {@code positionSide} is appended only when non-empty (hedge mode), omitted in one-way mode.
+     * {@code positionSide} (hedge mode) and {@code stopLoss} (OTO bracket trigger price) are each appended
+     * only when non-empty, so a one-way plain order serializes exactly as before.
      */
-    static Map<String, String> marketOrderParams(String market, String side, String amount, String positionSide)
+    static Map<String, String> marketOrderParams(String market, String side, String amount, String positionSide,
+            String stopLoss)
     {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("market", market);
@@ -164,6 +215,10 @@ public final class WhiteBitClient
         if (positionSide != null && !positionSide.isEmpty())
         {
             params.put("positionSide", positionSide);
+        }
+        if (stopLoss != null && !stopLoss.isEmpty())
+        {
+            params.put("stopLoss", stopLoss);
         }
         return params;
     }

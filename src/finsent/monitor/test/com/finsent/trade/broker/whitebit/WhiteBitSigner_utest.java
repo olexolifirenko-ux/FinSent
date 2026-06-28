@@ -44,7 +44,7 @@ public class WhiteBitSigner_utest
         assertEquals("{\"request\":\"/api/v4/order/collateral/market\",\"nonce\":1,"
                         + "\"market\":\"BTC_USDT\",\"side\":\"buy\",\"amount\":\"0.0001\"}",
                 WhiteBitClient.requestBody("/api/v4/order/collateral/market", 1L,
-                        WhiteBitClient.marketOrderParams("BTC_USDT", "buy", "0.0001", "")));
+                        WhiteBitClient.marketOrderParams("BTC_USDT", "buy", "0.0001", "", "")));
     }
 
     @Test
@@ -53,7 +53,16 @@ public class WhiteBitSigner_utest
         assertEquals("{\"request\":\"/api/v4/order/collateral/market\",\"nonce\":1,"
                         + "\"market\":\"BTC_USDT\",\"side\":\"sell\",\"amount\":\"0.0001\",\"positionSide\":\"SHORT\"}",
                 WhiteBitClient.requestBody("/api/v4/order/collateral/market", 1L,
-                        WhiteBitClient.marketOrderParams("BTC_USDT", "sell", "0.0001", "SHORT")));
+                        WhiteBitClient.marketOrderParams("BTC_USDT", "sell", "0.0001", "SHORT", "")));
+    }
+
+    @Test
+    public void marketOrderAppendsStopLossForTheProtectiveBracket()
+    {
+        assertEquals("{\"request\":\"/api/v4/order/collateral/market\",\"nonce\":1,"
+                        + "\"market\":\"BTC_USDT\",\"side\":\"buy\",\"amount\":\"0.0001\",\"stopLoss\":\"59000\"}",
+                WhiteBitClient.requestBody("/api/v4/order/collateral/market", 1L,
+                        WhiteBitClient.marketOrderParams("BTC_USDT", "buy", "0.0001", "", "59000")));
     }
 
     @Test

@@ -17,6 +17,33 @@ public interface IBroker
      */
     Fill marketOrder(OrderSide side, double qty, double price) throws BrokerException;
 
+    /**
+     * Execute the entry market order and, when {@code protectiveStopPrice > 0}, attach a venue-resting
+     * protective stop (a position-linked OTO bracket) at that trigger price in the same order &mdash; so the
+     * position is never open at the venue without at least its initial stop, even if this process dies. The
+     * default ignores the stop and places a plain order (the paper broker has no resting orders; a live broker
+     * overrides this to attach the bracket).
+     *
+     * @throws BrokerException if the venue rejects the order or it cannot be placed.
+     */
+    default Fill marketOrder(OrderSide side, double qty, double price, double protectiveStopPrice)
+            throws BrokerException
+    {
+        return marketOrder(side, qty, price);
+    }
+
+    /**
+     * Cancel any venue-resting protective stop the trader left on this market &mdash; called before a
+     * deliberate close so a closed position can never leave a naked stop that later flips it. The default is a
+     * no-op (the paper broker has no resting orders); a live broker cancels its conditional stop orders.
+     *
+     * @throws BrokerException if the cancel cannot be placed.
+     */
+    default void cancelProtectiveStops() throws BrokerException
+    {
+        // No venue-resting orders to cancel (paper / default); a live broker overrides this.
+    }
+
     /** A short name for the venue (for logging / {@code trade status}). */
     String name();
 

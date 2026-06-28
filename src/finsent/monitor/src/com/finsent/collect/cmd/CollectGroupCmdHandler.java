@@ -7,6 +7,8 @@ import java.util.Locale;
 
 import com.finsent.collect.EconScheduler;
 import com.finsent.collect.FSCollector;
+import com.finsent.collect.source.ArticleSources;
+import com.finsent.core.Config;
 import com.finsent.util.CmdGroupHandler;
 import com.finsent.util.ICmdHandler;
 import com.finsent.util.UtilityFunctions;
@@ -20,6 +22,8 @@ import com.finsent.util.UtilityFunctions;
  *   <li>{@code x <on|off|status>} &mdash; turn the fast X (Twitter) amplifier source's polling on/off
  *       at runtime (no restart), or report its state. The initial state comes from the {@code -DfetchX}
  *       launcher flag.</li>
+ *   <li>{@code list} &mdash; print the configured-source manifest across both lanes (the same one logged
+ *       at startup).</li>
  * </ul>
  * The {@code econ} fetch is fetch-only (stores the actual but does not analyse/notify, so a back-dated
  * catch-up never fires a stale alert -- run {@code anal econ} afterwards). Registered once the components
@@ -30,15 +34,39 @@ public final class CollectGroupCmdHandler extends CmdGroupHandler
     public static final String COMMAND = "collect";
     public static final String[] COMMAND_ALIASES = null;
     public static final String DESCRIPTION = "Collector control,\nusage: " + COMMAND
-            + " <econ [YYYYMMDD] <event name> | x <on|off|status>>";
+            + " <econ [YYYYMMDD] <event name> | x <on|off|status> | list>";
 
-    public CollectGroupCmdHandler(EconScheduler econScheduler, FSCollector collector)
+    public CollectGroupCmdHandler(EconScheduler econScheduler, FSCollector collector, Config config)
     {
         registerCmdHandler("econ", new EconFetchCmdHandler(econScheduler),
                 "Fetch a scheduled release's BLS actual on demand: econ [YYYYMMDD] <event name> "
                         + "(day defaults to today). Fetch-only -- run `anal econ` afterwards to analyse.", null);
         registerCmdHandler("x", new XToggleCmdHandler(collector),
                 "Turn the X (Twitter) source's polling on/off at runtime: x <on|off|status>.", null);
+        registerCmdHandler("list", new ListCmdHandler(config),
+                "List the configured sources across both lanes: list.", null);
+    }
+
+    /** {@code collect list}: print the configured-source manifest (both lanes) -- the same one logged at start. */
+    private static final class ListCmdHandler implements ICmdHandler
+    {
+        private final Config config_;
+
+        private ListCmdHandler(Config config)
+        {
+            config_ = config;
+        }
+
+        @Override
+        public int commandEntered(Writer writer, String command, String[] args)
+        {
+            UtilityFunctions.writeln(writer, "Configured sources:");
+            for (String line : ArticleSources.describe(config_))
+            {
+                UtilityFunctions.writeln(writer, "  " + line);
+            }
+            return 0;
+        }
     }
 
     /** {@code collect x <on|off|status>}: toggle (or report) the X amplifier source's polling at runtime. */

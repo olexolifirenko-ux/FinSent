@@ -64,6 +64,54 @@ public final class ArticleSources
     }
 
     /**
+     * A human-readable manifest of the configured sources across both lanes -- for the startup log and the
+     * {@code collect list} command. Mirrors {@link #build}'s key check, so a keyed source reads on/off exactly
+     * as the collector subscribes it. One line per category; never empty.
+     */
+    public static List<String> describe(Config config)
+    {
+        List<String> lines = new ArrayList<>();
+        lines.add("Regular API: " + regularApiSummary(config));
+        lines.add("Regular RSS (10-min): " + feedNames(config.rssFeeds()));
+        lines.add("Urgent RSS (" + config.urgentPollInSec() + "s): " + feedNames(config.urgentSources()));
+        lines.add("X (Twitter): " + xSummary(config));
+        return lines;
+    }
+
+    /** The {@code <Sources>} keyed APIs (RSS excluded -- it has its own line), each marked on / off-no-key. */
+    private static String regularApiSummary(Config config)
+    {
+        List<String> parts = new ArrayList<>();
+        for (Config.Source entry : config.sources())
+        {
+            String name = entry.name() == null ? "" : entry.name().trim().toLowerCase(Locale.ROOT);
+            if (!name.isEmpty() && !name.equals("rss"))
+            {
+                parts.add(name + (hasKey(entry.apiKey()) ? " (on)" : " (off: no key)"));
+            }
+        }
+        return parts.isEmpty() ? "(none)" : String.join(", ", parts);
+    }
+
+    private static String feedNames(List<Config.Feed> feeds)
+    {
+        List<String> names = new ArrayList<>();
+        for (Config.Feed feed : feeds)
+        {
+            names.add(feed.name());
+        }
+        return names.isEmpty() ? "(none)" : String.join(", ", names);
+    }
+
+    private static String xSummary(Config config)
+    {
+        int core = config.xAccounts().size();
+        int situational = config.xSituationalAccounts().size();
+        String state = hasKey(config.getxapiKey()) && core + situational > 0 ? "key configured" : "not configured";
+        return core + " core + " + situational + " situational handle(s) -- " + state;
+    }
+
+    /**
      * The X amplifier source over the core + situational accounts (merged into the one squawk query),
      * or null when the key or both account lists are absent. Core is listed first so that if the
      * combined list overruns the provider's clause cap, the situational tail is what gets dropped.
@@ -76,7 +124,8 @@ public final class ArticleSources
         IArticleSource source = null;
         if (keyConfigured("x", apiKey) && !accounts.isEmpty())
         {
-            source = new XSquawkSource(config.getxapiSearchUrl(), apiKey, accounts, URGENT_TIMEOUT, URGENT_RETRIES);
+            source = new XSquawkSource(config.getxapiSearchUrl(), apiKey, accounts, URGENT_TIMEOUT, URGENT_RETRIES,
+                    config.getxapiMaxPages());
         }
         return source;
     }
@@ -108,11 +157,18 @@ public final class ArticleSources
 
     private static boolean keyConfigured(String name, String apiKey)
     {
-        boolean configured = !apiKey.isEmpty() && !apiKey.startsWith(PLACEHOLDER_PREFIX);
+        boolean configured = hasKey(apiKey);
         if (!configured)
         {
             GlobalSystem.info().writes(NAME, "Skipping '" + name + "': api_key not configured");
         }
         return configured;
+    }
+
+    /** Whether an api key is present and not a placeholder -- the pure check behind {@link #keyConfigured}. */
+    private static boolean hasKey(String apiKey)
+    {
+        String key = apiKey == null ? "" : apiKey.trim();
+        return !key.isEmpty() && !key.startsWith(PLACEHOLDER_PREFIX);
     }
 }

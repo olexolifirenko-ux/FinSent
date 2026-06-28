@@ -232,11 +232,10 @@ public final class RssSource implements IArticleSource
     private List<ObjectNode> articlesFrom(Http.Response response, Config.Feed feed, String feedKey, String fromTs)
     {
         List<ObjectNode> articles = new ArrayList<>();
-        if (response.notModified())
-        {
-            GlobalSystem.debug().writes(NAME, "RSS [" + feed.name() + "] 304 not modified");
-        }
-        else
+        // 304 (not modified) yields nothing; only a 200 body is parsed. Per-feed outcomes are intentionally
+        // not logged -- the FSCollector per-cycle summary ("Urgent poll -- no new articles" / "collected N")
+        // is the single line; the startup source manifest (`collect list`) shows what is subscribed.
+        if (!response.notModified())
         {
             for (RssItem item : RssParser.parse(response.body()))
             {

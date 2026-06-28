@@ -176,6 +176,16 @@ public final class Config
         return Secrets.resolve(attr(collectorNode_, "getxapiKey", ""));
     }
 
+    /**
+     * Backward-walk page cap for the X amplifier source's advanced_search per poll: each page is ~20
+     * tweets, paged back until the watermark, so this bounds a cold-start catch-up / runaway burst
+     * (default 5 = ~100 tweets/poll, far above any realistic 15-30s burst).
+     */
+    public int getxapiMaxPages()
+    {
+        return intAttr(collectorNode_, "getxapiMaxPages", 5);
+    }
+
     /** Core X (Twitter) amplifier handles (permanent), polled as part of the merged squawk query. */
     public List<String> xAccounts()
     {

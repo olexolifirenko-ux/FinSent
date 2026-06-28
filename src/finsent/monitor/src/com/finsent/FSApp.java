@@ -19,6 +19,7 @@ import com.finsent.collect.FastMoveRecorder;
 import com.finsent.collect.UrgentPoller;
 import com.finsent.collect.cmd.CollectGroupCmdHandler;
 import com.finsent.collect.cmd.FastMoveCmdHandler;
+import com.finsent.collect.source.ArticleSources;
 import com.finsent.core.Config;
 import com.finsent.core.event.EventBus;
 import com.finsent.directory.DirectorySystem;
@@ -47,6 +48,8 @@ import com.finsent.util.GlobalSystem;
  */
 public class FSApp extends AbstractAppInitializer
 {
+    private static final String NAME = "FSApp";
+
     private EventBus eventBus_;
     private FSCollector collector_;
     private FSAnalyser analyser_;
@@ -88,6 +91,14 @@ public class FSApp extends AbstractAppInitializer
         // Initial X (Twitter) fetch state from the -DfetchX launcher flag (default off); toggled at
         // runtime via `collect x on|off`. No-op when X is not configured (no key/accounts).
         collector_.setXEnabled(Boolean.getBoolean("fetchX"));
+        GlobalSystem.info().writes(NAME, "X (Twitter) source: " + (!collector_.xConfigured()
+                ? "not configured (no key/accounts)"
+                : collector_.xEnabled() ? "ON (from -DfetchX)" : "OFF -- `collect x on` to enable") + ".");
+        GlobalSystem.info().writes(NAME, "Sources configured (`collect list`):");
+        for (String line : ArticleSources.describe(config))
+        {
+            GlobalSystem.info().writes(NAME, "  " + line);
+        }
 
         // Start paused unless -DrunAnalyser=true (default off when the flag is absent -> no Claude
         // calls / alerts until `anal on`). startPaused is the inverse of the run flag.
@@ -124,7 +135,7 @@ public class FSApp extends AbstractAppInitializer
         // and is toggled live via the `fastmove` command.
         fastMovePoller_ = new FastMovePoller(collector_, eventBus_, !Boolean.getBoolean("runFastMove"));
         GlobalSystem.getCmdInterpreter().registerCmdHandler(CollectGroupCmdHandler.COMMAND,
-                new CollectGroupCmdHandler(econScheduler_, collector_), CollectGroupCmdHandler.DESCRIPTION,
+                new CollectGroupCmdHandler(econScheduler_, collector_, config), CollectGroupCmdHandler.DESCRIPTION,
                 CollectGroupCmdHandler.COMMAND_ALIASES);
         GlobalSystem.getCmdInterpreter().registerCmdHandler(FastMoveCmdHandler.COMMAND,
                 new FastMoveCmdHandler(fastMovePoller_), FastMoveCmdHandler.DESCRIPTION,

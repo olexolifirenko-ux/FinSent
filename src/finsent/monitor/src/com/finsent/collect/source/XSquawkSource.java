@@ -22,7 +22,7 @@ import com.finsent.util.GlobalSystem;
  * @DeItaone}, {@code @FirstSquawk}) through the GetXAPI advanced-search endpoint and normalizes each
  * tweet into the common article shape. All accounts are fetched together by OR-ing them into one
  * {@code from:a OR from:b ...} query (newest-first); each poll then pages backward through the
- * {@code next_cursor} until it reaches the last-seen watermark (or the {@link #MAX_PAGES} guard), so a
+ * {@code next_cursor} until it reaches the last-seen watermark (or the {@code maxPages} guard), so a
  * burst larger than one 20-tweet page is not silently truncated.
  *
  * <p>Runs on the urgent {@link Http.Channel} with the urgent lane's fail-fast timeout/no-retry policy
@@ -44,27 +44,28 @@ public final class XSquawkSource implements IArticleSource
     // GetXAPI advanced_search silently returns ZERO tweets once a query carries more than this many
     // from: clauses (no error -- a total blackout), so the merged account list is capped here.
     static final int MAX_ACCOUNTS = 25;
-    // advanced_search returns 20 tweets/page; a burst can exceed one page, so each poll follows
-    // next_cursor backward until it reaches the watermark. This bounds that walk as a cold-start /
-    // runaway guard (5 pages = ~100 tweets/poll, far above any realistic 15-30s burst).
-    private static final int MAX_PAGES = 5;
 
     private final String searchUrl_;
     private final String apiKey_;
     private final String query_;
     private final Duration timeout_;
     private final int maxRetries_;
+    // Backward-walk page cap per poll (~20 tweets/page): bounds a cold-start catch-up / runaway burst.
+    // From FSCollector getxapiMaxPages (default 5 = ~100 tweets/poll); see Config.getxapiMaxPages.
+    private final int maxPages_;
     // Runtime on/off (the `collect x on|off` command). Starts off; FSApp sets the initial state from
     // the -DfetchX launcher flag. Volatile: the cmd thread writes it, the urgent poll thread reads it.
     private volatile boolean enabled_;
 
-    public XSquawkSource(String searchUrl, String apiKey, List<String> accounts, Duration timeout, int maxRetries)
+    public XSquawkSource(String searchUrl, String apiKey, List<String> accounts, Duration timeout, int maxRetries,
+            int maxPages)
     {
         searchUrl_ = searchUrl;
         apiKey_ = apiKey;
         query_ = buildQuery(accounts);
         timeout_ = timeout;
         maxRetries_ = maxRetries;
+        maxPages_ = maxPages;
     }
 
     /**
@@ -144,7 +145,7 @@ public final class XSquawkSource implements IArticleSource
     /**
      * Page the merged-account query backward (newest-first), accumulating every tweet past the source
      * watermark: follow {@code next_cursor} until the API has no more, a page reaches the watermark, or
-     * the {@link #MAX_PAGES} guard trips -- so a burst larger than one 20-tweet page is not truncated.
+     * the {@code maxPages} guard trips -- so a burst larger than one 20-tweet page is not truncated.
      */
     private List<ObjectNode> fetchArticles(String fromTs)
     {
@@ -152,7 +153,7 @@ public final class XSquawkSource implements IArticleSource
         boolean more = true;
         String cursor = "";
         int page = 0;
-        while (more && page < MAX_PAGES)
+        while (more && page < maxPages_)
         {
             JsonNode response = fetchPage(cursor);
             if (response == null)
@@ -216,7 +217,7 @@ public final class XSquawkSource implements IArticleSource
     /**
      * Whether this page has reached already-seen territory: its oldest (last, newest-first) tweet is at
      * or below the watermark, so the next page would be all duplicates. With no watermark (cold start)
-     * this stays false and the {@link #MAX_PAGES} cap bounds the backward walk instead.
+     * this stays false and the {@code maxPages} cap bounds the backward walk instead.
      */
     static boolean reachedWatermark(JsonNode response, String fromTs)
     {
@@ -231,11 +232,11 @@ public final class XSquawkSource implements IArticleSource
     }
 
     /** Warn when the page cap stopped a still-growing sweep -- a sign the poll interval is too long. */
-    private static void warnIfTruncated(boolean more)
+    private void warnIfTruncated(boolean more)
     {
         if (more)
         {
-            GlobalSystem.warning().writes(NAME, "X squawk hit the " + MAX_PAGES + "-page cap with more "
+            GlobalSystem.warning().writes(NAME, "X squawk hit the " + maxPages_ + "-page cap with more "
                     + "results pending; the oldest tweets this poll may be truncated -- shorten urgentPollInSec");
         }
     }

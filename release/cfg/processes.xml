@@ -59,6 +59,7 @@
             binanceFuturesBaseUrl="https://fapi.binance.com/fapi/v1"
             blsApiKey="ENV:BLS_API_KEY"
             getxapiKey="ENV:GETXAPI_KEY"
+            getxapiMaxPages="5"
         >
             <Sources>
                 <Source name="newsapi"     apiKey="ENV:NEWSAPI_KEY"/>

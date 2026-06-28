@@ -347,6 +347,62 @@ public class FSTrader_utest
     }
 
     @Test
+    public void continuousReconcileBooksAVenueSideClose()
+    {
+        // While we hold a position the venue reports FLAT -> the venueStop fired (or liquidation/manual): the
+        // trader books a venue_exit at the estimated price and goes flat WITHOUT placing an order.
+        FakeBroker broker = new FakeBroker();
+        FSTrader trader = new FSTrader(book_, broker, target -> price_, PARAMS, false);
+        price_ = 100.0;
+        trader.onSignal(signal("bullish", "high"), NOW); // open LONG
+        broker.venue_ = VenueState.flat();               // venue closed it out-of-band
+        price_ = 97.0;                                   // estimate for the booked exit
+        trader.reconcileOpen(NOW);
+
+        ArrayNode closed = closed();
+        assertEquals(1, closed.size());
+        assertEquals("venue_exit", closed.get(0).path("close_reason").asText());
+        assertTrue("flat after the venue-side close", trader.describe(NOW).contains("Flat"));
+    }
+
+    @Test
+    public void continuousReconcileLeavesAStillOpenVenueAlone()
+    {
+        FakeBroker broker = new FakeBroker();
+        FSTrader trader = new FSTrader(book_, broker, target -> price_, PARAMS, false);
+        price_ = 100.0;
+        trader.onSignal(signal("bullish", "high"), NOW);
+        broker.venue_ = VenueState.open(Side.LONG, 20.0, 100.0, PARAMS.leverage()); // venue still holds it
+        trader.reconcileOpen(NOW);
+        assertTrue(trader.describe(NOW).contains("Open LONG"));
+        assertEquals(0, closed().size());
+    }
+
+    @Test
+    public void continuousReconcileKeepsThePositionWhenTheVenueIsUnreachable()
+    {
+        FakeBroker broker = new FakeBroker();
+        FSTrader trader = new FSTrader(book_, broker, target -> price_, PARAMS, false);
+        price_ = 100.0;
+        trader.onSignal(signal("bullish", "high"), NOW);
+        broker.unreachable_ = true;
+        trader.reconcileOpen(NOW); // venue read failed -> keep the position, retry next poll
+        assertTrue(trader.describe(NOW).contains("Open LONG"));
+        assertEquals(0, closed().size());
+    }
+
+    @Test
+    public void continuousReconcileIsANoOpForThePaperBroker()
+    {
+        // Paper has no venue truth (UNTRACKED) -> the local book stays authoritative.
+        price_ = 100.0;
+        trader_.onSignal(signal("bullish", "high"), NOW);
+        trader_.reconcileOpen(NOW);
+        assertTrue(trader_.describe(NOW).contains("Open LONG"));
+        assertEquals(0, closed().size());
+    }
+
+    @Test
     public void confirmedReversalClosesAMomentumPosition()
     {
         FSTrader trader = momentumTrader();

@@ -151,17 +151,34 @@
             />
         </FSAnalyser>
 
-        <!-- What the trader owns: long/short BTC execution off TWO signal lanes, each with its own entry
-             rules + size + initial stop in a sub-element: <NewsLane> off the analyser's AnalysisReady signals,
-             <FastMoveLane> off the mechanical FastMove fires. The SHARED execution + exit-management settings
-             stay as <FSTrader> attributes - broker, price poll, the trailing-stop trail, the profit-grace
-             time stop, the max-hold backstop, the price-divergence entry rail, the cost model (taker fee +
-             paper slippage), the daily kill-switch (maxDailyLossInUsd / maxTradesPerDay; 0 = off, halts new
-             opens only), the venue-resting stop (venueStop; false = off, a live OTO bracket at the initial
-             stop - verify the venue's reduce-only behavior before enabling), and the WhiteBIT keys. One net
-             position at a time across BOTH lanes. broker=paper
-             simulates fills (no real orders); broker=whitebit places live WhiteBIT futures orders. Starts
-             paused unless -DrunTrader=true, toggled with `trade`. -->
+        <!-- What the trader owns: long/short BTC execution off TWO signal lanes, each with its own entry rules +
+             size + initial stop in a sub-element: <NewsLane> off the analyser's AnalysisReady signals,
+             <FastMoveLane> off the mechanical FastMove fires. One net position at a time across BOTH lanes.
+             Starts paused unless -DrunTrader=true; toggle live with `trade`. The SHARED execution + exit-
+             management + risk settings stay as <FSTrader> attributes:
+               broker                     - "paper" (simulated fills, no real orders) or "whitebit" (live WhiteBIT futures).
+               entryMaxPriceDivergencePct - skip an entry if the live price has moved more than this % from the signal's
+                                            analysis-time anchor (the market repriced since the verdict). 0 disables.
+               trailInPct                 - trailing-stop distance behind the best price, in %.
+               profitGraceInMin           - close if not in profit by this many minutes (the "is the thesis working?"
+                                            time stop). 0 disables.
+               maxHoldInHours             - max holding time before closing regardless of price (a chop backstop).
+               pricePollInSec             - how often the open position is re-evaluated (trail/exit) and reconciled
+                                            against the venue.
+               feeRatePct                 - taker fee per side, as a % of traded notional, charged on BOTH entry and exit;
+                                            all reported P&L is net of it. SET THIS TO YOUR REAL WhiteBIT fee tier
+                                            (observed ~0.1% on this account). Used for live (modeled) and paper P&L.
+               slippageInPct              - PAPER-ONLY per-side slippage the paper broker applies to fills (spread+impact).
+                                            IGNORED when broker=whitebit (live fills already carry real slippage).
+               maxDailyLossInUsd          - daily realized-loss kill-switch: once the day's NET realized P&L is <= -this,
+                                            halt new opens for the rest of the UTC day (open positions still close). 0 = off.
+               maxTradesPerDay            - max round trips per UTC day before halting new opens (whipsaw breaker). 0 = off.
+               venueStop                  - when live, attach a venue-resting protective stop (a standalone trigger-market
+                                            order at the initial stop) so the position keeps a stop even if this process
+                                            dies; a deliberate close cancels it first. Paper ignores it (no resting orders).
+               whitebitApiKey/Secret      - WhiteBIT private-API credentials (resolved from release/.env via ENV:).
+               whitebitBaseUrl/Market     - WhiteBIT API base URL and the collateral (futures) market to trade.
+             broker=paper simulates fills (no real orders); broker=whitebit places live WhiteBIT futures orders. -->
         <FSTrader
             broker="whitebit"
             entryMaxPriceDivergencePct="1.0"
@@ -169,7 +186,7 @@
             profitGraceInMin="30"
             maxHoldInHours="24"
             pricePollInSec="20"
-            feeRatePct="0.035"
+            feeRatePct="0.1"
             slippageInPct="0.02"
             maxDailyLossInUsd="0.0"
             maxTradesPerDay="0"

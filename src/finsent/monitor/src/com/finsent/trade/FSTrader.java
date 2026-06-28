@@ -295,6 +295,7 @@ public final class FSTrader implements IUninitializer
         while (running_)
         {
             dispatch(awaitSignal(), Instant.now());
+            reconcileOpen(Instant.now()); // catch a venue-side close (venueStop fired) before managing a phantom
             manage(Instant.now());
         }
     }
@@ -509,6 +510,65 @@ public final class FSTrader implements IUninitializer
             }
         }
         return diverged;
+    }
+
+    /**
+     * Continuous reconciliation: while we hold a position, check the venue's truth each poll so a venue-side
+     * close (the {@code venueStop} firing, a liquidation, or a manual close) is detected within one poll --
+     * otherwise the app would keep trailing a phantom and could place an unintended opposite order on the next
+     * "close". Only reads the venue when we are open and the broker tracks venue truth (paper is UNTRACKED, a
+     * no-op); a transient venue-read failure is skipped and retried next poll. Runs before {@link #manage} so a
+     * venue close clears the position before it is managed. Package-private for tests.
+     *
+     * <p>Residual: a venue close in the sub-poll window after this read is still possible (any reconcile is a
+     * point-in-time read); this shrinks the exposure from "until restart" to "until the next poll".
+     */
+    void reconcileOpen(Instant now)
+    {
+        if (!isFlat())
+        {
+            try
+            {
+                applyVenueClose(broker_.venueState(), now);
+            }
+            catch (BrokerException venueUnreadable)
+            {
+                GlobalSystem.debug().writes(NAME, "Continuous reconcile skipped (venue read failed; retry next "
+                        + "poll): " + venueUnreadable.getMessage());
+            }
+        }
+    }
+
+    /** Book a venue-side close when the venue is FLAT but we still hold the position; any other state is left
+     *  to {@link #manage}/the next poll (mid-session the venue never opens a position the app did not). */
+    private synchronized void applyVenueClose(VenueState venue, Instant now)
+    {
+        if (venue.kind() == VenueState.Kind.FLAT && position_ != null)
+        {
+            Double price = priceSource_.priceAt(now);
+            bookVenueExit(price != null ? price : position_.currentStop(), now);
+        }
+    }
+
+    /**
+     * Record a venue-side exit at the best price estimate (the live price, else the current stop) and go flat
+     * &mdash; WITHOUT placing an order, since the venue already closed the position. Keeps the ledger and the
+     * daily kill-switch coherent; the exit price is an estimate (we did not observe the venue fill), logged as
+     * such.
+     */
+    private void bookVenueExit(double exitPrice, Instant now)
+    {
+        Position open = position_;
+        ObjectNode record = open.toClosedRecord(exitPrice, now, "venue_exit");
+        book_.recordClose(open, record);
+        position_ = null;
+        if ("momentum".equals(open.source()))
+        {
+            lastFastExitMillis_ = now.toEpochMilli(); // arm the FastMove re-entry cooldown, as a normal close would
+        }
+        GlobalSystem.warning().writes(NAME, "VENUE EXIT detected: the " + open.side() + " position was closed at the "
+                + "venue (stop fired / liquidation / manual) -- booked out at est. " + Num.round(exitPrice, 2)
+                + " pnl ~" + Num.round(open.pnlUsd(exitPrice), 2) + " USD (estimated; no order placed).");
     }
 
     /** Re-evaluate the open position against the current price: trail the stop, exit on breach/max-hold. */

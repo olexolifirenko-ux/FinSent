@@ -74,7 +74,7 @@ public final class RssSource implements IArticleSource
         timeout_ = timeout;
         maxRetries_ = maxRetries;
         channel_ = channel;
-        executor_ = Executors.newFixedThreadPool(poolSize(feeds.size()), RssSource::daemonThread);
+        executor_ = Executors.newFixedThreadPool(poolSize(feeds.size()), this::daemonThread);
     }
 
     /** Bounds the fetch pool to {@link #MAX_CONCURRENT_FETCHES} (at least one thread). */
@@ -273,9 +273,10 @@ public final class RssSource implements IArticleSource
         }
     }
 
-    private static Thread daemonThread(Runnable runnable)
+    /** Names the fetch-pool threads by lane so the log distinguishes the urgent feeds from the regular ones. */
+    private Thread daemonThread(Runnable runnable)
     {
-        Thread thread = new Thread(runnable, "FS-Rss");
+        Thread thread = new Thread(runnable, channel_ == Http.Channel.URGENT ? "FS-Urgent-Rss" : "FS-Rss");
         thread.setDaemon(true);
         return thread;
     }

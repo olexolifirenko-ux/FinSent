@@ -2649,5 +2649,90 @@
       } ]
     },
     "resonant_article_ids" : [ 5605 ]
+  },
+  "16:10" : {
+    "analyzed_at" : "2026-06-28T21:24:08Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5607 ],
+    "screener" : [ {
+      "article_id" : 5607,
+      "score" : 0,
+      "reason" : "Price recap and corporate action; no new catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "17:40" : {
+    "analyzed_at" : "2026-06-28T21:24:11Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5610 ],
+    "screener" : [ {
+      "article_id" : 5610,
+      "score" : 0,
+      "reason" : "Domestic political statement; no BTC catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "18:40" : {
+    "analyzed_at" : "2026-06-28T21:24:13Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5613 ],
+    "screener" : [ {
+      "article_id" : 5613,
+      "score" : 0,
+      "reason" : "Domestic infrastructure/golf course renovation; no BTC impact channel."
+    } ],
+    "prediction_record" : null
+  },
+  "19:00" : {
+    "analyzed_at" : "2026-06-28T21:24:15Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5614 ],
+    "screener" : [ {
+      "article_id" : 5614,
+      "score" : 0,
+      "reason" : "Political opinion on DC mayoral race; no BTC catalyst."
+    } ],
+    "prediction_record" : null
+  },
+  "19:30" : {
+    "analyzed_at" : "2026-06-28T21:24:16Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5616 ],
+    "screener" : [ {
+      "article_id" : 5616,
+      "score" : 0,
+      "reason" : "Opinion piece; no new catalyst or event."
+    } ],
+    "prediction_record" : null
+  },
+  "19:50" : {
+    "analyzed_at" : "2026-06-28T21:24:17Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5617, 5618, 5619 ],
+    "screener" : [ {
+      "article_id" : 5617,
+      "score" : 0,
+      "reason" : "Opinion statement, no new catalyst or event."
+    }, {
+      "article_id" : 5618,
+      "score" : 0,
+      "reason" : "Facility construction update, no BTC-relevant catalyst."
+    }, {
+      "article_id" : 5619,
+      "score" : 0,
+      "reason" : "No content; cannot assess relevance."
+    } ],
+    "prediction_record" : null
+  },
+  "20:00" : {
+    "analyzed_at" : "2026-06-28T21:24:20Z",
+    "model" : "claude-haiku-4-5-20251001",
+    "article_ids" : [ 5620 ],
+    "screener" : [ {
+      "article_id" : 5620,
+      "score" : 0,
+      "reason" : "Opinion/celebration post; no new economic or policy catalyst for BTC."
+    } ],
+    "prediction_record" : null
   }
 }

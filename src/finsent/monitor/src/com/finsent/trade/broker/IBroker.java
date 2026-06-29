@@ -44,6 +44,20 @@ public interface IBroker
         // No venue-resting orders to cancel (paper / default); a live broker overrides this.
     }
 
+    /**
+     * Move the venue-resting protective stop to a new trigger price as the app's trailing stop ratchets, so
+     * the venue executes near the <i>trailed</i> level (not just the initial) and a crash gives back to the
+     * trailed level. {@code closeSide} is the order side that closes the position (opposite the entry),
+     * {@code qty} the held size. The default is a no-op (paper has no resting orders); a live broker
+     * replaces its resting stop. Called only past a deadband, so the churn is bounded.
+     *
+     * @throws BrokerException if the stop cannot be replaced.
+     */
+    default void amendProtectiveStop(OrderSide closeSide, double qty, double triggerPrice) throws BrokerException
+    {
+        // No venue-resting orders to trail (paper / default); a live broker overrides this.
+    }
+
     /** A short name for the venue (for logging / {@code trade status}). */
     String name();
 

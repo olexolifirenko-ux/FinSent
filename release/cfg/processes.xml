@@ -177,6 +177,9 @@
                venueStop                  - when live, attach a venue-resting protective stop (a standalone trigger-market
                                             order at the initial stop) so the position keeps a stop even if this process
                                             dies; a deliberate close cancels it first. Paper ignores it (no resting orders).
+               venueStopTrailStepPct      - deadband for trailing that venue stop: re-place it only once the app's stop has
+                                            ratcheted this % (of entry) past where the venue stop rests (bounds order churn;
+                                            0 = re-place every ratchet). Only relevant when venueStop is on.
                whitebitApiKey/Secret      - WhiteBIT private-API credentials (resolved from release/.env via ENV:).
                whitebitBaseUrl/Market     - WhiteBIT API base URL and the collateral (futures) market to trade.
              broker=paper simulates fills (no real orders); broker=whitebit places live WhiteBIT futures orders. -->
@@ -186,12 +189,13 @@
             trailInPct="1.0"
             profitGraceInMin="30"
             maxHoldInHours="24"
-            pricePollInSec="20"
+            pricePollInSec="10"
             feeRatePct="0.1"
             slippageInPct="0.02"
             maxDailyLossInUsd="0.0"
             maxTradesPerDay="0"
             venueStop="true"
+            venueStopTrailStepPct="0.25"
             whitebitApiKey="ENV:WHITEBIT_API_KEY"
             whitebitApiSecret="ENV:WHITEBIT_API_SECRET"
             whitebitBaseUrl="https://whitebit.com"

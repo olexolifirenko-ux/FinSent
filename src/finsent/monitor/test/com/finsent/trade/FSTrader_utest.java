@@ -43,13 +43,14 @@ public class FSTrader_utest
     private static final double NO_LOSS_CAP = 0.0;    // maxDailyLossUsd: daily-loss kill-switch off
     private static final int NO_TRADE_CAP = 0;        // maxTradesPerDay: max-trades kill-switch off
     private static final boolean NO_VENUE_STOP = false; // venueStop: no venue-resting protective stop
+    private static final double NO_TRAIL_STEP = 0.0;    // venueStopTrailStepPct: irrelevant when venueStop off
     private static final FSTrader.Params PARAMS =
             new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L, FRESH_5MIN, DIV_1PCT, NO_FEE,
-                    NO_LOSS_CAP, NO_TRADE_CAP, NO_VENUE_STOP); // time stop off, no daily limits
+                    NO_LOSS_CAP, NO_TRADE_CAP, NO_VENUE_STOP, NO_TRAIL_STEP); // time stop off, no daily limits
     // Same, but with a 10-minute profit-grace time stop enabled and a long max-hold (so only the time stop fires).
     private static final FSTrader.Params GRACE_PARAMS =
             new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 86_400_000L, 20_000L, 600_000L, FRESH_5MIN, DIV_1PCT,
-                    NO_FEE, NO_LOSS_CAP, NO_TRADE_CAP, NO_VENUE_STOP);
+                    NO_FEE, NO_LOSS_CAP, NO_TRADE_CAP, NO_VENUE_STOP, NO_TRAIL_STEP);
 
     private Path dir_;
     private TradeBook book_;
@@ -200,7 +201,7 @@ public class FSTrader_utest
     {
         // $10 daily-loss kill-switch. One stop-out loses ~$22 (past the cap) -> further opens are halted.
         FSTrader.Params capped = new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L,
-                FRESH_5MIN, DIV_1PCT, NO_FEE, 10.0, NO_TRADE_CAP, NO_VENUE_STOP);
+                FRESH_5MIN, DIV_1PCT, NO_FEE, 10.0, NO_TRADE_CAP, NO_VENUE_STOP, NO_TRAIL_STEP);
         FSTrader trader = new FSTrader(book_, new PaperBroker(), target -> price_, capped, false);
 
         price_ = 100.0; trader.onSignal(signal("bullish", "high"), NOW); // open LONG, stop 99
@@ -218,7 +219,7 @@ public class FSTrader_utest
     {
         // At most one round trip per day. The exit (flatten) is never gated; only the next OPEN is.
         FSTrader.Params capped = new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L,
-                FRESH_5MIN, DIV_1PCT, NO_FEE, NO_LOSS_CAP, 1, NO_VENUE_STOP);
+                FRESH_5MIN, DIV_1PCT, NO_FEE, NO_LOSS_CAP, 1, NO_VENUE_STOP, NO_TRAIL_STEP);
         FSTrader trader = new FSTrader(book_, new PaperBroker(), target -> price_, capped, false);
 
         price_ = 100.0; trader.onSignal(signal("bullish", "high"), NOW); // trade 1: open
@@ -262,11 +263,42 @@ public class FSTrader_utest
         assertEquals("no venue cancel when off", 0, broker.cancelStopCalls_);
     }
 
-    /** News params with the venue-resting stop armed (1% initial stop), for the venue-stop wiring tests. */
+    @Test
+    public void venueStopTrailsTheVenueOrderPastTheDeadband()
+    {
+        FakeBroker broker = new FakeBroker();
+        FSTrader trader = new FSTrader(book_, broker, target -> price_, venueStopParams(), false);
+        price_ = 100.0; trader.onSignal(signal("bullish", "high"), NOW); // open LONG, venue stop placed at 99.0
+        price_ = 110.0; trader.manage(NOW);                              // best 110 -> stop ratchets to 108.9
+        assertTrue("venue stop trailed", broker.amendStopCalls_ >= 1);
+        assertEquals(108.9, broker.lastAmendTrigger_, 1e-9);
+    }
+
+    @Test
+    public void venueStopDoesNotTrailWithinTheDeadband()
+    {
+        FakeBroker broker = new FakeBroker();
+        FSTrader trader = new FSTrader(book_, broker, target -> price_, venueStopParams(), false);
+        price_ = 100.0; trader.onSignal(signal("bullish", "high"), NOW);
+        price_ = 100.3; trader.manage(NOW); // stop ratchets to 99.297 -- only 0.297% past the resting 99.0 (< 0.5% step)
+        assertEquals("no trail within the deadband", 0, broker.amendStopCalls_);
+    }
+
+    @Test
+    public void venueStopOffDoesNotTrail()
+    {
+        FakeBroker broker = new FakeBroker();
+        FSTrader trader = new FSTrader(book_, broker, target -> price_, PARAMS, false); // venueStop off
+        price_ = 100.0; trader.onSignal(signal("bullish", "high"), NOW);
+        price_ = 110.0; trader.manage(NOW);
+        assertEquals("no venue trail when off", 0, broker.amendStopCalls_);
+    }
+
+    /** News params with the venue-resting stop armed (1% initial stop, 0.5% trail deadband), for the venue-stop tests. */
     private static FSTrader.Params venueStopParams()
     {
         return new FSTrader.Params("high", 1000.0, 2.0, 1.0, 1.0, 3_600_000L, 20_000L, 0L, FRESH_5MIN, DIV_1PCT,
-                NO_FEE, NO_LOSS_CAP, NO_TRADE_CAP, true);
+                NO_FEE, NO_LOSS_CAP, NO_TRADE_CAP, true, 0.5);
     }
 
     @Test
@@ -613,6 +645,8 @@ public class FSTrader_utest
         private boolean unreachable_;
         private double lastProtectiveStop_ = -1.0; // the stop attached to the most recent entry (-1 = none seen)
         private int cancelStopCalls_;
+        private int amendStopCalls_;
+        private double lastAmendTrigger_ = -1.0; // the trigger of the most recent venue-stop trail
 
         @Override
         public Fill marketOrder(OrderSide side, double qty, double price)
@@ -631,6 +665,13 @@ public class FSTrader_utest
         public void cancelProtectiveStops()
         {
             cancelStopCalls_++;
+        }
+
+        @Override
+        public void amendProtectiveStop(OrderSide closeSide, double qty, double triggerPrice)
+        {
+            amendStopCalls_++;
+            lastAmendTrigger_ = triggerPrice;
         }
 
         @Override

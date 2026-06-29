@@ -522,6 +522,18 @@ public final class Config
         return boolAttr(traderNode_, "venueStop", false);
     }
 
+    /**
+     * Deadband for trailing the venue-resting stop: the app re-places the venue stop only once its trailed
+     * level has moved at least this percent (of entry price) past where the venue stop currently rests, so the
+     * venue stop tracks the trail without an order amend on every tiny ratchet. Only relevant when
+     * {@code venueStop} is on. Larger = less order churn but more give-back on a crash; {@code 0} re-places on
+     * every ratchet.
+     */
+    public double tradeVenueStopTrailStepPct()
+    {
+        return doubleAttr(traderNode_, "venueStopTrailStepPct", 0.25);
+    }
+
     /** WhiteBIT private-API public key (read-only connectivity check for now); "" disables it. */
     public String whitebitApiKey()
     {

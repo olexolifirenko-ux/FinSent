@@ -92,10 +92,39 @@ public final class WhiteBitBroker implements IBroker
         return fill;
     }
 
-    /** Place the standalone protective stop opposite the entry; a failure leaves the open position intact. */
+    /** Place the standalone protective stop opposite the entry; a failure leaves the open position intact
+     *  (logged, not thrown -- the entry already filled and the app-side stop still manages the exit). */
     private void placeProtectiveStop(OrderSide entrySide, double qty, double triggerPrice)
     {
         OrderSide stopSide = entrySide == OrderSide.BUY ? OrderSide.SELL : OrderSide.BUY;
+        try
+        {
+            placeStop(stopSide, qty, triggerPrice);
+        }
+        catch (BrokerException stopFailed)
+        {
+            GlobalSystem.warning().writes(NAME, "Venue protective stop NOT placed (position is OPEN; the app-side "
+                    + "stop still manages the exit): " + stopFailed.getMessage());
+        }
+    }
+
+    /**
+     * Trail the venue stop to a new level: cancel the resting stop and place a fresh {@code trigger-market} at
+     * {@code triggerPrice} on {@code closeSide} (the side that closes the position). Cancel-then-place reuses
+     * the already-validated place/cancel calls (no unproven {@code /order/modify}); the brief window with no
+     * resting stop is acceptable since the app is alive and re-places immediately, and the app-side stop still
+     * manages the exit. Surfaced as a {@link BrokerException} so the trader can keep managing on a failure.
+     */
+    @Override
+    public void amendProtectiveStop(OrderSide closeSide, double qty, double triggerPrice) throws BrokerException
+    {
+        cancelProtectiveStops();
+        placeStop(closeSide, qty, triggerPrice);
+    }
+
+    /** Place one standalone {@code trigger-market} stop ({@code stopSide} closes the position) at {@code triggerPrice}. */
+    private void placeStop(OrderSide stopSide, double qty, double triggerPrice) throws BrokerException
+    {
         try
         {
             client_.placeCollateralTriggerMarket(orderSide(stopSide), formatAmount(qty), formatPrice(triggerPrice),
@@ -103,13 +132,13 @@ public final class WhiteBitBroker implements IBroker
         }
         catch (IOException stopFailed)
         {
-            GlobalSystem.warning().writes(NAME, "Venue protective stop NOT placed (position is OPEN; the app-side "
-                    + "stop still manages the exit): " + stopFailed.getMessage());
+            throw new BrokerException("WhiteBIT protective stop placement failed: " + stopFailed.getMessage(),
+                    stopFailed);
         }
         catch (InterruptedException interrupted)
         {
             Thread.currentThread().interrupt();
-            GlobalSystem.warning().writes(NAME, "Venue protective stop placement interrupted (position is OPEN).");
+            throw new BrokerException("WhiteBIT protective stop placement interrupted", interrupted);
         }
     }
 

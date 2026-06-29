@@ -77,6 +77,9 @@ public final class FSTrader implements IUninitializer
     private Position position_;
     // Epoch ms of the last momentum-position close; arms the re-entry cooldown. Worker-thread state.
     private long lastFastExitMillis_;
+    // The price the venue-resting protective stop currently rests at (0 = none); the trail deadband measures
+    // from here so the venue stop is only re-placed once the app stop has moved enough. Worker-thread state.
+    private double venueStopRestingAt_;
 
     /** Production wiring: build the recovered book and the configured broker (paper or live WhiteBIT). */
     public FSTrader(FSCollector collector, Config config, WhiteBitClient whitebit, boolean startPaused)
@@ -182,7 +185,7 @@ public final class FSTrader implements IUninitializer
                 config.tradePricePollInSec() * 1000L, config.tradeProfitGraceInMin() * 60_000L,
                 config.tradeEntryMaxNewsAgeInMin() * 60_000L, config.tradeEntryMaxPriceDivergencePct(),
                 config.tradeFeeRatePct(), config.tradeMaxDailyLossInUsd(), config.tradeMaxTradesPerDay(),
-                config.tradeVenueStop());
+                config.tradeVenueStop(), config.tradeVenueStopTrailStepPct());
     }
 
     /**
@@ -200,7 +203,7 @@ public final class FSTrader implements IUninitializer
                 config.tradeMaxHoldInHours() * 3_600_000L, config.tradePricePollInSec() * 1000L,
                 config.tradeProfitGraceInMin() * 60_000L, 0L, config.tradeEntryMaxPriceDivergencePct(),
                 config.tradeFeeRatePct(), config.tradeMaxDailyLossInUsd(), config.tradeMaxTradesPerDay(),
-                config.tradeVenueStop());
+                config.tradeVenueStop(), config.tradeVenueStopTrailStepPct());
     }
 
     /**
@@ -562,6 +565,7 @@ public final class FSTrader implements IUninitializer
         ObjectNode record = open.toClosedRecord(exitPrice, now, "venue_exit");
         book_.recordClose(open, record);
         position_ = null;
+        venueStopRestingAt_ = 0.0; // the venue closed it (the resting stop fired or is gone)
         if ("momentum".equals(open.source()))
         {
             lastFastExitMillis_ = now.toEpochMilli(); // arm the FastMove re-entry cooldown, as a normal close would
@@ -645,6 +649,7 @@ public final class FSTrader implements IUninitializer
                 // we manage and later close matches what is really held (the venue may round/partially fill).
                 position_ = Position.open(day, key, source, side, fill.price(), fill.qty(),
                         params.leverage(), now, params.stopLossInPct(), params.feeRatePct());
+                venueStopRestingAt_ = protectiveStop; // the level the venue stop was placed at (0 when off)
                 book_.recordPosition(position_);
                 GlobalSystem.info().writes(NAME, "OPEN " + side + " @ " + Num.round(fill.price(), 2) + " stop "
                         + Num.round(position_.currentStop(), 2) + " (" + tag + ")");
@@ -671,8 +676,45 @@ public final class FSTrader implements IUninitializer
             else if (position_.currentStop() != prevStop)
             {
                 book_.recordPosition(position_); // persist only when the stop actually ratcheted
+                maybeTrailVenueStop(position_);  // and trail the venue-resting stop with it (past the deadband)
             }
         }
+    }
+
+    /**
+     * Trail the venue-resting stop up to the app's ratcheted stop, but only once it has moved past the deadband
+     * ({@code venueStopTrailStepPct} of entry), so the venue stop tracks the trail without an order amend on
+     * every tiny ratchet. No-op unless {@code venueStop} is on and a venue stop is resting; an amend failure is
+     * logged and retried on the next qualifying ratchet (the app-side stop still manages the exit meanwhile).
+     */
+    private void maybeTrailVenueStop(Position open)
+    {
+        double stop = open.currentStop();
+        if (params_.venueStop() && venueStopRestingAt_ > 0.0
+                && trailedPastDeadband(open.side(), stop, venueStopRestingAt_, open.entryPrice()))
+        {
+            OrderSide closeSide = open.side().isLong() ? OrderSide.SELL : OrderSide.BUY;
+            try
+            {
+                broker_.amendProtectiveStop(closeSide, open.qty(), stop);
+                venueStopRestingAt_ = stop;
+                GlobalSystem.debug().writes(NAME, "Venue stop trailed to " + Num.round(stop, 2));
+            }
+            catch (BrokerException amendFailed)
+            {
+                GlobalSystem.warning().writes(NAME, "Venue stop NOT trailed to " + Num.round(stop, 2)
+                        + " (app-side stop still active; will retry): " + amendFailed.getMessage());
+            }
+        }
+    }
+
+    /** Whether the ratcheted stop has moved toward the trade by at least {@code venueStopTrailStepPct} of entry
+     *  past where the venue stop rests -- the trail deadband. A {@code 0} step re-places on every ratchet. */
+    private boolean trailedPastDeadband(Side side, double stop, double restingAt, double entry)
+    {
+        boolean towardTrade = side.isLong() ? stop > restingAt : stop < restingAt;
+        double movedPct = entry == 0.0 ? 0.0 : Math.abs(stop - restingAt) / entry * 100.0;
+        return towardTrade && movedPct >= params_.venueStopTrailStepPct();
     }
 
     private String exitReason(Position open, double price, Instant now)
@@ -707,6 +749,7 @@ public final class FSTrader implements IUninitializer
             ObjectNode record = open.toClosedRecord(fill.price(), now, reason);
             book_.recordClose(open, record);
             position_ = null;
+            venueStopRestingAt_ = 0.0; // the venue stop was cancelled before this close
             closed = true;
             if ("momentum".equals(open.source()))
             {
@@ -978,7 +1021,7 @@ public final class FSTrader implements IUninitializer
     public record Params(String entryImpactTier, double notionalInUsd, double leverage, double stopLossInPct,
             double trailInPct, long maxHoldMillis, long pricePollMillis, long profitGraceMillis,
             long entryMaxNewsAgeMillis, double entryMaxPriceDivergencePct, double feeRatePct,
-            double maxDailyLossUsd, int maxTradesPerDay, boolean venueStop)
+            double maxDailyLossUsd, int maxTradesPerDay, boolean venueStop, double venueStopTrailStepPct)
     {
     }
 }

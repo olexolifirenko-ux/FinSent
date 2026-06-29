@@ -42,7 +42,7 @@ public final class FastMoveBacktest
     // pricePoll is set huge so the trader's worker thread never fires manage() under us -- the backtest
     // drives manage() itself, minute by minute, off the replayed tape.
     private static final FSTrader.Params FAST_PARAMS = new FSTrader.Params("", 150.0, 3.0, 1.0, 1.0,
-            24 * 3_600_000L, 3_600_000L, 30 * 60_000L, 0L, 1.0, TAKER_FEE_PCT, 0.0, 0, false);
+            24 * 3_600_000L, 3_600_000L, 30 * 60_000L, 0L, 1.0, TAKER_FEE_PCT, 0.0, 0, false, 0.0);
 
     private FastMoveBacktest()
     {

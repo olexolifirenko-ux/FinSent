@@ -258,6 +258,8 @@ until the fresh print lands → compute the surprise → article-less deep pass 
   `anal feedback [--days N]`.
 - **`collect x on | off | status`** — turn the X (Twitter) source's polling on/off live (no restart).
   `collect econ [YYYYMMDD] <event>` — fetch a release's BLS actual on demand (fetch-only).
+- **`trade on | off | status | flatten`** — turn the trader on/off (resume/pause acting on signals),
+  show state + open position + today's realized P&L, or close the open position now.
 - **`fastmove on | off | status`** — turn the FastMove momentum poller's detection on/off live (no
   restart), or show its state.
 
@@ -296,6 +298,8 @@ SMTP delivery, `<MacroAlertThresholds>`.
   calls / alerts until `anal on`).
 - **`-DfetchX`** — `true` starts X polling; `false`/absent starts it **off** (no GetXAPI calls until
   `collect x on`).
+- **`-DrunTrader`** — `true` starts the trader acting on signals; `false`/absent starts it **paused**
+  (no positions opened until `trade on`). Live vs paper is the separate `<FSTrader broker>` config.
 - **`-DrunFastMove`** — `true` starts the FastMove momentum poller detecting; `false`/absent starts it
   **paused** (no fires until `fastmove on`).
 

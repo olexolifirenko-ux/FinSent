@@ -39,3 +39,5 @@ ehthumbs.db
 
 # Note: lib/*.jar (vendored dependencies) and gradle/wrapper/gradle-wrapper.jar
 # are intentionally committed so the project builds offline after a clean clone.
+/deep_analysis_prompt_assessment.md
+/finsent_trading_assessment.md

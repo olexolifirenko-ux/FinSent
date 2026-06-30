@@ -1,0 +1,30 @@
+[Unit]
+Description=FinSent Satellite (prod)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/aiworker/finsent-prod/current
+# The Perl launcher system()-waits on the JVM, so it stays the live main PID.
+ExecStart=/usr/bin/perl /home/aiworker/finsent-prod/current/bin/FSSatellite.pl
+
+# Prod JVM behaviour (env overrides win in FinSent.pm):
+#   -1  => no JDWP remote-debug port (dev default opens 9000)
+#   true => JVM stdout/stderr -> logs/FinSent.out (daemon, no console)
+Environment=_OPT_DEBUG_PORT_OFFSET=-1
+Environment=_OPT_REDIRECT_OUTPUT=true
+
+# No controlling terminal: the interactive console reader sees EOF and idles
+# while the collector/analyser/trader worker threads keep running.
+StandardInput=null
+StandardOutput=journal
+StandardError=journal
+
+# Keep it up 24/7; SIGTERM to the cgroup lets the JVM shut down and release the lock.
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=90
+
+[Install]
+WantedBy=default.target

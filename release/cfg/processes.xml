@@ -212,7 +212,7 @@
                 reversalExit="true"
                 notionalInUsd="300.0"
                 leverage="5.0"
-                stopLossInPct="0.3"
+                stopLossInPct="0.6"
             />
             <!-- FastMove (momentum) lane: trade=false is ALERT-ONLY (publish/log, never open); the safe
                  default while tuning. minConviction=full opens only on full-conviction (OI-building) fires;
@@ -225,8 +225,8 @@
                 reversalExit="true"
                 reentryCooldownInMin="30"
                 notionalInUsd="150.0"
-                leverage="3.0"
-                stopLossInPct="1.0"
+                leverage="5.0"
+                stopLossInPct="0.6"
             />
         </FSTrader>
         <!-- WhiteBIT keys above back the `trade wbcheck`/`trade wborder` commands and, when broker=whitebit,

@@ -11,8 +11,14 @@
 /release/run/
 
 # --- linux64 JRE: populated on a Linux deploy, not committed.
-#     (win64/jre IS committed so Windows clones are turnkey.) ---
+#     (win64/jre IS committed so Windows clones are turnkey.)
+#     Both forms: trailing-slash matches a real dir, no-slash also catches
+#     the symlink a Linux deploy creates. ---
 /release/common/linux64/jre/
+/release/common/linux64/jre
+
+# --- Nested Gradle build output under src/ (not caught by the root /build/) ---
+/src/**/build/
 
 # --- Runtime-generated logs (keep the directory, ignore contents) ---
 /release/logs/*

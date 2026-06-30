@@ -90,10 +90,14 @@ sub java_in {
 }
 
 # Resolve $rel against $base, collapsing "." / "..", preserving a trailing
-# "/*" wildcard and a leading drive letter.
+# "/*" wildcard, a leading drive letter, and a leading "/" on POSIX-absolute paths.
 sub norm_path {
     my ($rel, $base) = @_;
     my $p = ($rel =~ m{^([A-Za-z]:|/)}) ? $rel : "$base/$rel";
+    # POSIX-absolute paths start with "/"; the split below drops the empty leading
+    # segment, so remember it here and re-add it (Windows drive letters survive as
+    # the first segment, so they need no special handling).
+    my $posix_abs = ($p =~ m{^/}) ? 1 : 0;
     my @out;
     for my $seg (split m{/}, $p) {
         next if $seg eq '' || $seg eq '.';
@@ -103,7 +107,8 @@ sub norm_path {
         }
         push @out, $seg;
     }
-    return join('/', @out);
+    my $joined = join('/', @out);
+    return $posix_abs ? "/$joined" : $joined;
 }
 
 # ---- cfg parsing (jlaunch-style) -----------------------------------------

@@ -1,5 +1,6 @@
 package com.finsent.collect;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.time.DayOfWeek;
 import java.time.Duration;
@@ -7,12 +8,15 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.function.BiPredicate;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,6 +34,7 @@ import com.finsent.core.event.IEventPublisher;
 import com.finsent.core.io.DataStream;
 import com.finsent.core.io.LoadedDay;
 import com.finsent.core.io.PersistenceService;
+import com.finsent.core.io.WriteUnit;
 import com.finsent.core.registry.ArticleRegistry;
 import com.finsent.core.registry.EconEventRegistry;
 import com.finsent.core.registry.IRegistry;
@@ -185,6 +190,84 @@ public final class FSCollector
                 }
             }
         }
+    }
+
+    /**
+     * Ingest articles from an external articles JSONL file (e.g. another instance's
+     * {@code articles_<day>.jsonl}) into this instance's store. Fresh ids are assigned and the URL+title
+     * hash dedup applies, so duplicates are skipped and no id collides with the existing store; each
+     * article lands in the day-file for its own {@code publishedAt} (so one file may span several days).
+     * The incoming {@code collected_at} is preserved. The source file is read only, never modified, and no
+     * analysis is run &mdash; run {@code anal windows ... -force} for the affected days afterwards. Returns
+     * a summary of the run.
+     */
+    public MergeReport mergeIn(Path file) throws IOException
+    {
+        List<ObjectNode> incoming = Json.readJsonl(file);
+        List<ObjectNode> valid = new ArrayList<>();
+        int skipped = 0;
+        for (ObjectNode article : incoming)
+        {
+            if (isMergeable(article))
+            {
+                valid.add(article);
+            }
+            else
+            {
+                skipped++;
+            }
+        }
+        // Make every candidate day resident BEFORE merge(): the registry rewrites the whole day-file from
+        // memory, so an un-resident (older) day would otherwise collapse to just the merged-in articles.
+        for (String day : candidateDays(valid))
+        {
+            recoverDay(day);
+        }
+        ArticleRegistry.MergeOutcome outcome = articles_.merge(valid);
+        persistence_.commit(outcome.writes());
+        persistence_.flush(); // report only once the merge is durable on disk
+        return mergeReport(incoming.size(), valid.size(), skipped, outcome);
+    }
+
+    /** An article can be merged when it has a publish day (to bucket it) and a url or title (to hash it). */
+    private static boolean isMergeable(ObjectNode article)
+    {
+        boolean hasDay = !article.path("publishedAt").asText("").isEmpty();
+        boolean hasIdentity = !article.path("url").asText("").isEmpty()
+                || !article.path("title").asText("").isEmpty();
+        return hasDay && hasIdentity;
+    }
+
+    /** The distinct publish days among {@code articles} -- the day-files a merge may touch. */
+    private static Set<String> candidateDays(List<ObjectNode> articles)
+    {
+        Set<String> days = new HashSet<>();
+        for (ObjectNode article : articles)
+        {
+            days.add(Times.dayOf(article.path("publishedAt").asText("")));
+        }
+        return days;
+    }
+
+    private static MergeReport mergeReport(int read, int valid, int skipped, ArticleRegistry.MergeOutcome outcome)
+    {
+        SortedSet<String> days = new TreeSet<>();
+        for (WriteUnit unit : outcome.writes())
+        {
+            days.add(unit.day());
+        }
+        String firstDay = days.isEmpty() ? null : days.first();
+        String lastDay = days.isEmpty() ? null : days.last();
+        return new MergeReport(read, outcome.stored(), valid - outcome.stored(), skipped, firstDay, lastDay);
+    }
+
+    /**
+     * Summary of a {@link #mergeIn} run: how many lines were read, stored (genuinely new), skipped as
+     * duplicates or as unmergeable, and the inclusive publish-day range that gained articles
+     * ({@code firstDay}/{@code lastDay} null when nothing was stored).
+     */
+    public record MergeReport(int read, int stored, int duplicates, int skipped, String firstDay, String lastDay)
+    {
     }
 
     /**

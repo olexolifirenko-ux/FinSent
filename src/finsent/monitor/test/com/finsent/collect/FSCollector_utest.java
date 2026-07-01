@@ -211,6 +211,48 @@ public class FSCollector_utest
     }
 
     @Test
+    public void mergeInDedupesAssignsFreshIdsAndPreservesNonResidentDay() throws Exception
+    {
+        // Session 1: collect two articles on DAY (ids 1,2), then a later-day article (id 3) so a restart
+        // recovers nextId from the most recent day -- DAY itself falls outside a 1-day recovery window.
+        MutableSource src = new MutableSource("srcA");
+        src.set(article("A1", "http://a/1", "2026-05-29T12:01:00Z"),
+                article("A2", "http://a/2", "2026-05-29T12:02:00Z"));
+        FSCollector first = collector(src);
+        first.collect(NOW); // A1,A2 on 20260529 -> ids 1,2
+        src.set(article("Later", "http://a/later", "2026-06-01T12:01:00Z"));
+        first.collect(Instant.parse("2026-06-01T12:03:20Z")); // id 3 on 20260601
+        first.flush();
+
+        // Session 2 (restart): recover only the most recent day, so DAY is on disk but NOT resident and
+        // nextId is seeded to 4 -- exactly the production shape mergeIn must handle.
+        FSCollector restarted = collector();
+        restarted.recover(1);
+
+        Path source = dir_.resolve("incoming.jsonl");
+        writeJsonl(source,
+                merged("A1", "http://a/1", "2026-05-29T12:01:00Z", "2026-05-29T12:05:00Z"),       // duplicate
+                merged("Merged", "http://a/9", "2026-05-29T12:03:00Z", "2026-05-29T12:09:00Z"));   // genuinely new
+
+        FSCollector.MergeReport report = restarted.mergeIn(source);
+
+        assertEquals(2, report.read());
+        assertEquals(1, report.stored());
+        assertEquals(1, report.duplicates());
+        assertEquals(0, report.skipped());
+
+        // Collapse-trap regression: the two existing DAY articles survive the whole-file rewrite, so the
+        // window holds A1, A2 and the merged-in one (3), not just the merged-in one.
+        List<ObjectNode> window = restarted.articles().forInterval(DAY, KEY, false, WINDOW);
+        assertEquals(3, window.size());
+
+        ObjectNode mergedArticle = byTitle(window, "Merged");
+        assertEquals("fresh registry-assigned id (foreign id 999 discarded)", 4, mergedArticle.path("id").asInt());
+        assertEquals("incoming collected_at preserved", "2026-05-29T12:09:00Z",
+                mergedArticle.path("collected_at").asText());
+    }
+
+    @Test
     public void freshArticleInAPastWindowRepublishesThatWindow() throws Exception
     {
         // Article published in the 11:50 window, but the cycle runs at 12:03 (current window 12:00).
@@ -317,6 +359,38 @@ public class FSCollector_utest
         article.put("url", url);
         article.put("publishedAt", publishedAt);
         return article;
+    }
+
+    /** A foreign-instance article line: carries an id (999, which mergeIn must regenerate) and collected_at. */
+    private static ObjectNode merged(String title, String url, String publishedAt, String collectedAt)
+    {
+        ObjectNode article = article(title, url, publishedAt);
+        article.put("id", 999);
+        article.put("collected_at", collectedAt);
+        return article;
+    }
+
+    private static void writeJsonl(Path file, ObjectNode... articles) throws IOException
+    {
+        StringBuilder lines = new StringBuilder();
+        for (ObjectNode article : articles)
+        {
+            lines.append(article.toString()).append('\n');
+        }
+        Files.writeString(file, lines.toString());
+    }
+
+    private static ObjectNode byTitle(List<ObjectNode> articles, String title)
+    {
+        ObjectNode found = null;
+        for (ObjectNode article : articles)
+        {
+            if (article.path("title").asText().equals(title))
+            {
+                found = article;
+            }
+        }
+        return found;
     }
 
     private static void deleteQuietly(Path path)

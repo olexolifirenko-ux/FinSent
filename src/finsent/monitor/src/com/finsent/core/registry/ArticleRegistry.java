@@ -136,20 +136,41 @@ public final class ArticleRegistry implements IRegistry
         List<WriteUnit> writes = List.of();
         if (articles != null && !articles.isEmpty())
         {
-            writes = storeLocked(articles);
+            writes = storeLocked(articles, false).writes();
         }
         return writes;
     }
 
-    private List<WriteUnit> storeLocked(List<ObjectNode> articles)
+    /**
+     * Like {@link #store}, but preserves each article's existing {@code collected_at} (archival
+     * provenance) instead of stamping the current time &mdash; for the {@code collect mergein} ingest of
+     * another instance's articles file. Ids are still freshly assigned and the URL+title hash dedup still
+     * applies, so a merged-in duplicate is skipped and no new id collides with the existing store. Returns
+     * the changed day-file writes plus how many articles were genuinely new (non-duplicate).
+     */
+    public MergeOutcome merge(List<ObjectNode> articles)
+    {
+        MergeOutcome outcome = new MergeOutcome(List.of(), 0);
+        if (articles != null && !articles.isEmpty())
+        {
+            outcome = storeLocked(articles, true);
+        }
+        return outcome;
+    }
+
+    private MergeOutcome storeLocked(List<ObjectNode> articles, boolean preserveCollectedAt)
     {
         Set<String> affectedDays = new HashSet<>();
+        int stored = 0;
         synchronized (lock_)
         {
             String collectedAt = Times.nowUtcIso();
             for (ObjectNode article : articles)
             {
-                storeOne(article, collectedAt, affectedDays);
+                if (storeOne(article, collectedAt, preserveCollectedAt, affectedDays))
+                {
+                    stored++;
+                }
             }
         }
         List<WriteUnit> writes = new ArrayList<>();
@@ -157,11 +178,13 @@ public final class ArticleRegistry implements IRegistry
         {
             writes.add(writeUnitFor(day));
         }
-        return writes;
+        return new MergeOutcome(writes, stored);
     }
 
-    private void storeOne(ObjectNode article, String collectedAt, Set<String> affectedDays)
+    private boolean storeOne(ObjectNode article, String batchCollectedAt, boolean preserveCollectedAt,
+            Set<String> affectedDays)
     {
+        boolean isNew = false;
         String hash = articleHash(article);
         if (!hashes_.contains(hash))
         {
@@ -169,13 +192,27 @@ public final class ArticleRegistry implements IRegistry
             // Stamp the id on the input node too: the collector tells genuinely-new (non-duplicate)
             // articles apart by whether store() assigned them an id (FSCollector.newlyStored).
             article.put(F_ID, id);
-            ObjectNode stored = canonicalize(article, id, hash, collectedAt);
+            ObjectNode stored = canonicalize(article, id, hash,
+                    resolveCollectedAt(article, batchCollectedAt, preserveCollectedAt));
             hashes_.add(hash);
             String day = Times.dayOf(stored.path(F_PUBLISHED_AT).asText(""));
             byDay_.computeIfAbsent(day, d -> new ArrayList<>()).add(stored);
             updateWatermark(stored);
             affectedDays.add(day);
+            isNew = true;
         }
+        return isNew;
+    }
+
+    /**
+     * The {@code collected_at} to persist: the merge path keeps the article's incoming value (archival
+     * provenance), the live path stamps the batch time. Falls back to the batch time when the incoming
+     * value is absent.
+     */
+    private static String resolveCollectedAt(ObjectNode article, String batchCollectedAt, boolean preserve)
+    {
+        String existing = article.path(F_COLLECTED_AT).asText("");
+        return preserve && !existing.isEmpty() ? existing : batchCollectedAt;
     }
 
     /**
@@ -328,5 +365,10 @@ public final class ArticleRegistry implements IRegistry
         {
             throw new IllegalStateException("MD5 algorithm unavailable", md5Missing);
         }
+    }
+
+    /** The result of {@link #merge}: the changed day-file writes and how many articles were genuinely new. */
+    public record MergeOutcome(List<WriteUnit> writes, int stored)
+    {
     }
 }

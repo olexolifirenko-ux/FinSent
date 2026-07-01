@@ -1,6 +1,8 @@
 package com.finsent.collect.cmd;
 
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -9,6 +11,7 @@ import com.finsent.collect.EconScheduler;
 import com.finsent.collect.FSCollector;
 import com.finsent.collect.source.ArticleSources;
 import com.finsent.core.Config;
+import com.finsent.directory.DirectorySystem;
 import com.finsent.util.CmdGroupHandler;
 import com.finsent.util.ICmdHandler;
 import com.finsent.util.UtilityFunctions;
@@ -24,17 +27,20 @@ import com.finsent.util.UtilityFunctions;
  *       launcher flag.</li>
  *   <li>{@code list} &mdash; print the configured-source manifest across both lanes (the same one logged
  *       at startup).</li>
+ *   <li>{@code mergein <file>} &mdash; ingest articles from an external articles JSONL file (e.g. another
+ *       instance's {@code articles_<day>.jsonl}) into the store, with fresh ids and content-hash dedup.</li>
  * </ul>
  * The {@code econ} fetch is fetch-only (stores the actual but does not analyse/notify, so a back-dated
- * catch-up never fires a stale alert -- run {@code anal econ} afterwards). Registered once the components
- * exist (see {@code FSApp}).
+ * catch-up never fires a stale alert -- run {@code anal econ} afterwards). The {@code mergein} ingest is
+ * likewise store-only -- run {@code anal windows ... -force} afterwards to analyse the merged windows.
+ * Registered once the components exist (see {@code FSApp}).
  */
 public final class CollectGroupCmdHandler extends CmdGroupHandler
 {
     public static final String COMMAND = "collect";
     public static final String[] COMMAND_ALIASES = null;
     public static final String DESCRIPTION = "Collector control,\nusage: " + COMMAND
-            + " <econ [YYYYMMDD] <event name> | x <on|off|status> | list>";
+            + " <econ [YYYYMMDD] <event name> | x <on|off|status> | list | mergein <file>>";
 
     public CollectGroupCmdHandler(EconScheduler econScheduler, FSCollector collector, Config config)
     {
@@ -45,6 +51,95 @@ public final class CollectGroupCmdHandler extends CmdGroupHandler
                 "Turn the X (Twitter) source's polling on/off at runtime: x <on|off|status>.", null);
         registerCmdHandler("list", new ListCmdHandler(config),
                 "List the configured sources across both lanes: list.", null);
+        registerCmdHandler("mergein", new MergeInCmdHandler(collector),
+                "Ingest articles from an external JSONL file (fresh ids, content-hash dedup): mergein <file> "
+                        + "(a relative path roots at the release home). Read-only on the source -- run "
+                        + "`anal windows ... -force` afterwards to analyse.", null);
+    }
+
+    /**
+     * {@code collect mergein <file>}: ingest articles from an external articles JSONL file (e.g. another
+     * instance's {@code articles_<day>.jsonl}) into the store. Fresh ids are assigned and content-hash dedup
+     * applies, so duplicates are skipped and no id collides. The path resolves like every other resource
+     * path (a relative path roots at the release home, an absolute path is used as-is); the source file is
+     * read only. Store-only -- it prints the exact {@code anal windows ... -force} follow-up for the affected
+     * days.
+     */
+    private static final class MergeInCmdHandler implements ICmdHandler
+    {
+        private static final String USAGE = "Usage: collect mergein <file>";
+        private final FSCollector collector_;
+
+        private MergeInCmdHandler(FSCollector collector)
+        {
+            collector_ = collector;
+        }
+
+        @Override
+        public int commandEntered(Writer writer, String command, String[] args)
+        {
+            int code = 0;
+            String pathArg = String.join(" ", args).trim(); // a path may contain spaces
+            if (pathArg.isEmpty())
+            {
+                UtilityFunctions.writeln(writer, USAGE);
+                code = 1;
+            }
+            else
+            {
+                code = runMerge(writer, pathArg);
+            }
+            return code;
+        }
+
+        private int runMerge(Writer writer, String pathArg)
+        {
+            int code = 0;
+            // Resolve like every other resource path: a relative path roots at the release home
+            // (-Dfinsent.home), an absolute path is used as-is -- so it does not depend on the CWD.
+            Path file = DirectorySystem.resolveToFile(pathArg).toPath();
+            if (!Files.isRegularFile(file))
+            {
+                UtilityFunctions.writeln(writer, "No such file: " + file);
+                code = 1;
+            }
+            else
+            {
+                code = ingest(writer, file);
+            }
+            return code;
+        }
+
+        private int ingest(Writer writer, Path file)
+        {
+            int code = 0;
+            UtilityFunctions.writeln(writer, "Merging articles from " + file + "...");
+            try
+            {
+                report(writer, collector_.mergeIn(file));
+            }
+            catch (Exception mergeFailed)
+            {
+                // Abort just this command; the interpreter thread stays alive for the next command.
+                UtilityFunctions.writeln(writer, "Merge failed (aborted): " + mergeFailed);
+                code = 1;
+            }
+            return code;
+        }
+
+        private void report(Writer writer, FSCollector.MergeReport report)
+        {
+            UtilityFunctions.writeln(writer, "Merged: " + report.stored() + " new, " + report.duplicates()
+                    + " duplicate(s), " + report.skipped() + " skipped (of " + report.read() + " read).");
+            if (report.firstDay() != null)
+            {
+                String range = report.lastDay().equals(report.firstDay())
+                        ? report.firstDay() : report.firstDay() + " .. " + report.lastDay();
+                UtilityFunctions.writeln(writer, "Affected days: " + range + ".");
+                UtilityFunctions.writeln(writer, "Now analyse:  anal windows " + report.firstDay()
+                        + " 00:00 " + report.lastDay() + " 23:59 -force");
+            }
+        }
     }
 
     /** {@code collect list}: print the configured-source manifest (both lanes) -- the same one logged at start. */
